@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Módulo 1 — Claude Managed Agents</title>
+        <meta
+            name="description"
+            content="Módulo 1 del curso: qué son los Managed Agents de Claude, arquitectura, permisos y 5 ejemplos prácticos."
+        />
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+        <link rel="stylesheet" href="modulo-1.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="../index.html#progreso">Progreso</a>
+                    <a href="../index.html#fuentes">Fuentes</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li>Módulo 1</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="hero-meta">Módulo 01 &middot; 5 lecciones &middot; 45 min</span>
+                        <h1 class="mt-0">Claude Managed Agents</h1>
+                        <p class="lead">
+                            Anthropic lanzó el 8 de abril de 2026 una primitiva
+                            que cambia el juego: un harness gestionado donde
+                            vos describís qué querés que haga el agente, y
+                            ellos corren la infra. Sandbox, event loop,
+                            sesiones, credenciales — todo manejado por el
+                            servidor. Lo que antes te llevaba meses, ahora se
+                            arma en minutos.
+                        </p>
+                    </div>
+
+                    <div
+                        class="card fade-in"
+                        data-progress-widget="modulo-1"
+                        data-total-lessons="5"
+                        id="progress-modulo-1"
+                        style="margin-top: var(--space-10)"
+                    >
+                        <div class="progress-label">
+                            <span>Tu progreso en el módulo 1</span>
+                            <strong>
+                                <span data-progress-count>0 / 5</span>
+                                &middot;
+                                <span data-progress-percent>0%</span>
+                            </strong>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                    </div>
+
+                    <h2>Las cinco lecciones</h2>
+                    <p>
+                        Podés leerlas en orden o saltar a la que más te
+                        interese. Cada una arranca con el concepto, lo
+                        desarrolla con diagramas y termina con lo que
+                        necesitás para la siguiente.
+                    </p>
+
+                    <div class="lesson-grid stagger">
+                        <a
+                            href="01-que-son.html"
+                            class="lesson-card slide-up"
+                            data-animate-delay="0"
+                        >
+                            <span class="lesson-number">Lección 01</span>
+                            <h3>¿Qué son los Managed Agents?</h3>
+                            <p>
+                                El concepto, por qué Anthropic los lanzó y qué
+                                problema concreto resuelven para los que
+                                construimos agentes.
+                            </p>
+                            <span class="lesson-duration">8 min de lectura</span>
+                        </a>
+
+                        <a
+                            href="02-arquitectura.html"
+                            class="lesson-card slide-up"
+                            data-animate-delay="80"
+                        >
+                            <span class="lesson-number">Lección 02</span>
+                            <h3>Arquitectura: las 3 primitivas</h3>
+                            <p>
+                                Agent, Environment, Session. Cómo se
+                                relacionan, qué hace cada una y por qué el
+                                modelo mental importa tanto.
+                            </p>
+                            <span class="lesson-duration">12 min de lectura</span>
+                        </a>
+
+                        <a
+                            href="03-permisos.html"
+                            class="lesson-card slide-up"
+                            data-animate-delay="160"
+                        >
+                            <span class="lesson-number">Lección 03</span>
+                            <h3>Permisos: auto-run vs approval</h3>
+                            <p>
+                                Dos modos de ejecución, cuándo usar cada uno y
+                                cómo mezclarlos dentro del mismo agente para
+                                balancear velocidad y seguridad.
+                            </p>
+                            <span class="lesson-duration">7 min de lectura</span>
+                        </a>
+
+                        <a
+                            href="04-ejemplos.html"
+                            class="lesson-card slide-up"
+                            data-animate-delay="240"
+                        >
+                            <span class="lesson-number">Lección 04</span>
+                            <h3>5 agentes prácticos</h3>
+                            <p>
+                                De meeting prep a code review. Cinco casos
+                                reales con tools, modo de permiso, costo y
+                                diagrama de flujo.
+                            </p>
+                            <span class="lesson-duration">10 min de lectura</span>
+                        </a>
+
+                        <a
+                            href="05-ejercicio.html"
+                            class="lesson-card slide-up"
+                            data-animate-delay="320"
+                        >
+                            <span class="lesson-number">Lección 05</span>
+                            <h3>Tu primer agente en 30 minutos</h3>
+                            <p>
+                                Ejercicio paso a paso: construí un Meeting
+                                Prep Agent desde cero. Copy-paste de prompts,
+                                comandos y checklist final.
+                            </p>
+                            <span class="lesson-duration">30 min hands-on</span>
+                        </a>
+                    </div>
+
+                    <div style="margin-top: var(--space-12); text-align: center;">
+                        <a href="../index.html" class="btn btn-secondary">
+                            Volver al home
+                        </a>
+                        <a href="01-que-son.html" class="btn btn-primary">
+                            Empezar por la lección 1
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">
+                        Módulo 1 &middot; Claude Managed Agents &middot;
+                        Edición 2026
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

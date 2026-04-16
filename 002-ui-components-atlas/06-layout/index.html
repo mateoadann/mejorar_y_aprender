@@ -1,0 +1,196 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Layout — UI Components Atlas</title>
+    <meta name="description" content="Los 10 componentes estructurales que organizan toda tu página: container, grid, flex, dividers y page shells." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo">
+          <span class="atlas-header__logo-mark" aria-hidden="true">A</span>
+          <span>UI Components Atlas</span>
+        </a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Layout</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link is-active" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="container.html">01 — Container</a></li>
+          <li><a class="sidebar-nav__link" href="grid.html">02 — Grid</a></li>
+          <li><a class="sidebar-nav__link" href="flex-stack.html">03 — Flex / Stack</a></li>
+          <li><a class="sidebar-nav__link" href="divider.html">04 — Divider</a></li>
+          <li><a class="sidebar-nav__link" href="spacer.html">05 — Spacer</a></li>
+          <li><a class="sidebar-nav__link" href="aspect-ratio.html">06 — Aspect Ratio</a></li>
+          <li><a class="sidebar-nav__link" href="scroll-area.html">07 — Scroll Area</a></li>
+          <li><a class="sidebar-nav__link" href="resizable.html">08 — Resizable</a></li>
+          <li><a class="sidebar-nav__link" href="separator-section.html">09 — Separator Section</a></li>
+          <li><a class="sidebar-nav__link" href="page-layout.html">10 — Page Layout</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Layout</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Layout</h1>
+          <p class="component-page__lead">
+            Los componentes estructurales que organizan toda tu página: containers, grids, flex stacks, dividers y page shells. Son el esqueleto sobre el que vive todo lo demás.
+          </p>
+        </header>
+
+        <section class="component-page__section">
+          <div class="rounded-lg border border-foreground/20 bg-muted/40 p-5">
+            <p class="text-foreground font-semibold mb-2">Importante antes de empezar</p>
+            <p class="text-muted-foreground">Layout no son componentes visuales en sí — son las piezas invisibles que sostienen todo lo demás. Un Button es un botón, lo ves. Un Container es aire: un div que limita el ancho. Y sin embargo, dominar Layout es la diferencia entre una app que se ve "bien" y una que se siente "profesional". En este módulo los demos usan borders punteados para que puedas VER la estructura, no solo el contenido.</p>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Los 10 componentes</h2>
+          <p class="component-page__section-lead">Ordenados de lo más fundamental (Container) a lo más compuesto (Page Layout).</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+
+            <a href="container.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">01</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Container</h3>
+              <p class="text-sm text-muted-foreground mb-3">Wrapper que limita el ancho máximo y centra el contenido horizontalmente.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Container</span><span class="rounded bg-background px-2 py-0.5 border border-border">max-w-*</span></div>
+            </a>
+
+            <a href="grid.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">02</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Grid</h3>
+              <p class="text-sm text-muted-foreground mb-3">Layout bidimensional con filas y columnas usando CSS Grid.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Grid</span><span class="rounded bg-background px-2 py-0.5 border border-border">SimpleGrid</span></div>
+            </a>
+
+            <a href="flex-stack.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">03</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Flex / Stack</h3>
+              <p class="text-sm text-muted-foreground mb-3">Layout unidimensional: HStack horizontal, VStack vertical.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Stack</span><span class="rounded bg-background px-2 py-0.5 border border-border">HStack</span></div>
+            </a>
+
+            <a href="divider.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">04</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Divider</h3>
+              <p class="text-sm text-muted-foreground mb-3">Línea horizontal o vertical que separa visualmente dos secciones.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Separator</span><span class="rounded bg-background px-2 py-0.5 border border-border">&lt;hr&gt;</span></div>
+            </a>
+
+            <a href="spacer.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">05</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Spacer</h3>
+              <p class="text-sm text-muted-foreground mb-3">Elemento vacío que empuja otros elementos para crear espacio dinámico.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Spacer</span><span class="rounded bg-background px-2 py-0.5 border border-border">flex-1</span></div>
+            </a>
+
+            <a href="aspect-ratio.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">06</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Aspect Ratio</h3>
+              <p class="text-sm text-muted-foreground mb-3">Contenedor que mantiene una proporción fija (16:9, 1:1, etc).</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">AspectRatio</span><span class="rounded bg-background px-2 py-0.5 border border-border">aspect-video</span></div>
+            </a>
+
+            <a href="scroll-area.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">07</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Scroll Area</h3>
+              <p class="text-sm text-muted-foreground mb-3">Área con scroll custom y scrollbar estilizada cross-browser.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">ScrollArea</span><span class="rounded bg-background px-2 py-0.5 border border-border">overflow</span></div>
+            </a>
+
+            <a href="resizable.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">08</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Resizable</h3>
+              <p class="text-sm text-muted-foreground mb-3">Paneles redimensionables por el usuario con handles de drag.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Resizable</span><span class="rounded bg-background px-2 py-0.5 border border-border">SplitPane</span></div>
+            </a>
+
+            <a href="separator-section.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">09</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Separator Section</h3>
+              <p class="text-sm text-muted-foreground mb-3">Separador semántico con título + descripción + línea para estructurar páginas.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">SectionHeader</span><span class="rounded bg-background px-2 py-0.5 border border-border">&lt;section&gt;</span></div>
+            </a>
+
+            <a href="page-layout.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">10</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Page Layout</h3>
+              <p class="text-sm text-muted-foreground mb-3">App shell completo: Header + Sidebar + Main + Footer.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">AppShell</span><span class="rounded bg-background px-2 py-0.5 border border-border">Layout</span></div>
+            </a>
+
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Distinciones que se confunden</h2>
+          <p class="component-page__section-lead">Las confusiones típicas que debés tener claras antes de pedir código.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="font-semibold text-foreground mb-2">Container vs Grid vs Flex</h3>
+              <p class="text-sm text-muted-foreground">Container limita ancho. Grid es 2D (filas Y columnas). Flex es 1D (una sola dirección).</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="font-semibold text-foreground mb-2">Divider vs Spacer vs Section</h3>
+              <p class="text-sm text-muted-foreground">Divider es una línea visual. Spacer es espacio vacío. Separator Section es un bloque semántico con título.</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="font-semibold text-foreground mb-2">Scroll Area vs overflow nativo</h3>
+              <p class="text-sm text-muted-foreground">ScrollArea es cross-browser consistent y estilizable. overflow nativo se ve distinto en cada SO.</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="font-semibold text-foreground mb-2">Resizable vs Grid</h3>
+              <p class="text-sm text-muted-foreground">Resizable es editable por el user (drag handles). Grid tiene tamaños que vos decidís como dev.</p>
+            </div>
+          </div>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre modulos">
+          <a class="component-nav__link" href="../05-overlays/index.html"><span class="component-nav__label">Modulo anterior</span><span class="component-nav__name">Overlays</span></a>
+          <a class="component-nav__link component-nav__link--next" href="container.html"><span class="component-nav__label">Empezar con</span><span class="component-nav__name">Container</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>El problema de los LLMs stateless | Módulo 2</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 2</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 02</a></li>
+                        <li>Lección 01</li>
+                    </ul>
+
+                    <span class="tag primary fade-in">Lección 01</span>
+                    <h1 class="slide-up">
+                        El problema: los LLMs son stateless
+                    </h1>
+                    <p class="lead slide-up" data-animate-delay="100">
+                        Antes de hablar de memoria, tenemos que entender algo
+                        fundamental que la mayoría de los tutoriales se
+                        saltean: un Large Language Model NO recuerda. Nunca.
+                        Por diseño.
+                    </p>
+
+                    <h2 class="slide-up">La ilusión de la conversación</h2>
+                    <p>
+                        Cuando usás ChatGPT y te sentís que "te conoce", que
+                        recuerda lo que le dijiste hace tres mensajes, estás
+                        viviendo una ilusión muy bien orquestada. Cada vez
+                        que apretás enter, la aplicación re-envía TODA la
+                        conversación al modelo. El modelo no guardó nada.
+                        Nunca guarda nada.
+                    </p>
+
+                    <div class="diagram fade-in">
+                        <div class="diagram-box primary">
+                            <strong>Turno 1</strong>
+                            <span class="label">API call</span>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box">
+                            <strong>LLM</strong>
+                            <span class="label">responde + olvida</span>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box primary">
+                            <strong>Turno 2</strong>
+                            <span class="label">re-envía TODO</span>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box">
+                            <strong>LLM</strong>
+                            <span class="label">responde + olvida</span>
+                        </div>
+                    </div>
+
+                    <div class="callout info">
+                        <div class="callout-title">Insight</div>
+                        <p>
+                            La "memoria" que ves en un chat no vive en el
+                            modelo. Vive en la aplicación que envuelve al
+                            modelo. Todo lo que sigue en este módulo es,
+                            básicamente, cómo construir esa aplicación de
+                            envoltura para que sea inteligente y no apenas
+                            una lista que crece.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <div class="text-center slide-up">
+                        <h2 class="mt-0">Los 7 failure modes</h2>
+                        <p class="lead" style="max-width: 680px; margin: 0 auto var(--space-10);">
+                            Cuando un agente no tiene memoria real (más allá
+                            del context window), estos son los síntomas que
+                            vas a ver en producción. Uno por uno.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-3 stagger">
+                        <div class="card slide-up" data-animate-delay="0">
+                            <span class="tag">01</span>
+                            <h4>Context amnesia</h4>
+                            <p>
+                                Preguntas algo, cerrás la sesión, volvés
+                                mañana. El agente no tiene idea de quién
+                                sos. Todo reseteado.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="100">
+                            <span class="tag">02</span>
+                            <h4>Zero personalization</h4>
+                            <p>
+                                Le explicás 20 veces que preferís respuestas
+                                cortas. Cada sesión nueva vuelve a arrancar
+                                con respuestas largas.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="200">
+                            <span class="tag">03</span>
+                            <h4>Multi-step task failure</h4>
+                            <p>
+                                Tareas de varios pasos que exceden el context
+                                window se caen a la mitad. El agente se
+                                olvida qué estaba haciendo.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="300">
+                            <span class="tag">04</span>
+                            <h4>Repeated mistakes</h4>
+                            <p>
+                                El mismo error, la misma corrección, todos
+                                los días. Sin memoria no hay aprendizaje.
+                                Solo loop.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="400">
+                            <span class="tag">05</span>
+                            <h4>No knowledge accumulation</h4>
+                            <p>
+                                Cada interacción empieza de cero. El
+                                conocimiento que va ganando en cada charla
+                                muere con la sesión.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="500">
+                            <span class="tag">06</span>
+                            <h4>Hallucination from gaps</h4>
+                            <p>
+                                Cuando falta contexto, el LLM rellena con
+                                inventos plausibles. Sin memoria persistente,
+                                los gaps son permanentes.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="600">
+                            <span class="tag">07</span>
+                            <h4>Identity collapse</h4>
+                            <p>
+                                El agente no mantiene un sentido coherente
+                                de sí mismo entre sesiones. Cada conversación
+                                es un clon recién nacido.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">
+                        Lost in the middle: el paper que lo cambió todo
+                    </h2>
+                    <p>
+                        En 2023, Liu et al. publicaron un paper que demolió
+                        una creencia común: "si tenés un context window
+                        grande, tu problema de memoria está resuelto".
+                        FALSO. Los LLMs tienen un sesgo muy fuerte hacia el
+                        principio y el final del contexto. La información
+                        del medio se pierde.
+                    </p>
+
+                    <p>
+                        Mirá la curva: la precisión de recuperación cae
+                        hasta un 30% cuando la información relevante está
+                        en el medio del prompt. Es la famosa "U-shape".
+                    </p>
+
+                    <div class="diagram vertical fade-in">
+                        <div
+                            style="
+                                display: flex;
+                                align-items: flex-end;
+                                gap: var(--space-2);
+                                height: 180px;
+                                padding: var(--space-4);
+                            "
+                        >
+                            <div
+                                class="diagram-box primary"
+                                style="
+                                    min-width: 50px;
+                                    height: 160px;
+                                    padding: var(--space-2);
+                                "
+                            >
+                                <strong>95%</strong>
+                                <span class="label">inicio</span>
+                            </div>
+                            <div
+                                class="diagram-box"
+                                style="
+                                    min-width: 50px;
+                                    height: 120px;
+                                    padding: var(--space-2);
+                                "
+                            >
+                                <strong>82%</strong>
+                                <span class="label"></span>
+                            </div>
+                            <div
+                                class="diagram-box"
+                                style="
+                                    min-width: 50px;
+                                    height: 80px;
+                                    padding: var(--space-2);
+                                "
+                            >
+                                <strong>68%</strong>
+                                <span class="label"></span>
+                            </div>
+                            <div
+                                class="diagram-box secondary"
+                                style="
+                                    min-width: 50px;
+                                    height: 60px;
+                                    padding: var(--space-2);
+                                "
+                            >
+                                <strong>65%</strong>
+                                <span class="label">medio</span>
+                            </div>
+                            <div
+                                class="diagram-box"
+                                style="
+                                    min-width: 50px;
+                                    height: 75px;
+                                    padding: var(--space-2);
+                                "
+                            >
+                                <strong>70%</strong>
+                                <span class="label"></span>
+                            </div>
+                            <div
+                                class="diagram-box"
+                                style="
+                                    min-width: 50px;
+                                    height: 115px;
+                                    padding: var(--space-2);
+                                "
+                            >
+                                <strong>80%</strong>
+                                <span class="label"></span>
+                            </div>
+                            <div
+                                class="diagram-box primary"
+                                style="
+                                    min-width: 50px;
+                                    height: 155px;
+                                    padding: var(--space-2);
+                                "
+                            >
+                                <strong>92%</strong>
+                                <span class="label">final</span>
+                            </div>
+                        </div>
+                        <p
+                            style="
+                                font-size: var(--fs-sm);
+                                color: var(--text-muted);
+                                margin: 0;
+                            "
+                        >
+                            Curva de precisión según posición de la
+                            información en el contexto (Liu et al. 2023).
+                        </p>
+                    </div>
+
+                    <div class="callout warning">
+                        <div class="callout-title">Warning</div>
+                        <p>
+                            <strong>128K tokens NO solucionan esto.</strong>
+                            Si pensás que meter todo en un context window
+                            enorme es la solución, estás regalando 30% de
+                            precisión en todo lo que caiga en el medio. Y
+                            encima, pagando tokens que no se leen bien.
+                        </p>
+                    </div>
+
+                    <p>
+                        Referencia:
+                        <a
+                            href="https://arxiv.org/abs/2307.03172"
+                            target="_blank"
+                            rel="noopener"
+                            >Liu et al. 2023 — "Lost in the Middle"</a
+                        >. Lectura obligatoria si querés diseñar sistemas
+                        serios.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <div class="callout tip">
+                        <div class="callout-title">El insight clave</div>
+                        <p>
+                            Memory isn't about cramming more text into the
+                            prompt. It's about <strong>STRUCTURING</strong>
+                            what the agent remembers. Meter más tokens no es
+                            memoria. Estructurar lo que importa, sí.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="index.html" class="pager-prev">
+                            <span class="pager-label">&larr; Volver</span>
+                            <span class="pager-title">Índice del módulo</span>
+                        </a>
+                        <a
+                            href="02-capas.html"
+                            class="pager-next"
+                            data-mark-completed="modulo-2/leccion-1"
+                        >
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title"
+                                >02 — Las 4 capas de memoria</span
+                            >
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

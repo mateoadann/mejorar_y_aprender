@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Proyecto 4 — Personal Life OS | Módulo 3</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 3</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 3</a></li>
+                        <li>Proyecto 04</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="tag">Expert &middot; Proyecto 04</span>
+                        <h1 class="mt-0">Personal Life OS</h1>
+                        <p class="lead">
+                            Un agente que forgets es inútil. Uno que knows
+                            tu vida es un partner. Buildeá un agente
+                            personal que maneja calendar, finances y health,
+                            planea meses adelante y detecta burnout antes
+                            que vos.
+                        </p>
+                    </div>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">Qué prueba este proyecto</div>
+                        <p>
+                            <strong>Deep context + privacy-first architecture.</strong>
+                            Context management sofisticado, ethical AI
+                            design y arquitecturas donde la privacy no es
+                            un addon sino el foundation.
+                        </p>
+                    </div>
+
+                    <div class="callout warning slide-up">
+                        <div class="callout-title">Conexión con Módulo 2</div>
+                        <p>
+                            Este proyecto es <strong>imposible</strong> sin
+                            un buen sistema de memoria. Acá es donde Cognee
+                            (o un hybrid graph+vector similar) se vuelve
+                            crítico. Si salteaste el Módulo 2, volvé.
+                        </p>
+                    </div>
+
+                    <h2>El challenge</h2>
+                    <p class="slide-up">
+                        La gente te vende "AI assistant personal" y te tira
+                        un chatbot que te contesta emails. Eso no es un
+                        assistant, es un autocomplete caro. Un assistant de
+                        verdad ve tu calendar, tu historial financiero, tus
+                        métricas de salud, y detecta patrones que vos no ves
+                        porque los estás viviendo.
+                    </p>
+                    <p class="slide-up">
+                        El problema es que para hacer eso necesitás que el
+                        agente tenga acceso a información extremadamente
+                        sensible. Y la respuesta no puede ser "subilo al
+                        cloud y confiá". La respuesta tiene que ser una
+                        arquitectura donde la privacy está construida desde
+                        el primer commit.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Arquitectura: el hub personal</h2>
+                    <p class="slide-up" style="color: var(--color-muted, #64748b)">
+                        El agente es un hub central que ingiere de 3
+                        fuentes y corre un loop de monitoring proactivo
+                        cada pocas horas.
+                    </p>
+
+                    <div class="diagram stagger" style="margin-top: var(--space-6)">
+                        <div class="diagram-box slide-up">
+                            <div class="label">Fuente 01</div>
+                            <strong>Calendar</strong>
+                            <p>
+                                Meetings, eventos, commitments futuros,
+                                travel.
+                            </p>
+                        </div>
+                        <div class="diagram-box slide-up">
+                            <div class="label">Fuente 02</div>
+                            <strong>Finance</strong>
+                            <p>
+                                Transacciones, ingresos, patrones de gasto,
+                                savings rate.
+                            </p>
+                        </div>
+                        <div class="diagram-box slide-up">
+                            <div class="label">Fuente 03</div>
+                            <strong>Health</strong>
+                            <p>
+                                Sleep, HRV, steps, peso, mood tracking
+                                manual.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-down draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box primary slide-up">
+                            <div class="label">Hub</div>
+                            <strong>Personal Knowledge Graph</strong>
+                            <p>
+                                Grafo encrypted on-device con entidades,
+                                relaciones y timestamps. Source of truth.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-down draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box secondary slide-up">
+                            <div class="label">Monitor</div>
+                            <strong>Proactive Loop (every 6h)</strong>
+                            <p>
+                                Detect anomalies, predict risks, surface
+                                suggestions con reasoning.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Decisiones arquitectónicas</h2>
+                    <div class="grid grid-2 stagger">
+                        <div class="card slide-up">
+                            <h4>Continuous context building</h4>
+                            <p>
+                                Ingest real-time de calendar, finance,
+                                health y comunicaciones. Todo se normaliza
+                                en un personal knowledge graph con entidades
+                                (persona, lugar, evento) y relaciones
+                                (atendió, pagó, dormía mal cuando).
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Proactive monitoring</h4>
+                            <p>
+                                Background thread cada 6hs. Busca anomalías
+                                cruzadas: meeting density subiendo + sleep
+                                quality bajando = señal temprana de
+                                burnout. No esperás que el user pregunte.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Value alignment</h4>
+                            <p>
+                                El usuario declara sus prioridades (family
+                                &gt; work, health &gt; income). Toda
+                                recommendation se valida contra esos values
+                                antes de llegar al user. "Aceptá esta
+                                reunión" no sale si colisiona con un
+                                commitment familiar.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Privacy architecture</h4>
+                            <p>
+                                Encrypted at rest con keys del user
+                                (derivadas del keystore). Nada sale del
+                                device sin permiso explícito por operación.
+                                Las ops sensibles funcionan offline. El
+                                cloud es opcional, no requerido.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Predictive planning</h4>
+                            <p>
+                                "Based on tu patrón de Q4, vas a estar
+                                overcommitted en marzo." El agente usa
+                                historia + tendencia actual para proyectar
+                                fricciones futuras antes de que ocurran.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Decision support</h4>
+                            <p>
+                                Multi-dimensional analysis: financial
+                                impact, time cost, alineación con values,
+                                conflicts con commitments existentes. Cada
+                                decisión grande se evalúa en las 4
+                                dimensiones.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Memory consolidation</h4>
+                            <p>
+                                Proceso nocturno tipo sleep biológico.
+                                Refuerza memorias relevantes, deja decayar
+                                las que no se usan. El grafo se mantiene
+                                compacto, relevante y fresco.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Transparent reasoning</h4>
+                            <p>
+                                Cada suggestion viene con "te estoy
+                                recomendando esto porque X, Y, Z". Sin
+                                cajas negras. Si el user no puede verificar
+                                el razonamiento, no confía, y sin confianza
+                                no hay adopción.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Por qué este es expert</h2>
+                    <p class="slide-up">
+                        Porque no alcanza con que funcione. Tiene que
+                        funcionar bien, ser privacy-preserving por diseño,
+                        ser éticamente defendible, y ganarse la confianza
+                        del user cada día. Es un proyecto donde las
+                        decisiones no funcionales (privacy, ethics,
+                        transparency) pesan más que las funcionales.
+                    </p>
+
+                    <div class="callout tip slide-up">
+                        <div class="callout-title">La prueba del espejo</div>
+                        <p>
+                            Si no usarías este agente vos mismo con tu
+                            propia data, no lo shipees. Este proyecto es
+                            único porque el primer usuario sos vos, y tu
+                            propio nivel de paranoia es el benchmark.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="03-proyecto-3.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title">Video Editor Agent</span>
+                        </a>
+                        <a href="05-proyecto-5.html" class="pager-next">
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title">Enterprise Workflow</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">Módulo 3 &middot; Proyecto 04 &middot; Edición 2026</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

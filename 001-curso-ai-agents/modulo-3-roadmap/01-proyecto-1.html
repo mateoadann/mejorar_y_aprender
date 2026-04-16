@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Proyecto 1 — SLM Mobile App | Módulo 3</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 3</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 3</a></li>
+                        <li>Proyecto 01</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="tag">Beginner &middot; Proyecto 01</span>
+                        <h1 class="mt-0">SLM Mobile App</h1>
+                        <p class="lead">
+                            Build an offline-first mobile app usando small
+                            language models. Zero API costs. Completa
+                            privacidad. El modelo vive en el bolsillo del
+                            usuario.
+                        </p>
+                    </div>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">Qué prueba este proyecto</div>
+                        <p>
+                            <strong>Edge AI + resource optimization.</strong>
+                            No estás llamando una API, estás peleando con
+                            quantization, memory pressure y battery. Esto
+                            demuestra que entendés los constraints reales del
+                            hardware.
+                        </p>
+                    </div>
+
+                    <h2>El challenge</h2>
+                    <p class="slide-up">
+                        La mayoría de apps con LLMs hoy dependen de una API.
+                        Eso significa costos por token, latencia de red y
+                        data del usuario saliendo del device. Este proyecto va
+                        al extremo opuesto: correr un SLM local, offline,
+                        encrypted, con sync opcional.
+                    </p>
+                    <p class="slide-up">
+                        Suena simple hasta que lo intentás. Un modelo
+                        cuantizado de 4GB no entra en memory de un mid-range
+                        Android. Si lo cargás a demanda tardás 8 segundos en
+                        responder. Si lo dejás cargado te come la batería. Si
+                        no manejás el context window te explota en long
+                        conversations. Esa pelea es la lección.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Decisiones arquitectónicas</h2>
+                    <div class="grid grid-2 stagger">
+                        <div class="card slide-up">
+                            <h4>Model management</h4>
+                            <p>
+                                Lazy loading del modelo al primer uso, unload
+                                on memory pressure (<code>onLowMemory</code>),
+                                preload en idle cuando el user vuelve a la
+                                app. El modelo no está siempre en RAM, pero
+                                tampoco se carga desde cero cada vez.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Context window</h4>
+                            <p>
+                                Sliding window con semantic chunking. Cuando
+                                la conversación supera el límite, resumís los
+                                bloques antiguos con el mismo modelo y los
+                                reemplazás por el summary. El usuario no
+                                nota el cutoff.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Quantization strategy</h4>
+                            <p>
+                                Dinámica según las capacidades del device.
+                                Pre-2020 o low-end → 4-bit (Q4_K_M). Device
+                                más nuevo con más RAM → 8-bit (Q8_0) para
+                                mejor calidad. Detectás al instalar y
+                                bajás el modelo correcto.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Battery optimization</h4>
+                            <p>
+                                Batch inference cuando podés, throttle agresivo
+                                en low battery (&lt; 20%), suspender tasks
+                                background si la temperatura sube. Un agente
+                                que deja el phone a 38C no lo usa nadie.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Offline-first sync</h4>
+                            <p>
+                                Todo encrypted local (SQLCipher). Sync
+                                opcional cuando hay conexión y el user da
+                                permiso explícito. El device es source of
+                                truth; el cloud es backup, no dependencia.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Arquitectura de model loading</h2>
+                    <p class="slide-up" style="color: var(--color-muted, #64748b)">
+                        El modelo transita por 3 estados y cada transición
+                        tiene costos. Entender esto es el 80% del problema.
+                    </p>
+
+                    <div class="diagram stagger">
+                        <div class="diagram-box slide-up">
+                            <div class="label">Estado 01</div>
+                            <strong>Unloaded</strong>
+                            <p>
+                                Modelo en disco (encrypted). 0 MB de RAM. El
+                                user abre la app → transition a idle.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-right draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box primary slide-up">
+                            <div class="label">Estado 02</div>
+                            <strong>Idle</strong>
+                            <p>
+                                Modelo cargado en RAM, sin inference activa.
+                                ~2-4 GB según quantization. Listo para
+                                responder en &lt;500ms.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-right draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box secondary slide-up">
+                            <div class="label">Estado 03</div>
+                            <strong>Active</strong>
+                            <p>
+                                Inference corriendo. GPU/NPU ocupada, batería
+                                drenando. Vuelve a idle al terminar el token
+                                stream.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout tip slide-up" style="margin-top: var(--space-6)">
+                        <div class="callout-title">Triggers de transición</div>
+                        <p>
+                            <strong>unloaded → idle:</strong> app foreground
+                            + battery &gt; 30% + memory disponible.
+                            <strong>idle → unloaded:</strong> 5 min sin uso,
+                            o <code>onTrimMemory</code> del OS.
+                            <strong>idle → active:</strong> user envía prompt.
+                            Cada transición tiene que estar medida.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Stack sugerido</h2>
+                    <div class="grid grid-2 stagger">
+                        <div class="card slide-up">
+                            <h4>Inference engine</h4>
+                            <p>
+                                <code>llama.cpp</code> con bindings para
+                                mobile. Maduro, rápido, soporta Metal en
+                                iOS y OpenCL/Vulkan en Android.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Formato de modelo</h4>
+                            <p>
+                                <code>GGUF</code>. Quantizaciones Q4_K_M a
+                                Q8_0. Modelos base recomendados: Phi-3-mini,
+                                Gemma 2B, Llama 3.2 1B/3B.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Framework UI</h4>
+                            <p>
+                                React Native o Flutter. Ambos tienen
+                                bindings nativos a <code>llama.cpp</code>.
+                                Si querés full control del lifecycle, nativo
+                                es mejor.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Storage</h4>
+                            <p>
+                                SQLite con SQLCipher para conversaciones.
+                                Encrypted at rest con key derivada del
+                                keychain/keystore del device.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <div class="callout success slide-up">
+                        <div class="callout-title">Por qué este es el nivel beginner</div>
+                        <p>
+                            Porque no hay agentic loop, no hay multi-agent,
+                            no hay orchestration. Hay un modelo, un device y
+                            constraints físicos. Si resolvés esto, tenés las
+                            bases para todo lo que viene. Si no, vas a estar
+                            todo el roadmap tirando OOMs.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="index.html" class="pager-prev">
+                            <span class="pager-label">&larr; Volver</span>
+                            <span class="pager-title">Índice del módulo</span>
+                        </a>
+                        <a href="02-proyecto-2.html" class="pager-next">
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title">Coding Agent</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">Módulo 3 &middot; Proyecto 01 &middot; Edición 2026</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

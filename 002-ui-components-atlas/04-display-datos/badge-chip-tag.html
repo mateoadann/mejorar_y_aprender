@@ -1,0 +1,279 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Badge / Chip / Tag — UI Components Atlas</title>
+    <meta name="description" content="Etiquetas pequeñas para status, counts o categorización." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Display de Datos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="card.html">01 — Card</a></li>
+          <li><a class="sidebar-nav__link" href="table.html">02 — Table</a></li>
+          <li><a class="sidebar-nav__link" href="list.html">03 — List</a></li>
+          <li><a class="sidebar-nav__link" href="tree-view.html">04 — Tree View</a></li>
+          <li><a class="sidebar-nav__link" href="timeline.html">05 — Timeline</a></li>
+          <li><a class="sidebar-nav__link" href="accordion.html">06 — Accordion</a></li>
+          <li><a class="sidebar-nav__link" href="collapsible.html">07 — Collapsible</a></li>
+          <li><a class="sidebar-nav__link" href="carousel.html">08 — Carousel</a></li>
+          <li><a class="sidebar-nav__link" href="avatar.html">09 — Avatar</a></li>
+          <li><a class="sidebar-nav__link is-active" href="badge-chip-tag.html">10 — Badge / Chip / Tag</a></li>
+          <li><a class="sidebar-nav__link" href="stat-card.html">11 — Stat Card</a></li>
+          <li><a class="sidebar-nav__link" href="kanban-card.html">12 — Kanban Card</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Display de Datos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Badge / Chip / Tag</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Badge / Chip / Tag</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Badge</span>
+            <span class="component-page__alias">Chip</span>
+            <span class="component-page__alias">Tag</span>
+            <span class="component-page__alias">Pill</span>
+            <span class="component-page__alias">Label</span>
+          </div>
+          <p class="component-page__lead">Etiquetas pequeñas. Tres nombres para cosas parecidas pero distintas. Esta página agrupa los tres porque la confusión entre ellos es la constante más grande en las libraries. Leete el callout.</p>
+        </header>
+
+        <section class="component-page__section" id="callout">
+          <div class="rounded-lg border border-border bg-muted/20 p-4 space-y-2">
+            <p class="text-sm"><b class="text-foreground">Badge</b> <span class="text-muted-foreground">— no interactivo. Estado o contador chico: "Active", "12" notifications, "NEW". Adorno.</span></p>
+            <p class="text-sm"><b class="text-foreground">Chip</b> <span class="text-muted-foreground">— interactivo. A veces con botón X para eliminar: filtros aplicados, tags editables, selección múltiple tipo Gmail.</span></p>
+            <p class="text-sm"><b class="text-foreground">Tag</b> <span class="text-muted-foreground">— no interactivo pero categoriza. Labels de blog post, categorías, taxonomía. Entre Badge y Chip.</span></p>
+            <p class="text-xs text-muted-foreground pt-2 border-t border-border"><b class="text-foreground">TL;DR:</b> Si es clickeable/eliminable = Chip. Si es contador/status = Badge. Si clasifica contenido = Tag.</p>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demos</h2>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <div class="w-full">
+                <p class="demo-preview__label">Badges de status</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="inline-flex items-center rounded-full bg-green-500/10 border border-green-500/20 px-2.5 py-0.5 text-xs font-medium text-green-400">Success</span>
+                  <span class="inline-flex items-center rounded-full bg-yellow-500/10 border border-yellow-500/20 px-2.5 py-0.5 text-xs font-medium text-yellow-400">Warning</span>
+                  <span class="inline-flex items-center rounded-full bg-red-500/10 border border-red-500/20 px-2.5 py-0.5 text-xs font-medium text-red-400">Error</span>
+                  <span class="inline-flex items-center rounded-full bg-blue-500/10 border border-blue-500/20 px-2.5 py-0.5 text-xs font-medium text-blue-400">Info</span>
+                  <span class="inline-flex items-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">Draft</span>
+                </div>
+              </div>
+
+              <div class="w-full">
+                <p class="demo-preview__label">Chips dismissible (clickeá la X)</p>
+                <div class="flex flex-wrap gap-2" id="chip-demo">
+                  <span class="chip inline-flex items-center gap-1 rounded-full bg-muted border border-border pl-3 pr-1 py-0.5 text-xs text-foreground">
+                    Category: Design
+                    <button class="chip-remove w-4 h-4 rounded-full hover:bg-background flex items-center justify-center" aria-label="Remove">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                  </span>
+                  <span class="chip inline-flex items-center gap-1 rounded-full bg-muted border border-border pl-3 pr-1 py-0.5 text-xs text-foreground">
+                    Price: &lt; $100
+                    <button class="chip-remove w-4 h-4 rounded-full hover:bg-background flex items-center justify-center" aria-label="Remove">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                  </span>
+                  <span class="chip inline-flex items-center gap-1 rounded-full bg-muted border border-border pl-3 pr-1 py-0.5 text-xs text-foreground">
+                    In stock
+                    <button class="chip-remove w-4 h-4 rounded-full hover:bg-background flex items-center justify-center" aria-label="Remove">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                  </span>
+                </div>
+              </div>
+
+              <div class="w-full">
+                <p class="demo-preview__label">Notification badge (dot sobre icono)</p>
+                <div class="flex items-center gap-4">
+                  <button class="relative w-10 h-10 rounded-md border border-border bg-muted/20 flex items-center justify-center text-foreground" aria-label="Notifications">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                    <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-red-500 ring-2 ring-background"></span>
+                  </button>
+                  <button class="relative w-10 h-10 rounded-md border border-border bg-muted/20 flex items-center justify-center text-foreground" aria-label="Messages">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <span class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 ring-2 ring-background text-[10px] font-medium text-white flex items-center justify-center">12</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function(){
+              const root = document.getElementById('chip-demo');
+              if (!root) return;
+              root.querySelectorAll('.chip-remove').forEach(btn => {
+                btn.addEventListener('click', () => btn.closest('.chip').remove());
+              });
+            })();
+          </script>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Badge / Chip / Tag (Root)</div>
+                <div class="flex gap-2 text-xs">
+                  <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">[Icon / Dot]</div>
+                  <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Label</div>
+                  <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">[Remove button X]</div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> Span inline con padding chico, rounded-full o md.</li>
+              <li><b>Icon/Dot</b> Opcional leading.</li>
+              <li><b>Label</b> Texto corto (1-3 palabras).</li>
+              <li><b>Remove</b> Solo en Chip. Button X con aria-label.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>default</b> Bg sólido neutro.</li>
+            <li><b>secondary</b> Bg muted.</li>
+            <li><b>destructive</b> Rojo para errores.</li>
+            <li><b>outline</b> Solo border, sin bg.</li>
+            <li><b>with icon</b> Icono leading.</li>
+            <li><b>dismissible</b> Solo Chip, con X.</li>
+            <li><b>dot</b> Badge sin texto (solo notification dot).</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn</th><th>Material UI</th><th>Ant Design</th><th>Chakra</th></tr></thead>
+            <tbody>
+              <tr><td>Status / count</td><td>Badge</td><td>Badge (floating) / Chip (inline)</td><td>Badge (count) / Tag (status)</td><td>Badge</td></tr>
+              <tr><td>Interactive filter</td><td>(custom)</td><td>Chip</td><td>Tag (closable)</td><td>Tag</td></tr>
+              <tr><td>Category label</td><td>Badge variant</td><td>Chip</td><td>Tag</td><td>Tag</td></tr>
+              <tr><td>Remove action</td><td>(custom)</td><td>onDelete prop</td><td>closable prop</td><td>TagCloseButton</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Mostrar status (Active, Archived, Pending).</li>
+              <li>Counts (12 unread, 3 new).</li>
+              <li>Tags de blog post o producto.</li>
+              <li>Filtros seleccionados (chips con X).</li>
+              <li>Marcar "NEW" o "BETA" en features.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Necesitás acción principal: usá Button (módulo 01).</li>
+              <li>Es mucha info: usá <a href="card.html" class="underline">Card</a>.</li>
+              <li>Es un link de navegación: usá anchor.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Status badges 4 colors</p>
+              <pre class="prompt-library__text" id="p1-text">Build a Badge component with 4 color variants: success (green), warning (yellow), error (red), info (blue). Each uses bg-{color}-500/10, border-{color}-500/20, text-{color}-400. Rounded-full, px-2.5 py-0.5, text-xs.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Dismissible filter chips</p>
+              <pre class="prompt-library__text" id="p2-text">Create filter Chips with an X button on the right. Clicking X removes the chip from state (array of active filters). Use MUI Chip or a custom shadcn-style component with onDelete handler.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Notification dot on icon button</p>
+              <pre class="prompt-library__text" id="p3-text">Wrap an icon button (Bell from lucide) with a notification Badge. Show a red dot in the top-right when count is 0, or a number when count > 0. Use absolute positioning with ring-2 ring-background.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Tag cloud</p>
+              <pre class="prompt-library__text" id="p4-text">Build a tag cloud for a blog post: render an array of category strings as Tags (non-interactive), wrap with flex-wrap gap-2. Use outline variant with hover state for linking to category pages.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="avatar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Avatar badge</h3><p class="text-sm text-muted-foreground">Status dot sobre avatar.</p></a>
+            <a href="../01-inputs-controles/button.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Button</h3><p class="text-sm text-muted-foreground">Si es una acción.</p></a>
+            <a href="../03-feedback-estado/alert.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Alert</h3><p class="text-sm text-muted-foreground">Para más info.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://ui.shadcn.com/docs/components/badge" target="_blank">Shadcn Badge</a></li>
+            <li><a href="https://mui.com/material-ui/react-chip/" target="_blank">MUI Chip</a></li>
+            <li><a href="https://ant.design/components/tag" target="_blank">Ant Design Tag</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="avatar.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Avatar</span></a>
+          <a class="component-nav__link component-nav__link--next" href="stat-card.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Stat Card</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

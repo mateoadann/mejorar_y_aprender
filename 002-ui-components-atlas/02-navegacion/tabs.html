@@ -1,0 +1,261 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabs — UI Components Atlas</title>
+    <meta name="description" content="Pestanas para alternar entre vistas relacionadas." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Navegacion</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="navbar.html">01 — Navbar</a></li>
+          <li><a class="sidebar-nav__link" href="sidebar.html">02 — Sidebar</a></li>
+          <li><a class="sidebar-nav__link is-active" href="tabs.html">03 — Tabs</a></li>
+          <li><a class="sidebar-nav__link" href="breadcrumbs.html">04 — Breadcrumbs</a></li>
+          <li><a class="sidebar-nav__link" href="pagination.html">05 — Pagination</a></li>
+          <li><a class="sidebar-nav__link" href="stepper.html">06 — Stepper</a></li>
+          <li><a class="sidebar-nav__link" href="command-palette.html">07 — Command Palette</a></li>
+          <li><a class="sidebar-nav__link" href="drawer.html">08 — Drawer</a></li>
+          <li><a class="sidebar-nav__link" href="bottom-nav.html">09 — Bottom Nav</a></li>
+          <li><a class="sidebar-nav__link" href="mega-menu.html">10 — Mega Menu</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Navegacion</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Tabs</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Tabs</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Tabs</span>
+            <span class="component-page__alias">Pestanas</span>
+            <span class="component-page__alias">Segmented Control</span>
+            <span class="component-page__alias">TabPanel</span>
+          </div>
+          <p class="component-page__lead">Alternar entre vistas relacionadas que comparten contexto. Uno activo a la vez. La anatomia Radix es la referencia universal: Root + List + Triggers + Contents. NO uses Tabs para navegar entre paginas, eso es Navbar. Tabs son para contenido que podria estar todo junto pero se divide por claridad.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Tabs funcionales con 3 paneles. Clickea para cambiar.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <div class="w-full max-w-md" data-tabs>
+                <div class="inline-flex items-center rounded-md bg-muted p-1" role="tablist">
+                  <button class="px-3 py-1.5 text-sm font-medium rounded-sm bg-background text-foreground shadow-sm" data-tab="0" role="tab" aria-selected="true">Account</button>
+                  <button class="px-3 py-1.5 text-sm font-medium rounded-sm text-muted-foreground" data-tab="1" role="tab" aria-selected="false">Password</button>
+                  <button class="px-3 py-1.5 text-sm font-medium rounded-sm text-muted-foreground" data-tab="2" role="tab" aria-selected="false">Billing</button>
+                </div>
+                <div class="mt-3 rounded-md border border-border bg-muted/20 p-4 text-sm" data-panel="0">
+                  <div class="font-semibold text-foreground mb-1">Account</div>
+                  <p class="text-muted-foreground">Make changes to your account here. Click save when you're done.</p>
+                </div>
+                <div class="mt-3 rounded-md border border-border bg-muted/20 p-4 text-sm hidden" data-panel="1">
+                  <div class="font-semibold text-foreground mb-1">Password</div>
+                  <p class="text-muted-foreground">Change your password here. After saving, you'll be logged out.</p>
+                </div>
+                <div class="mt-3 rounded-md border border-border bg-muted/20 p-4 text-sm hidden" data-panel="2">
+                  <div class="font-semibold text-foreground mb-1">Billing</div>
+                  <p class="text-muted-foreground">Manage your subscription and invoices from here.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function(){
+              const root = document.querySelector('[data-tabs]');
+              if (!root) return;
+              const tabs = root.querySelectorAll('[data-tab]');
+              const panels = root.querySelectorAll('[data-panel]');
+              tabs.forEach(t => t.addEventListener('click', () => {
+                const idx = t.dataset.tab;
+                tabs.forEach(x => {
+                  const active = x.dataset.tab === idx;
+                  x.setAttribute('aria-selected', active);
+                  x.className = 'px-3 py-1.5 text-sm font-medium rounded-sm ' + (active ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground');
+                });
+                panels.forEach(p => p.classList.toggle('hidden', p.dataset.panel !== idx));
+              }));
+            })();
+          </script>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Radix Tabs. Estandar.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Tabs.Root</div>
+                <div class="rounded border border-border bg-background p-3 mb-2">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">Tabs.List (role="tablist")</div>
+                  <div class="flex gap-2 text-xs">
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Tabs.Trigger (value="a")</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Tabs.Trigger (value="b")</div>
+                  </div>
+                </div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">Tabs.Content (value="a")</div>
+                  <div class="text-xs font-mono text-muted-foreground mb-1">Tabs.Content (value="b")</div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> Mantiene el estado del activo (value + onValueChange).</li>
+              <li><b>List</b> Contenedor de triggers con <code>role="tablist"</code>.</li>
+              <li><b>Trigger</b> Botones clickeables. Uno por tab. Value = key.</li>
+              <li><b>Content</b> Panel asociado a un value. Se muestra/oculta segun el activo.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>horizontal</b> El default. Triggers en fila.</li>
+            <li><b>vertical</b> Triggers en columna a la izquierda. Para documentacion.</li>
+            <li><b>pills</b> Triggers con bg redondeado (como el demo de arriba).</li>
+            <li><b>underline</b> Sin bg, solo border-bottom en el activo.</li>
+            <li><b>segmented</b> Estilo iOS: grupo con bg + el activo tiene shadow.</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm font-medium rounded-sm bg-background text-foreground shadow-sm border border-border">Active</div><span class="demo-group__label">active</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm font-medium rounded-sm text-muted-foreground border border-transparent">Inactive</div><span class="demo-group__label">default</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm font-medium rounded-sm text-foreground bg-accent">Hover</div><span class="demo-group__label">hover</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm font-medium rounded-sm text-muted-foreground opacity-50 cursor-not-allowed">Disabled</div><span class="demo-group__label">disabled</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn / Radix</th><th>Material UI</th><th>Ant Design</th><th>Chakra</th><th>ARIA</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Tabs</td><td>Tabs + TabContext</td><td>Tabs</td><td>Tabs</td><td>—</td></tr>
+              <tr><td>List</td><td>TabsList</td><td>TabList</td><td>(prop items)</td><td>TabList</td><td>tablist</td></tr>
+              <tr><td>Trigger</td><td>TabsTrigger</td><td>Tab</td><td>Tabs.TabPane (tab)</td><td>Tab</td><td>tab</td></tr>
+              <tr><td>Content</td><td>TabsContent</td><td>TabPanel</td><td>Tabs.TabPane (children)</td><td>TabPanel</td><td>tabpanel</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Contenido relacionado que comparte contexto (settings: Account + Password).</li>
+              <li>2-6 vistas alternativas.</li>
+              <li>El usuario va a saltar entre vistas.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Navegacion entre paginas distintas: usa Navbar/Sidebar.</li>
+              <li>Pasos secuenciales (wizard): usa Stepper.</li>
+              <li>7+ tabs: el usuario se pierde, usa Sidebar.</li>
+              <li>Contenido no relacionado: usa secciones.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1">
+              <p class="prompt-library__label">Settings page with 3 tabs</p>
+              <pre class="prompt-library__text" id="p1-text">Create a shadcn Tabs component for a settings page with 3 tabs: Account, Password, Notifications. Each tab contains a form with relevant fields. Use TabsList, TabsTrigger and TabsContent.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p2">
+              <p class="prompt-library__label">Vertical tabs for documentation</p>
+              <pre class="prompt-library__text" id="p2-text">Build vertical tabs with the trigger list on the left (width 200px) and content on the right. Use Radix Tabs with orientation="vertical". Include 5 sections: Intro, Installation, Usage, API, Examples.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p3">
+              <p class="prompt-library__label">Tabs with URL sync</p>
+              <pre class="prompt-library__text" id="p3-text">Make the tabs component sync its active value with the URL query param ?tab=. On mount read the param, on change update it via Next.js router.replace. Use shadcn Tabs.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p4">
+              <p class="prompt-library__label">Underline-style tabs</p>
+              <pre class="prompt-library__text" id="p4-text">Create tabs styled with no background, just a 2px border-bottom on the active trigger (border-foreground). Inactive triggers have text-muted-foreground and no border.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="stepper.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Stepper</h3><p class="text-sm text-muted-foreground">Para pasos secuenciales.</p></a>
+            <a href="sidebar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Sidebar</h3><p class="text-sm text-muted-foreground">Si son muchas secciones.</p></a>
+            <a href="breadcrumbs.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Breadcrumbs</h3><p class="text-sm text-muted-foreground">Para jerarquia, no alternativas.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://www.radix-ui.com/primitives/docs/components/tabs" target="_blank">Radix Tabs</a></li>
+            <li><a href="https://ui.shadcn.com/docs/components/tabs" target="_blank">Shadcn Tabs</a></li>
+            <li><a href="https://mui.com/material-ui/react-tabs/" target="_blank">MUI Tabs</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="sidebar.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Sidebar</span></a>
+          <a class="component-nav__link component-nav__link--next" href="breadcrumbs.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Breadcrumbs</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Las 4 capas de memoria | Módulo 2</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 2</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 02</a></li>
+                        <li>Lección 02</li>
+                    </ul>
+
+                    <span class="tag primary fade-in">Lección 02</span>
+                    <h1 class="slide-up">
+                        Las 4 capas de memoria
+                    </h1>
+                    <p class="lead slide-up" data-animate-delay="100">
+                        Esta es la lección más importante del módulo. Vamos
+                        a recorrer las 4 capas de memoria en orden histórico.
+                        Cada una resuelve el problema anterior y, al
+                        hacerlo, destapa uno nuevo. Si entendés esta
+                        evolución, entendés por qué hoy hablamos de grafos.
+                    </p>
+
+                    <div class="callout info">
+                        <div class="callout-title">Cómo leer esta lección</div>
+                        <p>
+                            Cada capa tiene 3 partes: (1) el código o
+                            estructura mínima, (2) qué problema resuelve y
+                            (3) qué problema nuevo crea. No te saltees
+                            ninguna. La Capa 3 sin haber sufrido la Capa 2
+                            no tiene sentido.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPA 0 -->
+            <section class="section">
+                <div class="container-narrow">
+                    <span class="tag slide-up">Capa 0</span>
+                    <h2 class="slide-up">El agente mínimo (stateless)</h2>
+                    <p>
+                        Antes que nada, el punto de partida: un agente que
+                        no tiene memoria. Literalmente. Cada llamada es
+                        nueva, cada llamada olvida.
+                    </p>
+
+                    <div class="code-block fade-in">
+                        <div class="code-block-header">
+                            <span>python &middot; agente mínimo</span>
+                        </div>
+                        <pre><code>class Agent:
+    def __init__(self, client, model="claude-sonnet-4"):
+        self.client = client
+        self.model = model
+
+    def chat(self, user_message: str) -> str:
+        response = self.client.messages.create(
+            model=self.model,
+            max_tokens=1024,
+            messages=[{"role": "user", "content": user_message}],
+        )
+        return response.content[0].text</code></pre>
+                    </div>
+
+                    <div class="diagram vertical fade-in">
+                        <div class="diagram-box">
+                            <strong>Agent</strong>
+                            <span class="label">sin estado</span>
+                        </div>
+                        <span class="arrow arrow-down"></span>
+                        <div class="diagram-box primary">
+                            <strong>LLM</strong>
+                            <span class="label">responde</span>
+                        </div>
+                        <span class="arrow arrow-down"></span>
+                        <div class="diagram-box">
+                            <strong>olvida todo</strong>
+                        </div>
+                    </div>
+
+                    <div class="callout warning">
+                        <div class="callout-title">Problema</div>
+                        <p>
+                            No recuerda ni el turno anterior. Le decís "me
+                            llamo Mateo" y al siguiente mensaje ya no sabe
+                            quién sos. Es la línea cero desde la que
+                            arrancamos.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPA 1 -->
+            <section class="section">
+                <div class="container-narrow">
+                    <span class="tag slide-up">Capa 1</span>
+                    <h2 class="slide-up">Python list (in-memory)</h2>
+                    <p>
+                        La primera capa de memoria real: una lista de
+                        Python. El agente guarda cada mensaje en una
+                        estructura y la reenvía con cada llamada. Es la
+                        memoria más simple posible.
+                    </p>
+
+                    <div class="code-block fade-in">
+                        <div class="code-block-header">
+                            <span>python &middot; python list memory</span>
+                        </div>
+                        <pre><code>class Agent:
+    def __init__(self, client, model="claude-sonnet-4"):
+        self.client = client
+        self.model = model
+        self.messages = []  # memoria efímera
+
+    def chat(self, user_message: str) -> str:
+        self.messages.append(
+            {"role": "user", "content": user_message}
+        )
+        response = self.client.messages.create(
+            model=self.model,
+            max_tokens=1024,
+            messages=self.messages,
+        )
+        reply = response.content[0].text
+        self.messages.append(
+            {"role": "assistant", "content": reply}
+        )
+        return reply</code></pre>
+                    </div>
+
+                    <div class="diagram fade-in">
+                        <div class="diagram-box">
+                            <strong>user msg</strong>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box primary">
+                            <strong>self.messages</strong>
+                            <span class="label">list</span>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box">
+                            <strong>LLM</strong>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box primary">
+                            <strong>append reply</strong>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-2">
+                        <div class="callout success">
+                            <div class="callout-title">Resuelve</div>
+                            <p>
+                                Multi-turn: el agente ahora recuerda los
+                                turnos anteriores DENTRO de la misma
+                                ejecución.
+                            </p>
+                        </div>
+                        <div class="callout warning">
+                            <div class="callout-title">Problemas nuevos</div>
+                            <p>
+                                (1) la lista crece sin límite hasta
+                                reventar el context window, (2) al cerrar
+                                el proceso se pierde todo, (3) sin
+                                prioridad: es puro orden cronológico.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPA 2 -->
+            <section class="section">
+                <div class="container-narrow">
+                    <span class="tag slide-up">Capa 2</span>
+                    <h2 class="slide-up">Markdown files (persistencia)</h2>
+                    <p>
+                        La solución obvia al problema anterior: guardá todo
+                        en archivos de texto. Un archivo por conversación,
+                        o un archivo grande con todo lo aprendido. Al
+                        arrancar el agente, leés los archivos y los metés
+                        en el prompt.
+                    </p>
+
+                    <div class="code-block fade-in">
+                        <div class="code-block-header">
+                            <span
+                                >python &middot; markdown memory agent</span
+                            >
+                        </div>
+                        <pre><code>class MarkdownMemoryAgent:
+    def __init__(self, client, memory_path="memory.md"):
+        self.client = client
+        self.memory_path = memory_path
+        self.memory = self._load_memory()
+
+    def _load_memory(self) -> str:
+        try:
+            with open(self.memory_path, "r") as f:
+                return f.read()
+        except FileNotFoundError:
+            return ""
+
+    def _save_memory(self, new_fact: str) -> None:
+        with open(self.memory_path, "a") as f:
+            f.write(f"\n- {new_fact}")
+
+    def chat(self, user_message: str) -> str:
+        prompt = f"""Memoria previa:
+{self.memory}
+
+Usuario: {user_message}"""
+        response = self.client.messages.create(
+            model="claude-sonnet-4",
+            max_tokens=1024,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        return response.content[0].text</code></pre>
+                    </div>
+
+                    <div class="diagram vertical fade-in">
+                        <div class="diagram-box primary">
+                            <strong>memory.md</strong>
+                            <span class="label">disco</span>
+                        </div>
+                        <span class="arrow arrow-down"></span>
+                        <div class="diagram-box">
+                            <strong>load at startup</strong>
+                        </div>
+                        <span class="arrow arrow-down"></span>
+                        <div class="diagram-box primary">
+                            <strong>inject into prompt</strong>
+                        </div>
+                        <span class="arrow arrow-down"></span>
+                        <div class="diagram-box">
+                            <strong>append new facts</strong>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-2">
+                        <div class="callout success">
+                            <div class="callout-title">Resuelve</div>
+                            <p>
+                                Persistencia real. El agente sobrevive al
+                                cierre del proceso y puede arrancar mañana
+                                sabiendo lo de hoy.
+                            </p>
+                        </div>
+                        <div class="callout warning">
+                            <div class="callout-title">Problemas nuevos</div>
+                            <p>
+                                Con 500K+ tokens de markdown no podés
+                                cargar todo en el prompt. Necesitás
+                                búsqueda. Y keyword search es brittle: los
+                                sinónimos fallan de manera silenciosa.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout info">
+                        <div class="callout-title">Ejemplo concreto</div>
+                        <p>
+                            Guardaste un fact que dice "cloud migration
+                            plan approved for Q2". El usuario pregunta
+                            "¿qué sabés del proyecto de migrating to AWS
+                            region?". Un grep de keywords NO encuentra
+                            nada. Son conceptos relacionados pero ni una
+                            sola palabra en común. La capa 2 te deja en
+                            banda acá.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPA 3 -->
+            <section class="section">
+                <div class="container-narrow">
+                    <span class="tag slide-up">Capa 3</span>
+                    <h2 class="slide-up">Vector search (embeddings)</h2>
+                    <p>
+                        La solución al problema de los sinónimos:
+                        embeddings. Transformás cada pieza de memoria en
+                        un vector de alta dimensión que captura SIGNIFICADO,
+                        no palabras. Cuando buscás, comparás tu query
+                        (también como vector) con todos los vectores
+                        guardados y traés los más cercanos por cosine
+                        similarity.
+                    </p>
+
+                    <div class="diagram fade-in">
+                        <div class="diagram-box">
+                            <strong>fact 1</strong>
+                            <span class="label">texto</span>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box primary">
+                            <strong>embed()</strong>
+                            <span class="label">modelo</span>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box">
+                            <strong>[0.12, -0.8, ...]</strong>
+                            <span class="label">vector 1536d</span>
+                        </div>
+                    </div>
+
+                    <div class="diagram vertical fade-in">
+                        <div class="diagram-box">
+                            <strong>query</strong>
+                        </div>
+                        <span class="arrow arrow-down"></span>
+                        <div class="diagram-box primary">
+                            <strong>embed</strong>
+                        </div>
+                        <span class="arrow arrow-down"></span>
+                        <div class="diagram-box">
+                            <strong>cosine similarity</strong>
+                            <span class="label">vs. todos los vectores</span>
+                        </div>
+                        <span class="arrow arrow-down"></span>
+                        <div class="diagram-box primary">
+                            <strong>top-k más cercanos</strong>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-2">
+                        <div class="callout success">
+                            <div class="callout-title">Resuelve</div>
+                            <p>
+                                Sinónimos y similitud semántica. "cloud
+                                migration" y "moving to AWS" caen cerca en
+                                el espacio vectorial. Esto fue un salto
+                                ENORME en 2022/2023.
+                            </p>
+                        </div>
+                        <div class="callout warning">
+                            <div class="callout-title">Problema nuevo</div>
+                            <p>
+                                Vector search NO hace conexiones
+                                relacionales entre facts. Busca un fact
+                                parecido al query, no una cadena de facts
+                                que juntos responden.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout warning">
+                        <div class="callout-title">
+                            Ejemplo crítico (Alice + Postgres + Tuesday)
+                        </div>
+                        <p>
+                            Tu base de memoria tiene estos 3 facts
+                            guardados en momentos distintos:
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>Fact A:</strong> "Alice is the lead
+                                engineer on Project Atlas."
+                            </li>
+                            <li>
+                                <strong>Fact B:</strong> "Project Atlas
+                                uses PostgreSQL as its primary DB."
+                            </li>
+                            <li>
+                                <strong>Fact C:</strong> "On Tuesday, the
+                                production PostgreSQL cluster went down for
+                                4 hours."
+                            </li>
+                        </ul>
+                        <p>
+                            El usuario pregunta:
+                            <em
+                                >"Was Alice's project affected by Tuesday's
+                                outage?"</em
+                            >
+                        </p>
+                        <p>
+                            Vector search busca facts cercanos a la
+                            pregunta. El Fact A habla de Alice, el Fact C
+                            habla de Tuesday y outage. El Fact B, el que
+                            conecta a Atlas con Postgres, no comparte casi
+                            ningún token con la pregunta. Queda invisible.
+                            Y sin el Fact B puente, el razonamiento se
+                            rompe. Vector por sí solo NO puede responder.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAPA 4 -->
+            <section class="section">
+                <div class="container-narrow">
+                    <span class="tag primary slide-up">Capa 4</span>
+                    <h2 class="slide-up">Graph + Vector hybrid</h2>
+                    <p>
+                        Y acá llegamos al estado del arte. En lugar de
+                        guardar cada fact como un vector suelto, los
+                        guardás también como nodos y aristas en un
+                        knowledge graph. El grafo captura RELACIONES
+                        explícitas. El vector captura similitud semántica.
+                        Combinados, podés hacer queries multi-hop: saltar
+                        de un nodo a otro siguiendo las aristas.
+                    </p>
+
+                    <div class="diagram fade-in">
+                        <div class="diagram-box primary">
+                            <strong>Alice</strong>
+                            <span class="label">Person</span>
+                        </div>
+                        <span class="arrow-line"></span>
+                        <div class="diagram-box">
+                            <strong>Atlas</strong>
+                            <span class="label">Project</span>
+                        </div>
+                        <span class="arrow-line"></span>
+                        <div class="diagram-box">
+                            <strong>Postgres</strong>
+                            <span class="label">Service</span>
+                        </div>
+                        <span class="arrow-line"></span>
+                        <div class="diagram-box secondary">
+                            <strong>Tuesday outage</strong>
+                            <span class="label">Event</span>
+                        </div>
+                    </div>
+
+                    <p
+                        style="
+                            text-align: center;
+                            font-size: var(--fs-sm);
+                            color: var(--text-muted);
+                        "
+                    >
+                        Multi-hop: Alice &rarr; leads &rarr; Atlas &rarr;
+                        uses &rarr; Postgres &rarr; affected_by &rarr;
+                        Outage. Respuesta: sí.
+                    </p>
+
+                    <div class="grid grid-2">
+                        <div class="callout success">
+                            <div class="callout-title">Resuelve</div>
+                            <p>
+                                Queries multi-hop con contexto relacional.
+                                El agente puede razonar sobre cómo se
+                                conectan las cosas, no solo sobre qué se
+                                parece a qué.
+                            </p>
+                        </div>
+                        <div class="callout tip">
+                            <div class="callout-title">Herramienta</div>
+                            <p>
+                                La solución open source más madura hoy es
+                                <strong>Cognee</strong>. Lo vemos en la
+                                próxima lección.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TABLA COMPARATIVA -->
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">Tabla de capacidades por capa</h2>
+                    <p>
+                        La mejor manera de ver la evolución de una sola
+                        mirada: qué resuelve cada capa y qué le falta.
+                    </p>
+
+                    <table class="comparison-table fade-in">
+                        <thead>
+                            <tr>
+                                <th>Capa</th>
+                                <th>Multi-turn</th>
+                                <th>Persistencia</th>
+                                <th>Sinónimos</th>
+                                <th>Relaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Python list</strong></td>
+                                <td class="check">&#10003;</td>
+                                <td class="cross">&#10007;</td>
+                                <td class="cross">&#10007;</td>
+                                <td class="cross">&#10007;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Markdown</strong></td>
+                                <td class="check">&#10003;</td>
+                                <td class="check">&#10003;</td>
+                                <td class="cross">&#10007;</td>
+                                <td class="cross">&#10007;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vector search</strong></td>
+                                <td class="check">&#10003;</td>
+                                <td class="check">&#10003;</td>
+                                <td class="check">&#10003;</td>
+                                <td class="cross">&#10007;</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td><strong>Graph + Vector</strong></td>
+                                <td class="check">&#10003;</td>
+                                <td class="check">&#10003;</td>
+                                <td class="check">&#10003;</td>
+                                <td class="check">&#10003;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout tip">
+                        <div class="callout-title">Cómo elegir</div>
+                        <p>
+                            Si tu agente es un chatbot simple con 1
+                            sesión y sin persistencia: capa 1 alcanza. Si
+                            tenés un dominio con muchos conceptos
+                            relacionados entre sí (soporte, legal,
+                            investigación, operaciones): capa 4 o nada.
+                            Las capas intermedias existen pero son
+                            trampas si sabés que el problema final es
+                            relacional.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="01-problema.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title"
+                                >01 — El problema</span
+                            >
+                        </a>
+                        <a
+                            href="03-cognitivo.html"
+                            class="pager-next"
+                            data-mark-completed="modulo-2/leccion-2"
+                        >
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title"
+                                >03 — Framework cognitivo</span
+                            >
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

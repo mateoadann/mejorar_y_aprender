@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rich Text Editor · UI Components Atlas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      background: '#09090b', foreground: '#fafafa',
+      muted: { DEFAULT: '#27272a', foreground: '#a1a1aa' },
+      border: '#27272a', ring: '#d4d4d8',
+      primary: { DEFAULT: '#fafafa', foreground: '#18181b' },
+      secondary: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      destructive: { DEFAULT: '#7f1d1d', foreground: '#fafafa' },
+      accent: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      popover: { DEFAULT: '#18181b', foreground: '#fafafa' },
+      input: '#27272a',
+    }, borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' } } } }
+  </script>
+  <link rel="stylesheet" href="../css/atlas.css" />
+  <link rel="stylesheet" href="../css/demos.css" />
+  <style>
+    .rte-content { min-height: 180px; outline: none; }
+    .rte-content:focus { box-shadow: 0 0 0 2px #d4d4d8 inset; }
+    .rte-content h1 { font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0; }
+    .rte-content h2 { font-size: 1.25rem; font-weight: 600; margin: 0.5rem 0; }
+    .rte-content ul { list-style: disc; padding-left: 1.5rem; }
+    .rte-content ol { list-style: decimal; padding-left: 1.5rem; }
+    .rte-content a { color: #60a5fa; text-decoration: underline; }
+    .rte-btn.is-active { background: #27272a; }
+  </style>
+</head>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+      <a href="../index.html" class="font-semibold text-lg">UI Components Atlas</a>
+      <input type="search" placeholder="Buscar componente..." class="flex-1 max-w-md bg-input border border-border rounded-md px-3 py-2 text-sm" />
+    </div>
+  </header>
+
+  <div class="component-page max-w-7xl mx-auto px-6 py-8 grid grid-cols-[220px_1fr] gap-8">
+    <aside class="sidebar-nav">
+      <h4 class="text-xs uppercase tracking-wider text-muted-foreground mb-3">Módulo 07</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="./data-table.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">01. Data Table</a></li>
+        <li><a href="./form.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">02. Form</a></li>
+        <li><a href="./form-wizard.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">03. Form Wizard</a></li>
+        <li><a href="./drag-drop.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">04. Drag & Drop</a></li>
+        <li><a href="./infinite-scroll.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">05. Infinite Scroll</a></li>
+        <li><a href="./virtualized-list.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">06. Virtualized List</a></li>
+        <li><a href="./rich-text-editor.html" class="block px-2 py-1.5 rounded is-active bg-muted text-foreground">07. Rich Text Editor</a></li>
+        <li><a href="./code-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">08. Code Editor</a></li>
+        <li><a href="./kanban-board.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">09. Kanban Board</a></li>
+        <li><a href="./masked-input.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">10. Masked Input</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <nav class="breadcrumbs text-sm text-muted-foreground mb-6">
+        <a href="../index.html" class="hover:text-foreground">Atlas</a><span class="mx-2">/</span>
+        <a href="./index.html" class="hover:text-foreground">Patrones Avanzados</a><span class="mx-2">/</span>
+        <span class="text-foreground">Rich Text Editor</span>
+      </nav>
+
+      <header class="component-page__header mb-10">
+        <h1 class="component-page__title text-4xl font-bold mb-3">Rich Text Editor</h1>
+        <div class="component-page__aliases flex flex-wrap gap-2 mb-4">
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Tiptap</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Lexical</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">ProseMirror</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Quill / Slate</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">WYSIWYG</span>
+        </div>
+        <p class="component-page__lead text-lg text-muted-foreground max-w-3xl">Editor WYSIWYG para texto con formato: bold, italic, headings, lists, links, images. Debajo de todo hay siempre un document model (no es solo HTML). Tiptap (sobre ProseMirror) y Lexical (Meta) son los estándares modernos.</p>
+      </header>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Demo interactiva</h2>
+        <div class="demo-container border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border border-border rounded-md overflow-hidden">
+            <div class="flex items-center gap-1 border-b border-border bg-muted/30 p-2" id="rte-toolbar">
+              <button data-cmd="bold" class="rte-btn px-2 py-1 rounded hover:bg-muted text-sm font-bold">B</button>
+              <button data-cmd="italic" class="rte-btn px-2 py-1 rounded hover:bg-muted text-sm italic">I</button>
+              <button data-cmd="underline" class="rte-btn px-2 py-1 rounded hover:bg-muted text-sm underline">U</button>
+              <div class="w-px h-5 bg-border mx-1"></div>
+              <button data-cmd="formatBlock" data-val="h1" class="rte-btn px-2 py-1 rounded hover:bg-muted text-xs">H1</button>
+              <button data-cmd="formatBlock" data-val="h2" class="rte-btn px-2 py-1 rounded hover:bg-muted text-xs">H2</button>
+              <button data-cmd="formatBlock" data-val="p" class="rte-btn px-2 py-1 rounded hover:bg-muted text-xs">P</button>
+              <div class="w-px h-5 bg-border mx-1"></div>
+              <button data-cmd="insertUnorderedList" class="rte-btn px-2 py-1 rounded hover:bg-muted text-xs">• List</button>
+              <button data-cmd="insertOrderedList" class="rte-btn px-2 py-1 rounded hover:bg-muted text-xs">1. List</button>
+              <div class="w-px h-5 bg-border mx-1"></div>
+              <button data-cmd="createLink" class="rte-btn px-2 py-1 rounded hover:bg-muted text-xs">Link</button>
+              <button data-cmd="removeFormat" class="rte-btn px-2 py-1 rounded hover:bg-muted text-xs">Clear</button>
+            </div>
+            <div id="rte-content" class="rte-content p-4 text-sm" contenteditable="true">
+              <p>Probá el editor. Seleccioná texto y aplicá <strong>bold</strong>, <em>italic</em> o convertilo en heading.</p>
+              <ul><li>Item uno</li><li>Item dos</li></ul>
+            </div>
+          </div>
+          <p class="text-xs text-muted-foreground mt-2">Atajos: Ctrl/Cmd+B = bold, Ctrl/Cmd+I = italic.</p>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Anatomía</h2>
+        <div class="border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border-2 border-dashed border-border rounded p-4">
+            <div class="text-xs text-muted-foreground mb-2">Editor Root (con document state)</div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Toolbar</div>
+              <div class="flex flex-wrap gap-1">
+                <span class="px-2 py-1 bg-muted rounded">Bold/Italic/Underline</span>
+                <span class="px-2 py-1 bg-muted rounded">Headings H1-H6</span>
+                <span class="px-2 py-1 bg-muted rounded">Lists</span>
+                <span class="px-2 py-1 bg-muted rounded">Link/Image</span>
+                <span class="px-2 py-1 bg-muted rounded">Code/Quote</span>
+              </div>
+            </div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Editable Content Area (contenteditable)</div>
+              <span class="px-2 py-1 bg-muted rounded">Document nodes + marks</span>
+            </div>
+            <div class="border border-border rounded p-3 text-xs">
+              <div class="text-muted-foreground mb-1">Extras opcionales</div>
+              <div class="flex flex-wrap gap-1">
+                <span class="px-2 py-1 bg-muted rounded">Floating menu</span>
+                <span class="px-2 py-1 bg-muted rounded">Bubble menu</span>
+                <span class="px-2 py-1 bg-muted rounded">Slash commands</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Variantes</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <li class="border border-border rounded p-3"><strong>Full toolbar</strong> — todos los controles visibles.</li>
+          <li class="border border-border rounded p-3"><strong>Minimal toolbar</strong> — solo lo esencial.</li>
+          <li class="border border-border rounded p-3"><strong>Floating toolbar</strong> — aparece on selection.</li>
+          <li class="border border-border rounded p-3"><strong>Bubble menu</strong> — tooltip-style al seleccionar.</li>
+          <li class="border border-border rounded p-3"><strong>Slash commands</strong> — "/heading", "/image" (Notion-like).</li>
+          <li class="border border-border rounded p-3"><strong>Markdown shortcuts</strong> — "## " se convierte en H2.</li>
+          <li class="border border-border rounded p-3"><strong>Collaborative</strong> — Yjs + Tiptap (multi-usuario).</li>
+          <li class="border border-border rounded p-3"><strong>Read-only</strong> — display formateado sin edit.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Estados</h2>
+        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+          <li class="border border-border rounded p-3">Idle</li>
+          <li class="border border-border rounded p-3">Focused</li>
+          <li class="border border-border rounded p-3">Selection active</li>
+          <li class="border border-border rounded p-3">Formatting applied</li>
+          <li class="border border-border rounded p-3">Empty (placeholder)</li>
+          <li class="border border-border rounded p-3">Read-only</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Vocabulario cross-framework</h2>
+        <div class="border border-border rounded-lg overflow-hidden">
+          <table class="vocab-table w-full text-sm">
+            <thead class="bg-muted/50"><tr><th class="px-4 py-2 text-left">Librería</th><th class="px-4 py-2 text-left">Base</th><th class="px-4 py-2 text-left">Notas</th></tr></thead>
+            <tbody>
+              <tr class="border-t border-border"><td class="px-4 py-2">Tiptap</td><td class="px-4 py-2">ProseMirror</td><td class="px-4 py-2">Moderno, headless, extensions</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Lexical</td><td class="px-4 py-2">Custom (Meta)</td><td class="px-4 py-2">Performance-first, reemplaza Draft</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">ProseMirror</td><td class="px-4 py-2">Low-level</td><td class="px-4 py-2">Engine, no UI</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Quill</td><td class="px-4 py-2">Custom</td><td class="px-4 py-2">Simple, API directa</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Slate</td><td class="px-4 py-2">Custom React</td><td class="px-4 py-2">Flexible, custom schemas</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Draft.js</td><td class="px-4 py-2">Custom (Meta)</td><td class="px-4 py-2">Legacy, reemplazado por Lexical</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Cuándo usar</h2>
+        <div class="use-case-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-green-400">Sí, usalo cuando</h3>
+            <ul class="use-case-list do space-y-2 text-sm text-muted-foreground">
+              <li>Blog editors, CMS, email composers</li>
+              <li>Notes apps, documentation editors</li>
+              <li>Comments con formato (bold, links)</li>
+              <li>Collaborative docs (Notion-like)</li>
+            </ul>
+          </div>
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-red-400">No, evitalo cuando</h3>
+            <ul class="use-case-list dont space-y-2 text-sm text-muted-foreground">
+              <li>Texto simple sin formato → Textarea</li>
+              <li>Markdown-first → Markdown editor con preview</li>
+              <li>Código → Code Editor (Monaco/CodeMirror)</li>
+              <li>Comentarios cortos → Textarea con autolink</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Prompts para coding agents</h2>
+        <div class="prompt-library space-y-3">
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Full</div>
+            <p class="prompt-library__text text-sm font-mono">Tiptap rich text editor with full toolbar (headings, lists, link, image upload).</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Bubble menu</div>
+            <p class="prompt-library__text text-sm font-mono">Tiptap editor with floating bubble menu that appears on text selection.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Notion-like</div>
+            <p class="prompt-library__text text-sm font-mono">Notion-style editor with slash commands menu for inserting blocks.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Lexical</div>
+            <p class="prompt-library__text text-sm font-mono">Lexical editor with mentions plugin (@user) and emoji picker.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Alternativas relacionadas</h2>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><strong class="text-foreground">Textarea</strong> — para texto plano sin formato.</li>
+          <li><strong class="text-foreground">Code Editor</strong> — para código.</li>
+          <li><strong class="text-foreground">Markdown editor con preview</strong> — escribir .md con preview live.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Referencias</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://tiptap.dev/" class="text-blue-400 hover:underline" target="_blank">Tiptap</a></li>
+          <li><a href="https://lexical.dev/" class="text-blue-400 hover:underline" target="_blank">Lexical</a></li>
+          <li><a href="https://prosemirror.net/" class="text-blue-400 hover:underline" target="_blank">ProseMirror</a></li>
+        </ul>
+      </section>
+
+      <nav class="component-nav border-t border-border pt-6 flex justify-between text-sm">
+        <a href="./virtualized-list.html" class="component-nav__link text-muted-foreground hover:text-foreground">← Virtualized List</a>
+        <a href="./code-editor.html" class="component-nav__link text-muted-foreground hover:text-foreground">Code Editor →</a>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const toolbar = document.getElementById('rte-toolbar');
+      const content = document.getElementById('rte-content');
+      toolbar.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('mousedown', e => e.preventDefault());
+        btn.addEventListener('click', () => {
+          const cmd = btn.dataset.cmd;
+          let val = btn.dataset.val || null;
+          if (cmd === 'createLink') {
+            val = prompt('URL:', 'https://');
+            if (!val) return;
+          }
+          document.execCommand(cmd, false, val);
+          content.focus();
+        });
+      });
+    })();
+  </script>
+  <script src="../js/atlas.js"></script>
+  <script src="../js/demos.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

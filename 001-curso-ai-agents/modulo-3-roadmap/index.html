@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Módulo 3 — Roadmap AI Engineer 2026 | Dominando AI Agents</title>
+        <meta
+            name="description"
+            content="5 proyectos production-grade que te llevan de prompt engineer a systems architect."
+        />
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+        <style>
+            .difficulty-bars {
+                display: flex;
+                gap: 4px;
+                margin: var(--space-3) 0;
+            }
+            .difficulty-bar {
+                flex: 1;
+                height: 10px;
+                background: var(--color-surface-2, #e2e8f0);
+                border-radius: 2px;
+            }
+            .difficulty-bar.filled {
+                background: linear-gradient(
+                    90deg,
+                    var(--color-primary, #6366f1),
+                    var(--color-accent, #ec4899)
+                );
+            }
+            .level-grid {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: var(--space-4);
+            }
+            @media (max-width: 900px) {
+                .level-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .level-card {
+                display: flex;
+                flex-direction: column;
+                padding: var(--space-5);
+                border: 1px solid var(--color-border, #e2e8f0);
+                border-radius: var(--radius-lg, 12px);
+                background: var(--color-surface, #fff);
+                text-decoration: none;
+                color: inherit;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            .level-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            }
+            .level-label {
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--color-muted, #64748b);
+                margin-bottom: var(--space-2);
+            }
+            .level-card h4 {
+                margin: 0 0 var(--space-2) 0;
+                font-size: 1.05rem;
+            }
+            .level-card p {
+                font-size: 0.875rem;
+                color: var(--color-muted, #64748b);
+                flex: 1;
+            }
+        </style>
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="../index.html#progreso">Progreso</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li>Módulo 03</li>
+                        <li>Roadmap AI Engineer 2026</li>
+                    </ul>
+
+                    <span class="tag primary fade-in">Módulo 03</span>
+                    <h1 class="slide-up" data-animate-delay="50">
+                        Roadmap AI Engineer 2026
+                    </h1>
+                    <p class="lead slide-up" data-animate-delay="150">
+                        5 proyectos production-grade que te llevan de prompt
+                        engineer a systems architect. Cada uno prueba una
+                        capacidad distinta. Cada uno te acerca al tier donde
+                        se paga de verdad.
+                    </p>
+
+                    <div
+                        class="callout warning slide-up"
+                        data-animate-delay="200"
+                    >
+                        <div class="callout-title">La realidad del mercado</div>
+                        <p>
+                            La diferencia entre un prompt engineer y un systems
+                            architect es 150K. Esta es la ruta. No hay atajo,
+                            no hay curso de 3 horas, no hay certificación que
+                            te salve. Hay que shipear.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <h2 class="slide-up">Progresión de complejidad</h2>
+                    <p class="slide-up" style="color: var(--color-muted, #64748b)">
+                        De edge AI básico hasta orchestration enterprise. Cada
+                        nivel suma una dimensión nueva.
+                    </p>
+
+                    <div class="level-grid stagger" style="margin-top: var(--space-6)">
+                        <a href="01-proyecto-1.html" class="level-card slide-up">
+                            <span class="level-label">Beginner</span>
+                            <h4>SLM Mobile App</h4>
+                            <div class="difficulty-bars">
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar"></div>
+                                <div class="difficulty-bar"></div>
+                                <div class="difficulty-bar"></div>
+                                <div class="difficulty-bar"></div>
+                            </div>
+                            <p>Edge AI + resource optimization. Offline-first, zero API costs.</p>
+                            <span class="tag">Proyecto 01</span>
+                        </a>
+
+                        <a href="02-proyecto-2.html" class="level-card slide-up">
+                            <span class="level-label">Intermediate</span>
+                            <h4>Coding Agent</h4>
+                            <div class="difficulty-bars">
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar"></div>
+                                <div class="difficulty-bar"></div>
+                                <div class="difficulty-bar"></div>
+                            </div>
+                            <p>Agentic loops + production debugging. Aprende de sus fallas.</p>
+                            <span class="tag">Proyecto 02</span>
+                        </a>
+
+                        <a href="03-proyecto-3.html" class="level-card slide-up">
+                            <span class="level-label">Advanced</span>
+                            <h4>Video Editor Agent</h4>
+                            <div class="difficulty-bars">
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar"></div>
+                                <div class="difficulty-bar"></div>
+                            </div>
+                            <p>Multimodal AI + tool integration compleja sobre Shotcut.</p>
+                            <span class="tag">Proyecto 03</span>
+                        </a>
+
+                        <a href="04-proyecto-4.html" class="level-card slide-up">
+                            <span class="level-label">Expert</span>
+                            <h4>Personal Life OS</h4>
+                            <div class="difficulty-bars">
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar"></div>
+                            </div>
+                            <p>Deep context + privacy-first architecture. Partner, no herramienta.</p>
+                            <span class="tag">Proyecto 04</span>
+                        </a>
+
+                        <a href="05-proyecto-5.html" class="level-card slide-up">
+                            <span class="level-label">Master</span>
+                            <h4>Enterprise Workflow</h4>
+                            <div class="difficulty-bars">
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar filled"></div>
+                                <div class="difficulty-bar filled"></div>
+                            </div>
+                            <p>Production-grade orchestration. Un agente que runs a business.</p>
+                            <span class="tag primary">Final boss</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">Timeline de progresión</h2>
+                    <div class="timeline stagger">
+                        <div class="timeline-item slide-up">
+                            <span class="timeline-date">Nivel 1</span>
+                            <h4>SLM Mobile App — Beginner</h4>
+                            <p>
+                                Manejás quantization, memory pressure y battery
+                                optimization. No estás llamando una API, estás
+                                corriendo un modelo en el bolsillo.
+                            </p>
+                        </div>
+                        <div class="timeline-item slide-up">
+                            <span class="timeline-date">Nivel 2</span>
+                            <h4>Self-improving Coding Agent — Intermediate</h4>
+                            <p>
+                                Primer agentic loop real. Plan, ejecutá,
+                                testeá, reflexioná. Aprender de fallas es lo
+                                que separa un chatbot de un agente.
+                            </p>
+                        </div>
+                        <div class="timeline-item slide-up">
+                            <span class="timeline-date">Nivel 3</span>
+                            <h4>Video Editor AI Agent — Advanced</h4>
+                            <p>
+                                Multimodal de verdad. Entender intent
+                                artístico, traducirlo a un EDL y renderear
+                                incremental. Esto te saca del 99%.
+                            </p>
+                        </div>
+                        <div class="timeline-item slide-up">
+                            <span class="timeline-date">Nivel 4</span>
+                            <h4>Personal Life OS — Expert</h4>
+                            <p>
+                                Deep context, ethical AI, privacy-first. Un
+                                agente que forgets es inútil; uno que knows
+                                tu vida es un partner.
+                            </p>
+                        </div>
+                        <div class="timeline-item slide-up">
+                            <span class="timeline-date">Nivel 5</span>
+                            <h4>Enterprise Workflow Agent — Master</h4>
+                            <p>
+                                Orchestration, RBAC, audit trails,
+                                observability. Un agente que runs a business.
+                                Portfolio closer.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout tip slide-up" style="margin-top: var(--space-8)">
+                        <div class="callout-title">Cómo usar este módulo</div>
+                        <p>
+                            No leas los 5. Elegí el que más lejos te queda,
+                            shipeá ese. Después volvé y hacé el siguiente.
+                            Nadie contrata por leer specs; contratan por ver
+                            repos con commits reales.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">
+                        Módulo 03 &middot; Roadmap AI Engineer 2026 &middot;
+                        Edición 2026
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

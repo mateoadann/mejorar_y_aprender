@@ -1,0 +1,189 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Switch / Toggle — UI Components Atlas</title>
+    <meta name="description" content="Switch, Toggle y ToggleGroup. Tres primos que la gente confunde." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" /><link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header"><div class="atlas-header__inner"><a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark">A</span><span>UI Components Atlas</span></a><div class="atlas-header__search"><div class="atlas-search"><svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" data-atlas-search-input autocomplete="off" spellcheck="false" /><kbd class="atlas-search__kbd">⌘K</kbd><div class="atlas-search__results" role="listbox" data-atlas-search-results></div></div></div><div class="atlas-header__meta" data-atlas-meta></div></div></header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav">
+        <h2 class="sidebar-nav__title">Inputs y Controles</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="button.html">01 — Button</a></li>
+          <li><a class="sidebar-nav__link" href="input.html">02 — Input</a></li>
+          <li><a class="sidebar-nav__link" href="textarea.html">03 — Textarea</a></li>
+          <li><a class="sidebar-nav__link" href="select.html">04 — Select</a></li>
+          <li><a class="sidebar-nav__link" href="combobox.html">05 — Combobox</a></li>
+          <li><a class="sidebar-nav__link" href="autocomplete.html">06 — Autocomplete</a></li>
+          <li><a class="sidebar-nav__link" href="checkbox.html">07 — Checkbox</a></li>
+          <li><a class="sidebar-nav__link" href="radio-group.html">08 — Radio Group</a></li>
+          <li><a class="sidebar-nav__link is-active" href="switch-toggle.html">09 — Switch / Toggle</a></li>
+          <li><a class="sidebar-nav__link" href="slider.html">10 — Slider</a></li>
+          <li><a class="sidebar-nav__link" href="date-picker.html">11 — Date Picker</a></li>
+          <li><a class="sidebar-nav__link" href="file-upload.html">12 — File Upload</a></li>
+          <li><a class="sidebar-nav__link" href="otp-input.html">13 — OTP Input</a></li>
+          <li><a class="sidebar-nav__link" href="rating.html">14 — Rating</a></li>
+          <li><a class="sidebar-nav__link" href="search-bar.html">15 — Search Bar</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs"><li><a href="../index.html">Atlas</a></li><li class="breadcrumbs__sep">/</li><li><a href="index.html">Inputs y Controles</a></li><li class="breadcrumbs__sep">/</li><li aria-current="page">Switch / Toggle</li></ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Switch / Toggle</h1>
+          <div class="component-page__aliases"><span class="component-page__alias">Switch</span><span class="component-page__alias">Toggle</span><span class="component-page__alias">ToggleGroup</span><span class="component-page__alias">iOS toggle</span></div>
+          <p class="component-page__lead">Tres primos que la gente confunde: <b>Switch</b> (iOS toggle, para settings persistidos), <b>Toggle</b> (boton que queda presionado, tipo bold) y <b>ToggleGroup</b> (grupo de toggles exclusivos o inclusivos, tipo alineacion de texto).</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Los tres en un mismo lugar para comparar.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <div class="space-y-4">
+                <div class="flex items-center gap-3"><span class="text-sm">Dark mode</span>
+                  <button role="switch" aria-checked="true" class="relative inline-flex h-6 w-11 items-center rounded-full bg-foreground transition-colors"><span class="inline-block h-4 w-4 transform rounded-full bg-background transition-transform translate-x-6"></span></button>
+                </div>
+                <div class="flex gap-2">
+                  <button class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-accent text-accent-foreground"><b>B</b></button>
+                  <button class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input hover:bg-accent"><i>I</i></button>
+                  <button class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input hover:bg-accent"><u>U</u></button>
+                </div>
+                <div class="inline-flex rounded-md border border-border">
+                  <button class="h-9 px-3 rounded-l-md border-r border-border bg-accent text-accent-foreground"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg></button>
+                  <button class="h-9 px-3 border-r border-border hover:bg-accent"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="7" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="7" y2="18"/></svg></button>
+                  <button class="h-9 px-3 rounded-r-md hover:bg-accent"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4 space-y-3">
+                <div><div class="text-xs font-mono text-muted-foreground mb-1">Switch.Root (button, role=switch)</div><div class="rounded border border-border bg-background p-2 text-xs font-mono text-muted-foreground">Switch.Thumb (el circulo que se mueve)</div></div>
+                <div><div class="text-xs font-mono text-muted-foreground mb-1">Toggle.Root (button, aria-pressed)</div></div>
+                <div><div class="text-xs font-mono text-muted-foreground mb-1">ToggleGroup.Root (type=single|multiple)</div><div class="rounded border border-border bg-background p-2 text-xs font-mono text-muted-foreground">ToggleGroup.Item &times; N</div></div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Switch</b> Un track + un thumb. Ideal para on/off persistido.</li>
+              <li><b>Toggle</b> Un boton que recuerda si esta presionado.</li>
+              <li><b>ToggleGroup</b> Varios toggles con comportamiento "radio" o "multi".</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><button class="relative inline-flex h-6 w-11 items-center rounded-full bg-muted"><span class="inline-block h-4 w-4 transform rounded-full bg-background translate-x-1"></span></button><span class="demo-group__label">switch-off</span></div>
+            <div class="demo-group__item"><button class="relative inline-flex h-6 w-11 items-center rounded-full bg-foreground"><span class="inline-block h-4 w-4 transform rounded-full bg-background translate-x-6"></span></button><span class="demo-group__label">switch-on</span></div>
+            <div class="demo-group__item"><button class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input"><b>B</b></button><span class="demo-group__label">toggle</span></div>
+            <div class="demo-group__item"><button class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-accent text-accent-foreground"><b>B</b></button><span class="demo-group__label">toggle-pressed</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><button class="relative inline-flex h-6 w-11 items-center rounded-full bg-muted"><span class="inline-block h-4 w-4 rounded-full bg-background translate-x-1"></span></button><span class="demo-group__label">off</span></div>
+            <div class="demo-group__item"><button class="relative inline-flex h-6 w-11 items-center rounded-full bg-foreground"><span class="inline-block h-4 w-4 rounded-full bg-background translate-x-6"></span></button><span class="demo-group__label">on</span></div>
+            <div class="demo-group__item"><button disabled class="relative inline-flex h-6 w-11 items-center rounded-full bg-muted opacity-50 cursor-not-allowed"><span class="inline-block h-4 w-4 rounded-full bg-background translate-x-1"></span></button><span class="demo-group__label">disabled</span></div>
+            <div class="demo-group__item"><button class="relative inline-flex h-6 w-11 items-center rounded-full bg-muted ring-2 ring-ring"><span class="inline-block h-4 w-4 rounded-full bg-background translate-x-1"></span></button><span class="demo-group__label">focus</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>HTML nativo</th><th>Shadcn / Radix</th><th>Material UI</th><th>ARIA role</th></tr></thead>
+            <tbody>
+              <tr><td>Switch</td><td>(no nativo)</td><td>Switch</td><td>Switch</td><td>switch</td></tr>
+              <tr><td>Toggle</td><td>&lt;button aria-pressed&gt;</td><td>Toggle</td><td>ToggleButton</td><td>button + aria-pressed</td></tr>
+              <tr><td>ToggleGroup</td><td>-</td><td>ToggleGroup</td><td>ToggleButtonGroup</td><td>group</td></tr>
+              <tr><td>Thumb</td><td>-</td><td>Switch.Thumb</td><td>(native)</td><td>-</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Switch: setting que se aplica al toque (dark mode, notificaciones).</li>
+              <li>Toggle: boton que recuerda su estado (bold, italic).</li>
+              <li>ToggleGroup: seleccion exclusiva visual (align left/center/right).</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>El cambio necesita "Save": usa Checkbox en un form.</li>
+              <li>Ejecuta una accion one-shot: usa Button.</li>
+              <li>El usuario elige entre muchas: usa Select o RadioGroup.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1"><p class="prompt-library__label">Dark mode switch with icons</p><pre class="prompt-library__text" id="p1-text">Build a dark mode Switch using shadcn. Show a sun icon when off and moon icon when on, animated inside the thumb. Persist to localStorage and toggle the .dark class on the html element.</pre><button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p2"><p class="prompt-library__label">Toggle group for text formatting</p><pre class="prompt-library__text" id="p2-text">Create a ToggleGroup type="multiple" with three items: Bold, Italic, Underline. Each item is an icon button. Controlled state, emits onValueChange with the active array.</pre><button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p3"><p class="prompt-library__label">Settings page with multiple switches</p><pre class="prompt-library__text" id="p3-text">Build a settings section with 4 shadcn Switch rows: Email notifications, Push, SMS, Weekly digest. Each row has label left, description below, switch right. No save button, changes apply instantly.</pre><button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="checkbox.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Checkbox</h3><p class="text-sm text-muted-foreground">Para forms con submit.</p></a>
+            <a href="radio-group.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Radio Group</h3><p class="text-sm text-muted-foreground">Para opciones exclusivas.</p></a>
+            <a href="button.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Button</h3><p class="text-sm text-muted-foreground">Para acciones one-shot.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://www.radix-ui.com/primitives/docs/components/switch" target="_blank">Radix Switch</a></li>
+            <li><a href="https://www.radix-ui.com/primitives/docs/components/toggle" target="_blank">Radix Toggle</a></li>
+            <li><a href="https://www.radix-ui.com/primitives/docs/components/toggle-group" target="_blank">Radix ToggleGroup</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav">
+          <a class="component-nav__link" href="radio-group.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Radio Group</span></a>
+          <a class="component-nav__link component-nav__link--next" href="slider.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Slider</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

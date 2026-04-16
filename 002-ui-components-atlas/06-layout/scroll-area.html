@@ -1,0 +1,261 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scroll Area — UI Components Atlas</title>
+    <meta name="description" content="Área con scroll custom estilizado y consistente cross-browser." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+    <style>
+      .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+      .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+      .scrollbar-thin::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+      .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: #52525b; }
+    </style>
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Layout</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="container.html">01 — Container</a></li>
+          <li><a class="sidebar-nav__link" href="grid.html">02 — Grid</a></li>
+          <li><a class="sidebar-nav__link" href="flex-stack.html">03 — Flex / Stack</a></li>
+          <li><a class="sidebar-nav__link" href="divider.html">04 — Divider</a></li>
+          <li><a class="sidebar-nav__link" href="spacer.html">05 — Spacer</a></li>
+          <li><a class="sidebar-nav__link" href="aspect-ratio.html">06 — Aspect Ratio</a></li>
+          <li><a class="sidebar-nav__link is-active" href="scroll-area.html">07 — Scroll Area</a></li>
+          <li><a class="sidebar-nav__link" href="resizable.html">08 — Resizable</a></li>
+          <li><a class="sidebar-nav__link" href="separator-section.html">09 — Separator Section</a></li>
+          <li><a class="sidebar-nav__link" href="page-layout.html">10 — Page Layout</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Layout</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Scroll Area</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Scroll Area</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">ScrollArea</span>
+            <span class="component-page__alias">overflow-auto</span>
+            <span class="component-page__alias">CustomScrollbar</span>
+          </div>
+          <p class="component-page__lead">
+            Un contenedor con scroll propio y scrollbar estilizada. El overflow nativo funciona pero los scrollbars se ven distinto en cada browser. Radix ScrollArea te da scrollbars consistentes, estilizables y con UX decente en todos lados. Es lo que usan VS Code, Notion, Linear.
+          </p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Scrolleá dentro de cada caja. Altura fija, contenido largo.</p>
+          <div class="demo-container" data-atlas-demo>
+            <div class="demo-preview demo-preview--stack" style="gap: 1.5rem;">
+              <div class="w-full max-w-md">
+                <div class="text-xs text-muted-foreground mb-2 font-mono">vertical scroll · h-64 · 20 items</div>
+                <div class="h-64 overflow-y-auto scrollbar-thin rounded-lg border-2 border-dashed border-border bg-muted/20 p-3" id="scroll-demo-1"></div>
+              </div>
+              <div class="w-full max-w-md">
+                <div class="text-xs text-muted-foreground mb-2 font-mono">horizontal scroll · image gallery</div>
+                <div class="overflow-x-auto scrollbar-thin rounded-lg border-2 border-dashed border-border bg-muted/20 p-3">
+                  <div class="flex gap-3" id="scroll-demo-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function() {
+              var s1 = document.getElementById('scroll-demo-1');
+              if (s1) {
+                for (var i = 1; i <= 20; i++) {
+                  var item = document.createElement('div');
+                  item.className = 'rounded border border-border bg-background p-3 text-sm mb-2';
+                  item.textContent = 'Item ' + i + ' — chat message or list entry';
+                  s1.appendChild(item);
+                }
+              }
+              var s2 = document.getElementById('scroll-demo-2');
+              if (s2) {
+                for (var j = 1; j <= 12; j++) {
+                  var card = document.createElement('div');
+                  card.className = 'flex-shrink-0 w-40 h-28 rounded border border-border bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center text-xs text-muted-foreground';
+                  card.textContent = 'image ' + j;
+                  s2.appendChild(card);
+                }
+              }
+            })();
+          </script>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomía</h2>
+          <p class="component-page__section-lead">Radix ScrollArea tiene 5 partes nombradas.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border-2 border-dashed border-border bg-muted/20 p-4">
+                <div class="text-xs text-muted-foreground mb-2 font-mono">ScrollArea.Root</div>
+                <div class="rounded border border-border bg-background p-2 relative">
+                  <div class="text-xs text-muted-foreground mb-1 font-mono">Viewport (overflow)</div>
+                  <div class="rounded border border-dashed border-border bg-muted/30 p-3 text-xs text-muted-foreground font-mono mr-6">content...</div>
+                  <div class="absolute right-2 top-6 bottom-2 w-2 rounded bg-border flex flex-col">
+                    <div class="bg-muted-foreground/60 rounded w-full flex-1"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> El contenedor principal. Define el alto/ancho máximo.</li>
+              <li><b>Viewport</b> El área con overflow. Contiene los children reales.</li>
+              <li><b>Scrollbar</b> La barra (horizontal y/o vertical). Se muestra solo cuando hay overflow.</li>
+              <li><b>Thumb</b> El handle draggeable dentro de la scrollbar.</li>
+              <li><b>Corner</b> La esquina donde se cruzan scrollbars horizontal y vertical.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="w-24 h-16 overflow-y-scroll scrollbar-thin rounded border border-dashed border-border bg-muted/30 p-1 text-[10px] text-muted-foreground">a<br/>b<br/>c<br/>d<br/>e<br/>f</div><span class="demo-group__label">vertical</span></div>
+            <div class="demo-group__item"><div class="w-24 h-10 overflow-x-scroll whitespace-nowrap scrollbar-thin rounded border border-dashed border-border bg-muted/30 p-1 text-[10px] text-muted-foreground">abcdefg hijklmnop qrstuvwxyz</div><span class="demo-group__label">horizontal</span></div>
+            <div class="demo-group__item"><div class="w-24 h-16 overflow-scroll scrollbar-thin rounded border border-dashed border-border bg-muted/30 p-1"><div class="w-48 h-32 bg-gradient-to-br from-zinc-700 to-zinc-800"></div></div><span class="demo-group__label">both</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Scrollbar behaviors</h2>
+          <p class="component-page__section-lead">Radix te deja elegir cuándo mostrar la scrollbar.</p>
+          <div class="rounded-lg border border-border bg-muted/30 p-5 text-sm text-muted-foreground space-y-2">
+            <div><b class="text-foreground">always:</b> scrollbar siempre visible (desktop feel).</div>
+            <div><b class="text-foreground">hover:</b> aparece solo al hover sobre la root.</div>
+            <div><b class="text-foreground">scroll:</b> aparece solo mientras scrolleás (mobile-like).</div>
+            <div><b class="text-foreground">auto:</b> visible solo cuando hay overflow.</div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>CSS nativo</th><th>Tailwind</th><th>Radix / Shadcn</th><th>MUI</th></tr></thead>
+            <tbody>
+              <tr><td>Container con scroll</td><td>overflow: auto</td><td>overflow-auto</td><td>&lt;ScrollArea&gt;</td><td>&lt;Box overflow&gt;</td></tr>
+              <tr><td>Solo vertical</td><td>overflow-y: auto</td><td>overflow-y-auto</td><td>Scrollbar orientation="vertical"</td><td>overflowY</td></tr>
+              <tr><td>Solo horizontal</td><td>overflow-x: auto</td><td>overflow-x-auto</td><td>Scrollbar orientation="horizontal"</td><td>overflowX</td></tr>
+              <tr><td>Scrollbar estilizada</td><td>::-webkit-scrollbar</td><td>scrollbar-thin (plugin)</td><td>built-in</td><td>custom css</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuándo usar y cuándo no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Listas largas dentro de un modal o sidebar (chat, notificaciones)</li>
+              <li>Code viewers / syntax highlighters</li>
+              <li>Image galleries horizontales</li>
+              <li>Panels de settings con muchas opciones</li>
+              <li>Dropdowns con muchas opciones</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>El scroll de la página entera → dejá que scrollee el body</li>
+              <li>Contenido corto que entra sin overflow</li>
+              <li>Necesitás infinite scroll → usá una lib especializada</li>
+              <li>Virtualización de 10k+ items → react-virtual, tanstack-virtual</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1">
+              <p class="prompt-library__label">Chat messages scroll area</p>
+              <pre class="prompt-library__text" id="p1-text">Create a shadcn ScrollArea with max-height 400px for a chat messages list. Inside, map messages from an array. Auto-scroll to bottom when new messages arrive using a ref and useEffect.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p2">
+              <p class="prompt-library__label">Horizontal image gallery</p>
+              <pre class="prompt-library__text" id="p2-text">Create a horizontal ScrollArea with an always-visible scrollbar (type="always") containing a row of image cards. Use flex gap-3 inside the viewport and set the scrollbar orientation="horizontal".</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p3">
+              <p class="prompt-library__label">Sidebar with scrollable nav</p>
+              <pre class="prompt-library__text" id="p3-text">Create a vertical sidebar with h-screen. Header is fixed at top. The nav list uses shadcn ScrollArea flex-1 to take the remaining height and scroll when nav items overflow.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p4">
+              <p class="prompt-library__label">Code block scroll</p>
+              <pre class="prompt-library__text" id="p4-text">Wrap a pre/code block in a ScrollArea with overflow-x-auto for horizontal scroll on long lines. Max-height 500px with vertical scroll if many lines.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="resizable.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors"><h3 class="font-semibold mb-1">Resizable</h3><p class="text-sm text-muted-foreground">Combínalos: panel resizable con scroll adentro.</p></a>
+            <a href="page-layout.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors"><h3 class="font-semibold mb-1">Page Layout</h3><p class="text-sm text-muted-foreground">App shells suelen tener ScrollArea en el main.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a class="underline" href="https://www.radix-ui.com/primitives/docs/components/scroll-area" target="_blank" rel="noopener">Radix — ScrollArea</a></li>
+            <li><a class="underline" href="https://ui.shadcn.com/docs/components/scroll-area" target="_blank" rel="noopener">Shadcn — ScrollArea</a></li>
+            <li><a class="underline" href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow" target="_blank" rel="noopener">MDN — overflow</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" data-nav-prev href="aspect-ratio.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name" data-nav-prev-name>Aspect Ratio</span></a>
+          <a class="component-nav__link component-nav__link--next" href="resizable.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Resizable</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

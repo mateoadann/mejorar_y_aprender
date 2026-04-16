@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lección 3 — Permisos: auto-run vs approval</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+        <link rel="stylesheet" href="modulo-1.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 1</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 1</a></li>
+                        <li>Lección 3</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="hero-meta">Lección 03 &middot; 7 min</span>
+                        <h1 class="mt-0">Permisos: auto-run vs approval</h1>
+                        <p class="lead">
+                            El mismo agente puede tener dos modos de
+                            ejecución. Cuándo usar cada uno es la diferencia
+                            entre un agente útil y uno que te rompe
+                            producción.
+                        </p>
+                    </div>
+
+                    <h2>Auto-run</h2>
+                    <p>
+                        El agente ejecuta todas las acciones sin pedir
+                        permiso. No hay humano en el loop. Ideal para
+                        workflows internos de confianza donde cada acción es
+                        reversible o de bajo riesgo.
+                    </p>
+                    <ul>
+                        <li>Rápido: no hay pausa esperando aprobación</li>
+                        <li>Barato en tiempo humano</li>
+                        <li>Riesgoso si el agente hace algo mal</li>
+                    </ul>
+
+                    <h2>Approval-required</h2>
+                    <p>
+                        El agente se pausa antes de ciertas acciones y espera
+                        confirmación humana. Ideal cuando hay acciones
+                        externas, irreversibles o con impacto en terceros.
+                    </p>
+                    <ul>
+                        <li>Seguro: vos decidís antes de actuar</li>
+                        <li>Más lento y requiere atención humana</li>
+                        <li>Necesario para acciones de escritura en sistemas externos</li>
+                    </ul>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">La clave</div>
+                        <p>
+                            Podés <strong>mezclar</strong> los dos modos
+                            dentro del mismo agente. Research y drafts en
+                            automático, aprobación humana antes de mandar el
+                            email. Esta granularidad es lo que hace a los
+                            Managed Agents realmente productivos.
+                        </p>
+                    </div>
+
+                    <h2>Cuándo usar cada uno</h2>
+                    <table class="comparison-table slide-up">
+                        <thead>
+                            <tr>
+                                <th>Situación</th>
+                                <th>Auto-run</th>
+                                <th>Approval</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Leer archivos del sandbox</td>
+                                <td class="check highlight">Sí</td>
+                                <td>Innecesario</td>
+                            </tr>
+                            <tr>
+                                <td>Llamar a un endpoint público de read-only</td>
+                                <td class="check highlight">Sí</td>
+                                <td>Innecesario</td>
+                            </tr>
+                            <tr>
+                                <td>Generar un draft de email</td>
+                                <td class="check highlight">Sí</td>
+                                <td>Innecesario</td>
+                            </tr>
+                            <tr>
+                                <td>Enviar ese email a un cliente</td>
+                                <td class="cross">No</td>
+                                <td class="check highlight">Sí</td>
+                            </tr>
+                            <tr>
+                                <td>Borrar archivos fuera del sandbox</td>
+                                <td class="cross">No</td>
+                                <td class="check highlight">Sí</td>
+                            </tr>
+                            <tr>
+                                <td>Pagar una factura o mover plata</td>
+                                <td class="cross">No</td>
+                                <td class="check highlight">Sí</td>
+                            </tr>
+                            <tr>
+                                <td>Mergeaar un pull request</td>
+                                <td class="cross">No</td>
+                                <td class="check highlight">Sí</td>
+                            </tr>
+                            <tr>
+                                <td>Correr tests contra el sandbox</td>
+                                <td class="check highlight">Sí</td>
+                                <td>Innecesario</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout tip slide-up">
+                        <div class="callout-title">Regla de oro</div>
+                        <p>
+                            Empezá con <strong>approval-required para
+                            todo</strong>. Después, cuando el agente
+                            demuestra que se comporta, vas bajando el guardia
+                            acción por acción. Al revés es mucho más caro: un
+                            agente con auto-run que se zarpa te puede dejar
+                            un desastre imposible de revertir.
+                        </p>
+                    </div>
+
+                    <h2>Ejemplo: agente de respuesta a emails</h2>
+                    <p>
+                        Imaginemos un agente que maneja tu casilla. Mirá cómo
+                        se mezclan los modos:
+                    </p>
+
+                    <div class="diagram vertical slide-up">
+                        <div class="diagram-box secondary">
+                            Leer inbox
+                            <span class="label">auto-run</span>
+                        </div>
+                        <span class="arrow arrow-down" aria-hidden="true"></span>
+                        <div class="diagram-box secondary">
+                            Clasificar por prioridad
+                            <span class="label">auto-run</span>
+                        </div>
+                        <span class="arrow arrow-down" aria-hidden="true"></span>
+                        <div class="diagram-box secondary">
+                            Buscar contexto en docs internos
+                            <span class="label">auto-run</span>
+                        </div>
+                        <span class="arrow arrow-down" aria-hidden="true"></span>
+                        <div class="diagram-box secondary">
+                            Redactar draft de respuesta
+                            <span class="label">auto-run</span>
+                        </div>
+                        <span class="arrow arrow-down" aria-hidden="true"></span>
+                        <div class="diagram-box primary">
+                            Enviar email
+                            <span class="label">approval</span>
+                        </div>
+                        <span class="arrow arrow-down" aria-hidden="true"></span>
+                        <div class="diagram-box primary">
+                            Archivar / borrar
+                            <span class="label">approval</span>
+                        </div>
+                    </div>
+
+                    <p>
+                        Todo el flujo de research y draft es automático. El
+                        agente solo te interrumpe cuando está listo para
+                        tocar algo que sale hacia afuera.
+                    </p>
+
+                    <div class="callout warning slide-up">
+                        <div class="callout-title">Cuidado con los side effects</div>
+                        <p>
+                            Una acción <em>parece</em> read-only y no lo es.
+                            Llamar a un webhook, por ejemplo, puede disparar
+                            efectos en otro sistema. Si no estás 100% seguro
+                            de que algo no tiene consecuencias, ponelo en
+                            approval.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="02-arquitectura.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title">Arquitectura: las 3 primitivas</span>
+                        </a>
+                        <a href="04-ejemplos.html" class="pager-next">
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title">5 agentes prácticos</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">Módulo 1 &middot; Lección 3 &middot; Edición 2026</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

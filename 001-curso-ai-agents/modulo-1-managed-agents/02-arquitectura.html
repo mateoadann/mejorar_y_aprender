@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lección 2 — Arquitectura: las 3 primitivas</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+        <link rel="stylesheet" href="modulo-1.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 1</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 1</a></li>
+                        <li>Lección 2</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="hero-meta">Lección 02 &middot; 12 min</span>
+                        <h1 class="mt-0">Las 3 primitivas</h1>
+                        <p class="lead">
+                            Agent, Environment y Session. Tres recursos, una
+                            arquitectura. Entender esto es el 80% de
+                            dominar Managed Agents.
+                        </p>
+                    </div>
+
+                    <h2>Las primitivas en una línea</h2>
+                    <div class="primitive-row stagger">
+                        <div class="primitive slide-up">
+                            <span class="primitive-label">Recurso versionado</span>
+                            <h3>Agent</h3>
+                            <p>
+                                La definición: system prompt, modelo, tools,
+                                skills. Lo creás una vez y podés pinearlo a
+                                una versión específica.
+                            </p>
+                        </div>
+                        <div class="primitive slide-up" data-animate-delay="100">
+                            <span class="primitive-label">Contenedor aislado</span>
+                            <h3>Environment</h3>
+                            <p>
+                                Sandbox Linux efímero con network access
+                                configurable. Donde el agente corre código,
+                                instala cosas, lee archivos.
+                            </p>
+                        </div>
+                        <div class="primitive slide-up" data-animate-delay="200">
+                            <span class="primitive-label">Ejecución</span>
+                            <h3>Session</h3>
+                            <p>
+                                El log append-only de todo lo que pasa.
+                                Persistente. Los eventos se consumen vía
+                                Server-Sent Events.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h2>Cómo se relacionan</h2>
+                    <p>
+                        El agent es una definición reutilizable. Creás un
+                        environment cuando necesitás un sandbox. Y una session
+                        es una ejecución concreta que combina un agent con un
+                        environment.
+                    </p>
+
+                    <div class="diagram slide-up">
+                        <div class="diagram-box primary">
+                            Agent
+                            <span class="label">Definición</span>
+                        </div>
+                        <span class="arrow arrow-right" aria-hidden="true"></span>
+                        <div class="diagram-box">
+                            Session
+                            <span class="label">Ejecución</span>
+                        </div>
+                        <span class="arrow arrow-left" aria-hidden="true"></span>
+                        <div class="diagram-box secondary">
+                            Environment
+                            <span class="label">Sandbox</span>
+                        </div>
+                    </div>
+
+                    <p>
+                        La sesión es el punto central: toma el agent y lo
+                        corre adentro del environment, genera eventos, y vos
+                        los consumís por SSE.
+                    </p>
+
+                    <h2>Agent: la definición</h2>
+                    <p>
+                        Un agent se crea una vez y se reutiliza. Incluye:
+                    </p>
+                    <ul>
+                        <li><strong>System prompt</strong> — quién es y qué hace</li>
+                        <li><strong>Modelo</strong> — Claude Opus, Sonnet, Haiku</li>
+                        <li><strong>Tools</strong> — computer use, web search, MCPs</li>
+                        <li><strong>Skills</strong> — paquetes con instrucciones específicas</li>
+                        <li><strong>Versión</strong> — podés pinear a una versión concreta</li>
+                    </ul>
+
+                    <div class="callout tip slide-up">
+                        <div class="callout-title">Versionado</div>
+                        <p>
+                            Podés tener la misma definición en varias
+                            versiones. En producción, pineás la versión
+                            exacta que querés correr. Así cambios en tu
+                            prompt no rompen lo que hay en vivo.
+                        </p>
+                    </div>
+
+                    <h2>Environment: el sandbox</h2>
+                    <p>
+                        Es un contenedor Linux efímero con:
+                    </p>
+                    <ul>
+                        <li>Filesystem aislado</li>
+                        <li>Network access configurable (allowlist, denylist o abierto)</li>
+                        <li>Vida limitada — no está pensado para ser persistente</li>
+                        <li>Recursos acotados para evitar runaway costs</li>
+                    </ul>
+                    <p>
+                        El agente puede escribir archivos, ejecutar código,
+                        instalar dependencias. Cuando la sesión termina, el
+                        environment desaparece.
+                    </p>
+
+                    <h2>Session: la ejecución real</h2>
+                    <p>
+                        La sesión es un log append-only. Cada acción del
+                        agente, cada respuesta del modelo, cada llamada a una
+                        tool queda registrada como un evento. El cliente los
+                        consume vía Server-Sent Events.
+                    </p>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">Importante</div>
+                        <p>
+                            La session persiste en el servidor aunque el
+                            cliente se desconecte. Si tu terminal se cuelga,
+                            volvés a abrir el stream y seguís desde donde
+                            estaba. El estado es de Anthropic, no tuyo.
+                        </p>
+                    </div>
+
+                    <h2>El ciclo de vida completo</h2>
+                    <div class="timeline-horizontal slide-up">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Paso 1</div>
+                            <h4>Create agent</h4>
+                            <p>Definís prompt, modelo, tools y skills.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Paso 2</div>
+                            <h4>Create environment</h4>
+                            <p>Configurás el sandbox y sus permisos de red.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Paso 3</div>
+                            <h4>Start session</h4>
+                            <p>Combinás agent + environment y mandás el primer input.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Paso 4</div>
+                            <h4>Stream events</h4>
+                            <p>Consumís el SSE stream hasta que el agente termina.</p>
+                        </div>
+                    </div>
+
+                    <h2>Código real: arrancar una sesión</h2>
+                    <p>
+                        Así se ve un POST a la API para crear una sesión.
+                        Nota el header beta.
+                    </p>
+                    <div class="code-block">
+                        <div class="code-block-header">
+                            <span>bash</span>
+                            <button class="code-block-copy">Copiar</button>
+                        </div>
+<pre><code>curl -sS https://api.anthropic.com/v1/sessions \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "anthropic-beta: managed-agents-2026-04-01" \
+  -H "content-type: application/json" \
+  -d '{"agent": "$AGENT_ID", "environment_id": "$ENV_ID"}'</code></pre>
+                    </div>
+
+                    <p>
+                        La respuesta te da un <code>session_id</code> y abre
+                        el stream de eventos. A partir de ahí, todo lo que
+                        haga el agente te llega como SSE.
+                    </p>
+
+                    <div class="callout warning slide-up">
+                        <div class="callout-title">Recordatorio</div>
+                        <p>
+                            Los <strong>events</strong> NO son una cuarta
+                            primitiva. Son el stream que genera una session.
+                            Si leíste en algún lado que "hay 4 recursos", eso
+                            es incorrecto frente a la doc oficial.
+                        </p>
+                    </div>
+
+                    <p>
+                        Todo esto está documentado en
+                        <a
+                            href="https://platform.claude.com/docs/en/managed-agents/overview"
+                            target="_blank"
+                            rel="noopener"
+                        >la doc oficial de Managed Agents</a>.
+                    </p>
+
+                    <nav class="nav-pager">
+                        <a href="01-que-son.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title">¿Qué son los Managed Agents?</span>
+                        </a>
+                        <a href="03-permisos.html" class="pager-next">
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title">Permisos: auto-run vs approval</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">Módulo 1 &middot; Lección 2 &middot; Edición 2026</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

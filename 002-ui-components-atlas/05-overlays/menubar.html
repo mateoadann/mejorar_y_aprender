@@ -1,0 +1,281 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menubar — UI Components Atlas</title>
+    <meta name="description" content="Barra horizontal de menús desplegables estilo aplicación desktop." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Overlays</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="dropdown-menu.html">01 — Dropdown Menu</a></li>
+          <li><a class="sidebar-nav__link" href="context-menu.html">02 — Context Menu</a></li>
+          <li><a class="sidebar-nav__link" href="hover-card.html">03 — Hover Card</a></li>
+          <li><a class="sidebar-nav__link is-active" href="menubar.html">04 — Menubar</a></li>
+          <li><a class="sidebar-nav__link" href="sheet.html">05 — Sheet</a></li>
+          <li><a class="sidebar-nav__link" href="modal-fullscreen.html">06 — Modal Fullscreen</a></li>
+          <li><a class="sidebar-nav__link" href="toast-overlay-system.html">07 — Toast Overlay System</a></li>
+          <li><a class="sidebar-nav__link" href="backdrop.html">08 — Backdrop</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Overlays</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Menubar</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Menubar</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Menubar</span>
+            <span class="component-page__alias">Application Menu</span>
+            <span class="component-page__alias">Top Menu</span>
+            <span class="component-page__alias">File Edit View Help bar</span>
+          </div>
+          <p class="component-page__lead">
+            Barra horizontal con <b>múltiples menús desplegables</b> en paralelo, estilo aplicación desktop: File, Edit, View, Help. Cuando tenés uno abierto y pasás el mouse a otro, se abre automáticamente sin necesidad de cerrar el anterior. Es el pattern de Figma, Notion desktop, Photoshop, editores de código.
+          </p>
+          <div class="rounded-md border border-border bg-muted/20 p-3 text-sm text-muted-foreground mt-3">
+            <b class="text-foreground">Menubar vs Navbar vs DropdownMenu:</b> Navbar = navegación entre páginas (links). Menubar = acciones agrupadas en categorías (File, Edit, View). DropdownMenu = un solo menú asociado a un trigger.
+          </div>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Clickeá "File". Después pasá el mouse a "Edit" o "View" — el menú cambia solo.</p>
+          <div class="demo-container" data-atlas-demo>
+            <div class="demo-preview demo-preview--stack">
+              <div class="rounded-lg border border-border bg-background p-1 flex items-center gap-0.5 text-sm" data-menubar>
+                <div class="relative" data-mb-menu>
+                  <button data-mb-trigger class="rounded px-3 py-1 hover:bg-accent">File</button>
+                  <div data-mb-content class="hidden absolute left-0 top-full mt-1 w-56 rounded-lg border border-border bg-popover p-1 shadow-xl z-10 text-sm">
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">New Tab<span class="ml-auto text-xs text-muted-foreground">⌘T</span></button>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">New Window<span class="ml-auto text-xs text-muted-foreground">⌘N</span></button>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Open File…<span class="ml-auto text-xs text-muted-foreground">⌘O</span></button>
+                    <div class="my-1 h-px bg-border"></div>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Save<span class="ml-auto text-xs text-muted-foreground">⌘S</span></button>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Save As…<span class="ml-auto text-xs text-muted-foreground">⇧⌘S</span></button>
+                    <div class="my-1 h-px bg-border"></div>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left text-destructive-foreground">Exit<span class="ml-auto text-xs text-muted-foreground">⌘Q</span></button>
+                  </div>
+                </div>
+                <div class="relative" data-mb-menu>
+                  <button data-mb-trigger class="rounded px-3 py-1 hover:bg-accent">Edit</button>
+                  <div data-mb-content class="hidden absolute left-0 top-full mt-1 w-52 rounded-lg border border-border bg-popover p-1 shadow-xl z-10 text-sm">
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Undo<span class="ml-auto text-xs text-muted-foreground">⌘Z</span></button>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Redo<span class="ml-auto text-xs text-muted-foreground">⇧⌘Z</span></button>
+                    <div class="my-1 h-px bg-border"></div>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Cut<span class="ml-auto text-xs text-muted-foreground">⌘X</span></button>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Copy<span class="ml-auto text-xs text-muted-foreground">⌘C</span></button>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Paste<span class="ml-auto text-xs text-muted-foreground">⌘V</span></button>
+                  </div>
+                </div>
+                <div class="relative" data-mb-menu>
+                  <button data-mb-trigger class="rounded px-3 py-1 hover:bg-accent">View</button>
+                  <div data-mb-content class="hidden absolute left-0 top-full mt-1 w-56 rounded-lg border border-border bg-popover p-1 shadow-xl z-10 text-sm">
+                    <label class="w-full flex items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-accent cursor-pointer"><input type="checkbox" class="size-3.5 accent-foreground" checked/>Always Show Bookmarks</label>
+                    <label class="w-full flex items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-accent cursor-pointer"><input type="checkbox" class="size-3.5 accent-foreground"/>Always Show Full URLs</label>
+                    <div class="my-1 h-px bg-border"></div>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Reload<span class="ml-auto text-xs text-muted-foreground">⌘R</span></button>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Toggle Fullscreen<span class="ml-auto text-xs text-muted-foreground">F11</span></button>
+                  </div>
+                </div>
+                <div class="relative" data-mb-menu>
+                  <button data-mb-trigger class="rounded px-3 py-1 hover:bg-accent">Help</button>
+                  <div data-mb-content class="hidden absolute left-0 top-full mt-1 w-44 rounded-lg border border-border bg-popover p-1 shadow-xl z-10 text-sm">
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Documentation</button>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">Keyboard Shortcuts</button>
+                    <button class="w-full flex rounded-sm px-2 py-1.5 hover:bg-accent text-left">About</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <script>
+          (function(){
+            var bar = document.querySelector('[data-menubar]');
+            if(!bar) return;
+            var menus = bar.querySelectorAll('[data-mb-menu]');
+            var openMenu = null;
+            function closeAll(){ menus.forEach(function(m){ m.querySelector('[data-mb-content]').classList.add('hidden'); }); openMenu = null; }
+            menus.forEach(function(m){
+              var t = m.querySelector('[data-mb-trigger]');
+              var c = m.querySelector('[data-mb-content]');
+              t.addEventListener('click', function(e){
+                e.stopPropagation();
+                var wasOpen = !c.classList.contains('hidden');
+                closeAll();
+                if(!wasOpen){ c.classList.remove('hidden'); openMenu = m; }
+              });
+              t.addEventListener('mouseenter', function(){
+                if(openMenu && openMenu !== m){ closeAll(); c.classList.remove('hidden'); openMenu = m; }
+              });
+            });
+            document.addEventListener('click', function(e){ if(!bar.contains(e.target)) closeAll(); });
+            document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAll(); });
+          })();
+        </script>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomía</h2>
+          <p class="component-page__section-lead">Root contiene N Menús, cada uno con su Trigger y Content.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border-2 border-dashed border-border bg-muted/20 p-4 space-y-2">
+                <div class="text-xs text-muted-foreground font-mono">Menubar.Root</div>
+                <div class="flex gap-2">
+                  <div class="flex-1 rounded border border-border bg-background p-2 space-y-1">
+                    <div class="text-xs font-mono">Menubar.Menu</div>
+                    <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">Menubar.Trigger</div>
+                    <div class="rounded border border-dashed border-border p-1 space-y-1">
+                      <div class="text-xs font-mono">Menubar.Portal → Content</div>
+                      <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">Item + Shortcut</div>
+                      <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">Separator</div>
+                      <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">CheckboxItem / RadioGroup</div>
+                      <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">Sub → SubTrigger + SubContent</div>
+                    </div>
+                  </div>
+                  <div class="flex-1 rounded border border-border bg-background p-2 space-y-1">
+                    <div class="text-xs font-mono">Menubar.Menu</div>
+                    <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">Trigger + Content</div>
+                  </div>
+                  <div class="flex-1 rounded border border-border bg-background p-2 space-y-1">
+                    <div class="text-xs font-mono">Menubar.Menu</div>
+                    <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">Trigger + Content</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> Contenedor horizontal, maneja qué menú está abierto.</li>
+              <li><b>Menu</b> Cada categoría top-level (File, Edit, View…).</li>
+              <li><b>Trigger</b> El botón del menú en la barra.</li>
+              <li><b>Content</b> El dropdown de ese menú.</li>
+              <li><b>Switch behavior</b> Al hover otro trigger con uno abierto, cambia sin click.</li>
+              <li><b>Items</b> Mismos que DropdownMenu (Item, Checkbox, Radio, Separator, Sub).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="rounded-lg border border-border bg-background p-1 text-xs flex gap-1"><span class="px-2 py-1 rounded hover:bg-accent">File</span><span class="px-2 py-1 rounded hover:bg-accent">Edit</span></div><span class="demo-group__label">simple</span></div>
+            <div class="demo-group__item"><div class="rounded-lg border border-border bg-background p-1 text-xs flex gap-1"><span class="px-2 py-1 rounded bg-accent">File</span><span class="px-2 py-1 rounded hover:bg-accent">Edit</span><span class="px-2 py-1 rounded hover:bg-accent">View</span><span class="px-2 py-1 rounded hover:bg-accent">Help</span></div><span class="demo-group__label">app-style completo</span></div>
+            <div class="demo-group__item"><div class="rounded-lg border border-border bg-background p-1 text-xs flex gap-1"><span class="px-2 py-1 rounded flex items-center gap-1">View<span>›</span></span></div><span class="demo-group__label">con submenus</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn / Radix</th><th>Material UI</th><th>Ant Design</th><th>Electron</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Menubar.Root</td><td>AppBar + Menus (custom)</td><td>Menu mode="horizontal"</td><td>Menu (app menu)</td></tr>
+              <tr><td>Menu</td><td>Menubar.Menu</td><td>Menu per-button</td><td>SubMenu</td><td>MenuItem with submenu</td></tr>
+              <tr><td>Trigger</td><td>Menubar.Trigger</td><td>Button + anchorEl</td><td>title prop</td><td>label</td></tr>
+              <tr><td>Content</td><td>Menubar.Content</td><td>MenuList</td><td>overlay children</td><td>submenu</td></tr>
+              <tr><td>Shortcut</td><td>Menubar.Shortcut</td><td>MenuItem con span</td><td>—</td><td>accelerator</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuándo usar y cuándo no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Apps desktop-style con muchas acciones agrupables (editores, IDEs)</li>
+              <li>Electron / PWA que imita app nativa</li>
+              <li>Usuarios power que esperan File/Edit/View/Help</li>
+              <li>Necesitás exponer shortcuts de teclado en forma visual</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Mobile (no hay espacio, no es el pattern esperado)</li>
+              <li>Apps simples con pocas acciones → Navbar + botones</li>
+              <li>Sitios marketing / web casual → no es el lenguaje correcto</li>
+              <li>Hay sólo un menú → DropdownMenu solo</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item"><p class="prompt-library__label">Menubar with File, Edit, View, Help menus and keyboard shortcuts</p><pre class="prompt-library__text">Create a shadcn Menubar with four menus: File (New Tab ⌘T, New Window ⌘N, Open ⌘O, Separator, Save ⌘S, Save As ⇧⌘S, Separator, Exit ⌘Q), Edit (Undo ⌘Z, Redo ⇧⌘Z, Separator, Cut ⌘X, Copy ⌘C, Paste ⌘V), View (CheckboxItem "Show Bookmarks", Reload ⌘R, Toggle Fullscreen F11), Help (Documentation, Keyboard Shortcuts, About).</pre><button class="prompt-library__copy">Copiar</button></div>
+            <div class="prompt-library__item"><p class="prompt-library__label">Application menu bar with nested submenus for settings</p><pre class="prompt-library__text">Create a Menubar for a code editor with a "Preferences" menu that contains a SubMenu "Theme" with RadioGroup (Dark, Light, System), another SubMenu "Font size" with RadioGroup (Small, Medium, Large), and an Item "Open settings.json".</pre><button class="prompt-library__copy">Copiar</button></div>
+            <div class="prompt-library__item"><p class="prompt-library__label">Figma-style menubar</p><pre class="prompt-library__text">Create a Menubar at the top of a canvas app with menus: File, Edit, View (with zoom options as RadioGroup), Object, Arrange, Text, Plugins. Each item should fire an action on the canvas store.</pre><button class="prompt-library__copy">Copiar</button></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="dropdown-menu.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors"><h3 class="font-semibold mb-1">Dropdown Menu</h3><p class="text-sm text-muted-foreground">Cuando hay un solo menú, no una barra.</p></a>
+            <a href="../02-navegacion/command-palette.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors"><h3 class="font-semibold mb-1">Command Palette</h3><p class="text-sm text-muted-foreground">Alternativa moderna con fuzzy search.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a class="underline" href="https://ui.shadcn.com/docs/components/menubar" target="_blank" rel="noopener">Shadcn — Menubar</a></li>
+            <li><a class="underline" href="https://www.radix-ui.com/primitives/docs/components/menubar" target="_blank" rel="noopener">Radix — Menubar</a></li>
+            <li><a class="underline" href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/" target="_blank" rel="noopener">ARIA APG — Menubar pattern</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="hover-card.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Hover Card</span></a>
+          <a class="component-nav__link component-nav__link--next" href="sheet.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Sheet</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

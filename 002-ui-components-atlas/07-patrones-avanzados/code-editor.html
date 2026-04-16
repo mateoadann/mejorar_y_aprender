@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code Editor · UI Components Atlas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      background: '#09090b', foreground: '#fafafa',
+      muted: { DEFAULT: '#27272a', foreground: '#a1a1aa' },
+      border: '#27272a', ring: '#d4d4d8',
+      primary: { DEFAULT: '#fafafa', foreground: '#18181b' },
+      secondary: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      destructive: { DEFAULT: '#7f1d1d', foreground: '#fafafa' },
+      accent: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      popover: { DEFAULT: '#18181b', foreground: '#fafafa' },
+      input: '#27272a',
+    }, borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' } } } }
+  </script>
+  <link rel="stylesheet" href="../css/atlas.css" />
+  <link rel="stylesheet" href="../css/demos.css" />
+  <style>
+    .tok-kw { color: #c084fc; }
+    .tok-str { color: #86efac; }
+    .tok-com { color: #6b7280; font-style: italic; }
+    .tok-fn { color: #93c5fd; }
+    .tok-num { color: #fbbf24; }
+  </style>
+</head>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+      <a href="../index.html" class="font-semibold text-lg">UI Components Atlas</a>
+      <input type="search" placeholder="Buscar componente..." class="flex-1 max-w-md bg-input border border-border rounded-md px-3 py-2 text-sm" />
+    </div>
+  </header>
+
+  <div class="component-page max-w-7xl mx-auto px-6 py-8 grid grid-cols-[220px_1fr] gap-8">
+    <aside class="sidebar-nav">
+      <h4 class="text-xs uppercase tracking-wider text-muted-foreground mb-3">Módulo 07</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="./data-table.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">01. Data Table</a></li>
+        <li><a href="./form.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">02. Form</a></li>
+        <li><a href="./form-wizard.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">03. Form Wizard</a></li>
+        <li><a href="./drag-drop.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">04. Drag & Drop</a></li>
+        <li><a href="./infinite-scroll.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">05. Infinite Scroll</a></li>
+        <li><a href="./virtualized-list.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">06. Virtualized List</a></li>
+        <li><a href="./rich-text-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">07. Rich Text Editor</a></li>
+        <li><a href="./code-editor.html" class="block px-2 py-1.5 rounded is-active bg-muted text-foreground">08. Code Editor</a></li>
+        <li><a href="./kanban-board.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">09. Kanban Board</a></li>
+        <li><a href="./masked-input.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">10. Masked Input</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <nav class="breadcrumbs text-sm text-muted-foreground mb-6">
+        <a href="../index.html" class="hover:text-foreground">Atlas</a><span class="mx-2">/</span>
+        <a href="./index.html" class="hover:text-foreground">Patrones Avanzados</a><span class="mx-2">/</span>
+        <span class="text-foreground">Code Editor</span>
+      </nav>
+
+      <header class="component-page__header mb-10">
+        <h1 class="component-page__title text-4xl font-bold mb-3">Code Editor</h1>
+        <div class="component-page__aliases flex flex-wrap gap-2 mb-4">
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Monaco</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">CodeMirror 6</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Ace Editor</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Shiki</span>
+        </div>
+        <p class="component-page__lead text-lg text-muted-foreground max-w-3xl">Editor especializado para código con syntax highlighting, line numbers, autocomplete, linting. Monaco es el engine de VS Code (pesado pero feature-complete). CodeMirror 6 es más liviano y modular.</p>
+        <p class="text-xs text-yellow-500/80 mt-3">Nota: este demo es un mock visual. Un code editor real requiere librerías como Monaco o CodeMirror — imposible de replicar con JS vanilla inline.</p>
+      </header>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Demo (mock visual)</h2>
+        <div class="demo-container border border-border rounded-lg p-6 bg-muted/10">
+          <div class="flex items-center gap-2 px-3 py-2 border border-border rounded-t-md bg-muted/40 text-xs">
+            <span class="w-3 h-3 rounded-full bg-red-500/60"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500/60"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500/60"></span>
+            <span class="ml-2 text-muted-foreground">user.service.ts</span>
+            <span class="ml-auto text-muted-foreground">TypeScript · UTF-8 · LF</span>
+          </div>
+          <div class="border border-t-0 border-border rounded-b-md bg-[#0b0b0f] font-mono text-xs overflow-x-auto">
+            <pre class="flex"><code class="py-3 pl-3 pr-4 text-right text-muted-foreground select-none border-r border-border">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15</code><code class="py-3 px-4 flex-1"><span class="tok-com">// Fetches a user by ID from the API</span>
+<span class="tok-kw">import</span> { api } <span class="tok-kw">from</span> <span class="tok-str">'./api'</span>;
+
+<span class="tok-kw">export async function</span> <span class="tok-fn">getUser</span>(id: <span class="tok-kw">string</span>) {
+  <span class="tok-kw">const</span> res = <span class="tok-kw">await</span> api.<span class="tok-fn">get</span>(<span class="tok-str">`/users/${id}`</span>);
+  <span class="tok-kw">if</span> (!res.ok) {
+    <span class="tok-kw">throw new</span> <span class="tok-fn">Error</span>(<span class="tok-str">'User not found'</span>);
+  }
+  <span class="tok-kw">return</span> res.<span class="tok-fn">json</span>();
+}
+
+<span class="tok-com">// Example usage</span>
+<span class="tok-kw">const</span> user = <span class="tok-kw">await</span> <span class="tok-fn">getUser</span>(<span class="tok-str">'abc123'</span>);
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(user.name);
+<span class="tok-kw">const</span> pending = <span class="tok-num">42</span>;</code></pre>
+          </div>
+          <div class="flex items-center justify-between mt-2 text-xs text-muted-foreground">
+            <span>Ln 5, Col 18</span>
+            <span>Prettier · ESLint</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Anatomía</h2>
+        <div class="border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border-2 border-dashed border-border rounded p-4">
+            <div class="text-xs text-muted-foreground mb-2">Editor Root</div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Gutter</div>
+              <div class="flex flex-wrap gap-1">
+                <span class="px-2 py-1 bg-muted rounded">Line numbers</span>
+                <span class="px-2 py-1 bg-muted rounded">Fold indicators</span>
+                <span class="px-2 py-1 bg-muted rounded">Breakpoints</span>
+              </div>
+            </div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Content Area</div>
+              <div class="flex flex-wrap gap-1">
+                <span class="px-2 py-1 bg-muted rounded">Syntax highlighting</span>
+                <span class="px-2 py-1 bg-muted rounded">Autocomplete popup</span>
+                <span class="px-2 py-1 bg-muted rounded">Diagnostics (squiggles)</span>
+              </div>
+            </div>
+            <div class="border border-border rounded p-3 text-xs">
+              <div class="text-muted-foreground mb-1">Extras</div>
+              <div class="flex flex-wrap gap-1">
+                <span class="px-2 py-1 bg-muted rounded">Minimap</span>
+                <span class="px-2 py-1 bg-muted rounded">Status bar</span>
+                <span class="px-2 py-1 bg-muted rounded">Command palette</span>
+                <span class="px-2 py-1 bg-muted rounded">Find/Replace</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Variantes</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <li class="border border-border rounded p-3"><strong>Monaco</strong> — feature-complete, pesa ~3MB.</li>
+          <li class="border border-border rounded p-3"><strong>CodeMirror 6</strong> — modular, más liviano.</li>
+          <li class="border border-border rounded p-3"><strong>Solo highlighting</strong> — Shiki/Prism, no edición.</li>
+          <li class="border border-border rounded p-3"><strong>Diff editor</strong> — 2 panes con cambios.</li>
+          <li class="border border-border rounded p-3"><strong>Collaborative</strong> — OT o CRDT para multi-usuario.</li>
+          <li class="border border-border rounded p-3"><strong>Multi-file</strong> — con tabs y file tree.</li>
+          <li class="border border-border rounded p-3"><strong>Con LSP</strong> — Language Server Protocol para intellisense real.</li>
+          <li class="border border-border rounded p-3"><strong>Con preview</strong> — REPL / runtime en vivo.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Estados</h2>
+        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+          <li class="border border-border rounded p-3">Idle</li>
+          <li class="border border-border rounded p-3">Editing</li>
+          <li class="border border-border rounded p-3">Autocompleting</li>
+          <li class="border border-border rounded p-3">Linting error</li>
+          <li class="border border-border rounded p-3">Folded region</li>
+          <li class="border border-border rounded p-3">Read-only</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Vocabulario cross-framework</h2>
+        <div class="border border-border rounded-lg overflow-hidden">
+          <table class="vocab-table w-full text-sm">
+            <thead class="bg-muted/50"><tr><th class="px-4 py-2 text-left">Librería</th><th class="px-4 py-2 text-left">Peso</th><th class="px-4 py-2 text-left">Uso típico</th></tr></thead>
+            <tbody>
+              <tr class="border-t border-border"><td class="px-4 py-2">Monaco Editor</td><td class="px-4 py-2">~3 MB</td><td class="px-4 py-2">VS Code web, IDEs</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">CodeMirror 6</td><td class="px-4 py-2">~100 KB base</td><td class="px-4 py-2">Playgrounds, editors embedded</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Ace Editor</td><td class="px-4 py-2">~400 KB</td><td class="px-4 py-2">AWS Cloud9, Wikipedia</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Shiki</td><td class="px-4 py-2">~200 KB</td><td class="px-4 py-2">Solo highlighting (read-only)</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Prism</td><td class="px-4 py-2">~10 KB</td><td class="px-4 py-2">Highlighting básico en blogs</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Cuándo usar</h2>
+        <div class="use-case-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-green-400">Sí, usalo cuando</h3>
+            <ul class="use-case-list do space-y-2 text-sm text-muted-foreground">
+              <li>Playgrounds (CodeSandbox, StackBlitz)</li>
+              <li>Config editors dentro de apps</li>
+              <li>Tutoriales interactivos</li>
+              <li>IDE features en la web</li>
+            </ul>
+          </div>
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-red-400">No, evitalo cuando</h3>
+            <ul class="use-case-list dont space-y-2 text-sm text-muted-foreground">
+              <li>Texto plano → Textarea</li>
+              <li>Texto con formato → Rich Text Editor</li>
+              <li>Solo mostrar código read-only → Shiki/Prism</li>
+              <li>Snippets cortos inline → <code>&lt;pre&gt;&lt;code&gt;</code></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Prompts para coding agents</h2>
+        <div class="prompt-library space-y-3">
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Monaco</div>
+            <p class="prompt-library__text text-sm font-mono">Monaco editor for JSON with schema validation and autocomplete.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">CodeMirror</div>
+            <p class="prompt-library__text text-sm font-mono">CodeMirror 6 for JavaScript with autocomplete, linting and dark theme.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Read-only</div>
+            <p class="prompt-library__text text-sm font-mono">Read-only code viewer with Shiki syntax highlighting and copy button.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Diff</div>
+            <p class="prompt-library__text text-sm font-mono">Monaco diff editor comparing two TypeScript files side by side.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Alternativas relacionadas</h2>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><strong class="text-foreground">Rich Text Editor</strong> — para texto formateado visual.</li>
+          <li><strong class="text-foreground">Textarea</strong> — input de texto plano.</li>
+          <li><strong class="text-foreground">Shiki/Prism</strong> — highlighting read-only.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Referencias</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://microsoft.github.io/monaco-editor/" class="text-blue-400 hover:underline" target="_blank">Monaco Editor</a></li>
+          <li><a href="https://codemirror.net/" class="text-blue-400 hover:underline" target="_blank">CodeMirror 6</a></li>
+          <li><a href="https://shiki.matsu.io/" class="text-blue-400 hover:underline" target="_blank">Shiki</a></li>
+        </ul>
+      </section>
+
+      <nav class="component-nav border-t border-border pt-6 flex justify-between text-sm">
+        <a href="./rich-text-editor.html" class="component-nav__link text-muted-foreground hover:text-foreground">← Rich Text Editor</a>
+        <a href="./kanban-board.html" class="component-nav__link text-muted-foreground hover:text-foreground">Kanban Board →</a>
+      </nav>
+    </main>
+  </div>
+
+  <script src="../js/atlas.js"></script>
+  <script src="../js/demos.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

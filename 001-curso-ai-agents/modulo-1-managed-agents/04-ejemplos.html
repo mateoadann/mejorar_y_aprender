@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lección 4 — 5 agentes prácticos</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+        <link rel="stylesheet" href="modulo-1.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 1</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 1</a></li>
+                        <li>Lección 4</li>
+                    </ul>
+
+                    <div class="slide-up container-narrow" style="padding: 0;">
+                        <span class="hero-meta">Lección 04 &middot; 10 min</span>
+                        <h1 class="mt-0">5 agentes prácticos</h1>
+                        <p class="lead">
+                            Cinco casos reales que mostramos como cards.
+                            Cada uno con qué hace, qué tools usa, modo de
+                            permiso, costo estimado y un mini diagrama de
+                            flujo. Usalos como plantilla para el tuyo.
+                        </p>
+                    </div>
+
+                    <div class="callout info slide-up" style="max-width: 760px; margin-left: auto; margin-right: auto;">
+                        <div class="callout-title">Sobre el pricing</div>
+                        <p>
+                            Managed Agents cuesta
+                            <strong>$0.08 por session-hour</strong>, más los
+                            tokens consumidos por el modelo, más
+                            <strong>$10 por cada 1.000 web searches</strong>
+                            si usás esa tool. Los costos de abajo son
+                            estimaciones mensuales asumiendo uso moderado.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-2 stagger" style="margin-top: var(--space-10)">
+
+                        <div class="example-card slide-up" id="ej-1">
+                            <div class="example-header">
+                                <h3>1. Meeting Prep Agent</h3>
+                                <span class="tag primary">Principiante</span>
+                            </div>
+                            <p>
+                                Te arma un briefing antes de cada reunión:
+                                historia con el cliente, últimos tickets,
+                                comunicación reciente, y puntos abiertos.
+                            </p>
+                            <div>
+                                <span class="tag secondary">Calendar MCP</span>
+                                <span class="tag secondary">Web search</span>
+                                <span class="tag secondary">Email read</span>
+                            </div>
+                            <div class="mini-flow">
+                                <span class="step">trigger 30 min antes</span>
+                                <span>&rarr;</span>
+                                <span class="step">pull meeting</span>
+                                <span>&rarr;</span>
+                                <span class="step">research</span>
+                                <span>&rarr;</span>
+                                <span class="step">brief en inbox</span>
+                            </div>
+                            <div class="example-stats">
+                                <div>
+                                    <span class="label">Permisos</span>
+                                    <span class="value">auto-run</span>
+                                </div>
+                                <div>
+                                    <span class="label">Costo</span>
+                                    <span class="value">~$15/mes</span>
+                                </div>
+                                <div>
+                                    <span class="label">Dificultad</span>
+                                    <span class="value">Baja</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example-card slide-up" id="ej-2">
+                            <div class="example-header">
+                                <h3>2. Client Intake Agent</h3>
+                                <span class="tag primary">Intermedio</span>
+                            </div>
+                            <p>
+                                Onboardea clientes nuevos: les hace la
+                                primera llamada por email, recolecta
+                                información, crea su ficha en el CRM y
+                                prepara el kick-off.
+                            </p>
+                            <div>
+                                <span class="tag secondary">Email</span>
+                                <span class="tag secondary">CRM API</span>
+                                <span class="tag secondary">Forms</span>
+                            </div>
+                            <div class="mini-flow">
+                                <span class="step">lead entra</span>
+                                <span>&rarr;</span>
+                                <span class="step">draft bienvenida</span>
+                                <span>&rarr;</span>
+                                <span class="step">approval humano</span>
+                                <span>&rarr;</span>
+                                <span class="step">ficha CRM</span>
+                            </div>
+                            <div class="example-stats">
+                                <div>
+                                    <span class="label">Permisos</span>
+                                    <span class="value">mixto</span>
+                                </div>
+                                <div>
+                                    <span class="label">Costo</span>
+                                    <span class="value">~$40/mes</span>
+                                </div>
+                                <div>
+                                    <span class="label">Dificultad</span>
+                                    <span class="value">Media</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example-card slide-up" id="ej-3">
+                            <div class="example-header">
+                                <h3>3. Content Research Agent</h3>
+                                <span class="tag primary">Intermedio</span>
+                            </div>
+                            <p>
+                                Monitorea fuentes específicas (blogs, papers,
+                                GitHub trending, HN), clasifica lo relevante
+                                y te manda un digest diario con resúmenes.
+                            </p>
+                            <div>
+                                <span class="tag secondary">Web search</span>
+                                <span class="tag secondary">RSS</span>
+                                <span class="tag secondary">Email</span>
+                            </div>
+                            <div class="mini-flow">
+                                <span class="step">cron 8am</span>
+                                <span>&rarr;</span>
+                                <span class="step">scan fuentes</span>
+                                <span>&rarr;</span>
+                                <span class="step">filtro relevancia</span>
+                                <span>&rarr;</span>
+                                <span class="step">digest</span>
+                            </div>
+                            <div class="example-stats">
+                                <div>
+                                    <span class="label">Permisos</span>
+                                    <span class="value">auto-run</span>
+                                </div>
+                                <div>
+                                    <span class="label">Costo</span>
+                                    <span class="value">~$60/mes</span>
+                                </div>
+                                <div>
+                                    <span class="label">Dificultad</span>
+                                    <span class="value">Media</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example-card slide-up" id="ej-4">
+                            <div class="example-header">
+                                <h3>4. Document Processing Agent</h3>
+                                <span class="tag primary">Avanzado</span>
+                            </div>
+                            <p>
+                                Extracción estructurada de PDFs y contratos:
+                                levanta fechas, montos, cláusulas y los
+                                carga en una base de datos. Útil para legal
+                                y compras.
+                            </p>
+                            <div>
+                                <span class="tag secondary">PDF parse</span>
+                                <span class="tag secondary">File IO</span>
+                                <span class="tag secondary">DB write</span>
+                            </div>
+                            <div class="mini-flow">
+                                <span class="step">upload</span>
+                                <span>&rarr;</span>
+                                <span class="step">parse</span>
+                                <span>&rarr;</span>
+                                <span class="step">validar</span>
+                                <span>&rarr;</span>
+                                <span class="step">persistir</span>
+                            </div>
+                            <div class="example-stats">
+                                <div>
+                                    <span class="label">Permisos</span>
+                                    <span class="value">mixto</span>
+                                </div>
+                                <div>
+                                    <span class="label">Costo</span>
+                                    <span class="value">~$80/mes</span>
+                                </div>
+                                <div>
+                                    <span class="label">Dificultad</span>
+                                    <span class="value">Alta</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example-card slide-up" id="ej-5">
+                            <div class="example-header">
+                                <h3>5. Code Review Agent</h3>
+                                <span class="tag primary">Avanzado</span>
+                            </div>
+                            <p>
+                                Review automático de pull requests: corre
+                                tests, revisa diffs, sugiere mejoras y deja
+                                comentarios inline. No mergea nunca sin
+                                aprobación.
+                            </p>
+                            <div>
+                                <span class="tag secondary">GitHub MCP</span>
+                                <span class="tag secondary">Shell</span>
+                                <span class="tag secondary">Linter</span>
+                            </div>
+                            <div class="mini-flow">
+                                <span class="step">PR abierto</span>
+                                <span>&rarr;</span>
+                                <span class="step">checkout</span>
+                                <span>&rarr;</span>
+                                <span class="step">review</span>
+                                <span>&rarr;</span>
+                                <span class="step">comentarios</span>
+                            </div>
+                            <div class="example-stats">
+                                <div>
+                                    <span class="label">Permisos</span>
+                                    <span class="value">mixto</span>
+                                </div>
+                                <div>
+                                    <span class="label">Costo</span>
+                                    <span class="value">~$100/mes</span>
+                                </div>
+                                <div>
+                                    <span class="label">Dificultad</span>
+                                    <span class="value">Alta</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="container-narrow" style="margin-top: var(--space-16); padding: 0;">
+                        <div class="callout tip slide-up">
+                            <div class="callout-title">Orden recomendado</div>
+                            <p>
+                                Si es tu primer agente productivo, empezá
+                                por el <strong>Meeting Prep</strong>: es el
+                                más simple, el retorno es inmediato y te
+                                obliga a familiarizarte con el ciclo
+                                completo sin riesgo.
+                            </p>
+                        </div>
+
+                        <nav class="nav-pager">
+                            <a href="03-permisos.html" class="pager-prev">
+                                <span class="pager-label">&larr; Anterior</span>
+                                <span class="pager-title">Permisos: auto-run vs approval</span>
+                            </a>
+                            <a href="05-ejercicio.html" class="pager-next">
+                                <span class="pager-label">Siguiente &rarr;</span>
+                                <span class="pager-title">Tu primer agente en 30 minutos</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">Módulo 1 &middot; Lección 4 &middot; Edición 2026</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

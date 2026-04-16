@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Infinite Scroll · UI Components Atlas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      background: '#09090b', foreground: '#fafafa',
+      muted: { DEFAULT: '#27272a', foreground: '#a1a1aa' },
+      border: '#27272a', ring: '#d4d4d8',
+      primary: { DEFAULT: '#fafafa', foreground: '#18181b' },
+      secondary: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      destructive: { DEFAULT: '#7f1d1d', foreground: '#fafafa' },
+      accent: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      popover: { DEFAULT: '#18181b', foreground: '#fafafa' },
+      input: '#27272a',
+    }, borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' } } } }
+  </script>
+  <link rel="stylesheet" href="../css/atlas.css" />
+  <link rel="stylesheet" href="../css/demos.css" />
+</head>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+      <a href="../index.html" class="font-semibold text-lg">UI Components Atlas</a>
+      <input type="search" placeholder="Buscar componente..." class="flex-1 max-w-md bg-input border border-border rounded-md px-3 py-2 text-sm" />
+    </div>
+  </header>
+
+  <div class="component-page max-w-7xl mx-auto px-6 py-8 grid grid-cols-[220px_1fr] gap-8">
+    <aside class="sidebar-nav">
+      <h4 class="text-xs uppercase tracking-wider text-muted-foreground mb-3">Módulo 07</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="./data-table.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">01. Data Table</a></li>
+        <li><a href="./form.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">02. Form</a></li>
+        <li><a href="./form-wizard.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">03. Form Wizard</a></li>
+        <li><a href="./drag-drop.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">04. Drag & Drop</a></li>
+        <li><a href="./infinite-scroll.html" class="block px-2 py-1.5 rounded is-active bg-muted text-foreground">05. Infinite Scroll</a></li>
+        <li><a href="./virtualized-list.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">06. Virtualized List</a></li>
+        <li><a href="./rich-text-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">07. Rich Text Editor</a></li>
+        <li><a href="./code-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">08. Code Editor</a></li>
+        <li><a href="./kanban-board.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">09. Kanban Board</a></li>
+        <li><a href="./masked-input.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">10. Masked Input</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <nav class="breadcrumbs text-sm text-muted-foreground mb-6">
+        <a href="../index.html" class="hover:text-foreground">Atlas</a><span class="mx-2">/</span>
+        <a href="./index.html" class="hover:text-foreground">Patrones Avanzados</a><span class="mx-2">/</span>
+        <span class="text-foreground">Infinite Scroll</span>
+      </nav>
+
+      <header class="component-page__header mb-10">
+        <h1 class="component-page__title text-4xl font-bold mb-3">Infinite Scroll</h1>
+        <div class="component-page__aliases flex flex-wrap gap-2 mb-4">
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">useInfiniteQuery</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">IntersectionObserver</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Endless scroll</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Feed loading</span>
+        </div>
+        <p class="component-page__lead text-lg text-muted-foreground max-w-3xl">Lista que carga más items automáticamente cuando el usuario llega cerca del final. El patrón de los feeds sociales. La mejor práctica moderna es con IntersectionObserver y un elemento sentinel al final de la lista.</p>
+      </header>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Demo interactiva</h2>
+        <div class="demo-container border border-border rounded-lg p-6 bg-muted/10">
+          <p class="text-xs text-muted-foreground mb-3">Scrolleá hasta el fondo del contenedor. Cuando el sentinel entra al viewport se cargan 5 posts más (hasta 30 total).</p>
+          <div id="is-scroll" class="border border-border rounded-md h-96 overflow-y-auto">
+            <div id="is-list" class="divide-y divide-border"></div>
+            <div id="is-loader" class="p-4 text-center text-xs text-muted-foreground">Cargando más...</div>
+            <div id="is-end" class="p-4 text-center text-xs text-muted-foreground hidden">No hay más posts.</div>
+            <div id="is-sentinel" class="h-px"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Anatomía</h2>
+        <div class="border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border-2 border-dashed border-border rounded p-4">
+            <div class="text-xs text-muted-foreground mb-2">Scrollable Container</div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Items List</div>
+              <span class="px-2 py-1 bg-muted rounded">Item 1..N (acumulados)</span>
+            </div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Loading Indicator</div>
+              <span class="px-2 py-1 bg-muted rounded">Spinner / skeleton rows</span>
+            </div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Sentinel Element (bottom)</div>
+              <span class="px-2 py-1 bg-muted rounded">Div vacío observado por IO</span>
+            </div>
+            <div class="border border-border rounded p-3 text-xs">
+              <div class="text-muted-foreground mb-1">End Message</div>
+              <span class="px-2 py-1 bg-muted rounded">"No more items"</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Variantes</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <li class="border border-border rounded p-3"><strong>Forward scroll</strong> — carga abajo (default).</li>
+          <li class="border border-border rounded p-3"><strong>Reverse scroll</strong> — carga arriba (chat histories).</li>
+          <li class="border border-border rounded p-3"><strong>Bidirectional</strong> — arriba Y abajo.</li>
+          <li class="border border-border rounded p-3"><strong>Con pull-to-refresh</strong> — mobile, gesto arriba.</li>
+          <li class="border border-border rounded p-3"><strong>Con skeleton loaders</strong> — durante fetch.</li>
+          <li class="border border-border rounded p-3"><strong>Con "load more" button</strong> — fallback accesible.</li>
+          <li class="border border-border rounded p-3"><strong>Con keep-position</strong> — al cargar arriba no saltes.</li>
+          <li class="border border-border rounded p-3"><strong>Combinado con virtualization</strong> — para feeds enormes.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Estados</h2>
+        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+          <li class="border border-border rounded p-3">Initial loading</li>
+          <li class="border border-border rounded p-3">Idle</li>
+          <li class="border border-border rounded p-3">Fetching more</li>
+          <li class="border border-border rounded p-3">End reached</li>
+          <li class="border border-border rounded p-3">Error / retry</li>
+          <li class="border border-border rounded p-3">Empty</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Vocabulario cross-framework</h2>
+        <div class="border border-border rounded-lg overflow-hidden">
+          <table class="vocab-table w-full text-sm">
+            <thead class="bg-muted/50"><tr><th class="px-4 py-2 text-left">Stack</th><th class="px-4 py-2 text-left">Tool</th><th class="px-4 py-2 text-left">Notas</th></tr></thead>
+            <tbody>
+              <tr class="border-t border-border"><td class="px-4 py-2">TanStack Query</td><td class="px-4 py-2"><code>useInfiniteQuery</code></td><td class="px-4 py-2">Pagination + cache</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">SWR</td><td class="px-4 py-2"><code>useSWRInfinite</code></td><td class="px-4 py-2">Vercel</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Native</td><td class="px-4 py-2">IntersectionObserver</td><td class="px-4 py-2">Low-level, framework-agnostic</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">react-infinite-scroll-component</td><td class="px-4 py-2">Wrapper</td><td class="px-4 py-2">Legacy pero popular</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Cuándo usar</h2>
+        <div class="use-case-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-green-400">Sí, usalo cuando</h3>
+            <ul class="use-case-list do space-y-2 text-sm text-muted-foreground">
+              <li>Feeds sociales (Twitter, Instagram)</li>
+              <li>Chat histories, activity logs</li>
+              <li>Search results exploratorios</li>
+              <li>Content discovery continuo</li>
+            </ul>
+          </div>
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-red-400">No, evitalo cuando</h3>
+            <ul class="use-case-list dont space-y-2 text-sm text-muted-foreground">
+              <li>Necesitás navegar a página X → Pagination</li>
+              <li>SEO crítico → Pagination (HTML estático)</li>
+              <li>Usuarios necesitan footer → pagination</li>
+              <li>Total count importante → pagination con total</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Prompts para coding agents</h2>
+        <div class="prompt-library space-y-3">
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Feed</div>
+            <p class="prompt-library__text text-sm font-mono">Infinite scroll feed with skeleton loaders while fetching next page.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Chat</div>
+            <p class="prompt-library__text text-sm font-mono">Reverse infinite scroll for chat history, preserve scroll position on load.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">TanStack</div>
+            <p class="prompt-library__text text-sm font-mono">useInfiniteQuery with IntersectionObserver sentinel and load-more button fallback.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Alternativas relacionadas</h2>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><strong class="text-foreground">Pagination</strong> — cuando el usuario necesita saltar a página X.</li>
+          <li><strong class="text-foreground">Virtualized List</strong> — cuando el total es gigante.</li>
+          <li><strong class="text-foreground">Load more button</strong> — control explícito del usuario.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Referencias</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://tanstack.com/query/latest/docs/framework/react/guides/infinite-queries" class="text-blue-400 hover:underline" target="_blank">TanStack — useInfiniteQuery</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" class="text-blue-400 hover:underline" target="_blank">IntersectionObserver — MDN</a></li>
+        </ul>
+      </section>
+
+      <nav class="component-nav border-t border-border pt-6 flex justify-between text-sm">
+        <a href="./drag-drop.html" class="component-nav__link text-muted-foreground hover:text-foreground">← Drag & Drop</a>
+        <a href="./virtualized-list.html" class="component-nav__link text-muted-foreground hover:text-foreground">Virtualized List →</a>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const list = document.getElementById('is-list');
+      const scrollEl = document.getElementById('is-scroll');
+      const loader = document.getElementById('is-loader');
+      const endMsg = document.getElementById('is-end');
+      const sentinel = document.getElementById('is-sentinel');
+      const TOTAL = 30;
+      let loaded = 0;
+      let loading = false;
+
+      function addItems(n) {
+        for (let i = 0; i < n && loaded < TOTAL; i++) {
+          loaded++;
+          const div = document.createElement('div');
+          div.className = 'p-4';
+          const title = document.createElement('div');
+          title.className = 'font-medium text-sm';
+          title.textContent = `Post #${loaded}`;
+          const body = document.createElement('div');
+          body.className = 'text-xs text-muted-foreground mt-1';
+          body.textContent = 'Contenido de ejemplo. Infinite scroll cargando items al llegar al final del viewport.';
+          div.appendChild(title);
+          div.appendChild(body);
+          list.appendChild(div);
+        }
+      }
+      addItems(10);
+
+      function fetchMore() {
+        if (loading) return;
+        if (loaded >= TOTAL) {
+          loader.classList.add('hidden');
+          endMsg.classList.remove('hidden');
+          io.disconnect();
+          return;
+        }
+        loading = true;
+        loader.classList.remove('hidden');
+        setTimeout(() => {
+          addItems(5);
+          loading = false;
+          if (loaded >= TOTAL) {
+            loader.classList.add('hidden');
+            endMsg.classList.remove('hidden');
+            io.disconnect();
+          }
+        }, 700);
+      }
+
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) fetchMore(); });
+      }, { root: scrollEl, rootMargin: '100px' });
+      io.observe(sentinel);
+    })();
+  </script>
+  <script src="../js/atlas.js"></script>
+  <script src="../js/demos.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

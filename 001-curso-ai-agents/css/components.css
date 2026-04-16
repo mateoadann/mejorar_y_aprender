@@ -1,0 +1,714 @@
+/* ==========================================================================
+   components.css — Componentes reutilizables para todos los módulos
+   ========================================================================== */
+
+/* .card
+   Tarjeta genérica con borde sutil y hover. Base para contenedores de
+   contenido agrupado (ej. un concepto, una definición, un ejemplo).      */
+.card {
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition:
+        transform var(--transition-base),
+        border-color var(--transition-base),
+        box-shadow var(--transition-base);
+}
+
+.card:hover {
+    border-color: var(--border-default);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.card h3,
+.card h4 {
+    margin-top: 0;
+    margin-bottom: var(--space-3);
+}
+
+.card p:last-child {
+    margin-bottom: 0;
+}
+
+/* .module-card
+   Tarjeta grande usada en el home para cada módulo del curso. Incluye un
+   número decorativo, título, descripción y meta info (lecciones/tiempo). */
+.module-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    background: linear-gradient(
+        160deg,
+        var(--bg-elevated) 0%,
+        var(--bg-raised) 100%
+    );
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    overflow: hidden;
+    transition:
+        transform var(--transition-base),
+        border-color var(--transition-base),
+        box-shadow var(--transition-base);
+    min-height: 260px;
+}
+
+.module-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at 100% 0%,
+        var(--accent-primary-dim) 0%,
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+    pointer-events: none;
+}
+
+.module-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-lg), var(--shadow-glow-primary);
+}
+
+.module-card:hover::before {
+    opacity: 1;
+}
+
+.module-card .module-number {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--accent-primary);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.module-card h3 {
+    font-size: var(--fs-2xl);
+    margin: 0;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.module-card p {
+    color: var(--text-secondary);
+    margin: 0;
+    flex: 1;
+}
+
+.module-card .module-meta {
+    display: flex;
+    gap: var(--space-4);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: var(--space-2);
+}
+
+.module-card .module-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--accent-primary);
+    font-weight: 600;
+    font-size: var(--fs-sm);
+    margin-top: var(--space-2);
+}
+
+.module-card .module-cta::after {
+    content: "\2192";
+    transition: transform var(--transition-base);
+}
+
+.module-card:hover .module-cta::after {
+    transform: translateX(4px);
+}
+
+/* .diagram-box
+   Caja para diagramas de arquitectura. Se usa como nodo dentro de layouts
+   de diagrama. Tiene un borde prominente y tipografía mono.              */
+.diagram-box {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    min-width: 140px;
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--bg-raised);
+    border: 1.5px solid var(--border-default);
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--text-primary);
+    transition: all var(--transition-base);
+}
+
+.diagram-box:hover {
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-glow-primary);
+}
+
+.diagram-box.primary {
+    border-color: var(--accent-primary);
+    background-color: var(--accent-primary-dim);
+}
+
+.diagram-box.secondary {
+    border-color: var(--accent-secondary);
+    background-color: var(--accent-secondary-dim);
+}
+
+.diagram-box .label {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* .arrow
+   Flechas CSS para conectar nodos de diagramas. Versiones horizontal,
+   vertical e inclinada, con animación de dibujado opcional.              */
+.arrow {
+    display: inline-block;
+    position: relative;
+    color: var(--accent-primary);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xl);
+    line-height: 1;
+}
+
+.arrow-right::before {
+    content: "\2192";
+}
+.arrow-left::before {
+    content: "\2190";
+}
+.arrow-down::before {
+    content: "\2193";
+}
+.arrow-up::before {
+    content: "\2191";
+}
+.arrow-bi::before {
+    content: "\2194";
+}
+
+.arrow-line {
+    display: inline-block;
+    height: 2px;
+    background: var(--accent-primary);
+    min-width: 40px;
+    position: relative;
+    vertical-align: middle;
+}
+
+.arrow-line::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-left-color: var(--accent-primary);
+}
+
+.arrow-line.vertical {
+    width: 2px;
+    min-height: 40px;
+    min-width: 0;
+}
+
+.arrow-line.vertical::after {
+    right: 50%;
+    top: auto;
+    bottom: -1px;
+    transform: translateX(50%);
+    border: 6px solid transparent;
+    border-top-color: var(--accent-primary);
+}
+
+/* .timeline
+   Línea de tiempo vertical u horizontal. Cada item tiene un punto
+   marcador y contenido al costado.                                       */
+.timeline {
+    position: relative;
+    padding-left: var(--space-8);
+    margin: var(--space-8) 0;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+        180deg,
+        var(--accent-primary) 0%,
+        var(--accent-secondary) 100%
+    );
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: var(--space-8);
+}
+
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: calc(-1 * var(--space-8) + 2px);
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    border: 3px solid var(--bg-base);
+    box-shadow: 0 0 0 2px var(--accent-primary);
+}
+
+.timeline-item .timeline-date {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-1);
+}
+
+.timeline-item h4 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-lg);
+}
+
+.timeline-item p {
+    margin: 0;
+}
+
+/* Timeline horizontal */
+.timeline-horizontal {
+    display: flex;
+    gap: var(--space-6);
+    overflow-x: auto;
+    padding: var(--space-6) 0;
+    position: relative;
+}
+
+.timeline-horizontal::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(var(--space-6) + 8px);
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        var(--accent-primary),
+        var(--accent-secondary)
+    );
+}
+
+.timeline-horizontal .timeline-item {
+    flex: 0 0 220px;
+    padding-top: var(--space-6);
+    padding-left: 0;
+}
+
+.timeline-horizontal .timeline-item::before {
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+}
+
+/* .comparison-table
+   Tabla comparativa con columnas resaltables. Útil para comparar enfoques,
+   librerías o arquitecturas.                                             */
+.comparison-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--space-6);
+    font-size: var(--fs-sm);
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: var(--space-4) var(--space-5);
+    text-align: left;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.comparison-table th {
+    background-color: var(--bg-raised);
+    color: var(--text-primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: none;
+}
+
+.comparison-table tr:hover td {
+    background-color: var(--bg-raised);
+}
+
+.comparison-table .highlight {
+    background-color: var(--accent-primary-dim);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.comparison-table .check {
+    color: var(--color-success);
+}
+.comparison-table .cross {
+    color: var(--color-danger);
+}
+
+/* .callout
+   Cajas de aviso con 4 variantes semánticas: info, warning, tip, success.
+   Incluye icono de tipo texto a la izquierda.                            */
+.callout {
+    position: relative;
+    padding: var(--space-5) var(--space-6);
+    padding-left: calc(var(--space-6) + 4px);
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-left: 4px solid var(--color-info);
+    border-radius: var(--radius-md);
+    margin: var(--space-6) 0;
+}
+
+.callout .callout-title {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: var(--fs-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.callout p:last-child {
+    margin-bottom: 0;
+}
+
+.callout.info {
+    border-left-color: var(--color-info);
+    background-color: rgba(59, 130, 246, 0.08);
+}
+.callout.info .callout-title {
+    color: var(--color-info);
+}
+
+.callout.warning {
+    border-left-color: var(--color-warning);
+    background-color: rgba(245, 158, 11, 0.08);
+}
+.callout.warning .callout-title {
+    color: var(--color-warning);
+}
+
+.callout.tip {
+    border-left-color: var(--color-tip);
+    background-color: rgba(139, 92, 246, 0.08);
+}
+.callout.tip .callout-title {
+    color: var(--color-tip);
+}
+
+.callout.success {
+    border-left-color: var(--color-success);
+    background-color: rgba(16, 185, 129, 0.08);
+}
+.callout.success .callout-title {
+    color: var(--color-success);
+}
+
+/* .code-block
+   Bloque de código con header (lenguaje + botón copy) y área scrollable.
+   Usa <pre><code> por dentro para semántica.                             */
+.code-block {
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    margin: var(--space-6) 0;
+    overflow: hidden;
+}
+
+.code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--bg-raised);
+    border-bottom: 1px solid var(--border-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.code-block-copy {
+    background-color: transparent;
+    color: var(--text-secondary);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-default);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.code-block-copy:hover {
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.code-block-copy.copied {
+    color: var(--color-success);
+    border-color: var(--color-success);
+}
+
+.code-block pre {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+/* .progress-bar
+   Barra de progreso genérica. El fill se anima con la variable
+   --progress-value (0-100).                                              */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--bg-raised);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        var(--accent-primary) 0%,
+        var(--accent-secondary) 100%
+    );
+    border-radius: var(--radius-full);
+    width: var(--progress-value, 0%);
+    transition: width var(--transition-slow);
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2);
+}
+
+.progress-label strong {
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+}
+
+/* .tag
+   Chips/tags de categoría. Variantes de color por tipo.                  */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-3);
+    background-color: var(--bg-raised);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-right: var(--space-2);
+    margin-bottom: var(--space-2);
+}
+
+.tag.primary {
+    background-color: var(--accent-primary-dim);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.tag.secondary {
+    background-color: var(--accent-secondary-dim);
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+}
+
+/* .nav-breadcrumb
+   Navegación de migas de pan usada en módulos. Home / Módulo / Lección.  */
+.nav-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--space-6);
+    list-style: none;
+    padding: 0;
+}
+
+.nav-breadcrumb li {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.nav-breadcrumb li:not(:last-child)::after {
+    content: "\2044";
+    color: var(--text-muted);
+    margin-left: var(--space-2);
+}
+
+.nav-breadcrumb a {
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+
+.nav-breadcrumb a:hover {
+    color: var(--accent-primary);
+}
+
+.nav-breadcrumb li:last-child {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* .nav-pager
+   Paginación de lecciones: botón anterior / siguiente. Usa grid 2
+   columnas; cuando hay solo uno, el que queda va a su posición natural.  */
+.nav-pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-16);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.nav-pager a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-5) var(--space-6);
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    transition: all var(--transition-base);
+}
+
+.nav-pager a:hover {
+    border-color: var(--accent-primary);
+    background-color: var(--bg-raised);
+    transform: translateY(-2px);
+}
+
+.nav-pager .pager-label {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.nav-pager .pager-title {
+    font-weight: 600;
+    font-size: var(--fs-base);
+}
+
+.nav-pager .pager-next {
+    text-align: right;
+    grid-column: 2;
+}
+
+.nav-pager .pager-prev {
+    grid-column: 1;
+}
+
+/* Button base (usado por varios componentes) ------------------------------ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: var(--fs-sm);
+    transition: all var(--transition-base);
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: var(--accent-primary);
+    color: var(--text-inverse);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-primary-hover);
+    color: var(--text-inverse);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow-primary);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-default);
+}
+
+.btn-secondary:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+/* Diagram layout wrapper --------------------------------------------------- */
+.diagram {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-8);
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    margin: var(--space-8) 0;
+}
+
+.diagram.vertical {
+    flex-direction: column;
+}

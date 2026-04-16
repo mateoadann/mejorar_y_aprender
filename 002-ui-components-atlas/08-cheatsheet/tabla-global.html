@@ -1,0 +1,287 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabla Global · UI Components Atlas</title>
+    <meta name="description" content="Los 80 componentes del atlas en una tabla buscable y filtrable por categoría." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+    <style>
+      .global-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+      .global-table thead th { position: sticky; top: 0; background: #18181b; border-bottom: 1px solid #27272a; padding: 0.75rem 1rem; text-align: left; font-weight: 600; color: #fafafa; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+      .global-table tbody td { padding: 0.75rem 1rem; border-bottom: 1px solid #27272a; color: #e4e4e7; vertical-align: top; }
+      .global-table tbody tr { cursor: pointer; transition: background 0.1s ease; }
+      .global-table tbody tr:hover { background: rgba(39, 39, 42, 0.4); }
+      .global-table tbody tr.is-selected { background: rgba(59, 130, 246, 0.1); box-shadow: inset 3px 0 0 0 #60a5fa; }
+      .global-table .cat-pill { display: inline-block; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 500; background: #27272a; color: #a1a1aa; white-space: nowrap; }
+      .global-table .code { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.75rem; color: #a1a1aa; }
+      .global-table .link-btn { display: inline-flex; align-items: center; gap: 0.25rem; color: #fafafa; font-weight: 500; text-decoration: none; padding: 0.25rem 0.5rem; border-radius: 0.375rem; border: 1px solid #27272a; transition: background 0.1s; }
+      .global-table .link-btn:hover { background: #27272a; }
+      .filter-pill { padding: 0.375rem 0.875rem; border-radius: 9999px; border: 1px solid #27272a; background: transparent; color: #a1a1aa; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+      .filter-pill:hover { border-color: #52525b; color: #e4e4e7; }
+      .filter-pill.is-active { background: #fafafa; color: #18181b; border-color: #fafafa; }
+    </style>
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Páginas del módulo">
+        <h2 class="sidebar-nav__title">Cheatsheet Global</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del módulo</a></li>
+          <li><a class="sidebar-nav__link is-active" href="tabla-global.html">01 — Tabla Global</a></li>
+          <li><a class="sidebar-nav__link" href="decision-tree.html">02 — Decision Tree</a></li>
+          <li><a class="sidebar-nav__link" href="prompt-library.html">03 — Prompt Library</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Cheatsheet Global</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Tabla Global</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Tabla Global</h1>
+          <p class="component-page__lead">Los 80 componentes del atlas en una sola tabla. Filtrá por nombre, alias o categoría y saltá al componente en un click.</p>
+        </header>
+
+        <section class="component-page__section">
+          <div class="rounded-lg border border-border bg-muted/10 p-4 mb-4">
+            <div class="flex flex-col gap-4">
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                <input type="search" id="tableSearch" class="w-full rounded-md border border-border bg-background pl-9 pr-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Buscar por nombre, alias o descripción..." autocomplete="off" spellcheck="false" />
+              </div>
+              <div class="flex flex-wrap gap-2" role="group" aria-label="Filtro por categoría">
+                <button type="button" class="filter-pill is-active" data-filter="all">Todas</button>
+                <button type="button" class="filter-pill" data-filter="inputs">Inputs</button>
+                <button type="button" class="filter-pill" data-filter="navegacion">Navegación</button>
+                <button type="button" class="filter-pill" data-filter="feedback">Feedback</button>
+                <button type="button" class="filter-pill" data-filter="display">Display</button>
+                <button type="button" class="filter-pill" data-filter="overlays">Overlays</button>
+                <button type="button" class="filter-pill" data-filter="layout">Layout</button>
+                <button type="button" class="filter-pill" data-filter="patrones">Patrones</button>
+              </div>
+              <div class="text-xs text-muted-foreground">
+                Mostrando <span id="countVisible">77</span> de <span id="countTotal">77</span> componentes
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-lg border border-border overflow-hidden">
+            <div class="max-h-[70vh] overflow-auto">
+              <table class="global-table">
+                <thead>
+                  <tr>
+                    <th>Componente</th>
+                    <th>Categoría</th>
+                    <th>Shadcn</th>
+                    <th>HTML nativo</th>
+                    <th>Aliases</th>
+                    <th>Link</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody">
+                  <tr data-name="Button" data-category="inputs" data-aliases="button btn boton"><td>Button</td><td><span class="cat-pill">Inputs</span></td><td>Button</td><td class="code">&lt;button&gt;</td><td class="code">btn, boton</td><td><a class="link-btn" href="../01-inputs-controles/button.html">Ver →</a></td></tr>
+                  <tr data-name="Input" data-category="inputs" data-aliases="input textbox text field"><td>Input</td><td><span class="cat-pill">Inputs</span></td><td>Input</td><td class="code">&lt;input type="text"&gt;</td><td class="code">textbox, text field</td><td><a class="link-btn" href="../01-inputs-controles/input.html">Ver →</a></td></tr>
+                  <tr data-name="Textarea" data-category="inputs" data-aliases="textarea area de texto"><td>Textarea</td><td><span class="cat-pill">Inputs</span></td><td>Textarea</td><td class="code">&lt;textarea&gt;</td><td class="code">área de texto</td><td><a class="link-btn" href="../01-inputs-controles/textarea.html">Ver →</a></td></tr>
+                  <tr data-name="Select" data-category="inputs" data-aliases="select dropdown combo"><td>Select</td><td><span class="cat-pill">Inputs</span></td><td>Select</td><td class="code">&lt;select&gt;</td><td class="code">dropdown, combo</td><td><a class="link-btn" href="../01-inputs-controles/select.html">Ver →</a></td></tr>
+                  <tr data-name="Combobox" data-category="inputs" data-aliases="combobox autocomplete searchable"><td>Combobox</td><td><span class="cat-pill">Inputs</span></td><td>Combobox</td><td class="code">—</td><td class="code">autocomplete, searchable</td><td><a class="link-btn" href="../01-inputs-controles/combobox.html">Ver →</a></td></tr>
+                  <tr data-name="Autocomplete" data-category="inputs" data-aliases="autocomplete typeahead datalist"><td>Autocomplete</td><td><span class="cat-pill">Inputs</span></td><td>(usa Combobox)</td><td class="code">&lt;datalist&gt;</td><td class="code">typeahead</td><td><a class="link-btn" href="../01-inputs-controles/autocomplete.html">Ver →</a></td></tr>
+                  <tr data-name="Checkbox" data-category="inputs" data-aliases="checkbox tilde check"><td>Checkbox</td><td><span class="cat-pill">Inputs</span></td><td>Checkbox</td><td class="code">&lt;input type="checkbox"&gt;</td><td class="code">tilde, check</td><td><a class="link-btn" href="../01-inputs-controles/checkbox.html">Ver →</a></td></tr>
+                  <tr data-name="Radio Group" data-category="inputs" data-aliases="radio group radio button"><td>Radio Group</td><td><span class="cat-pill">Inputs</span></td><td>RadioGroup</td><td class="code">&lt;input type="radio"&gt;</td><td class="code">radio button</td><td><a class="link-btn" href="../01-inputs-controles/radio-group.html">Ver →</a></td></tr>
+                  <tr data-name="Switch Toggle" data-category="inputs" data-aliases="switch toggle on off"><td>Switch / Toggle</td><td><span class="cat-pill">Inputs</span></td><td>Switch, Toggle</td><td class="code">—</td><td class="code">on/off</td><td><a class="link-btn" href="../01-inputs-controles/switch-toggle.html">Ver →</a></td></tr>
+                  <tr data-name="Slider" data-category="inputs" data-aliases="slider range"><td>Slider</td><td><span class="cat-pill">Inputs</span></td><td>Slider</td><td class="code">&lt;input type="range"&gt;</td><td class="code">range</td><td><a class="link-btn" href="../01-inputs-controles/slider.html">Ver →</a></td></tr>
+                  <tr data-name="Date Picker" data-category="inputs" data-aliases="date picker calendar calendario"><td>Date Picker</td><td><span class="cat-pill">Inputs</span></td><td>DatePicker</td><td class="code">&lt;input type="date"&gt;</td><td class="code">calendar, calendario</td><td><a class="link-btn" href="../01-inputs-controles/date-picker.html">Ver →</a></td></tr>
+                  <tr data-name="File Upload" data-category="inputs" data-aliases="file upload dropzone"><td>File Upload</td><td><span class="cat-pill">Inputs</span></td><td>(custom)</td><td class="code">&lt;input type="file"&gt;</td><td class="code">dropzone</td><td><a class="link-btn" href="../01-inputs-controles/file-upload.html">Ver →</a></td></tr>
+                  <tr data-name="OTP Input" data-category="inputs" data-aliases="otp input pin verification code"><td>OTP Input</td><td><span class="cat-pill">Inputs</span></td><td>InputOTP</td><td class="code">—</td><td class="code">pin input, verification code</td><td><a class="link-btn" href="../01-inputs-controles/otp-input.html">Ver →</a></td></tr>
+                  <tr data-name="Rating" data-category="inputs" data-aliases="rating stars rate"><td>Rating</td><td><span class="cat-pill">Inputs</span></td><td>(no oficial)</td><td class="code">—</td><td class="code">stars, rate</td><td><a class="link-btn" href="../01-inputs-controles/rating.html">Ver →</a></td></tr>
+                  <tr data-name="Search Bar" data-category="inputs" data-aliases="search bar buscador"><td>Search Bar</td><td><span class="cat-pill">Inputs</span></td><td>(compone Input)</td><td class="code">&lt;input type="search"&gt;</td><td class="code">buscador</td><td><a class="link-btn" href="../01-inputs-controles/search-bar.html">Ver →</a></td></tr>
+
+                  <tr data-name="Navbar" data-category="navegacion" data-aliases="navbar top nav header nav app bar"><td>Navbar</td><td><span class="cat-pill">Navegación</span></td><td>—</td><td class="code">&lt;nav&gt;</td><td class="code">top nav, header, app bar</td><td><a class="link-btn" href="../02-navegacion/navbar.html">Ver →</a></td></tr>
+                  <tr data-name="Sidebar" data-category="navegacion" data-aliases="sidebar side nav panel lateral"><td>Sidebar</td><td><span class="cat-pill">Navegación</span></td><td>Sidebar</td><td class="code">&lt;aside&gt;</td><td class="code">side nav, panel lateral</td><td><a class="link-btn" href="../02-navegacion/sidebar.html">Ver →</a></td></tr>
+                  <tr data-name="Tabs" data-category="navegacion" data-aliases="tabs pestanas"><td>Tabs</td><td><span class="cat-pill">Navegación</span></td><td>Tabs</td><td class="code">—</td><td class="code">pestañas</td><td><a class="link-btn" href="../02-navegacion/tabs.html">Ver →</a></td></tr>
+                  <tr data-name="Breadcrumbs" data-category="navegacion" data-aliases="breadcrumbs migas de pan ruta"><td>Breadcrumbs</td><td><span class="cat-pill">Navegación</span></td><td>Breadcrumb</td><td class="code">—</td><td class="code">migas de pan, ruta</td><td><a class="link-btn" href="../02-navegacion/breadcrumbs.html">Ver →</a></td></tr>
+                  <tr data-name="Pagination" data-category="navegacion" data-aliases="pagination paginador"><td>Pagination</td><td><span class="cat-pill">Navegación</span></td><td>Pagination</td><td class="code">—</td><td class="code">paginador</td><td><a class="link-btn" href="../02-navegacion/pagination.html">Ver →</a></td></tr>
+                  <tr data-name="Stepper" data-category="navegacion" data-aliases="stepper wizard steps pasos"><td>Stepper</td><td><span class="cat-pill">Navegación</span></td><td>(no oficial)</td><td class="code">—</td><td class="code">wizard, steps, pasos</td><td><a class="link-btn" href="../02-navegacion/stepper.html">Ver →</a></td></tr>
+                  <tr data-name="Command Palette" data-category="navegacion" data-aliases="command palette cmdk command k"><td>Command Palette</td><td><span class="cat-pill">Navegación</span></td><td>Command</td><td class="code">—</td><td class="code">cmdk, command k</td><td><a class="link-btn" href="../02-navegacion/command-palette.html">Ver →</a></td></tr>
+                  <tr data-name="Drawer" data-category="navegacion" data-aliases="drawer slide out"><td>Drawer</td><td><span class="cat-pill">Navegación</span></td><td>Sheet</td><td class="code">—</td><td class="code">slide out</td><td><a class="link-btn" href="../02-navegacion/drawer.html">Ver →</a></td></tr>
+                  <tr data-name="Bottom Nav" data-category="navegacion" data-aliases="bottom nav tab bar mobile nav"><td>Bottom Nav</td><td><span class="cat-pill">Navegación</span></td><td>(no oficial)</td><td class="code">—</td><td class="code">tab bar, mobile nav</td><td><a class="link-btn" href="../02-navegacion/bottom-nav.html">Ver →</a></td></tr>
+                  <tr data-name="Mega Menu" data-category="navegacion" data-aliases="mega menu dropdown menu grande"><td>Mega Menu</td><td><span class="cat-pill">Navegación</span></td><td>NavigationMenu</td><td class="code">—</td><td class="code">dropdown menu grande</td><td><a class="link-btn" href="../02-navegacion/mega-menu.html">Ver →</a></td></tr>
+
+                  <tr data-name="Toast" data-category="feedback" data-aliases="toast snackbar notification"><td>Toast</td><td><span class="cat-pill">Feedback</span></td><td>Sonner</td><td class="code">—</td><td class="code">snackbar, notification</td><td><a class="link-btn" href="../03-feedback-estado/toast.html">Ver →</a></td></tr>
+                  <tr data-name="Alert" data-category="feedback" data-aliases="alert inline message aviso"><td>Alert</td><td><span class="cat-pill">Feedback</span></td><td>Alert</td><td class="code">—</td><td class="code">inline message, aviso</td><td><a class="link-btn" href="../03-feedback-estado/alert.html">Ver →</a></td></tr>
+                  <tr data-name="Banner" data-category="feedback" data-aliases="banner announcement cookie banner"><td>Banner</td><td><span class="cat-pill">Feedback</span></td><td>(no oficial)</td><td class="code">—</td><td class="code">announcement, cookie banner</td><td><a class="link-btn" href="../03-feedback-estado/banner.html">Ver →</a></td></tr>
+                  <tr data-name="Dialog" data-category="feedback" data-aliases="dialog modal"><td>Dialog</td><td><span class="cat-pill">Feedback</span></td><td>Dialog</td><td class="code">&lt;dialog&gt;</td><td class="code">modal</td><td><a class="link-btn" href="../03-feedback-estado/dialog.html">Ver →</a></td></tr>
+                  <tr data-name="Alert Dialog" data-category="feedback" data-aliases="alert dialog confirm modal"><td>Alert Dialog</td><td><span class="cat-pill">Feedback</span></td><td>AlertDialog</td><td class="code">—</td><td class="code">confirm modal</td><td><a class="link-btn" href="../03-feedback-estado/alert-dialog.html">Ver →</a></td></tr>
+                  <tr data-name="Popover" data-category="feedback" data-aliases="popover floating panel"><td>Popover</td><td><span class="cat-pill">Feedback</span></td><td>Popover</td><td class="code">—</td><td class="code">floating panel</td><td><a class="link-btn" href="../03-feedback-estado/popover.html">Ver →</a></td></tr>
+                  <tr data-name="Tooltip" data-category="feedback" data-aliases="tooltip hint hover text"><td>Tooltip</td><td><span class="cat-pill">Feedback</span></td><td>Tooltip</td><td class="code">—</td><td class="code">hint, hover text</td><td><a class="link-btn" href="../03-feedback-estado/tooltip.html">Ver →</a></td></tr>
+                  <tr data-name="Progress" data-category="feedback" data-aliases="progress bar"><td>Progress</td><td><span class="cat-pill">Feedback</span></td><td>Progress</td><td class="code">&lt;progress&gt;</td><td class="code">progress bar</td><td><a class="link-btn" href="../03-feedback-estado/progress.html">Ver →</a></td></tr>
+                  <tr data-name="Spinner" data-category="feedback" data-aliases="spinner loader loading"><td>Spinner</td><td><span class="cat-pill">Feedback</span></td><td>(custom)</td><td class="code">—</td><td class="code">loader, loading</td><td><a class="link-btn" href="../03-feedback-estado/spinner.html">Ver →</a></td></tr>
+                  <tr data-name="Skeleton" data-category="feedback" data-aliases="skeleton placeholder shimmer"><td>Skeleton</td><td><span class="cat-pill">Feedback</span></td><td>Skeleton</td><td class="code">—</td><td class="code">placeholder, shimmer</td><td><a class="link-btn" href="../03-feedback-estado/skeleton.html">Ver →</a></td></tr>
+                  <tr data-name="Empty State" data-category="feedback" data-aliases="empty state no data zero state"><td>Empty State</td><td><span class="cat-pill">Feedback</span></td><td>(no oficial)</td><td class="code">—</td><td class="code">no data, zero state</td><td><a class="link-btn" href="../03-feedback-estado/empty-state.html">Ver →</a></td></tr>
+                  <tr data-name="Error State" data-category="feedback" data-aliases="error state 404 500"><td>Error State</td><td><span class="cat-pill">Feedback</span></td><td>(no oficial)</td><td class="code">—</td><td class="code">404, 500</td><td><a class="link-btn" href="../03-feedback-estado/error-state.html">Ver →</a></td></tr>
+
+                  <tr data-name="Card" data-category="display" data-aliases="card tarjeta box"><td>Card</td><td><span class="cat-pill">Display</span></td><td>Card</td><td class="code">—</td><td class="code">tarjeta, box</td><td><a class="link-btn" href="../04-display-datos/card.html">Ver →</a></td></tr>
+                  <tr data-name="Table" data-category="display" data-aliases="table tabla"><td>Table</td><td><span class="cat-pill">Display</span></td><td>Table</td><td class="code">&lt;table&gt;</td><td class="code">tabla</td><td><a class="link-btn" href="../04-display-datos/table.html">Ver →</a></td></tr>
+                  <tr data-name="List" data-category="display" data-aliases="list lista"><td>List</td><td><span class="cat-pill">Display</span></td><td>(no oficial)</td><td class="code">&lt;ul&gt;, &lt;ol&gt;</td><td class="code">lista</td><td><a class="link-btn" href="../04-display-datos/list.html">Ver →</a></td></tr>
+                  <tr data-name="Tree View" data-category="display" data-aliases="tree view arbol file explorer"><td>Tree View</td><td><span class="cat-pill">Display</span></td><td>(no oficial)</td><td class="code">—</td><td class="code">árbol, file explorer</td><td><a class="link-btn" href="../04-display-datos/tree-view.html">Ver →</a></td></tr>
+                  <tr data-name="Timeline" data-category="display" data-aliases="timeline linea de tiempo activity"><td>Timeline</td><td><span class="cat-pill">Display</span></td><td>(no oficial)</td><td class="code">—</td><td class="code">línea de tiempo, activity</td><td><a class="link-btn" href="../04-display-datos/timeline.html">Ver →</a></td></tr>
+                  <tr data-name="Accordion" data-category="display" data-aliases="accordion acordeon faq"><td>Accordion</td><td><span class="cat-pill">Display</span></td><td>Accordion</td><td class="code">&lt;details&gt;</td><td class="code">acordeón, faq</td><td><a class="link-btn" href="../04-display-datos/accordion.html">Ver →</a></td></tr>
+                  <tr data-name="Collapsible" data-category="display" data-aliases="collapsible show more expand"><td>Collapsible</td><td><span class="cat-pill">Display</span></td><td>Collapsible</td><td class="code">&lt;details&gt;</td><td class="code">show more, expand</td><td><a class="link-btn" href="../04-display-datos/collapsible.html">Ver →</a></td></tr>
+                  <tr data-name="Carousel" data-category="display" data-aliases="carousel slider slideshow"><td>Carousel</td><td><span class="cat-pill">Display</span></td><td>Carousel</td><td class="code">—</td><td class="code">slider, slideshow</td><td><a class="link-btn" href="../04-display-datos/carousel.html">Ver →</a></td></tr>
+                  <tr data-name="Avatar" data-category="display" data-aliases="avatar profile pic user image"><td>Avatar</td><td><span class="cat-pill">Display</span></td><td>Avatar</td><td class="code">&lt;img&gt;</td><td class="code">profile pic, user image</td><td><a class="link-btn" href="../04-display-datos/avatar.html">Ver →</a></td></tr>
+                  <tr data-name="Badge Chip Tag" data-category="display" data-aliases="badge chip tag label"><td>Badge / Chip / Tag</td><td><span class="cat-pill">Display</span></td><td>Badge</td><td class="code">—</td><td class="code">badge, chip, tag, label</td><td><a class="link-btn" href="../04-display-datos/badge-chip-tag.html">Ver →</a></td></tr>
+                  <tr data-name="Stat Card" data-category="display" data-aliases="stat card kpi metric card"><td>Stat Card</td><td><span class="cat-pill">Display</span></td><td>(compone Card)</td><td class="code">—</td><td class="code">kpi, metric card</td><td><a class="link-btn" href="../04-display-datos/stat-card.html">Ver →</a></td></tr>
+                  <tr data-name="Kanban Card" data-category="display" data-aliases="kanban card task card trello card"><td>Kanban Card</td><td><span class="cat-pill">Display</span></td><td>(compone Card)</td><td class="code">—</td><td class="code">task card, trello card</td><td><a class="link-btn" href="../04-display-datos/kanban-card.html">Ver →</a></td></tr>
+
+                  <tr data-name="Dropdown Menu" data-category="overlays" data-aliases="dropdown menu action menu"><td>Dropdown Menu</td><td><span class="cat-pill">Overlays</span></td><td>DropdownMenu</td><td class="code">—</td><td class="code">menu, action menu</td><td><a class="link-btn" href="../05-overlays/dropdown-menu.html">Ver →</a></td></tr>
+                  <tr data-name="Context Menu" data-category="overlays" data-aliases="context menu right click"><td>Context Menu</td><td><span class="cat-pill">Overlays</span></td><td>ContextMenu</td><td class="code">—</td><td class="code">right click menu</td><td><a class="link-btn" href="../05-overlays/context-menu.html">Ver →</a></td></tr>
+                  <tr data-name="Hover Card" data-category="overlays" data-aliases="hover card profile preview"><td>Hover Card</td><td><span class="cat-pill">Overlays</span></td><td>HoverCard</td><td class="code">—</td><td class="code">profile preview</td><td><a class="link-btn" href="../05-overlays/hover-card.html">Ver →</a></td></tr>
+                  <tr data-name="Menubar" data-category="overlays" data-aliases="menubar application menu"><td>Menubar</td><td><span class="cat-pill">Overlays</span></td><td>Menubar</td><td class="code">—</td><td class="code">application menu</td><td><a class="link-btn" href="../05-overlays/menubar.html">Ver →</a></td></tr>
+                  <tr data-name="Sheet" data-category="overlays" data-aliases="sheet slide panel edit panel"><td>Sheet</td><td><span class="cat-pill">Overlays</span></td><td>Sheet</td><td class="code">—</td><td class="code">slide panel, edit panel</td><td><a class="link-btn" href="../05-overlays/sheet.html">Ver →</a></td></tr>
+                  <tr data-name="Modal Fullscreen" data-category="overlays" data-aliases="modal fullscreen lightbox"><td>Modal Fullscreen</td><td><span class="cat-pill">Overlays</span></td><td>Dialog fullscreen</td><td class="code">—</td><td class="code">fullscreen dialog, lightbox</td><td><a class="link-btn" href="../05-overlays/modal-fullscreen.html">Ver →</a></td></tr>
+                  <tr data-name="Toast Overlay System" data-category="overlays" data-aliases="toast overlay system toast stack"><td>Toast Overlay System</td><td><span class="cat-pill">Overlays</span></td><td>Toaster</td><td class="code">—</td><td class="code">toast stack</td><td><a class="link-btn" href="../05-overlays/toast-overlay-system.html">Ver →</a></td></tr>
+                  <tr data-name="Backdrop" data-category="overlays" data-aliases="backdrop overlay mask scrim"><td>Backdrop</td><td><span class="cat-pill">Overlays</span></td><td>Dialog.Overlay</td><td class="code">—</td><td class="code">overlay, mask, scrim</td><td><a class="link-btn" href="../05-overlays/backdrop.html">Ver →</a></td></tr>
+
+                  <tr data-name="Container" data-category="layout" data-aliases="container wrapper max-width"><td>Container</td><td><span class="cat-pill">Layout</span></td><td>(utility)</td><td class="code">&lt;div&gt;</td><td class="code">wrapper, max-width</td><td><a class="link-btn" href="../06-layout/container.html">Ver →</a></td></tr>
+                  <tr data-name="Grid" data-category="layout" data-aliases="grid css grid grilla"><td>Grid</td><td><span class="cat-pill">Layout</span></td><td>(utility)</td><td class="code">—</td><td class="code">css grid, grilla</td><td><a class="link-btn" href="../06-layout/grid.html">Ver →</a></td></tr>
+                  <tr data-name="Flex Stack" data-category="layout" data-aliases="flex stack flexbox hstack vstack"><td>Flex / Stack</td><td><span class="cat-pill">Layout</span></td><td>(utility)</td><td class="code">—</td><td class="code">flexbox, hstack, vstack</td><td><a class="link-btn" href="../06-layout/flex-stack.html">Ver →</a></td></tr>
+                  <tr data-name="Divider" data-category="layout" data-aliases="divider separator linea"><td>Divider</td><td><span class="cat-pill">Layout</span></td><td>Separator</td><td class="code">&lt;hr&gt;</td><td class="code">separator, línea</td><td><a class="link-btn" href="../06-layout/divider.html">Ver →</a></td></tr>
+                  <tr data-name="Spacer" data-category="layout" data-aliases="spacer space push"><td>Spacer</td><td><span class="cat-pill">Layout</span></td><td>(utility)</td><td class="code">—</td><td class="code">space, push</td><td><a class="link-btn" href="../06-layout/spacer.html">Ver →</a></td></tr>
+                  <tr data-name="Aspect Ratio" data-category="layout" data-aliases="aspect ratio 16:9"><td>Aspect Ratio</td><td><span class="cat-pill">Layout</span></td><td>AspectRatio</td><td class="code">—</td><td class="code">ratio, 16:9</td><td><a class="link-btn" href="../06-layout/aspect-ratio.html">Ver →</a></td></tr>
+                  <tr data-name="Scroll Area" data-category="layout" data-aliases="scroll area scrollbar overflow"><td>Scroll Area</td><td><span class="cat-pill">Layout</span></td><td>ScrollArea</td><td class="code">—</td><td class="code">scrollbar, overflow</td><td><a class="link-btn" href="../06-layout/scroll-area.html">Ver →</a></td></tr>
+                  <tr data-name="Resizable" data-category="layout" data-aliases="resizable split panel drag resize"><td>Resizable</td><td><span class="cat-pill">Layout</span></td><td>Resizable</td><td class="code">—</td><td class="code">split panel, drag resize</td><td><a class="link-btn" href="../06-layout/resizable.html">Ver →</a></td></tr>
+                  <tr data-name="Separator Section" data-category="layout" data-aliases="separator section divider"><td>Separator Section</td><td><span class="cat-pill">Layout</span></td><td>(compone)</td><td class="code">&lt;section&gt;</td><td class="code">section divider</td><td><a class="link-btn" href="../06-layout/separator-section.html">Ver →</a></td></tr>
+                  <tr data-name="Page Layout" data-category="layout" data-aliases="page layout app shell template"><td>Page Layout</td><td><span class="cat-pill">Layout</span></td><td>(compone Sidebar)</td><td class="code">—</td><td class="code">app shell, template</td><td><a class="link-btn" href="../06-layout/page-layout.html">Ver →</a></td></tr>
+
+                  <tr data-name="Data Table" data-category="patrones" data-aliases="data table sort filter"><td>Data Table</td><td><span class="cat-pill">Patrones</span></td><td>DataTable</td><td class="code">—</td><td class="code">tabla con sort/filter</td><td><a class="link-btn" href="../07-patrones-avanzados/data-table.html">Ver →</a></td></tr>
+                  <tr data-name="Form" data-category="patrones" data-aliases="form formulario"><td>Form</td><td><span class="cat-pill">Patrones</span></td><td>Form</td><td class="code">&lt;form&gt;</td><td class="code">formulario</td><td><a class="link-btn" href="../07-patrones-avanzados/form.html">Ver →</a></td></tr>
+                  <tr data-name="Form Wizard" data-category="patrones" data-aliases="form wizard multi-step form"><td>Form Wizard</td><td><span class="cat-pill">Patrones</span></td><td>(compone Stepper + Form)</td><td class="code">—</td><td class="code">multi-step form</td><td><a class="link-btn" href="../07-patrones-avanzados/form-wizard.html">Ver →</a></td></tr>
+                  <tr data-name="Drag and Drop" data-category="patrones" data-aliases="drag and drop dnd sortable"><td>Drag and Drop</td><td><span class="cat-pill">Patrones</span></td><td>(usa dnd-kit)</td><td class="code">draggable</td><td class="code">dnd, sortable</td><td><a class="link-btn" href="../07-patrones-avanzados/drag-drop.html">Ver →</a></td></tr>
+                  <tr data-name="Infinite Scroll" data-category="patrones" data-aliases="infinite scroll scroll infinito"><td>Infinite Scroll</td><td><span class="cat-pill">Patrones</span></td><td>(no oficial)</td><td class="code">—</td><td class="code">scroll infinito</td><td><a class="link-btn" href="../07-patrones-avanzados/infinite-scroll.html">Ver →</a></td></tr>
+                  <tr data-name="Virtualized List" data-category="patrones" data-aliases="virtualized list windowing virtual list"><td>Virtualized List</td><td><span class="cat-pill">Patrones</span></td><td>(usa TanStack Virtual)</td><td class="code">—</td><td class="code">windowing, virtual list</td><td><a class="link-btn" href="../07-patrones-avanzados/virtualized-list.html">Ver →</a></td></tr>
+                  <tr data-name="Rich Text Editor" data-category="patrones" data-aliases="rich text editor wysiwyg"><td>Rich Text Editor</td><td><span class="cat-pill">Patrones</span></td><td>(usa Tiptap)</td><td class="code">contenteditable</td><td class="code">wysiwyg</td><td><a class="link-btn" href="../07-patrones-avanzados/rich-text-editor.html">Ver →</a></td></tr>
+                  <tr data-name="Code Editor" data-category="patrones" data-aliases="code editor syntax editor"><td>Code Editor</td><td><span class="cat-pill">Patrones</span></td><td>(usa Monaco)</td><td class="code">—</td><td class="code">syntax editor</td><td><a class="link-btn" href="../07-patrones-avanzados/code-editor.html">Ver →</a></td></tr>
+                  <tr data-name="Kanban Board" data-category="patrones" data-aliases="kanban board trello task board"><td>Kanban Board</td><td><span class="cat-pill">Patrones</span></td><td>(compone Kanban Card)</td><td class="code">—</td><td class="code">trello board, task board</td><td><a class="link-btn" href="../07-patrones-avanzados/kanban-board.html">Ver →</a></td></tr>
+                  <tr data-name="Masked Input" data-category="patrones" data-aliases="masked input phone mask card mask"><td>Masked Input</td><td><span class="cat-pill">Patrones</span></td><td>(usa react-imask)</td><td class="code">—</td><td class="code">phone mask, card mask</td><td><a class="link-btn" href="../07-patrones-avanzados/masked-input.html">Ver →</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p id="emptyMessage" class="mt-4 text-sm text-muted-foreground text-center" style="display:none;">No se encontraron componentes con ese filtro. Probá con otra búsqueda.</p>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegación entre páginas">
+          <a class="component-nav__link" href="index.html">
+            <span class="component-nav__dir">Anterior</span>
+            <span class="component-nav__title">Portada del módulo</span>
+          </a>
+          <a class="component-nav__link component-nav__link--next" href="decision-tree.html">
+            <span class="component-nav__dir">Siguiente</span>
+            <span class="component-nav__title">Decision Tree</span>
+          </a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+    <script>
+      (function () {
+        var searchInput = document.getElementById('tableSearch');
+        var tbody = document.getElementById('tableBody');
+        var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+        var filterPills = document.querySelectorAll('.filter-pill');
+        var countVisible = document.getElementById('countVisible');
+        var countTotal = document.getElementById('countTotal');
+        var emptyMessage = document.getElementById('emptyMessage');
+
+        countTotal.textContent = String(rows.length);
+
+        var state = { query: '', category: 'all' };
+
+        function applyFilters() {
+          var q = state.query.trim().toLowerCase();
+          var cat = state.category;
+          var visible = 0;
+
+          rows.forEach(function (row) {
+            var name = (row.getAttribute('data-name') || '').toLowerCase();
+            var aliases = (row.getAttribute('data-aliases') || '').toLowerCase();
+            var category = row.getAttribute('data-category') || '';
+
+            var matchesCat = (cat === 'all') || (category === cat);
+            var matchesQuery = (q === '') || name.indexOf(q) !== -1 || aliases.indexOf(q) !== -1;
+
+            if (matchesCat && matchesQuery) {
+              row.style.display = '';
+              visible++;
+            } else {
+              row.style.display = 'none';
+            }
+          });
+
+          countVisible.textContent = String(visible);
+          emptyMessage.style.display = visible === 0 ? 'block' : 'none';
+        }
+
+        searchInput.addEventListener('input', function (e) {
+          state.query = e.target.value;
+          applyFilters();
+        });
+
+        filterPills.forEach(function (pill) {
+          pill.addEventListener('click', function () {
+            filterPills.forEach(function (p) { p.classList.remove('is-active'); });
+            pill.classList.add('is-active');
+            state.category = pill.getAttribute('data-filter') || 'all';
+            applyFilters();
+          });
+        });
+
+        rows.forEach(function (row) {
+          row.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A' || e.target.closest('a')) return;
+            rows.forEach(function (r) { r.classList.remove('is-selected'); });
+            row.classList.add('is-selected');
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

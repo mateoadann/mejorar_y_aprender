@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kanban Board · UI Components Atlas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      background: '#09090b', foreground: '#fafafa',
+      muted: { DEFAULT: '#27272a', foreground: '#a1a1aa' },
+      border: '#27272a', ring: '#d4d4d8',
+      primary: { DEFAULT: '#fafafa', foreground: '#18181b' },
+      secondary: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      destructive: { DEFAULT: '#7f1d1d', foreground: '#fafafa' },
+      accent: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      popover: { DEFAULT: '#18181b', foreground: '#fafafa' },
+      input: '#27272a',
+    }, borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' } } } }
+  </script>
+  <link rel="stylesheet" href="../css/atlas.css" />
+  <link rel="stylesheet" href="../css/demos.css" />
+</head>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+      <a href="../index.html" class="font-semibold text-lg">UI Components Atlas</a>
+      <input type="search" placeholder="Buscar componente..." class="flex-1 max-w-md bg-input border border-border rounded-md px-3 py-2 text-sm" />
+    </div>
+  </header>
+
+  <div class="component-page max-w-7xl mx-auto px-6 py-8 grid grid-cols-[220px_1fr] gap-8">
+    <aside class="sidebar-nav">
+      <h4 class="text-xs uppercase tracking-wider text-muted-foreground mb-3">Módulo 07</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="./data-table.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">01. Data Table</a></li>
+        <li><a href="./form.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">02. Form</a></li>
+        <li><a href="./form-wizard.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">03. Form Wizard</a></li>
+        <li><a href="./drag-drop.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">04. Drag & Drop</a></li>
+        <li><a href="./infinite-scroll.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">05. Infinite Scroll</a></li>
+        <li><a href="./virtualized-list.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">06. Virtualized List</a></li>
+        <li><a href="./rich-text-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">07. Rich Text Editor</a></li>
+        <li><a href="./code-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">08. Code Editor</a></li>
+        <li><a href="./kanban-board.html" class="block px-2 py-1.5 rounded is-active bg-muted text-foreground">09. Kanban Board</a></li>
+        <li><a href="./masked-input.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">10. Masked Input</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <nav class="breadcrumbs text-sm text-muted-foreground mb-6">
+        <a href="../index.html" class="hover:text-foreground">Atlas</a><span class="mx-2">/</span>
+        <a href="./index.html" class="hover:text-foreground">Patrones Avanzados</a><span class="mx-2">/</span>
+        <span class="text-foreground">Kanban Board</span>
+      </nav>
+
+      <header class="component-page__header mb-10">
+        <h1 class="component-page__title text-4xl font-bold mb-3">Kanban Board</h1>
+        <div class="component-page__aliases flex flex-wrap gap-2 mb-4">
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Trello-style</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Linear board</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Jira board</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Task board</span>
+        </div>
+        <p class="component-page__lead text-lg text-muted-foreground max-w-3xl">Board con columnas por status y cards draggables entre columnas. El combo: Kanban Card (Módulo 04) + Drag & Drop + Columnas. Linear, Jira, Trello — todo el mundo terminó reimplementándolo.</p>
+      </header>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Demo interactiva</h2>
+        <div class="demo-container border border-border rounded-lg p-6 bg-muted/10">
+          <p class="text-xs text-muted-foreground mb-3">Arrastrá cards entre columnas.</p>
+          <div id="kb-board" class="grid grid-cols-3 gap-4"></div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Anatomía</h2>
+        <div class="border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border-2 border-dashed border-border rounded p-4">
+            <div class="text-xs text-muted-foreground mb-2">Board Root (+ DndContext)</div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Column[] (droppable zones)</div>
+              <div class="space-y-1">
+                <div class="px-2 py-1 bg-muted rounded">Header: título + count + add button</div>
+                <div class="px-2 py-1 bg-muted rounded">Scrollable Card List (Kanban Cards draggables)</div>
+                <div class="px-2 py-1 bg-muted rounded">Footer: add card button</div>
+              </div>
+            </div>
+            <div class="border border-border rounded p-3 text-xs">
+              <div class="text-muted-foreground mb-1">Card (Kanban Card del Módulo 04)</div>
+              <span class="px-2 py-1 bg-muted rounded">Title + tags + assignee + metadata</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Variantes</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <li class="border border-border rounded p-3"><strong>3 columnas</strong> — Todo / Doing / Done.</li>
+          <li class="border border-border rounded p-3"><strong>Con swimlanes</strong> — grouped by priority/assignee.</li>
+          <li class="border border-border rounded p-3"><strong>Con WIP limits</strong> — max cards por columna.</li>
+          <li class="border border-border rounded p-3"><strong>Con filters</strong> — by assignee, tag, priority.</li>
+          <li class="border border-border rounded p-3"><strong>Sprint board</strong> — agile con burndown.</li>
+          <li class="border border-border rounded p-3"><strong>Pipeline CRM</strong> — deal stages.</li>
+          <li class="border border-border rounded p-3"><strong>Content workflow</strong> — draft/review/published.</li>
+          <li class="border border-border rounded p-3"><strong>Vertical mobile</strong> — columns como tabs en mobile.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Estados</h2>
+        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+          <li class="border border-border rounded p-3">Idle</li>
+          <li class="border border-border rounded p-3">Dragging card</li>
+          <li class="border border-border rounded p-3">Drag-over column</li>
+          <li class="border border-border rounded p-3">Card dropping</li>
+          <li class="border border-border rounded p-3">Adding card</li>
+          <li class="border border-border rounded p-3">WIP limit reached</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Vocabulario cross-framework</h2>
+        <div class="border border-border rounded-lg overflow-hidden">
+          <table class="vocab-table w-full text-sm">
+            <thead class="bg-muted/50"><tr><th class="px-4 py-2 text-left">Producto</th><th class="px-4 py-2 text-left">Naming</th><th class="px-4 py-2 text-left">Notas</th></tr></thead>
+            <tbody>
+              <tr class="border-t border-border"><td class="px-4 py-2">Trello</td><td class="px-4 py-2">Board + Lists + Cards</td><td class="px-4 py-2">Origen del pattern moderno</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Linear</td><td class="px-4 py-2">Board + Columns + Issues</td><td class="px-4 py-2">Moderno, minimalista</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Jira</td><td class="px-4 py-2">Board + Columns + Issues</td><td class="px-4 py-2">Enterprise, con swimlanes</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Notion</td><td class="px-4 py-2">Board view</td><td class="px-4 py-2">View de una database</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Cuándo usar</h2>
+        <div class="use-case-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-green-400">Sí, usalo cuando</h3>
+            <ul class="use-case-list do space-y-2 text-sm text-muted-foreground">
+              <li>Task management (Linear, Jira, Trello)</li>
+              <li>Pipeline tracking (CRM deals)</li>
+              <li>Content workflows (draft/review/published)</li>
+              <li>Recruitment (candidate stages)</li>
+            </ul>
+          </div>
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-red-400">No, evitalo cuando</h3>
+            <ul class="use-case-list dont space-y-2 text-sm text-muted-foreground">
+              <li>Listas lineales sin status → List</li>
+              <li>Muchos items → Data Table (mejor escalabilidad)</li>
+              <li>Tareas jerárquicas → Tree View</li>
+              <li>Mobile-only (kanban no es mobile-friendly)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Prompts para coding agents</h2>
+        <div class="prompt-library space-y-3">
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Básico</div>
+            <p class="prompt-library__text text-sm font-mono">Kanban board with 3 columns (Todo, In Progress, Done) and drag-drop cards between columns using dnd-kit.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Agile</div>
+            <p class="prompt-library__text text-sm font-mono">Agile sprint board with WIP limits per column and warning when limit is reached.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">CRM</div>
+            <p class="prompt-library__text text-sm font-mono">Deal pipeline kanban with stage progression, deal value totals per column.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Alternativas relacionadas</h2>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><strong class="text-foreground">Data Table</strong> — para muchas tasks con filtros complejos.</li>
+          <li><strong class="text-foreground">Tree View</strong> — para tareas jerárquicas.</li>
+          <li><strong class="text-foreground">Calendar / Timeline</strong> — cuando el tiempo es el eje.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Referencias</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://dndkit.com/" class="text-blue-400 hover:underline" target="_blank">dnd-kit (kanban ejemplos)</a></li>
+          <li><a href="https://linear.app/" class="text-blue-400 hover:underline" target="_blank">Linear (referencia de UX)</a></li>
+        </ul>
+      </section>
+
+      <nav class="component-nav border-t border-border pt-6 flex justify-between text-sm">
+        <a href="./code-editor.html" class="component-nav__link text-muted-foreground hover:text-foreground">← Code Editor</a>
+        <a href="./masked-input.html" class="component-nav__link text-muted-foreground hover:text-foreground">Masked Input →</a>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const state = {
+        todo: [
+          { id: 1, title: 'Definir schema de usuarios', tag: 'backend' },
+          { id: 2, title: 'Diseñar página de login', tag: 'design' },
+          { id: 3, title: 'Investigar opciones de OAuth', tag: 'research' },
+          { id: 4, title: 'Escribir README', tag: 'docs' },
+        ],
+        doing: [
+          { id: 5, title: 'Implementar auth middleware', tag: 'backend' },
+          { id: 6, title: 'Componente Button con variantes', tag: 'frontend' },
+        ],
+        done: [
+          { id: 7, title: 'Setup del repo', tag: 'devops' },
+          { id: 8, title: 'Configurar CI/CD', tag: 'devops' },
+          { id: 9, title: 'Kick-off meeting', tag: 'misc' },
+        ],
+      };
+      const titles = { todo: 'Todo', doing: 'In Progress', done: 'Done' };
+      const board = document.getElementById('kb-board');
+      let dragged = null;
+
+      function render() {
+        board.replaceChildren();
+        Object.keys(state).forEach(col => {
+          const column = document.createElement('div');
+          column.className = 'bg-muted/20 rounded-lg p-3 min-h-[400px]';
+          column.dataset.col = col;
+
+          const header = document.createElement('div');
+          header.className = 'flex items-center justify-between mb-3 px-1';
+          const h = document.createElement('h3');
+          h.className = 'font-semibold text-sm';
+          h.textContent = titles[col];
+          const count = document.createElement('span');
+          count.className = 'text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded';
+          count.textContent = state[col].length;
+          header.appendChild(h); header.appendChild(count);
+          column.appendChild(header);
+
+          const list = document.createElement('div');
+          list.className = 'space-y-2 min-h-[300px]';
+          list.dataset.dropzone = col;
+
+          state[col].forEach(card => {
+            const el = document.createElement('div');
+            el.draggable = true;
+            el.dataset.id = card.id;
+            el.dataset.from = col;
+            el.className = 'bg-background border border-border rounded-md p-3 cursor-grab text-sm';
+            const title = document.createElement('div');
+            title.className = 'font-medium mb-2';
+            title.textContent = card.title;
+            const tag = document.createElement('span');
+            tag.className = 'text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground';
+            tag.textContent = card.tag;
+            el.appendChild(title); el.appendChild(tag);
+
+            el.addEventListener('dragstart', e => {
+              dragged = { id: card.id, from: col };
+              el.classList.add('opacity-40');
+              e.dataTransfer.effectAllowed = 'move';
+            });
+            el.addEventListener('dragend', () => el.classList.remove('opacity-40'));
+            list.appendChild(el);
+          });
+
+          list.addEventListener('dragover', e => {
+            e.preventDefault();
+            column.classList.add('ring-2', 'ring-primary/40');
+          });
+          list.addEventListener('dragleave', () => {
+            column.classList.remove('ring-2', 'ring-primary/40');
+          });
+          list.addEventListener('drop', e => {
+            e.preventDefault();
+            column.classList.remove('ring-2', 'ring-primary/40');
+            if (!dragged || dragged.from === col) return;
+            const card = state[dragged.from].find(c => c.id === dragged.id);
+            state[dragged.from] = state[dragged.from].filter(c => c.id !== dragged.id);
+            state[col].push(card);
+            dragged = null;
+            render();
+          });
+
+          column.appendChild(list);
+          board.appendChild(column);
+        });
+      }
+      render();
+    })();
+  </script>
+  <script src="../js/atlas.js"></script>
+  <script src="../js/demos.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

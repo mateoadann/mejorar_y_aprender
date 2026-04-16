@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masked Input · UI Components Atlas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      background: '#09090b', foreground: '#fafafa',
+      muted: { DEFAULT: '#27272a', foreground: '#a1a1aa' },
+      border: '#27272a', ring: '#d4d4d8',
+      primary: { DEFAULT: '#fafafa', foreground: '#18181b' },
+      secondary: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      destructive: { DEFAULT: '#7f1d1d', foreground: '#fafafa' },
+      accent: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      popover: { DEFAULT: '#18181b', foreground: '#fafafa' },
+      input: '#27272a',
+    }, borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' } } } }
+  </script>
+  <link rel="stylesheet" href="../css/atlas.css" />
+  <link rel="stylesheet" href="../css/demos.css" />
+</head>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+      <a href="../index.html" class="font-semibold text-lg">UI Components Atlas</a>
+      <input type="search" placeholder="Buscar componente..." class="flex-1 max-w-md bg-input border border-border rounded-md px-3 py-2 text-sm" />
+    </div>
+  </header>
+
+  <div class="component-page max-w-7xl mx-auto px-6 py-8 grid grid-cols-[220px_1fr] gap-8">
+    <aside class="sidebar-nav">
+      <h4 class="text-xs uppercase tracking-wider text-muted-foreground mb-3">Módulo 07</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="./data-table.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">01. Data Table</a></li>
+        <li><a href="./form.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">02. Form</a></li>
+        <li><a href="./form-wizard.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">03. Form Wizard</a></li>
+        <li><a href="./drag-drop.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">04. Drag & Drop</a></li>
+        <li><a href="./infinite-scroll.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">05. Infinite Scroll</a></li>
+        <li><a href="./virtualized-list.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">06. Virtualized List</a></li>
+        <li><a href="./rich-text-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">07. Rich Text Editor</a></li>
+        <li><a href="./code-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">08. Code Editor</a></li>
+        <li><a href="./kanban-board.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">09. Kanban Board</a></li>
+        <li><a href="./masked-input.html" class="block px-2 py-1.5 rounded is-active bg-muted text-foreground">10. Masked Input</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <nav class="breadcrumbs text-sm text-muted-foreground mb-6">
+        <a href="../index.html" class="hover:text-foreground">Atlas</a><span class="mx-2">/</span>
+        <a href="./index.html" class="hover:text-foreground">Patrones Avanzados</a><span class="mx-2">/</span>
+        <span class="text-foreground">Masked Input</span>
+      </nav>
+
+      <header class="component-page__header mb-10">
+        <h1 class="component-page__title text-4xl font-bold mb-3">Masked Input</h1>
+        <div class="component-page__aliases flex flex-wrap gap-2 mb-4">
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">iMask.js</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Cleave.js</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">react-imask</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">use-mask-input</span>
+        </div>
+        <p class="component-page__lead text-lg text-muted-foreground max-w-3xl">Input con formato forzado mientras el usuario escribe. Teléfonos, tarjetas de crédito, fechas manuales, CUIT. El mask inserta separadores automáticamente y bloquea caracteres inválidos.</p>
+      </header>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Demo interactiva</h2>
+        <div class="demo-container border border-border rounded-lg p-6 bg-muted/10">
+          <div class="space-y-5 max-w-md">
+            <div>
+              <label class="block text-sm font-medium mb-1.5">Teléfono</label>
+              <input id="m-phone" placeholder="(11) 1234-5678" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm font-mono" />
+              <p class="text-xs text-muted-foreground mt-1">Mask: (##) ####-####</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1.5">Tarjeta de crédito</label>
+              <input id="m-card" placeholder="1234 5678 9012 3456" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm font-mono" />
+              <p class="text-xs text-muted-foreground mt-1">Mask: #### #### #### ####</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1.5">Fecha</label>
+              <input id="m-date" placeholder="DD/MM/AAAA" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm font-mono" />
+              <p class="text-xs text-muted-foreground mt-1">Mask: ##/##/####</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1.5">CUIT</label>
+              <input id="m-cuit" placeholder="20-12345678-9" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm font-mono" />
+              <p class="text-xs text-muted-foreground mt-1">Mask: ##-########-#</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Anatomía</h2>
+        <div class="border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border-2 border-dashed border-border rounded p-4">
+            <div class="text-xs text-muted-foreground mb-2">Masked Input</div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Input Element</div>
+              <span class="px-2 py-1 bg-muted rounded">&lt;input&gt; con display value (masked)</span>
+            </div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Mask Pattern</div>
+              <span class="px-2 py-1 bg-muted rounded">Ej: (##) ####-####</span>
+            </div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Unmasked Value (clean)</div>
+              <span class="px-2 py-1 bg-muted rounded">Valor sin separadores para el backend</span>
+            </div>
+            <div class="border border-border rounded p-3 text-xs">
+              <div class="text-muted-foreground mb-1">Validation (opcional)</div>
+              <span class="px-2 py-1 bg-muted rounded">Luhn check (tarjeta), fecha válida, etc.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Variantes</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <li class="border border-border rounded p-3"><strong>Phone</strong> — <code>(+54) ## ####-####</code></li>
+          <li class="border border-border rounded p-3"><strong>Credit card</strong> — <code>#### #### #### ####</code></li>
+          <li class="border border-border rounded p-3"><strong>Date</strong> — <code>DD/MM/YYYY</code></li>
+          <li class="border border-border rounded p-3"><strong>CUIT/CUIL</strong> — <code>##-########-#</code></li>
+          <li class="border border-border rounded p-3"><strong>Time</strong> — <code>HH:MM</code></li>
+          <li class="border border-border rounded p-3"><strong>IP address</strong> — <code>###.###.###.###</code></li>
+          <li class="border border-border rounded p-3"><strong>Currency</strong> — <code>$#,###.##</code></li>
+          <li class="border border-border rounded p-3"><strong>Custom regex</strong> — patrones complejos.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Estados</h2>
+        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+          <li class="border border-border rounded p-3">Empty</li>
+          <li class="border border-border rounded p-3">Partial (masked visible)</li>
+          <li class="border border-border rounded p-3">Complete</li>
+          <li class="border border-border rounded p-3">Invalid (validación falló)</li>
+          <li class="border border-border rounded p-3">Disabled</li>
+          <li class="border border-border rounded p-3">Focused</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Vocabulario cross-framework</h2>
+        <div class="border border-border rounded-lg overflow-hidden">
+          <table class="vocab-table w-full text-sm">
+            <thead class="bg-muted/50"><tr><th class="px-4 py-2 text-left">Librería</th><th class="px-4 py-2 text-left">Framework</th><th class="px-4 py-2 text-left">Notas</th></tr></thead>
+            <tbody>
+              <tr class="border-t border-border"><td class="px-4 py-2">iMask.js</td><td class="px-4 py-2">Vanilla + adapters</td><td class="px-4 py-2">Muy flexible, patrones complejos</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Cleave.js</td><td class="px-4 py-2">Vanilla</td><td class="px-4 py-2">Formatting on-the-fly</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">react-imask</td><td class="px-4 py-2">React</td><td class="px-4 py-2">Wrapper de iMask</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">use-mask-input</td><td class="px-4 py-2">React hook</td><td class="px-4 py-2">Minimal, hook-based</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">react-input-mask</td><td class="px-4 py-2">React</td><td class="px-4 py-2">Clásico, ya en mantenimiento</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Cuándo usar</h2>
+        <div class="use-case-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-green-400">Sí, usalo cuando</h3>
+            <ul class="use-case-list do space-y-2 text-sm text-muted-foreground">
+              <li>Teléfonos, tarjetas, documentos (CUIT/DNI)</li>
+              <li>Fechas manuales con formato estricto</li>
+              <li>Códigos con estructura fija (IPs, horarios)</li>
+              <li>Campos donde el error de formato es costoso</li>
+            </ul>
+          </div>
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-red-400">No, evitalo cuando</h3>
+            <ul class="use-case-list dont space-y-2 text-sm text-muted-foreground">
+              <li>Texto libre → Input</li>
+              <li>OTP/PIN → OTP Input (Módulo 01)</li>
+              <li>Fecha con calendario → Date Picker</li>
+              <li>Número sin formato → input type="number"</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Prompts para coding agents</h2>
+        <div class="prompt-library space-y-3">
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Phone</div>
+            <p class="prompt-library__text text-sm font-mono">Phone input with mask (+54) ## ####-#### and international country code selector.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Credit card</div>
+            <p class="prompt-library__text text-sm font-mono">Credit card input with auto-formatting, brand detection and Luhn validation.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Date</div>
+            <p class="prompt-library__text text-sm font-mono">Date input with DD/MM/YYYY mask and past-date validation for birthdays.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">CUIT</div>
+            <p class="prompt-library__text text-sm font-mono">CUIT input with mask ##-########-# and checksum validation.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Alternativas relacionadas</h2>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><strong class="text-foreground">Input (Módulo 01)</strong> — texto libre sin formato.</li>
+          <li><strong class="text-foreground">OTP Input</strong> — códigos de 4-6 dígitos.</li>
+          <li><strong class="text-foreground">Date Picker</strong> — fecha con calendario visual.</li>
+          <li><strong class="text-foreground">Number input</strong> — valores numéricos sin separadores.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Referencias</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://imask.js.org/" class="text-blue-400 hover:underline" target="_blank">iMask.js</a></li>
+          <li><a href="https://nosir.github.io/cleave.js/" class="text-blue-400 hover:underline" target="_blank">Cleave.js</a></li>
+        </ul>
+      </section>
+
+      <nav class="component-nav border-t border-border pt-6 flex justify-between text-sm">
+        <a href="./kanban-board.html" class="component-nav__link text-muted-foreground hover:text-foreground">← Kanban Board</a>
+        <a href="../index.html" class="component-nav__link text-muted-foreground hover:text-foreground">Home Atlas →</a>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      function applyMask(value, pattern) {
+        const digits = value.replace(/\D/g, '');
+        let out = '';
+        let di = 0;
+        for (let i = 0; i < pattern.length && di < digits.length; i++) {
+          if (pattern[i] === '#') {
+            out += digits[di++];
+          } else {
+            out += pattern[i];
+          }
+        }
+        return out;
+      }
+      function bindMask(id, pattern) {
+        const el = document.getElementById(id);
+        el.addEventListener('input', () => {
+          el.value = applyMask(el.value, pattern);
+        });
+      }
+      bindMask('m-phone', '(##) ####-####');
+      bindMask('m-card', '#### #### #### ####');
+      bindMask('m-date', '##/##/####');
+      bindMask('m-cuit', '##-########-#');
+    })();
+  </script>
+  <script src="../js/atlas.js"></script>
+  <script src="../js/demos.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

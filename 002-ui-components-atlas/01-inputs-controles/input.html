@@ -1,0 +1,205 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input — UI Components Atlas</title>
+    <meta name="description" content="Campo de una línea. La base de todos los formularios." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{background:"#09090b",foreground:"#fafafa",muted:{DEFAULT:"#27272a",foreground:"#a1a1aa"},border:"#27272a",ring:"#d4d4d8",primary:{DEFAULT:"#fafafa",foreground:"#18181b"},secondary:{DEFAULT:"#27272a",foreground:"#fafafa"},destructive:{DEFAULT:"#7f1d1d",foreground:"#fafafa"},accent:{DEFAULT:"#27272a",foreground:"#fafafa"},popover:{DEFAULT:"#18181b",foreground:"#fafafa"},input:"#27272a"},borderRadius:{lg:"0.5rem",md:"0.375rem",sm:"0.25rem"}}}};</script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header"><div class="atlas-header__inner"><a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a><div class="atlas-header__search"><div class="atlas-search"><svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" /><kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd><div class="atlas-search__results" role="listbox" data-atlas-search-results></div></div></div><div class="atlas-header__meta" data-atlas-meta></div></div></header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Inputs y Controles</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="button.html">01 — Button</a></li>
+          <li><a class="sidebar-nav__link is-active" href="input.html">02 — Input</a></li>
+          <li><a class="sidebar-nav__link" href="textarea.html">03 — Textarea</a></li>
+          <li><a class="sidebar-nav__link" href="select.html">04 — Select</a></li>
+          <li><a class="sidebar-nav__link" href="combobox.html">05 — Combobox</a></li>
+          <li><a class="sidebar-nav__link" href="autocomplete.html">06 — Autocomplete</a></li>
+          <li><a class="sidebar-nav__link" href="checkbox.html">07 — Checkbox</a></li>
+          <li><a class="sidebar-nav__link" href="radio-group.html">08 — Radio Group</a></li>
+          <li><a class="sidebar-nav__link" href="switch-toggle.html">09 — Switch / Toggle</a></li>
+          <li><a class="sidebar-nav__link" href="slider.html">10 — Slider</a></li>
+          <li><a class="sidebar-nav__link" href="date-picker.html">11 — Date Picker</a></li>
+          <li><a class="sidebar-nav__link" href="file-upload.html">12 — File Upload</a></li>
+          <li><a class="sidebar-nav__link" href="otp-input.html">13 — OTP Input</a></li>
+          <li><a class="sidebar-nav__link" href="rating.html">14 — Rating</a></li>
+          <li><a class="sidebar-nav__link" href="search-bar.html">15 — Search Bar</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb"><li><a href="../index.html">Atlas</a></li><li class="breadcrumbs__sep" aria-hidden="true">/</li><li><a href="index.html">Inputs y Controles</a></li><li class="breadcrumbs__sep" aria-hidden="true">/</li><li aria-current="page">Input</li></ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Input</h1>
+          <div class="component-page__aliases">
+            <span class="component-page__alias">Input</span>
+            <span class="component-page__alias">TextField</span>
+            <span class="component-page__alias">&lt;input&gt;</span>
+            <span class="component-page__alias">FormField</span>
+          </div>
+          <p class="component-page__lead">Campo de una sola línea para texto, email, password, number, tel, url. Es el componente más aburrido del mundo y el más importante: si lo hacés mal, el 90% de tu form está mal.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Escribí, tabuleá entre los campos, mirá los estados.</p>
+          <div class="demo-container" data-atlas-demo>
+            <div class="demo-preview demo-preview--stack" style="max-width:420px;">
+              <div class="space-y-2">
+                <label for="inp-email" class="text-sm font-medium leading-none">Email</label>
+                <div class="relative">
+                  <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                  <input id="inp-email" type="email" placeholder="nombre@dominio.com" class="flex h-10 w-full rounded-md border border-input bg-background pl-9 pr-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />
+                </div>
+                <p class="text-xs text-muted-foreground">Te mandaremos un link de verificación.</p>
+              </div>
+
+              <div class="space-y-2">
+                <label for="inp-pwd" class="text-sm font-medium leading-none">Contraseña</label>
+                <div class="relative">
+                  <input id="inp-pwd" type="password" placeholder="••••••••" class="flex h-10 w-full rounded-md border border-input bg-background px-3 pr-10 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+                  <button type="button" aria-label="Mostrar contraseña" onclick="const i=document.getElementById('inp-pwd');i.type=i.type==='password'?'text':'password'" class="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="inp-err" class="text-sm font-medium leading-none">Username</label>
+                <input id="inp-err" type="text" value="ab" class="flex h-10 w-full rounded-md border border-destructive bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive" />
+                <p class="text-xs text-destructive">El username debe tener al menos 3 caracteres.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Un campo de formulario accesible tiene 4 partes.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border-2 border-dashed border-border bg-muted/20 p-4 space-y-2">
+                <div class="text-xs text-muted-foreground font-mono">FormField (wrapper)</div>
+                <div class="rounded border border-border bg-background p-2 text-xs font-mono text-muted-foreground">FormLabel — "Email"</div>
+                <div class="rounded border border-border bg-background p-2"><div class="text-xs font-mono text-muted-foreground mb-1">Input.Root</div><div class="flex items-center gap-1"><div class="rounded border border-dashed px-1 text-[10px] font-mono">[icon]</div><div class="rounded border border-dashed px-1 text-[10px] font-mono flex-1">&lt;input&gt;</div><div class="rounded border border-dashed px-1 text-[10px] font-mono">[adornment]</div></div></div>
+                <div class="rounded border border-border bg-background p-2 text-xs font-mono text-muted-foreground">FormDescription — helper text</div>
+                <div class="rounded border border-destructive bg-background p-2 text-xs font-mono text-destructive">FormMessage — error text</div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Label</b> Siempre asociado con htmlFor + id.</li>
+              <li><b>Input.Root</b> Puede tener adornments (iconos) leading o trailing.</li>
+              <li><b>Description</b> Texto helper debajo (opcional).</li>
+              <li><b>Message</b> Error de validación. Solo visible cuando hay error.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <p class="component-page__section-lead">Las variantes del Input vienen del atributo `type`.</p>
+          <div class="demo-group">
+            <div class="demo-group__item"><input type="text" placeholder="text" class="flex h-10 w-44 rounded-md border border-input bg-background px-3 text-sm" /><span class="demo-group__label">type="text"</span></div>
+            <div class="demo-group__item"><input type="email" placeholder="name@example.com" class="flex h-10 w-44 rounded-md border border-input bg-background px-3 text-sm" /><span class="demo-group__label">type="email"</span></div>
+            <div class="demo-group__item"><input type="password" placeholder="••••••" class="flex h-10 w-44 rounded-md border border-input bg-background px-3 text-sm" /><span class="demo-group__label">type="password"</span></div>
+            <div class="demo-group__item"><input type="number" placeholder="0" class="flex h-10 w-44 rounded-md border border-input bg-background px-3 text-sm" /><span class="demo-group__label">type="number"</span></div>
+            <div class="demo-group__item"><input type="tel" placeholder="+54 11 ..." class="flex h-10 w-44 rounded-md border border-input bg-background px-3 text-sm" /><span class="demo-group__label">type="tel"</span></div>
+            <div class="demo-group__item"><input type="url" placeholder="https://..." class="flex h-10 w-44 rounded-md border border-input bg-background px-3 text-sm" /><span class="demo-group__label">type="url"</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><input placeholder="Default" class="flex h-10 w-44 rounded-md border border-input bg-background px-3 text-sm" /><span class="demo-group__label">default</span></div>
+            <div class="demo-group__item"><input placeholder="Focus" class="flex h-10 w-44 rounded-md border border-input bg-background px-3 text-sm ring-2 ring-ring" /><span class="demo-group__label">focus</span></div>
+            <div class="demo-group__item"><input placeholder="Disabled" disabled class="flex h-10 w-44 rounded-md border border-input bg-background px-3 text-sm opacity-50 cursor-not-allowed" /><span class="demo-group__label">disabled</span></div>
+            <div class="demo-group__item"><input readonly value="Read only" class="flex h-10 w-44 rounded-md border border-input bg-muted px-3 text-sm" /><span class="demo-group__label">readonly</span></div>
+            <div class="demo-group__item"><input value="invalid" class="flex h-10 w-44 rounded-md border border-destructive bg-background px-3 text-sm" /><span class="demo-group__label">error</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>HTML nativo</th><th>Shadcn / Radix</th><th>Material UI</th><th>ARIA role</th></tr></thead>
+            <tbody>
+              <tr><td>Campo de texto</td><td>&lt;input type="text"&gt;</td><td>Input</td><td>TextField</td><td>textbox</td></tr>
+              <tr><td>Label asociado</td><td>&lt;label htmlFor&gt;</td><td>Label</td><td>InputLabel</td><td>label</td></tr>
+              <tr><td>Texto helper</td><td>&lt;p&gt; + aria-describedby</td><td>FormDescription</td><td>helperText</td><td>-</td></tr>
+              <tr><td>Error inline</td><td>&lt;p&gt; + aria-invalid</td><td>FormMessage</td><td>error + helperText</td><td>-</td></tr>
+              <tr><td>Ícono leading</td><td>&lt;span&gt; absolute</td><td>manual (pl-9)</td><td>InputAdornment position="start"</td><td>-</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Necesitás capturar texto corto (&lt; 100 caracteres)</li>
+              <li>El valor es email, password, número, teléfono, URL</li>
+              <li>Hay validación inline</li>
+              <li>Es parte de un formulario típico</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>El texto es largo o multilínea — usá Textarea</li>
+              <li>Es un código de N dígitos — usá OTP Input</li>
+              <li>El usuario elige de una lista — usá Select o Combobox</li>
+              <li>Es una fecha — usá Date Picker</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1"><p class="prompt-library__label">Email input with inline validation</p><pre class="prompt-library__text" id="p1-text">Create a shadcn Input with type="email", a Label "Email", and inline validation using react-hook-form + zod. Show a FormMessage error when the email is invalid. Placeholder: "name@example.com". Include a helper text "We'll send a verification link".</pre><button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p2"><p class="prompt-library__label">Password with show/hide</p><pre class="prompt-library__text" id="p2-text">Create a password Input with a show/hide toggle button (Eye / EyeOff lucide icons) positioned as a trailing adornment. Clicking the icon toggles the input type between "password" and "text". Include aria-label on the toggle button.</pre><button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p3"><p class="prompt-library__label">Input with leading icon</p><pre class="prompt-library__text" id="p3-text">Create a search Input with a Search lucide icon as a leading adornment. Use pl-9 to leave space for the icon. The input should be inside a relative wrapper; the icon is absolutely positioned.</pre><button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p4"><p class="prompt-library__label">Number input with stepper</p><pre class="prompt-library__text" id="p4-text">Create a number Input with min=0, max=100, step=1. Add two buttons (+ and -) as trailing adornments that increment/decrement the value. Use a React state for the value.</pre><button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="textarea.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold mb-1">Textarea</h3><p class="text-sm text-muted-foreground">Para texto multilínea.</p></a>
+            <a href="otp-input.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold mb-1">OTP Input</h3><p class="text-sm text-muted-foreground">Para códigos de verificación.</p></a>
+            <a href="search-bar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold mb-1">Search Bar</h3><p class="text-sm text-muted-foreground">Input con ícono search y clear button.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a class="underline" href="https://ui.shadcn.com/docs/components/input" target="_blank" rel="noopener">Shadcn — Input</a></li>
+            <li><a class="underline" href="https://mui.com/material-ui/react-text-field/" target="_blank" rel="noopener">MUI — TextField</a></li>
+            <li><a class="underline" href="https://www.w3.org/WAI/ARIA/apg/patterns/" target="_blank" rel="noopener">W3C ARIA — Textbox</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="button.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Button</span></a>
+          <a class="component-nav__link component-nav__link--next" href="textarea.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Textarea</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

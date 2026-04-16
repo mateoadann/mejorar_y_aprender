@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lección 2 — Aplicación a tu negocio</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 4</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 4</a></li>
+                        <li>Lección 2</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="hero-meta"
+                            >Lección 02 &middot; 18 min</span
+                        >
+                        <h1 class="mt-0">Aplicación a tu negocio</h1>
+                        <p class="lead">
+                            Tenés un negocio de automatizaciones y software a
+                            medida. Estos 3 artículos son tu playbook para
+                            los próximos 12 meses. Acá bajamos la teoría a
+                            clientes concretos, pricing y un plan de 90 días
+                            para shipear el primero.
+                        </p>
+                    </div>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">El contexto del mercado</div>
+                        <p>
+                            El mercado está pidiendo agentes que funcionen en
+                            producción. La mayoría de los devs están
+                            construyendo wrappers de ChatGPT. Vos podés ser el
+                            que entrega sistemas. Ese es el gap, y es el
+                            gap más grande de 2026.
+                        </p>
+                    </div>
+
+                    <h2>Mapeo de clientes a proyectos</h2>
+                    <p class="slide-up">
+                        Cada tipo de cliente tiene un proyecto ideal de
+                        arranque. No es "vender lo mismo a todos". Es
+                        identificar qué les duele y mapearlo al proyecto del
+                        roadmap que les resuelve eso.
+                    </p>
+
+                    <table class="comparison-table slide-up">
+                        <thead>
+                            <tr>
+                                <th>Tipo de cliente</th>
+                                <th>Proyecto ideal</th>
+                                <th>Por qué</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Startup pequeña</strong></td>
+                                <td>Meeting prep agent (Mod 1)</td>
+                                <td>Low cost, valor inmediato</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PyME con muchos emails</strong></td>
+                                <td>Client intake agent</td>
+                                <td>Ahorra horas por semana</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Agencia de contenido</strong></td>
+                                <td>Content research agent</td>
+                                <td>Monitorea competencia</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Estudio jurídico</strong></td>
+                                <td>Document processing agent</td>
+                                <td>Extracción de contratos</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Empresa con soporte</strong>
+                                </td>
+                                <td>Support agent con Cognee (Mod 2)</td>
+                                <td>Aprende de tickets pasados</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Empresa enterprise</strong></td>
+                                <td>
+                                    Enterprise workflow (Mod 3 proyecto 5)
+                                </td>
+                                <td>El premium tier</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2>El pitch value ladder</h2>
+                    <p class="slide-up">
+                        No vendés una cosa. Vendés una escalera. El cliente
+                        entra por abajo, y cuando ve el valor, sube. Esto es
+                        lo que te permite cobrar desde $500 hasta $25k+ con
+                        la misma base técnica.
+                    </p>
+
+                    <div
+                        class="diagram vertical slide-up"
+                        style="margin: var(--space-10) 0"
+                    >
+                        <div class="diagram-box" style="max-width: 920px;">
+                            <span class="label">Tier 4</span>
+                            <strong>$25.000+ &middot; Enterprise completo</strong>
+                            <p style="margin: 0.5rem 0 0; font-size: 0.875rem;">
+                                Self-healing, HITL, custom tooling, SLA
+                            </p>
+                        </div>
+                        <div class="diagram-box" style="max-width: 780px;">
+                            <span class="label">Tier 3</span>
+                            <strong>$8.000 &ndash; $25.000 &middot; Workflow multi-agente</strong>
+                            <p style="margin: 0.5rem 0 0; font-size: 0.875rem;">
+                                Audit trail, RBAC, observability
+                            </p>
+                        </div>
+                        <div class="diagram-box secondary" style="max-width: 640px;">
+                            <span class="label">Tier 2</span>
+                            <strong>$2.000 &ndash; $8.000 &middot; Agente con memoria</strong>
+                            <p style="margin: 0.5rem 0 0; font-size: 0.875rem;">
+                                Cognee, approval mode, 2&ndash;3 MCPs
+                            </p>
+                        </div>
+                        <div class="diagram-box primary" style="max-width: 500px;">
+                            <span class="label">Tier 1</span>
+                            <strong>$500 &ndash; $2.000 &middot; Single agent</strong>
+                            <p style="margin: 0.5rem 0 0; font-size: 0.875rem;">
+                                Auto-run, sin memoria persistente
+                            </p>
+                        </div>
+                    </div>
+
+                    <h2>Tu stack recomendado</h2>
+                    <p class="slide-up">
+                        Basado en los 3 artículos, este es el stack que te
+                        ahorra meses de decisiones mal tomadas. Todo
+                        defendible, todo swappable.
+                    </p>
+
+                    <pre class="code-block slide-up"><code>Infra:          Claude Managed Agents    (pricing predecible)
+Memoria:        Cognee                    (open source, swappable)
+Orquestación:   MCP servers               (Linear, Notion, Gmail, etc.)
+Observability:  Anthropic traces + custom logging</code></pre>
+
+                    <h2>Plan de 90 días</h2>
+                    <p class="slide-up">
+                        Nada de "voy a aprender todo y después shipeo". El
+                        mes 3 tenés que estar pitcheando. Esto es lo que
+                        hacés cada mes:
+                    </p>
+
+                    <ol class="timeline slide-up">
+                        <li class="timeline-item">
+                            <span class="timeline-date">Mes 1</span>
+                            <h4>Dominar Managed Agents</h4>
+                            <p>
+                                Buildeás el meeting prep agent del Módulo 1
+                                para vos mismo. Lo usás diario. Rompés cosas,
+                                las arreglás. Cero cliente todavía, todo es
+                                aprendizaje aplicado.
+                            </p>
+                        </li>
+                        <li class="timeline-item">
+                            <span class="timeline-date">Mes 2</span>
+                            <h4>Agregar memoria con Cognee</h4>
+                            <p>
+                                Le metés Cognee al agente del mes 1. Ves la
+                                diferencia con memoria persistente. Documentás
+                                todo: qué cambió, qué mejoró, qué se complicó.
+                                Este doc es tu material de venta después.
+                            </p>
+                        </li>
+                        <li class="timeline-item">
+                            <span class="timeline-date">Mes 3</span>
+                            <h4>Primer cliente, primer delivery</h4>
+                            <p>
+                                Pitcheás a tu primer cliente. Tier 1 o Tier 2,
+                                lo que entre. El delivery es literalmente el
+                                agente que ya probaste dos meses, adaptado.
+                                Cobrás. Iterás.
+                            </p>
+                        </li>
+                        <li class="timeline-item">
+                            <span class="timeline-date">Mes 4+</span>
+                            <h4>Escalar</h4>
+                            <p>
+                                Cada proyecto te enseña el siguiente. El
+                                cliente 2 es más fácil que el 1. El cliente 5
+                                ya te pide Tier 3. En el mes 12 estás
+                                entregando el enterprise workflow.
+                            </p>
+                        </li>
+                    </ol>
+
+                    <h2>Los 5 bloqueos típicos</h2>
+                    <p class="slide-up">
+                        Estos te los vas a decir a vos mismo. Prepará las
+                        respuestas ahora, porque cuando aparecen en vivo, ya
+                        es tarde.
+                    </p>
+
+                    <div class="callout warning slide-up">
+                        <div class="callout-title">
+                            1. "Quiero aprender TODO antes de shipear"
+                        </div>
+                        <p>
+                            No. Shipeás el proyecto 1 antes del mes 2. Se
+                            aprende construyendo, no leyendo más papers.
+                        </p>
+                    </div>
+
+                    <div class="callout warning slide-up">
+                        <div class="callout-title">
+                            2. "El cliente no va a pagar por esto"
+                        </div>
+                        <p>
+                            El cliente no necesita que vos le expliques la
+                            tecnología. Necesita que le ahorres 10 horas por
+                            semana. Vendé <em>resultado</em>, no stack.
+                        </p>
+                    </div>
+
+                    <div class="callout warning slide-up">
+                        <div class="callout-title">
+                            3. "No sé diseñar arquitecturas"
+                        </div>
+                        <p>
+                            Los módulos 1&ndash;3 son literalmente eso.
+                            Estudialos como si fueran planos de arquitecto.
+                            Ya tenés la arquitectura, solo te falta
+                            apropiártela.
+                        </p>
+                    </div>
+
+                    <div class="callout warning slide-up">
+                        <div class="callout-title">
+                            4. "Necesito un equipo"
+                        </div>
+                        <p>
+                            No. El proyecto 5 del roadmap es hacer lo que un
+                            equipo haría, con agentes. Uno solo podés
+                            entregar Tier 1 y Tier 2 perfectamente.
+                        </p>
+                    </div>
+
+                    <div class="callout warning slide-up">
+                        <div class="callout-title">
+                            5. "Es muy caro para clientes chicos"
+                        </div>
+                        <p>
+                            $0,08 por session-hora. Si el agente corre 2
+                            horas por día son $5 por mes. El cliente te paga
+                            $500. Los números cierran incluso para PyMEs.
+                        </p>
+                    </div>
+
+                    <h2>Tu diferenciador</h2>
+                    <p class="slide-up">
+                        Esto es lo que te separa del mercado en 2026. No
+                        tenés que competir con los que ya están vendiendo
+                        wrappers. Estás jugando otro juego.
+                    </p>
+
+                    <div class="before-after slide-up">
+                        <div class="side before">
+                            <h4>La mayoría (replaceable)</h4>
+                            <ul>
+                                <li>Wrappers de GPT/Claude</li>
+                                <li>Sin memoria persistente</li>
+                                <li>Demo que se rompe en producción</li>
+                                <li>Pricing por token, sin margen</li>
+                                <li>Commodity</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span
+                                class="arrow arrow-right"
+                                aria-hidden="true"
+                            ></span>
+                        </div>
+                        <div class="side after">
+                            <h4>Vos (unfireable)</h4>
+                            <ul>
+                                <li>Managed infra</li>
+                                <li>Memoria persistente con Cognee</li>
+                                <li>Workflows reales en producción</li>
+                                <li>Pricing por valor entregado</li>
+                                <li>Sistema, no script</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">
+                            El insight del artículo 3
+                        </div>
+                        <p>
+                            "The replaceable: building wrappers. The
+                            unfireable: shipping autonomous systems." Los
+                            módulos 1 y 2 son exactamente lo que te hace
+                            pasar de un lado al otro. No es magia, es
+                            decisión.
+                        </p>
+                    </div>
+
+                    <h2>El último empujón</h2>
+                    <p class="slide-up">
+                        Llegaste al final del curso. Tenés todo lo que
+                        necesitás. Ahora hay una sola cosa que importa.
+                    </p>
+
+                    <div class="callout success slide-up">
+                        <div class="callout-title">
+                            Pickeá UN proyecto
+                        </div>
+                        <p>
+                            Shipealo este mes. El mercado premia shipping, no
+                            estudiar. Podés volver a este curso cuando
+                            quieras &mdash; pero la primera versión de tu
+                            agente tiene que existir antes del fin de mes.
+                        </p>
+                    </div>
+
+                    <div
+                        style="
+                            margin-top: var(--space-12);
+                            text-align: center;
+                        "
+                    >
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-mark-completed="modulo-4/completado"
+                        >
+                            He terminado el curso. Ahora a construir.
+                        </button>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="01-conexiones.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title"
+                                >Cómo se conectan los 3 artículos</span
+                            >
+                        </a>
+                        <a href="../index.html" class="pager-next">
+                            <span class="pager-label">Home &rarr;</span>
+                            <span class="pager-title"
+                                >Volver al índice del curso</span
+                            >
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">
+                        Módulo 4 &middot; Lección 2 &middot; Edición 2026
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

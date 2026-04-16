@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Wizard · UI Components Atlas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      background: '#09090b', foreground: '#fafafa',
+      muted: { DEFAULT: '#27272a', foreground: '#a1a1aa' },
+      border: '#27272a', ring: '#d4d4d8',
+      primary: { DEFAULT: '#fafafa', foreground: '#18181b' },
+      secondary: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      destructive: { DEFAULT: '#7f1d1d', foreground: '#fafafa' },
+      accent: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      popover: { DEFAULT: '#18181b', foreground: '#fafafa' },
+      input: '#27272a',
+    }, borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' } } } }
+  </script>
+  <link rel="stylesheet" href="../css/atlas.css" />
+  <link rel="stylesheet" href="../css/demos.css" />
+</head>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+      <a href="../index.html" class="font-semibold text-lg">UI Components Atlas</a>
+      <input type="search" placeholder="Buscar componente..." class="flex-1 max-w-md bg-input border border-border rounded-md px-3 py-2 text-sm" />
+    </div>
+  </header>
+
+  <div class="component-page max-w-7xl mx-auto px-6 py-8 grid grid-cols-[220px_1fr] gap-8">
+    <aside class="sidebar-nav">
+      <h4 class="text-xs uppercase tracking-wider text-muted-foreground mb-3">Módulo 07</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="./data-table.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">01. Data Table</a></li>
+        <li><a href="./form.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">02. Form</a></li>
+        <li><a href="./form-wizard.html" class="block px-2 py-1.5 rounded is-active bg-muted text-foreground">03. Form Wizard</a></li>
+        <li><a href="./drag-drop.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">04. Drag & Drop</a></li>
+        <li><a href="./infinite-scroll.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">05. Infinite Scroll</a></li>
+        <li><a href="./virtualized-list.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">06. Virtualized List</a></li>
+        <li><a href="./rich-text-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">07. Rich Text Editor</a></li>
+        <li><a href="./code-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">08. Code Editor</a></li>
+        <li><a href="./kanban-board.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">09. Kanban Board</a></li>
+        <li><a href="./masked-input.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">10. Masked Input</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <nav class="breadcrumbs text-sm text-muted-foreground mb-6">
+        <a href="../index.html" class="hover:text-foreground">Atlas</a><span class="mx-2">/</span>
+        <a href="./index.html" class="hover:text-foreground">Patrones Avanzados</a><span class="mx-2">/</span>
+        <span class="text-foreground">Form Wizard</span>
+      </nav>
+
+      <header class="component-page__header mb-10">
+        <h1 class="component-page__title text-4xl font-bold mb-3">Form Wizard</h1>
+        <div class="component-page__aliases flex flex-wrap gap-2 mb-4">
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Stepper Form</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Multi-step Form</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Ant Steps</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">MUI Stepper</span>
+        </div>
+        <p class="component-page__lead text-lg text-muted-foreground max-w-3xl">Formulario dividido en pasos secuenciales. Checkout, onboarding, KYC. Es el patrón que baja la fricción cuando tenés muchos campos — el usuario ve un paso a la vez y no se siente abrumado.</p>
+      </header>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Demo interactiva</h2>
+        <div class="demo-container border border-border rounded-lg p-6 bg-muted/10">
+          <!-- Stepper -->
+          <div class="flex items-center justify-between max-w-md mb-8" id="wz-stepper">
+            <div class="flex items-center gap-2" data-step-indicator="1">
+              <div class="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">1</div>
+              <span class="text-sm">Personal</span>
+            </div>
+            <div class="flex-1 h-px bg-border mx-2"></div>
+            <div class="flex items-center gap-2 opacity-50" data-step-indicator="2">
+              <div class="w-8 h-8 rounded-full border border-border flex items-center justify-center text-sm">2</div>
+              <span class="text-sm">Address</span>
+            </div>
+            <div class="flex-1 h-px bg-border mx-2"></div>
+            <div class="flex items-center gap-2 opacity-50" data-step-indicator="3">
+              <div class="w-8 h-8 rounded-full border border-border flex items-center justify-center text-sm">3</div>
+              <span class="text-sm">Review</span>
+            </div>
+          </div>
+
+          <!-- Steps -->
+          <div class="max-w-md">
+            <div data-step="1">
+              <h3 class="font-semibold mb-4">Personal Info</h3>
+              <div class="space-y-3">
+                <input id="wz-name" placeholder="Nombre completo" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm" />
+                <input id="wz-email" placeholder="Email" type="email" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm" />
+              </div>
+            </div>
+            <div data-step="2" class="hidden">
+              <h3 class="font-semibold mb-4">Address</h3>
+              <div class="space-y-3">
+                <input id="wz-street" placeholder="Calle y número" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm" />
+                <input id="wz-city" placeholder="Ciudad" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm" />
+              </div>
+            </div>
+            <div data-step="3" class="hidden">
+              <h3 class="font-semibold mb-4">Review</h3>
+              <dl class="text-sm space-y-2 border border-border rounded p-4 bg-muted/30" id="wz-review"></dl>
+            </div>
+          </div>
+
+          <div class="flex justify-between mt-6 max-w-md">
+            <button id="wz-back" class="px-4 py-2 text-sm border border-border rounded-md disabled:opacity-30" disabled>Back</button>
+            <button id="wz-next" class="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-md font-medium">Next</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Anatomía</h2>
+        <div class="border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border-2 border-dashed border-border rounded p-4">
+            <div class="text-xs text-muted-foreground mb-2">Wizard Root (con store de estado)</div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Stepper (visual indicator)</div>
+              <span class="px-2 py-1 bg-muted rounded">Step 1</span>
+              <span class="px-2 py-1 bg-muted rounded">Step 2</span>
+              <span class="px-2 py-1 bg-muted rounded">Step N</span>
+            </div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Current Step (form activo)</div>
+              <div class="px-2 py-1 bg-muted rounded inline-block">Inputs del paso actual</div>
+            </div>
+            <div class="border border-border rounded p-3 text-xs">
+              <div class="text-muted-foreground mb-1">Navigation</div>
+              <span class="px-2 py-1 bg-muted rounded">Back</span>
+              <span class="px-2 py-1 bg-muted rounded">Next / Submit</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Variantes</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <li class="border border-border rounded p-3"><strong>Linear</strong> — no podés saltar pasos.</li>
+          <li class="border border-border rounded p-3"><strong>Non-linear</strong> — podés ir a cualquier paso completado.</li>
+          <li class="border border-border rounded p-3"><strong>Con review step</strong> — resumen final antes de submit.</li>
+          <li class="border border-border rounded p-3"><strong>Save as draft</strong> — persiste progreso.</li>
+          <li class="border border-border rounded p-3"><strong>Horizontal stepper</strong> — default desktop.</li>
+          <li class="border border-border rounded p-3"><strong>Vertical stepper</strong> — mobile o sidebar.</li>
+          <li class="border border-border rounded p-3"><strong>Con progress bar</strong> — alternativa al stepper.</li>
+          <li class="border border-border rounded p-3"><strong>Branching</strong> — pasos condicionales según respuestas.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Estados</h2>
+        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+          <li class="border border-border rounded p-3">Step active</li>
+          <li class="border border-border rounded p-3">Step completed</li>
+          <li class="border border-border rounded p-3">Step pending</li>
+          <li class="border border-border rounded p-3">Step error</li>
+          <li class="border border-border rounded p-3">Step validating</li>
+          <li class="border border-border rounded p-3">Submitting final</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Vocabulario cross-framework</h2>
+        <div class="border border-border rounded-lg overflow-hidden">
+          <table class="vocab-table w-full text-sm">
+            <thead class="bg-muted/50"><tr><th class="px-4 py-2 text-left">Framework</th><th class="px-4 py-2 text-left">Componente</th><th class="px-4 py-2 text-left">Notas</th></tr></thead>
+            <tbody>
+              <tr class="border-t border-border"><td class="px-4 py-2">MUI</td><td class="px-4 py-2"><code>Stepper + Step</code></td><td class="px-4 py-2">Built-in navigation</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Ant Design</td><td class="px-4 py-2"><code>Steps + Form</code></td><td class="px-4 py-2">Steps como indicador</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Shadcn</td><td class="px-4 py-2">Custom</td><td class="px-4 py-2">Se compone manualmente</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Chakra</td><td class="px-4 py-2"><code>Stepper</code> (v2+)</td><td class="px-4 py-2">API oficial</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Cuándo usar</h2>
+        <div class="use-case-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-green-400">Sí, usalo cuando</h3>
+            <ul class="use-case-list do space-y-2 text-sm text-muted-foreground">
+              <li>Checkout con shipping, payment, review</li>
+              <li>Onboarding de producto (&gt;10 campos)</li>
+              <li>Flujos con dependencias entre pasos</li>
+              <li>KYC, applications, surveys largas</li>
+            </ul>
+          </div>
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-red-400">No, evitalo cuando</h3>
+            <ul class="use-case-list dont space-y-2 text-sm text-muted-foreground">
+              <li>Forms cortos (&lt;10 campos) → Form single-page</li>
+              <li>Contenido no-secuencial → Tabs</li>
+              <li>El usuario necesita saltar libremente</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Prompts para coding agents</h2>
+        <div class="prompt-library space-y-3">
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Checkout</div>
+            <p class="prompt-library__text text-sm font-mono">3-step checkout wizard with back/next navigation, per-step validation and review step.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Onboarding</div>
+            <p class="prompt-library__text text-sm font-mono">Multi-step onboarding wizard with progress bar and save-as-draft to localStorage.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Vertical</div>
+            <p class="prompt-library__text text-sm font-mono">Vertical stepper wizard for KYC with 5 steps and non-linear navigation to completed steps.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Alternativas relacionadas</h2>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><strong class="text-foreground">Form</strong> — single-page para forms cortos.</li>
+          <li><strong class="text-foreground">Tabs</strong> — para contenido paralelo no secuencial.</li>
+          <li><strong class="text-foreground">Progress bar</strong> — solo indicador visual sin navegación.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Referencias</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://mui.com/material-ui/react-stepper/" class="text-blue-400 hover:underline" target="_blank">MUI Stepper</a></li>
+          <li><a href="https://ant.design/components/steps" class="text-blue-400 hover:underline" target="_blank">Ant Steps</a></li>
+        </ul>
+      </section>
+
+      <nav class="component-nav border-t border-border pt-6 flex justify-between text-sm">
+        <a href="./form.html" class="component-nav__link text-muted-foreground hover:text-foreground">← Form</a>
+        <a href="./drag-drop.html" class="component-nav__link text-muted-foreground hover:text-foreground">Drag & Drop →</a>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      let current = 1;
+      const total = 3;
+      const backBtn = document.getElementById('wz-back');
+      const nextBtn = document.getElementById('wz-next');
+      function show(n) {
+        document.querySelectorAll('[data-step]').forEach(el => {
+          el.classList.toggle('hidden', parseInt(el.dataset.step) !== n);
+        });
+        document.querySelectorAll('[data-step-indicator]').forEach(el => {
+          const i = parseInt(el.dataset.stepIndicator);
+          el.classList.toggle('opacity-50', i > n);
+          const circle = el.querySelector('div');
+          if (i <= n) {
+            circle.className = 'w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold';
+          } else {
+            circle.className = 'w-8 h-8 rounded-full border border-border flex items-center justify-center text-sm';
+          }
+        });
+        backBtn.disabled = n === 1;
+        nextBtn.textContent = n === total ? 'Submit' : 'Next';
+        if (n === 3) {
+          const dl = document.getElementById('wz-review');
+          dl.replaceChildren();
+          const data = [
+            ['Nombre', document.getElementById('wz-name').value || '—'],
+            ['Email', document.getElementById('wz-email').value || '—'],
+            ['Calle', document.getElementById('wz-street').value || '—'],
+            ['Ciudad', document.getElementById('wz-city').value || '—'],
+          ];
+          data.forEach(([k, v]) => {
+            const row = document.createElement('div');
+            row.className = 'flex justify-between';
+            const dt = document.createElement('dt');
+            dt.className = 'text-muted-foreground';
+            dt.textContent = k;
+            const dd = document.createElement('dd');
+            dd.textContent = v;
+            row.appendChild(dt); row.appendChild(dd);
+            dl.appendChild(row);
+          });
+        }
+      }
+      backBtn.addEventListener('click', () => { if (current > 1) { current--; show(current); } });
+      nextBtn.addEventListener('click', () => {
+        if (current < total) { current++; show(current); }
+        else { alert('Formulario enviado'); current = 1; show(1); }
+      });
+      show(1);
+    })();
+  </script>
+  <script src="../js/atlas.js"></script>
+  <script src="../js/demos.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vocabulario para coding agents — UI Components Atlas</title>
+    <meta name="description" content="Glosario de partes (Root, Trigger, Content, Portal, Item, Slot...) que te permite pedirle a un agente modificaciones quirurgicas." />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              background: "#09090b",
+              foreground: "#fafafa",
+              muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+              border: "#27272a",
+              primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+              secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+              destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+              accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+            },
+            borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo">
+          <span class="atlas-header__logo-mark" aria-hidden="true">A</span>
+          <span>UI Components Atlas</span>
+        </a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Lecciones del modulo">
+        <h2 class="sidebar-nav__title">Fundamentos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="01-ui-vs-ux.html">01 — UI vs UX vs Design Patterns</a></li>
+          <li><a class="sidebar-nav__link is-active" href="02-vocabulario.html">02 — Vocabulario para coding agents</a></li>
+          <li><a class="sidebar-nav__link" href="03-anatomia.html">03 — Anatomia de un componente</a></li>
+          <li><a class="sidebar-nav__link" href="04-shadcn-primer.html">04 — Shadcn primer</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Fundamentos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Vocabulario para coding agents</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Vocabulario para hablar con coding agents</h1>
+          <p class="component-page__lead">
+            Esta es la leccion mas importante del modulo. Si entendes estos
+            terminos, pasas de pedir "hace mas lindo el dropdown" a decir
+            "ajusta el padding del Content y cambia el color del
+            ItemIndicator cuando esta seleccionado". Esa diferencia es lo que
+            separa un vibe-coder junior de un vibe-coder senior.
+          </p>
+        </header>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Por que importa</h2>
+          <p class="component-page__section-lead">
+            Radix UI, Shadcn, Ark UI, spartan/ui, Melt UI y casi todo el
+            ecosistema moderno usa los MISMOS nombres para las mismas partes.
+            No es casualidad: es una convencion para que podamos componer y
+            hablar sin ambiguedades. Cuando le pedis al agente "el Trigger del
+            Popover", el sabe exactamente a que te referis.
+          </p>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Glosario visual</h2>
+          <p class="component-page__section-lead">Los terminos que vas a ver una y otra vez.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Root</h3>
+              <p class="text-sm text-muted-foreground mb-2">Contenedor raiz del componente. Maneja el estado compartido y el contexto.</p>
+              <code class="text-xs text-foreground">Select.Root, Dialog.Root, Tabs.Root</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Trigger</h3>
+              <p class="text-sm text-muted-foreground mb-2">Elemento que abre o activa un overlay/panel. El "gatillo".</p>
+              <code class="text-xs text-foreground">Select.Trigger, Popover.Trigger</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Content</h3>
+              <p class="text-sm text-muted-foreground mb-2">El panel, popover o dropdown que aparece cuando se dispara el trigger.</p>
+              <code class="text-xs text-foreground">Select.Content, Dialog.Content</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Portal</h3>
+              <p class="text-sm text-muted-foreground mb-2">Mecanismo para renderizar fuera del DOM parent (directo en body). Evita problemas de overflow y z-index.</p>
+              <code class="text-xs text-foreground">Select.Portal, Dialog.Portal</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Item</h3>
+              <p class="text-sm text-muted-foreground mb-2">Cada elemento individual dentro de una lista, menu o grupo.</p>
+              <code class="text-xs text-foreground">Select.Item, DropdownMenu.Item</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Group</h3>
+              <p class="text-sm text-muted-foreground mb-2">Agrupa items relacionados, usualmente con un label visible.</p>
+              <code class="text-xs text-foreground">Select.Group, DropdownMenu.Group</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Label</h3>
+              <p class="text-sm text-muted-foreground mb-2">Texto asociado a un control o grupo, accesible para screen readers.</p>
+              <code class="text-xs text-foreground">Select.Label, Form.Label</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Description</h3>
+              <p class="text-sm text-muted-foreground mb-2">Texto auxiliar que explica el campo. Se conecta via <code>aria-describedby</code>.</p>
+              <code class="text-xs text-foreground">Dialog.Description</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Indicator</h3>
+              <p class="text-sm text-muted-foreground mb-2">Elemento visual que muestra el estado: el check de un checkbox, el punto de un radio.</p>
+              <code class="text-xs text-foreground">Checkbox.Indicator, Select.ItemIndicator</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Value</h3>
+              <p class="text-sm text-muted-foreground mb-2">Representacion visible del valor actual seleccionado.</p>
+              <code class="text-xs text-foreground">Select.Value</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Viewport</h3>
+              <p class="text-sm text-muted-foreground mb-2">Area scrolleable dentro del Content. Es donde vive la lista cuando no entra.</p>
+              <code class="text-xs text-foreground">Select.Viewport, ScrollArea.Viewport</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Separator</h3>
+              <p class="text-sm text-muted-foreground mb-2">Divisor visual entre items o grupos de items. Normalmente una linea.</p>
+              <code class="text-xs text-foreground">DropdownMenu.Separator</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Slot</h3>
+              <p class="text-sm text-muted-foreground mb-2">Punto de insercion de contenido custom. En Radix se hace via <code>asChild</code>, en Vue/Svelte con slots nombrados.</p>
+              <code class="text-xs text-foreground">&lt;Button asChild&gt;&lt;a /&gt;&lt;/Button&gt;</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Thumb</h3>
+              <p class="text-sm text-muted-foreground mb-2">El "handle" que el usuario arrastra en sliders y switches.</p>
+              <code class="text-xs text-foreground">Slider.Thumb, Switch.Thumb</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Track</h3>
+              <p class="text-sm text-muted-foreground mb-2">La linea o base sobre la que se desliza el thumb.</p>
+              <code class="text-xs text-foreground">Slider.Track, Switch.Track</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Range</h3>
+              <p class="text-sm text-muted-foreground mb-2">La porcion "llena" del track en un slider, del minimo al thumb.</p>
+              <code class="text-xs text-foreground">Slider.Range</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Anchor</h3>
+              <p class="text-sm text-muted-foreground mb-2">Elemento que ancla la posicion de un floating element cuando no queres usar el Trigger.</p>
+              <code class="text-xs text-foreground">Popover.Anchor</code>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Arrow</h3>
+              <p class="text-sm text-muted-foreground mb-2">Puntita triangular que apunta al trigger, comun en tooltips y popovers.</p>
+              <code class="text-xs text-foreground">Tooltip.Arrow, Popover.Arrow</code>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Ejemplo compuesto: Select con todas las partes</h2>
+          <p class="component-page__section-lead">
+            Asi se compone un Select "completo" usando la convencion de
+            Radix/Shadcn. Fijate como cada parte tiene su nombre propio y vive
+            en un lugar especifico de la jerarquia.
+          </p>
+
+          <div class="demo-container" data-atlas-demo>
+            <pre class="prompt-library__text" id="select-example-code">&lt;Select.Root&gt;
+  &lt;Select.Trigger&gt;
+    &lt;Select.Value placeholder="Elegi una fruta" /&gt;
+    &lt;Select.Icon /&gt;
+  &lt;/Select.Trigger&gt;
+
+  &lt;Select.Portal&gt;
+    &lt;Select.Content&gt;
+      &lt;Select.Viewport&gt;
+        &lt;Select.Group&gt;
+          &lt;Select.Label&gt;Frutas&lt;/Select.Label&gt;
+
+          &lt;Select.Item value="apple"&gt;
+            &lt;Select.ItemText&gt;Manzana&lt;/Select.ItemText&gt;
+            &lt;Select.ItemIndicator /&gt;
+          &lt;/Select.Item&gt;
+
+          &lt;Select.Item value="banana"&gt;
+            &lt;Select.ItemText&gt;Banana&lt;/Select.ItemText&gt;
+            &lt;Select.ItemIndicator /&gt;
+          &lt;/Select.Item&gt;
+        &lt;/Select.Group&gt;
+
+        &lt;Select.Separator /&gt;
+
+        &lt;Select.Group&gt;
+          &lt;Select.Label&gt;Verduras&lt;/Select.Label&gt;
+          &lt;Select.Item value="carrot"&gt;
+            &lt;Select.ItemText&gt;Zanahoria&lt;/Select.ItemText&gt;
+            &lt;Select.ItemIndicator /&gt;
+          &lt;/Select.Item&gt;
+        &lt;/Select.Group&gt;
+      &lt;/Select.Viewport&gt;
+    &lt;/Select.Content&gt;
+  &lt;/Select.Portal&gt;
+&lt;/Select.Root&gt;</pre>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Como pedirlo al coding agent</h2>
+          <p class="component-page__section-lead">
+            Izquierda: lo que queres cambiar visualmente. Derecha: como lo
+            nombras para que el agente vaya directo.
+          </p>
+
+          <table class="vocab-table">
+            <thead>
+              <tr>
+                <th scope="col">Quiero cambiar...</th>
+                <th scope="col">Menciona...</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>El boton que abre el select</td>
+                <td><code>el Trigger del Select</code></td>
+              </tr>
+              <tr>
+                <td>Los items del dropdown</td>
+                <td><code>los Items del Content</code></td>
+              </tr>
+              <tr>
+                <td>El check al lado del item seleccionado</td>
+                <td><code>el ItemIndicator</code></td>
+              </tr>
+              <tr>
+                <td>El area scrolleable</td>
+                <td><code>el Viewport del Content</code></td>
+              </tr>
+              <tr>
+                <td>La linea divisora entre grupos</td>
+                <td><code>el Separator</code></td>
+              </tr>
+              <tr>
+                <td>El valor que se muestra cuando no hay nada seleccionado</td>
+                <td><code>el placeholder del Value</code></td>
+              </tr>
+              <tr>
+                <td>El label de un grupo de items</td>
+                <td><code>el Label del Group</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section">
+          <div class="rounded-lg border border-border bg-muted/40 p-5">
+            <p class="text-foreground font-semibold mb-2">Con este vocabulario</p>
+            <p class="text-muted-foreground">El agente sabe <b>exactamente</b> que parte tocar sin que tengas que explicarle el componente entero. Pasas de "cambiame esto del dropdown" a "cambia el background del Trigger cuando esta open, y agrega un border sutil al Content cuando aparece". Esa precision es la que hace que el output no necesite tres idas y vueltas.</p>
+          </div>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre lecciones">
+          <a class="component-nav__link" href="01-ui-vs-ux.html">
+            <span class="component-nav__label">Anterior</span>
+            <span class="component-nav__name">UI vs UX vs Design Patterns</span>
+          </a>
+          <a class="component-nav__link component-nav__link--next" href="03-anatomia.html">
+            <span class="component-nav__label">Siguiente</span>
+            <span class="component-nav__name">Anatomia de un componente</span>
+          </a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

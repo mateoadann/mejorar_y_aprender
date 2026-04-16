@@ -1,0 +1,273 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List — UI Components Atlas</title>
+    <meta name="description" content="Lista vertical de items homogéneos." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Display de Datos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="card.html">01 — Card</a></li>
+          <li><a class="sidebar-nav__link" href="table.html">02 — Table</a></li>
+          <li><a class="sidebar-nav__link is-active" href="list.html">03 — List</a></li>
+          <li><a class="sidebar-nav__link" href="tree-view.html">04 — Tree View</a></li>
+          <li><a class="sidebar-nav__link" href="timeline.html">05 — Timeline</a></li>
+          <li><a class="sidebar-nav__link" href="accordion.html">06 — Accordion</a></li>
+          <li><a class="sidebar-nav__link" href="collapsible.html">07 — Collapsible</a></li>
+          <li><a class="sidebar-nav__link" href="carousel.html">08 — Carousel</a></li>
+          <li><a class="sidebar-nav__link" href="avatar.html">09 — Avatar</a></li>
+          <li><a class="sidebar-nav__link" href="badge-chip-tag.html">10 — Badge / Chip / Tag</a></li>
+          <li><a class="sidebar-nav__link" href="stat-card.html">11 — Stat Card</a></li>
+          <li><a class="sidebar-nav__link" href="kanban-card.html">12 — Kanban Card</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Display de Datos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">List</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">List</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">List</span>
+            <span class="component-page__alias">ListView</span>
+            <span class="component-page__alias">ItemList</span>
+            <span class="component-page__alias">ul / ol</span>
+          </div>
+          <p class="component-page__lead">Lista vertical de items homogéneos con o sin separadores. Si tus items tienen la misma estructura (avatar + título + acción), List es tu amigo. Shadcn no tiene List oficial — se arma con <code>&lt;ul&gt;</code> + divide-y. MUI y Ant sí tienen.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Lista simple y lista rica con avatars.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--grid">
+              <div class="w-full max-w-xs">
+                <p class="demo-preview__label">Simple</p>
+                <ul class="rounded-md border border-border divide-y divide-border bg-muted/10">
+                  <li class="px-4 py-2 text-sm text-foreground">Inbox</li>
+                  <li class="px-4 py-2 text-sm text-foreground">Drafts</li>
+                  <li class="px-4 py-2 text-sm text-foreground">Sent</li>
+                  <li class="px-4 py-2 text-sm text-foreground">Archive</li>
+                  <li class="px-4 py-2 text-sm text-foreground">Trash</li>
+                </ul>
+              </div>
+              <div class="w-full max-w-sm">
+                <p class="demo-preview__label">Rich list</p>
+                <ul class="rounded-md border border-border divide-y divide-border bg-muted/10">
+                  <li class="flex items-center gap-3 px-4 py-3 hover:bg-muted/30">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xs font-medium text-white">AC</div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-foreground truncate">Alice Cooper</p>
+                      <p class="text-xs text-muted-foreground truncate">alice@acme.com</p>
+                    </div>
+                    <button class="text-muted-foreground hover:text-foreground" aria-label="More"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+                  </li>
+                  <li class="flex items-center gap-3 px-4 py-3 hover:bg-muted/30">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-xs font-medium text-white">BD</div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-foreground truncate">Bob Dylan</p>
+                      <p class="text-xs text-muted-foreground truncate">bob@acme.com</p>
+                    </div>
+                    <button class="text-muted-foreground hover:text-foreground" aria-label="More"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+                  </li>
+                  <li class="flex items-center gap-3 px-4 py-3 hover:bg-muted/30">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-xs font-medium text-white">CK</div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-foreground truncate">Carol King</p>
+                      <p class="text-xs text-muted-foreground truncate">carol@acme.com</p>
+                    </div>
+                    <button class="text-muted-foreground hover:text-foreground" aria-label="More"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+                  </li>
+                  <li class="flex items-center gap-3 px-4 py-3 hover:bg-muted/30">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-xs font-medium text-white">DG</div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-foreground truncate">Dave Grohl</p>
+                      <p class="text-xs text-muted-foreground truncate">dave@acme.com</p>
+                    </div>
+                    <button class="text-muted-foreground hover:text-foreground" aria-label="More"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+                  </li>
+                  <li class="flex items-center gap-3 px-4 py-3 hover:bg-muted/30">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-500 to-red-500 flex items-center justify-center text-xs font-medium text-white">EA</div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-foreground truncate">Eve Adams</p>
+                      <p class="text-xs text-muted-foreground truncate">eve@acme.com</p>
+                    </div>
+                    <button class="text-muted-foreground hover:text-foreground" aria-label="More"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">List (ul)</div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="text-xs font-mono text-muted-foreground mb-2">ListItem (li)</div>
+                  <div class="flex gap-2 text-xs">
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">[Leading] Avatar/Icon</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Content (Title + Desc)</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">[Trailing] Action</div>
+                  </div>
+                </div>
+                <div class="text-xs font-mono text-muted-foreground mt-2">Separator (divide-y)</div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> <code>&lt;ul&gt;</code> o <code>&lt;ol&gt;</code> con border y divide-y.</li>
+              <li><b>ListItem</b> Una fila. Flex horizontal con 3 slots.</li>
+              <li><b>Leading</b> Avatar, icono o checkbox.</li>
+              <li><b>Content</b> Título + descripción (min-w-0 + truncate).</li>
+              <li><b>Trailing</b> Action (menu, badge, chevron).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>simple</b> Solo texto en cada item.</li>
+            <li><b>with avatar</b> Leading avatar + content.</li>
+            <li><b>with action</b> Trailing button o menu.</li>
+            <li><b>ordered</b> <code>&lt;ol&gt;</code> con numeración.</li>
+            <li><b>with checkbox</b> Para selección múltiple.</li>
+            <li><b>interactive</b> Cada item es clickeable (hover state).</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn</th><th>Material UI</th><th>Ant Design</th><th>HTML</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>(custom ul)</td><td>List</td><td>List</td><td>&lt;ul&gt; / &lt;ol&gt;</td></tr>
+              <tr><td>Item</td><td>li</td><td>ListItem</td><td>List.Item</td><td>&lt;li&gt;</td></tr>
+              <tr><td>Leading</td><td>div</td><td>ListItemAvatar / ListItemIcon</td><td>avatar prop</td><td>—</td></tr>
+              <tr><td>Content</td><td>div</td><td>ListItemText</td><td>List.Item.Meta</td><td>—</td></tr>
+              <tr><td>Trailing</td><td>div</td><td>ListItemSecondaryAction</td><td>actions prop</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Listas homogéneas: users, mensajes, notificaciones.</li>
+              <li>Feeds verticales.</li>
+              <li>Menús simples.</li>
+              <li>Inbox, drawers, side panels.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Tenés múltiples columnas: <a href="table.html" class="underline">Table</a>.</li>
+              <li>Items heterogéneos: <a href="card.html" class="underline">Card</a> grid.</li>
+              <li>Jerarquía anidada: <a href="tree-view.html" class="underline">Tree View</a>.</li>
+              <li>Navegación principal: Sidebar (módulo 02).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Rich list with avatars</p>
+              <pre class="prompt-library__text" id="p1-text">Build a List component with ul + divide-y. Each ListItem has: leading Avatar (size 9), main content (name + email truncated), trailing MoreHorizontal button. Hover state with bg-muted/30.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Ordered numbered list</p>
+              <pre class="prompt-library__text" id="p2-text">Create an ordered list of top 5 items. Use ol with list-decimal padding, each li with counter and text. Hover state included.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Notification feed</p>
+              <pre class="prompt-library__text" id="p3-text">Build a notification list: each item has an icon (Bell, Star, MessageSquare), message text, timestamp (relative), and an unread dot indicator on the right when unread.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Checkbox list for selection</p>
+              <pre class="prompt-library__text" id="p4-text">Create a List where each item has a leading Checkbox. Clicking the item (not just the checkbox) toggles selection. Track selected ids in state and show a count above the list.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="table.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Table</h3><p class="text-sm text-muted-foreground">Para datos de múltiples columnas.</p></a>
+            <a href="tree-view.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Tree View</h3><p class="text-sm text-muted-foreground">Para jerarquías anidadas.</p></a>
+            <a href="card.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Card grid</h3><p class="text-sm text-muted-foreground">Para items con mucho peso visual.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://mui.com/material-ui/react-list/" target="_blank">MUI List</a></li>
+            <li><a href="https://ant.design/components/list" target="_blank">Ant Design List</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul" target="_blank">MDN ul element</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="table.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Table</span></a>
+          <a class="component-nav__link component-nav__link--next" href="tree-view.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Tree View</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

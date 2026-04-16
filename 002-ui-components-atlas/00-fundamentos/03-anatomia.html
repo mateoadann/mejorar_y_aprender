@@ -1,0 +1,285 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anatomia de un componente — UI Components Atlas</title>
+    <meta name="description" content="Como leer la anatomia de un componente moderno: composition over configuration." />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              background: "#09090b",
+              foreground: "#fafafa",
+              muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+              border: "#27272a",
+              primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+              secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+              destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+              accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+            },
+            borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo">
+          <span class="atlas-header__logo-mark" aria-hidden="true">A</span>
+          <span>UI Components Atlas</span>
+        </a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Lecciones del modulo">
+        <h2 class="sidebar-nav__title">Fundamentos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="01-ui-vs-ux.html">01 — UI vs UX vs Design Patterns</a></li>
+          <li><a class="sidebar-nav__link" href="02-vocabulario.html">02 — Vocabulario para coding agents</a></li>
+          <li><a class="sidebar-nav__link is-active" href="03-anatomia.html">03 — Anatomia de un componente</a></li>
+          <li><a class="sidebar-nav__link" href="04-shadcn-primer.html">04 — Shadcn primer</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Fundamentos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Anatomia de un componente</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Como leer la anatomia de un componente</h1>
+          <p class="component-page__lead">
+            La anatomia de un componente es como un plano. Saber leerla te
+            permite pedir modificaciones quirurgicas en lugar de rehacer todo.
+            En esta leccion vemos la filosofia de composition over
+            configuration y desarmamos tres componentes ejemplo: Dialog,
+            DropdownMenu y Tabs.
+          </p>
+        </header>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Composition over configuration</h2>
+          <p class="component-page__section-lead">
+            Dos filosofias opuestas para diseñar componentes. La vieja
+            privilegia "una sola etiqueta con 40 props", la nueva privilegia
+            "muchas partes nombradas que componen".
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <div class="text-xs uppercase tracking-wide text-destructive-foreground/80 mb-2">Old school (Material UI v4)</div>
+              <pre class="prompt-library__text text-xs" id="old-school-code">&lt;Select
+  multiple
+  grouped
+  searchable
+  labelKey="name"
+  valueKey="id"
+  renderOption={fn}
+  renderChip={fn}
+  renderGroupHeader={fn}
+  placeholder="Elegi..."
+  /&gt;</pre>
+              <p class="text-xs text-muted-foreground mt-2">40 props. Cada cambio pequeño requiere aprender la prop correcta. El codigo interno es una caja negra. Si queres un comportamiento que no previeron, chau.</p>
+            </div>
+
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <div class="text-xs uppercase tracking-wide text-foreground/80 mb-2">New school (Radix / Shadcn)</div>
+              <pre class="prompt-library__text text-xs" id="new-school-code">&lt;Select.Root&gt;
+  &lt;Select.Trigger&gt;
+    &lt;Select.Value /&gt;
+  &lt;/Select.Trigger&gt;
+  &lt;Select.Content&gt;
+    &lt;Select.Item&gt;...&lt;/Select.Item&gt;
+  &lt;/Select.Content&gt;
+&lt;/Select.Root&gt;</pre>
+              <p class="text-xs text-muted-foreground mt-2">Partes nombradas que componen. Si queres cambiar algo, tocas la parte. Si queres agregar algo nuevo, metes un hijo. Sin magia.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Anatomia visual: Dialog</h2>
+          <p class="component-page__section-lead">Un Dialog (modal) se compone asi. Las cajas anidadas muestran la jerarquia del DOM.</p>
+
+          <div class="demo-container" data-atlas-demo>
+            <div class="rounded-lg border border-border bg-muted/20 p-4 w-full max-w-xl">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">Dialog.Root</div>
+              <div class="rounded-md border border-border bg-muted/40 p-3 mb-3">
+                <span class="text-xs text-muted-foreground">Dialog.Trigger</span>
+                <div class="mt-1 inline-block px-3 py-1 rounded-md bg-primary text-primary-foreground text-xs">Abrir modal</div>
+              </div>
+              <div class="rounded-md border border-border bg-muted/40 p-3">
+                <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">Dialog.Portal</div>
+                <div class="rounded-md border border-border bg-muted/60 p-3 mb-2">
+                  <span class="text-xs text-muted-foreground">Dialog.Overlay</span>
+                  <span class="block text-[11px] text-muted-foreground/70 mt-1">fondo oscuro semi-transparente</span>
+                </div>
+                <div class="rounded-md border border-border bg-muted/60 p-3 space-y-2">
+                  <div class="text-xs uppercase tracking-wide text-muted-foreground">Dialog.Content</div>
+                  <div class="rounded border border-border bg-muted p-2 text-xs">Dialog.Title</div>
+                  <div class="rounded border border-border bg-muted p-2 text-xs">Dialog.Description</div>
+                  <div class="rounded border border-border bg-muted p-2 text-xs">body (children)</div>
+                  <div class="flex gap-2">
+                    <div class="flex-1 rounded border border-border bg-muted p-2 text-xs">Footer / actions</div>
+                    <div class="rounded border border-border bg-muted px-2 py-1 text-xs">Dialog.Close</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Anatomia visual: DropdownMenu</h2>
+          <p class="component-page__section-lead">Un menu desplegable, con soporte para submenus, checkboxes y radios dentro del mismo menu.</p>
+
+          <div class="demo-container" data-atlas-demo>
+            <div class="rounded-lg border border-border bg-muted/20 p-4 w-full max-w-xl">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">DropdownMenu.Root</div>
+              <div class="rounded-md border border-border bg-muted/40 p-3 mb-3">
+                <span class="text-xs text-muted-foreground">DropdownMenu.Trigger</span>
+                <div class="mt-1 inline-block px-3 py-1 rounded-md bg-primary text-primary-foreground text-xs">Opciones ▾</div>
+              </div>
+              <div class="rounded-md border border-border bg-muted/40 p-3">
+                <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">DropdownMenu.Portal</div>
+                <div class="rounded-md border border-border bg-muted/60 p-3 space-y-2">
+                  <div class="text-xs uppercase tracking-wide text-muted-foreground mb-1">DropdownMenu.Content</div>
+                  <div class="rounded border border-border bg-muted px-2 py-1 text-xs">DropdownMenu.Label — "Acciones"</div>
+                  <div class="rounded border border-border bg-muted px-2 py-1 text-xs">DropdownMenu.Item — Editar</div>
+                  <div class="rounded border border-border bg-muted px-2 py-1 text-xs">DropdownMenu.Item — Duplicar</div>
+                  <div class="h-px bg-border my-1"></div>
+                  <div class="text-[10px] text-muted-foreground">DropdownMenu.Separator</div>
+                  <div class="rounded border border-border bg-muted px-2 py-1 text-xs">DropdownMenu.CheckboxItem — "Mostrar ocultos"</div>
+                  <div class="rounded border border-border bg-muted px-2 py-1 text-xs">DropdownMenu.RadioItem — "Vista lista"</div>
+                  <div class="rounded border border-border bg-muted px-2 py-1 text-xs">DropdownMenu.Sub → SubTrigger + SubContent</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Anatomia visual: Tabs</h2>
+          <p class="component-page__section-lead">Un switcher clasico con List arriba y Content por tab.</p>
+
+          <div class="demo-container" data-atlas-demo>
+            <div class="rounded-lg border border-border bg-muted/20 p-4 w-full max-w-xl">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">Tabs.Root</div>
+              <div class="rounded-md border border-border bg-muted/40 p-3 mb-3">
+                <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">Tabs.List</div>
+                <div class="flex gap-2">
+                  <div class="rounded border border-border bg-muted px-3 py-1 text-xs">Tabs.Trigger — "General"</div>
+                  <div class="rounded border border-border bg-muted px-3 py-1 text-xs">Tabs.Trigger — "Cuenta"</div>
+                  <div class="rounded border border-border bg-muted px-3 py-1 text-xs">Tabs.Trigger — "Facturacion"</div>
+                </div>
+              </div>
+              <div class="rounded-md border border-border bg-muted/40 p-3 space-y-2">
+                <div class="rounded border border-border bg-muted p-2 text-xs">Tabs.Content — value="general"</div>
+                <div class="rounded border border-border bg-muted p-2 text-xs">Tabs.Content — value="cuenta"</div>
+                <div class="rounded border border-border bg-muted p-2 text-xs">Tabs.Content — value="facturacion"</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Partes comunes que aparecen en varios componentes</h2>
+          <p class="component-page__section-lead">
+            Estas partes se repiten cross-componente. Aprenderlas una vez te
+            sirve para toda la familia.
+          </p>
+
+          <table class="vocab-table">
+            <thead>
+              <tr>
+                <th scope="col">Parte</th>
+                <th scope="col">Aparece en</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Root</b></td>
+                <td>Todos</td>
+              </tr>
+              <tr>
+                <td><b>Trigger</b></td>
+                <td>Select, Dialog, Popover, DropdownMenu, Tooltip, HoverCard, Sheet, ContextMenu</td>
+              </tr>
+              <tr>
+                <td><b>Content</b></td>
+                <td>Select, Dialog, Popover, DropdownMenu, Tooltip, HoverCard, Sheet, Tabs</td>
+              </tr>
+              <tr>
+                <td><b>Item</b></td>
+                <td>Select, DropdownMenu, Menubar, ContextMenu, RadioGroup, ToggleGroup</td>
+              </tr>
+              <tr>
+                <td><b>Portal</b></td>
+                <td>Select, Dialog, Popover, DropdownMenu, Tooltip, HoverCard</td>
+              </tr>
+              <tr>
+                <td><b>Separator</b></td>
+                <td>DropdownMenu, ContextMenu, Menubar, Toolbar</td>
+              </tr>
+              <tr>
+                <td><b>Group</b> + <b>Label</b></td>
+                <td>Select, DropdownMenu, ContextMenu, RadioGroup</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section">
+          <div class="rounded-lg border border-border bg-muted/40 p-5">
+            <p class="text-foreground font-semibold mb-2">Tip para modificaciones quirurgicas</p>
+            <p class="text-muted-foreground">La proxima vez que pidas "hace mas grande el modal", deci <b>"aumenta el padding del Dialog.Content y el gap entre Title y Description"</b>. El agente va a ir directo a la parte correcta sin tener que adivinar. Cuanto mas preciso sos nombrando la parte, menos vueltas da.</p>
+          </div>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre lecciones">
+          <a class="component-nav__link" href="02-vocabulario.html">
+            <span class="component-nav__label">Anterior</span>
+            <span class="component-nav__name">Vocabulario para coding agents</span>
+          </a>
+          <a class="component-nav__link component-nav__link--next" href="04-shadcn-primer.html">
+            <span class="component-nav__label">Siguiente</span>
+            <span class="component-nav__name">Shadcn primer</span>
+          </a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

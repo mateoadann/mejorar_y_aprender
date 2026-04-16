@@ -1,0 +1,196 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Display de Datos — UI Components Atlas</title>
+    <meta name="description" content="Cómo mostrar información estructurada al usuario. 12 componentes." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Display de Datos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link is-active" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="card.html">01 — Card</a></li>
+          <li><a class="sidebar-nav__link" href="table.html">02 — Table</a></li>
+          <li><a class="sidebar-nav__link" href="list.html">03 — List</a></li>
+          <li><a class="sidebar-nav__link" href="tree-view.html">04 — Tree View</a></li>
+          <li><a class="sidebar-nav__link" href="timeline.html">05 — Timeline</a></li>
+          <li><a class="sidebar-nav__link" href="accordion.html">06 — Accordion</a></li>
+          <li><a class="sidebar-nav__link" href="collapsible.html">07 — Collapsible</a></li>
+          <li><a class="sidebar-nav__link" href="carousel.html">08 — Carousel</a></li>
+          <li><a class="sidebar-nav__link" href="avatar.html">09 — Avatar</a></li>
+          <li><a class="sidebar-nav__link" href="badge-chip-tag.html">10 — Badge / Chip / Tag</a></li>
+          <li><a class="sidebar-nav__link" href="stat-card.html">11 — Stat Card</a></li>
+          <li><a class="sidebar-nav__link" href="kanban-card.html">12 — Kanban Card</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Display de Datos</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Display de Datos</h1>
+          <p class="component-page__lead">
+            Cómo mostrar información estructurada al usuario sin ahogarlo. Estos son los 12 componentes que usás cuando tenés que presentar datos: listas, tablas, cards, timelines, árboles jerárquicos. Elegir el componente correcto es la mitad del diseño de una pantalla — el resto es solo tipografía y spacing.
+          </p>
+          <p class="component-page__lead">
+            <b>Regla de oro del módulo:</b> cada familia tiene variantes generales y especializadas. Card es la base; Stat Card y Kanban Card son especializaciones. Accordion y Collapsible parecen iguales pero no lo son. Badge, Chip y Tag son tres cosas distintas que todo el mundo mezcla. Acá los separamos bien.
+          </p>
+        </header>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Los 12 componentes</h2>
+          <div class="category-grid">
+            <a href="card.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">01 — Card</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Card · Panel · Surface</p>
+              <p class="text-sm text-muted-foreground">Contenedor genérico con borde que agrupa contenido.</p>
+            </a>
+            <a href="table.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">02 — Table</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Table · Grid (static)</p>
+              <p class="text-sm text-muted-foreground">Datos tabulares read-only en filas y columnas.</p>
+            </a>
+            <a href="list.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">03 — List</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">List · ListView · ul</p>
+              <p class="text-sm text-muted-foreground">Lista vertical de items homogéneos.</p>
+            </a>
+            <a href="tree-view.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">04 — Tree View</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">TreeView · File explorer</p>
+              <p class="text-sm text-muted-foreground">Lista jerárquica con nodos colapsables.</p>
+            </a>
+            <a href="timeline.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">05 — Timeline</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Timeline · Activity feed</p>
+              <p class="text-sm text-muted-foreground">Secuencia vertical de eventos cronológicos.</p>
+            </a>
+            <a href="accordion.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">06 — Accordion</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Accordion · Collapse</p>
+              <p class="text-sm text-muted-foreground">Varias secciones colapsables (single o multiple).</p>
+            </a>
+            <a href="collapsible.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">07 — Collapsible</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Collapsible · Show more</p>
+              <p class="text-sm text-muted-foreground">Una sola sección con toggle open/closed.</p>
+            </a>
+            <a href="carousel.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">08 — Carousel</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Carousel · Slider · Gallery</p>
+              <p class="text-sm text-muted-foreground">Slider horizontal con prev/next y dots.</p>
+            </a>
+            <a href="avatar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">09 — Avatar</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Avatar · User image</p>
+              <p class="text-sm text-muted-foreground">Imagen circular con fallback de iniciales.</p>
+            </a>
+            <a href="badge-chip-tag.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">10 — Badge / Chip / Tag</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Badge · Chip · Tag · Pill</p>
+              <p class="text-sm text-muted-foreground">Etiquetas chicas para status, counts o categorías.</p>
+            </a>
+            <a href="stat-card.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">11 — Stat Card</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Stat · KPI card</p>
+              <p class="text-sm text-muted-foreground">Card con métrica + trend para dashboards.</p>
+            </a>
+            <a href="kanban-card.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">12 — Kanban Card</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Task card · Issue card</p>
+              <p class="text-sm text-muted-foreground">Card especializada para boards tipo Trello.</p>
+            </a>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Cheat sheet: cuál usar</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Necesito...</th><th>Usá</th><th>NO uses</th></tr></thead>
+            <tbody>
+              <tr><td>Agrupar info relacionada genérica</td><td>Card</td><td>Stat Card, Kanban Card</td></tr>
+              <tr><td>Mostrar datos tabulares estáticos</td><td>Table</td><td>List, Card grid</td></tr>
+              <tr><td>Sorting / filtering / pagination en tabla</td><td>Data Table (módulo 07)</td><td>Table</td></tr>
+              <tr><td>Lista vertical homogénea</td><td>List</td><td>Table</td></tr>
+              <tr><td>Jerarquía de carpetas o nodos</td><td>Tree View</td><td>List, Accordion</td></tr>
+              <tr><td>Historia de eventos ordenados</td><td>Timeline</td><td>Stepper (ese es procedural)</td></tr>
+              <tr><td>Varias secciones colapsables</td><td>Accordion</td><td>Collapsible</td></tr>
+              <tr><td>Un solo toggle "show more"</td><td>Collapsible</td><td>Accordion</td></tr>
+              <tr><td>Galería de imágenes con slides</td><td>Carousel</td><td>Tabs</td></tr>
+              <tr><td>Representar un usuario</td><td>Avatar</td><td>Badge</td></tr>
+              <tr><td>Status o contador</td><td>Badge</td><td>Chip</td></tr>
+              <tr><td>Filtro dismissible</td><td>Chip</td><td>Badge</td></tr>
+              <tr><td>Categorizar contenido</td><td>Tag</td><td>Badge</td></tr>
+              <tr><td>Métrica con trend en un dashboard</td><td>Stat Card</td><td>Card genérica</td></tr>
+              <tr><td>Tarea en un kanban board</td><td>Kanban Card</td><td>Card genérica</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Distinciones clave</h2>
+          <div class="use-case-grid">
+            <div class="rounded-lg border border-border bg-muted/20 p-4">
+              <h3 class="font-semibold text-foreground mb-2">Table vs Data Table</h3>
+              <p class="text-sm text-muted-foreground">Table es estática: filas, columnas, quizás hover. Data Table es Table + useReactTable con sorting, filtering, pagination, selection. Si necesitás esas features, salta al módulo 07.</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/20 p-4">
+              <h3 class="font-semibold text-foreground mb-2">Badge vs Chip vs Tag</h3>
+              <p class="text-sm text-muted-foreground">Badge = estado/contador no interactivo. Chip = interactivo, a veces con X. Tag = categoriza contenido (labels). Las libraries los mezclan — en este atlas los separamos.</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/20 p-4">
+              <h3 class="font-semibold text-foreground mb-2">Accordion vs Collapsible</h3>
+              <p class="text-sm text-muted-foreground">Accordion = lista de items colapsables (FAQ). Collapsible = UN solo item con toggle. Si tenés un solo "show more", usá Collapsible; si tenés varios, Accordion.</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/20 p-4">
+              <h3 class="font-semibold text-foreground mb-2">Card vs Stat Card vs Kanban Card</h3>
+              <p class="text-sm text-muted-foreground">Card es genérica. Stat Card es para una métrica (dashboard KPI). Kanban Card es para tareas en boards (Trello, Linear). Las especializaciones vienen con estructura específica.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

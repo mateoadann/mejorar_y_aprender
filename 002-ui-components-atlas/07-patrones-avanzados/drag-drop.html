@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drag & Drop · UI Components Atlas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      background: '#09090b', foreground: '#fafafa',
+      muted: { DEFAULT: '#27272a', foreground: '#a1a1aa' },
+      border: '#27272a', ring: '#d4d4d8',
+      primary: { DEFAULT: '#fafafa', foreground: '#18181b' },
+      secondary: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      destructive: { DEFAULT: '#7f1d1d', foreground: '#fafafa' },
+      accent: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      popover: { DEFAULT: '#18181b', foreground: '#fafafa' },
+      input: '#27272a',
+    }, borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' } } } }
+  </script>
+  <link rel="stylesheet" href="../css/atlas.css" />
+  <link rel="stylesheet" href="../css/demos.css" />
+</head>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+      <a href="../index.html" class="font-semibold text-lg">UI Components Atlas</a>
+      <input type="search" placeholder="Buscar componente..." class="flex-1 max-w-md bg-input border border-border rounded-md px-3 py-2 text-sm" />
+    </div>
+  </header>
+
+  <div class="component-page max-w-7xl mx-auto px-6 py-8 grid grid-cols-[220px_1fr] gap-8">
+    <aside class="sidebar-nav">
+      <h4 class="text-xs uppercase tracking-wider text-muted-foreground mb-3">Módulo 07</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="./data-table.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">01. Data Table</a></li>
+        <li><a href="./form.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">02. Form</a></li>
+        <li><a href="./form-wizard.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">03. Form Wizard</a></li>
+        <li><a href="./drag-drop.html" class="block px-2 py-1.5 rounded is-active bg-muted text-foreground">04. Drag & Drop</a></li>
+        <li><a href="./infinite-scroll.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">05. Infinite Scroll</a></li>
+        <li><a href="./virtualized-list.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">06. Virtualized List</a></li>
+        <li><a href="./rich-text-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">07. Rich Text Editor</a></li>
+        <li><a href="./code-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">08. Code Editor</a></li>
+        <li><a href="./kanban-board.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">09. Kanban Board</a></li>
+        <li><a href="./masked-input.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">10. Masked Input</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <nav class="breadcrumbs text-sm text-muted-foreground mb-6">
+        <a href="../index.html" class="hover:text-foreground">Atlas</a><span class="mx-2">/</span>
+        <a href="./index.html" class="hover:text-foreground">Patrones Avanzados</a><span class="mx-2">/</span>
+        <span class="text-foreground">Drag & Drop</span>
+      </nav>
+
+      <header class="component-page__header mb-10">
+        <h1 class="component-page__title text-4xl font-bold mb-3">Drag & Drop</h1>
+        <div class="component-page__aliases flex flex-wrap gap-2 mb-4">
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">dnd-kit</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">react-dnd</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">react-beautiful-dnd</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Sortable</span>
+        </div>
+        <p class="component-page__lead text-lg text-muted-foreground max-w-3xl">Elementos que el usuario arrastra y suelta para reordenar o mover entre zonas. Kanban boards, file uploads, form builders, gallery arrangement. En el browser tenés HTML5 DnD nativo — pero para algo serio usá dnd-kit.</p>
+      </header>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Demo interactiva (reorder)</h2>
+        <div class="demo-container border border-border rounded-lg p-6 bg-muted/10">
+          <p class="text-xs text-muted-foreground mb-3">Arrastrá los items para reordenarlos.</p>
+          <ul id="dnd-list" class="space-y-2 max-w-md"></ul>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Anatomía</h2>
+        <div class="border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border-2 border-dashed border-border rounded p-4">
+            <div class="text-xs text-muted-foreground mb-2">DndContext (provider, maneja estado global del drag)</div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Draggable Items</div>
+              <span class="px-2 py-1 bg-muted rounded">Item + drag handle</span>
+            </div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Droppable Zones</div>
+              <span class="px-2 py-1 bg-muted rounded">Contenedor destino</span>
+            </div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Drag Overlay</div>
+              <span class="px-2 py-1 bg-muted rounded">Preview visual durante el drag</span>
+            </div>
+            <div class="border border-border rounded p-3 text-xs">
+              <div class="text-muted-foreground mb-1">Collision Detection</div>
+              <span class="px-2 py-1 bg-muted rounded">closestCenter, rectIntersection...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Variantes</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <li class="border border-border rounded p-3"><strong>Sortable list</strong> — reorder dentro de una lista.</li>
+          <li class="border border-border rounded p-3"><strong>Multi-list move</strong> — mover entre zonas (kanban).</li>
+          <li class="border border-border rounded p-3"><strong>Grid reorder</strong> — reordenar items en grid 2D.</li>
+          <li class="border border-border rounded p-3"><strong>File drop</strong> — drag archivos del OS.</li>
+          <li class="border border-border rounded p-3"><strong>Con drag handle</strong> — solo una parte es draggable.</li>
+          <li class="border border-border rounded p-3"><strong>Con animations</strong> — smooth reorder.</li>
+          <li class="border border-border rounded p-3"><strong>Con drop preview</strong> — placeholder destino.</li>
+          <li class="border border-border rounded p-3"><strong>Multi-select drag</strong> — arrastrar varios a la vez.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Estados</h2>
+        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+          <li class="border border-border rounded p-3">Idle</li>
+          <li class="border border-border rounded p-3">Dragging</li>
+          <li class="border border-border rounded p-3">Drag over (zone)</li>
+          <li class="border border-border rounded p-3">Drop accepted</li>
+          <li class="border border-border rounded p-3">Drop rejected</li>
+          <li class="border border-border rounded p-3">Drop cancelled</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Vocabulario cross-framework</h2>
+        <div class="border border-border rounded-lg overflow-hidden">
+          <table class="vocab-table w-full text-sm">
+            <thead class="bg-muted/50"><tr><th class="px-4 py-2 text-left">Librería</th><th class="px-4 py-2 text-left">Paradigma</th><th class="px-4 py-2 text-left">Notas</th></tr></thead>
+            <tbody>
+              <tr class="border-t border-border"><td class="px-4 py-2">@dnd-kit/core</td><td class="px-4 py-2">Hooks + componentes</td><td class="px-4 py-2">Moderno, accessible, SSR-ok</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">react-dnd</td><td class="px-4 py-2">HOC + hooks</td><td class="px-4 py-2">Low-level, backend HTML5 o touch</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">react-beautiful-dnd</td><td class="px-4 py-2">Declarativo</td><td class="px-4 py-2">Deprecated, no usar en nuevo código</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">SortableJS</td><td class="px-4 py-2">Imperativo (vanilla)</td><td class="px-4 py-2">Framework-agnostic</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">HTML5 DnD API</td><td class="px-4 py-2">Native</td><td class="px-4 py-2">Limitado, mobile-touch flaky</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Cuándo usar</h2>
+        <div class="use-case-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-green-400">Sí, usalo cuando</h3>
+            <ul class="use-case-list do space-y-2 text-sm text-muted-foreground">
+              <li>Kanban, reorder lists, form builders</li>
+              <li>File drag & drop uploads</li>
+              <li>Gallery arrangement, image editors</li>
+              <li>Workflow designers (nodos + edges)</li>
+            </ul>
+          </div>
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-red-400">No, evitalo cuando</h3>
+            <ul class="use-case-list dont space-y-2 text-sm text-muted-foreground">
+              <li>Solo seleccionar → Checkbox</li>
+              <li>Reorder simple → botones up/down</li>
+              <li>Mobile-first sin alternativa — touch DnD es complicado</li>
+              <li>Accesibilidad crítica sin alternativa teclado</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Prompts para coding agents</h2>
+        <div class="prompt-library space-y-3">
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Sortable</div>
+            <p class="prompt-library__text text-sm font-mono">Sortable list with drag handles and smooth reorder animation using dnd-kit.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Kanban</div>
+            <p class="prompt-library__text text-sm font-mono">Kanban board with drag-drop cards between 3 columns (Todo, Doing, Done).</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">File drop</div>
+            <p class="prompt-library__text text-sm font-mono">Multi-file dropzone with thumbnail preview, reorder and remove buttons.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Alternativas relacionadas</h2>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><strong class="text-foreground">Kanban Board</strong> — caso de uso específico de DnD multi-column.</li>
+          <li><strong class="text-foreground">Up/Down buttons</strong> — para reorder accesible sin mouse.</li>
+          <li><strong class="text-foreground">Select + move action</strong> — mobile-friendly.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Referencias</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://dndkit.com/" class="text-blue-400 hover:underline" target="_blank">dnd-kit docs</a></li>
+          <li><a href="https://react-dnd.github.io/react-dnd/" class="text-blue-400 hover:underline" target="_blank">react-dnd</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API" class="text-blue-400 hover:underline" target="_blank">HTML5 Drag and Drop — MDN</a></li>
+        </ul>
+      </section>
+
+      <nav class="component-nav border-t border-border pt-6 flex justify-between text-sm">
+        <a href="./form-wizard.html" class="component-nav__link text-muted-foreground hover:text-foreground">← Form Wizard</a>
+        <a href="./infinite-scroll.html" class="component-nav__link text-muted-foreground hover:text-foreground">Infinite Scroll →</a>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const items = ['Escribir la spec', 'Diseñar mockups', 'Implementar backend', 'Crear UI', 'Shipping a prod'];
+      const list = document.getElementById('dnd-list');
+      let draggedEl = null;
+
+      function render() {
+        list.replaceChildren();
+        items.forEach((txt, i) => {
+          const li = document.createElement('li');
+          li.draggable = true;
+          li.dataset.index = i;
+          li.className = 'flex items-center gap-3 border border-border rounded-md px-3 py-2.5 bg-muted/30 cursor-grab text-sm';
+          const handle = document.createElement('span');
+          handle.className = 'text-muted-foreground';
+          handle.textContent = '⋮⋮';
+          const text = document.createElement('span');
+          text.textContent = txt;
+          li.appendChild(handle);
+          li.appendChild(text);
+
+          li.addEventListener('dragstart', e => {
+            draggedEl = li;
+            li.classList.add('opacity-30');
+            e.dataTransfer.effectAllowed = 'move';
+          });
+          li.addEventListener('dragend', () => {
+            li.classList.remove('opacity-30');
+            draggedEl = null;
+            list.querySelectorAll('li').forEach(x => x.classList.remove('border-primary'));
+          });
+          li.addEventListener('dragover', e => {
+            e.preventDefault();
+            if (draggedEl && draggedEl !== li) li.classList.add('border-primary');
+          });
+          li.addEventListener('dragleave', () => li.classList.remove('border-primary'));
+          li.addEventListener('drop', e => {
+            e.preventDefault();
+            if (!draggedEl || draggedEl === li) return;
+            const from = parseInt(draggedEl.dataset.index);
+            const to = parseInt(li.dataset.index);
+            const [moved] = items.splice(from, 1);
+            items.splice(to, 0, moved);
+            render();
+          });
+          list.appendChild(li);
+        });
+      }
+      render();
+    })();
+  </script>
+  <script src="../js/atlas.js"></script>
+  <script src="../js/demos.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

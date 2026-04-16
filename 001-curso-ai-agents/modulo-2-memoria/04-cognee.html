@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cognee: la solución integrada | Módulo 2</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 2</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 02</a></li>
+                        <li>Lección 04</li>
+                    </ul>
+
+                    <span class="tag primary fade-in">Lección 04</span>
+                    <h1 class="slide-up">
+                        Cognee: la solución integrada
+                    </h1>
+                    <p class="lead slide-up" data-animate-delay="100">
+                        Cognee es un engine de memoria para agentes que
+                        implementa la capa 4 (graph + vector hybrid) de
+                        forma open source y pronto-para-producción. Su
+                        API es chiquita, sus primitivas son claras, y
+                        sus search modes son 14. No 3, no 5. Catorce.
+                    </p>
+
+                    <div class="callout info">
+                        <div class="callout-title">
+                            La API real (4 verbos)
+                        </div>
+                        <p>
+                            Toda la interacción con Cognee se reduce a 4
+                            funciones. Cada una tiene un rol específico y
+                            se llaman en orden.
+                        </p>
+                    </div>
+
+                    <div class="code-block fade-in">
+                        <div class="code-block-header">
+                            <span>python &middot; cognee core api</span>
+                        </div>
+                        <pre><code>import cognee
+
+await cognee.add("Tu documento acá")   # Ingest
+await cognee.cognify()                 # Build graph + embeddings
+await cognee.memify()                  # Self-improve memory
+await cognee.search("Tu query")        # Retrieve con reasoning</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">3 stores, 1 engine</h2>
+                    <p>
+                        Por dentro, Cognee coordina tres stores distintos
+                        trabajando juntos. El default arranca liviano con
+                        SQLite + LanceDB + Kuzu, pero cada uno se puede
+                        swap a una versión de producción sin tocar tu
+                        código de aplicación.
+                    </p>
+
+                    <div class="diagram fade-in">
+                        <div class="diagram-box primary">
+                            <strong>Relational</strong>
+                            <span class="label"
+                                >SQLite &rarr; Postgres</span
+                            >
+                        </div>
+                        <div class="diagram-box primary">
+                            <strong>Vector</strong>
+                            <span class="label"
+                                >LanceDB &rarr; Qdrant/Pinecone</span
+                            >
+                        </div>
+                        <div class="diagram-box primary">
+                            <strong>Graph</strong>
+                            <span class="label"
+                                >Kuzu &rarr; Neo4j/FalkorDB</span
+                            >
+                        </div>
+                    </div>
+
+                    <div class="grid grid-3 stagger">
+                        <div class="card slide-up" data-animate-delay="0">
+                            <h4>Relational store</h4>
+                            <p>
+                                <strong>Provenance.</strong> De dónde vino
+                                el fact, cuándo se ingestó, quién lo
+                                accedió, qué versión del pipeline lo
+                                procesó. Todo lo "aburrido pero necesario"
+                                para auditoría y debugging.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="100">
+                            <h4>Vector store</h4>
+                            <p>
+                                <strong>Semántica.</strong> Qué significa
+                                cada chunk y a qué se parece. Es el
+                                motor para los modes CHUNKS,
+                                CHUNKS_LEXICAL, SUMMARIES y
+                                RAG_COMPLETION.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="200">
+                            <h4>Graph store</h4>
+                            <p>
+                                <strong>Relaciones.</strong> Cómo se
+                                conectan las entidades entre sí. Quién
+                                reporta a quién, qué proyecto usa qué
+                                servicio, qué evento afectó a qué sistema.
+                                Es el motor de los modes GRAPH_*.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">Los 14 search modes REALES</h2>
+                    <p>
+                        Esta es la tabla completa, sin resumir. Cada mode
+                        resuelve un tipo de consulta distinto. Elegir bien
+                        cuál usar es la diferencia entre un retrieval
+                        mediocre y uno que realmente responde la pregunta.
+                    </p>
+
+                    <table class="comparison-table fade-in">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Mode</th>
+                                <th>Qué hace</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>01</td>
+                                <td><strong>SUMMARIES</strong></td>
+                                <td>Similarity sobre TextSummary</td>
+                            </tr>
+                            <tr>
+                                <td>02</td>
+                                <td><strong>CHUNKS</strong></td>
+                                <td>Similarity sobre DocumentChunk</td>
+                            </tr>
+                            <tr>
+                                <td>03</td>
+                                <td><strong>CHUNKS_LEXICAL</strong></td>
+                                <td>BM25 sobre chunks</td>
+                            </tr>
+                            <tr>
+                                <td>04</td>
+                                <td><strong>RAG_COMPLETION</strong></td>
+                                <td>RAG clásico</td>
+                            </tr>
+                            <tr>
+                                <td>05</td>
+                                <td><strong>TRIPLET_COMPLETION</strong></td>
+                                <td>Retrieval por triplets</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td>06</td>
+                                <td><strong>GRAPH_COMPLETION</strong></td>
+                                <td>
+                                    <strong>Default</strong>, LLM + graph
+                                    traversal
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>07</td>
+                                <td>
+                                    <strong
+                                        >GRAPH_SUMMARY_COMPLETION</strong
+                                    >
+                                </td>
+                                <td>Graph sobre resúmenes</td>
+                            </tr>
+                            <tr>
+                                <td>08</td>
+                                <td><strong>GRAPH_COMPLETION_COT</strong></td>
+                                <td>Chain-of-thought iterativo</td>
+                            </tr>
+                            <tr>
+                                <td>09</td>
+                                <td>
+                                    <strong
+                                        >GRAPH_COMPLETION_CONTEXT_EXTENSION</strong
+                                    >
+                                </td>
+                                <td>Graph + follow-ups</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td><strong>CYPHER</strong></td>
+                                <td>Query Cypher crudo</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td><strong>NATURAL_LANGUAGE</strong></td>
+                                <td>NL &rarr; Cypher automático</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td><strong>FEELING_LUCKY</strong></td>
+                                <td>Mejor resultado único</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td><strong>TEMPORAL</strong></td>
+                                <td>Con awareness temporal</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td><strong>CODING_RULES</strong></td>
+                                <td>Retrieval de reglas de código</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout tip">
+                        <div class="callout-title">
+                            Cuál usar por default
+                        </div>
+                        <p>
+                            <code>GRAPH_COMPLETION</code> es el default
+                            por una razón: combina el traversal del grafo
+                            con un LLM que sintetiza la respuesta final.
+                            Si no sabés qué elegir, arrancá por ahí. Si
+                            tus consultas son temporales (eventos,
+                            fechas), pasate a <code>TEMPORAL</code>. Si
+                            necesitás flexibilidad total,
+                            <code>NATURAL_LANGUAGE</code> te traduce la
+                            pregunta a Cypher.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">El pipeline de cognify()</h2>
+                    <p>
+                        Cuando llamás a <code>cognify()</code>, esto es
+                        lo que pasa por dentro. Entender el pipeline es
+                        importante porque cada etapa agrega valor y cada
+                        etapa tiene su costo.
+                    </p>
+
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Paso 01</div>
+                            <h4>Classification</h4>
+                            <p>
+                                Cognee determina el tipo de documento y
+                                elige la estrategia de chunking apropiada.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Paso 02</div>
+                            <h4>Chunking</h4>
+                            <p>
+                                Parte el documento en
+                                <code>DocumentChunk</code>s de tamaño
+                                controlado, respetando semántica cuando
+                                puede.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Paso 03</div>
+                            <h4>Entity + relationship extraction</h4>
+                            <p>
+                                Un LLM extrae entidades (Person, Project,
+                                Event, etc.) y las relaciones entre ellas.
+                                Esto arma los nodos y aristas del grafo.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Paso 04</div>
+                            <h4>Deduplication</h4>
+                            <p>
+                                Si "Alice" aparece 20 veces en distintos
+                                documentos, se consolida en un solo nodo.
+                                Evita explosión del grafo.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Paso 05</div>
+                            <h4>Summaries</h4>
+                            <p>
+                                Se generan <code>TextSummary</code>s
+                                para chunks y secciones. Estos alimentan
+                                el mode SUMMARIES.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Paso 06</div>
+                            <h4>Dual indexing</h4>
+                            <p>
+                                Todo se indexa simultáneamente en el
+                                vector store y en el graph store. Con
+                                metadatos de provenance en el relational.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">
+                        memify(): optimización estilo RL
+                    </h2>
+                    <p>
+                        <code>memify()</code> es el paso que diferencia a
+                        Cognee de los vector stores tradicionales. Toma la
+                        memoria existente y la auto-mejora usando señales
+                        de uso (parecido a RL): refuerza los caminos
+                        útiles, poda los nodos stale, ajusta los pesos de
+                        las aristas.
+                    </p>
+
+                    <div class="grid grid-3 stagger">
+                        <div class="card slide-up">
+                            <h4>Strengthen paths</h4>
+                            <p>
+                                Los caminos del grafo que el agente usa
+                                con frecuencia reciben mayor peso. Se
+                                vuelven retrieval de primera clase.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Prune stale nodes</h4>
+                            <p>
+                                Los nodos que nunca se consultan y no
+                                tienen relaciones vivas se marcan para
+                                borrado. El grafo no crece eternamente.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Tune edge weights</h4>
+                            <p>
+                                Las relaciones ajustan su fuerza según
+                                evidencia acumulada. Es la consolidación
+                                de Tulving, automatizada.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">
+                        Comparativa con alternativas
+                    </h2>
+                    <p>
+                        Cognee no está solo en el mercado. Hay cuatro
+                        players que se suelen comparar. Acá el mapa:
+                    </p>
+
+                    <table class="comparison-table fade-in">
+                        <thead>
+                            <tr>
+                                <th>Tool</th>
+                                <th>Modelo</th>
+                                <th>Fortaleza</th>
+                                <th>Cuándo usar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight">
+                                <td><strong>Cognee</strong></td>
+                                <td>Graph + vector hybrid</td>
+                                <td>14 search modes, memify incremental</td>
+                                <td>Dominios relacionales, producción seria</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mem0</strong></td>
+                                <td>Layered (user/session/agent)</td>
+                                <td>Simple, rápido de integrar</td>
+                                <td>Personalización de chatbots, bajo costo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>LangMem</strong></td>
+                                <td>Hot-path dentro de LangGraph</td>
+                                <td>Acoplado al ecosistema LangChain</td>
+                                <td>Ya estás casado con LangGraph</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Letta</strong></td>
+                                <td>Memory-as-OS, stateful</td>
+                                <td>Framework propio, agentes persistentes</td>
+                                <td>Querés que tu agente sea un "proceso"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout tip">
+                        <div class="callout-title">Cómo decidir</div>
+                        <p>
+                            Si tu problema es relacional (la mayoría de
+                            los problemas serios lo son), Cognee te va a
+                            dar el retrieval más preciso. Si tu problema
+                            es personalización liviana de un chatbot,
+                            Mem0 te alcanza. Si ya tenés LangGraph en
+                            producción, probá LangMem antes de migrar.
+                            Letta es más un experimento arquitectónico
+                            que una opción conservadora.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="03-cognitivo.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title"
+                                >03 — Framework cognitivo</span
+                            >
+                        </a>
+                        <a
+                            href="05-ejercicio.html"
+                            class="pager-next"
+                            data-mark-completed="modulo-2/leccion-4"
+                        >
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title">05 — Práctica</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

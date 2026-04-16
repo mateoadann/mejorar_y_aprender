@@ -1,0 +1,220 @@
+/* ============================================================
+   UI Components Atlas — demos.css
+   Estilos específicos para demos interactivas.
+   ============================================================ */
+
+.demo-container {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, #0f0f12 0%, #0a0a0d 100%);
+  overflow: hidden;
+  margin: 1.25rem 0;
+}
+
+.demo-container--plain {
+  background: #0c0c0f;
+}
+
+/* Preview zone — where the component lives and breathes */
+.demo-preview {
+  padding: 2.5rem 1.75rem;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  position: relative;
+  background-image: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.015) 0%,
+    transparent 70%
+  );
+}
+
+.demo-preview--stack {
+  flex-direction: column;
+}
+
+.demo-preview--start {
+  justify-content: flex-start;
+}
+
+.demo-preview--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.demo-preview__label {
+  position: absolute;
+  top: 0.625rem;
+  left: 0.75rem;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+}
+
+/* Code zone — collapsible code view */
+.demo-code {
+  border-top: 1px solid var(--border);
+  background-color: #0a0a0d;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+}
+
+.demo-code.is-open {
+  max-height: 520px;
+  overflow: auto;
+}
+
+.demo-code pre {
+  margin: 0;
+  padding: 1rem 1.125rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #e4e4e7;
+  white-space: pre;
+}
+
+.demo-code__toggle {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  background-color: #0c0c0f;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.demo-code__toggle:hover {
+  color: var(--foreground);
+}
+
+.demo-code__toggle svg {
+  transition: transform 0.2s;
+}
+
+.demo-code__toggle.is-open svg {
+  transform: rotate(180deg);
+}
+
+/* Demo tabs — Preview / HTML / Shadcn */
+.demo-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 0 0.5rem;
+  background-color: #111114;
+}
+
+.demo-tabs__tab {
+  padding: 0.5625rem 0.875rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.12s, border-color 0.12s;
+  font-weight: 500;
+}
+
+.demo-tabs__tab:hover {
+  color: var(--foreground);
+}
+
+.demo-tabs__tab.is-active {
+  color: var(--foreground);
+  border-bottom-color: var(--ring);
+}
+
+.demo-tabs__panel {
+  display: none;
+}
+
+.demo-tabs__panel.is-active {
+  display: block;
+}
+
+/* Interactive state highlight */
+.demo-preview--highlighted {
+  animation: demo-pulse 0.6s ease-out;
+}
+
+@keyframes demo-pulse {
+  0% {
+    box-shadow: inset 0 0 0 2px rgba(212, 212, 216, 0);
+  }
+  30% {
+    box-shadow: inset 0 0 0 2px rgba(212, 212, 216, 0.4);
+  }
+  100% {
+    box-shadow: inset 0 0 0 2px rgba(212, 212, 216, 0);
+  }
+}
+
+/* Demo group — for grids of variants */
+.demo-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.demo-group__item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: #0c0c0f;
+  padding: 1.5rem 1rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 120px;
+  justify-content: center;
+}
+
+.demo-group__label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+  width: 100%;
+  text-align: center;
+}
+
+/* Skeleton/loading for async demos */
+.demo-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 0%,
+    #3f3f46 50%,
+    var(--muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: demo-skeleton 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes demo-skeleton {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

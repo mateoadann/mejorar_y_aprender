@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Módulo 2 — Memoria de Agentes | Dominando AI Agents</title>
+        <meta
+            name="description"
+            content="De Python lists a graph-vector hybrids: cómo hacer que tus agentes no olviden."
+        />
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="../index.html#progreso">Progreso</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li>Módulo 02</li>
+                        <li>Memoria de Agentes</li>
+                    </ul>
+
+                    <span class="tag primary fade-in">Módulo 02</span>
+                    <h1 class="slide-up" data-animate-delay="50">
+                        Memoria de Agentes
+                    </h1>
+                    <p class="lead slide-up" data-animate-delay="150">
+                        De Python lists a graph-vector hybrids: cómo hacer que
+                        tus agentes no olviden. Un recorrido por la evolución
+                        real de la memoria en agentes, desde el stateless más
+                        básico hasta los híbridos grafo + vector que ganan
+                        hoy.
+                    </p>
+
+                    <div
+                        class="card fade-in"
+                        data-progress-widget="modulo-2"
+                        data-total-lessons="5"
+                        style="margin-top: var(--space-8)"
+                    >
+                        <div class="progress-label">
+                            <span>Progreso del módulo</span>
+                            <strong>
+                                <span data-progress-count>0 / 5</span>
+                                &middot;
+                                <span data-progress-percent>0%</span>
+                            </strong>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <div class="grid grid-2 stagger">
+                        <a
+                            href="01-problema.html"
+                            class="module-card slide-up"
+                        >
+                            <span class="module-number">Lección 01</span>
+                            <h3>El problema: LLMs stateless</h3>
+                            <p>
+                                Por qué un LLM no recuerda nada por diseño,
+                                los 7 failure modes y el paper que demostró
+                                que 128K tokens no solucionan el problema.
+                            </p>
+                            <div class="module-meta">
+                                <span>Conceptos</span>
+                                <span>10 min</span>
+                            </div>
+                            <span class="module-cta">Empezar lección</span>
+                        </a>
+
+                        <a
+                            href="02-capas.html"
+                            class="module-card slide-up"
+                        >
+                            <span class="module-number">Lección 02</span>
+                            <h3>Las 4 capas de memoria</h3>
+                            <p>
+                                Python list, markdown files, vector search y
+                                graph+vector hybrid. Cada capa resuelve un
+                                problema y revela el siguiente. La lección
+                                más importante del módulo.
+                            </p>
+                            <div class="module-meta">
+                                <span>Arquitectura</span>
+                                <span>20 min</span>
+                            </div>
+                            <span class="module-cta">Empezar lección</span>
+                        </a>
+
+                        <a
+                            href="03-cognitivo.html"
+                            class="module-card slide-up"
+                        >
+                            <span class="module-number">Lección 03</span>
+                            <h3>El framework cognitivo</h3>
+                            <p>
+                                La propuesta de Lilian Weng: agente = LLM +
+                                memoria + planning + tools. Sensory, working
+                                y long-term, con el split episódico /
+                                semántico / procedural.
+                            </p>
+                            <div class="module-meta">
+                                <span>Fundamentos</span>
+                                <span>12 min</span>
+                            </div>
+                            <span class="module-cta">Empezar lección</span>
+                        </a>
+
+                        <a
+                            href="04-cognee.html"
+                            class="module-card slide-up"
+                        >
+                            <span class="module-number">Lección 04</span>
+                            <h3>Cognee: la solución integrada</h3>
+                            <p>
+                                3 stores, 1 engine. Los 14 search modes
+                                reales, cómo funciona cognify y memify, y por
+                                qué el hybrid graph+vector pone a Cognee
+                                arriba de Mem0, LangMem y Letta.
+                            </p>
+                            <div class="module-meta">
+                                <span>Herramienta</span>
+                                <span>15 min</span>
+                            </div>
+                            <span class="module-cta">Empezar lección</span>
+                        </a>
+
+                        <a
+                            href="05-ejercicio.html"
+                            class="module-card slide-up"
+                        >
+                            <span class="module-number">Lección 05</span>
+                            <h3>Práctica: agente con memoria</h3>
+                            <p>
+                                Construí un agente de soporte técnico con
+                                memoria persistente. Paso a paso, con código
+                                real, y un checklist para verificar que
+                                entendiste cada decisión.
+                            </p>
+                            <div class="module-meta">
+                                <span>Hands-on</span>
+                                <span>25 min</span>
+                            </div>
+                            <span class="module-cta">Empezar lección</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">
+                        Módulo 02 &middot; Memoria de Agentes &middot;
+                        Edición 2026
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

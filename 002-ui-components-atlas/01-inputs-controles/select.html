@@ -1,0 +1,279 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Select — UI Components Atlas</title>
+    <meta name="description" content="Dropdown con lista fija de opciones. La anatomia de Radix es el estandar." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Inputs y Controles</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="button.html">01 — Button</a></li>
+          <li><a class="sidebar-nav__link" href="input.html">02 — Input</a></li>
+          <li><a class="sidebar-nav__link" href="textarea.html">03 — Textarea</a></li>
+          <li><a class="sidebar-nav__link is-active" href="select.html">04 — Select</a></li>
+          <li><a class="sidebar-nav__link" href="combobox.html">05 — Combobox</a></li>
+          <li><a class="sidebar-nav__link" href="autocomplete.html">06 — Autocomplete</a></li>
+          <li><a class="sidebar-nav__link" href="checkbox.html">07 — Checkbox</a></li>
+          <li><a class="sidebar-nav__link" href="radio-group.html">08 — Radio Group</a></li>
+          <li><a class="sidebar-nav__link" href="switch-toggle.html">09 — Switch / Toggle</a></li>
+          <li><a class="sidebar-nav__link" href="slider.html">10 — Slider</a></li>
+          <li><a class="sidebar-nav__link" href="date-picker.html">11 — Date Picker</a></li>
+          <li><a class="sidebar-nav__link" href="file-upload.html">12 — File Upload</a></li>
+          <li><a class="sidebar-nav__link" href="otp-input.html">13 — OTP Input</a></li>
+          <li><a class="sidebar-nav__link" href="rating.html">14 — Rating</a></li>
+          <li><a class="sidebar-nav__link" href="search-bar.html">15 — Search Bar</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Inputs y Controles</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Select</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Select</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Select</span>
+            <span class="component-page__alias">Dropdown</span>
+            <span class="component-page__alias">Picker</span>
+            <span class="component-page__alias">Listbox</span>
+          </div>
+          <p class="component-page__lead">Dropdown para elegir UNA opcion de una lista fija, conocida de antemano. Si el usuario tiene que tipear para filtrar, no es Select: es Combobox. La anatomia de Radix es el estandar de la industria.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Asi se ve un Select abierto con item seleccionado (check a la derecha).</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <div class="w-64 relative">
+                <button class="inline-flex w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:ring-2 focus:ring-ring">
+                  <span>Argentina</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="mt-2 rounded-md border border-border bg-popover p-1 shadow-lg">
+                  <div class="px-2 py-1.5 text-xs font-semibold text-muted-foreground">Sudamerica</div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none bg-accent text-accent-foreground">
+                    <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                    <span class="pl-6">Argentina</span>
+                  </div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent"><span class="pl-6">Brasil</span></div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent"><span class="pl-6">Chile</span></div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent"><span class="pl-6">Uruguay</span></div>
+                  <div class="-mx-1 my-1 h-px bg-muted"></div>
+                  <div class="px-2 py-1.5 text-xs font-semibold text-muted-foreground">Norteamerica</div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent"><span class="pl-6">Mexico</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">La estructura de Radix Select es la lingua franca.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Select.Root</div>
+                <div class="rounded border border-border bg-background p-3 mb-2">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">Select.Trigger</div>
+                  <div class="flex gap-2 text-xs">
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Value</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Icon</div>
+                  </div>
+                </div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">Select.Portal &gt; Select.Content</div>
+                  <div class="rounded border border-border bg-muted/40 p-2 mb-2">
+                    <div class="text-xs font-mono text-muted-foreground mb-1">Select.Viewport</div>
+                    <div class="rounded border border-border bg-background p-2">
+                      <div class="text-xs font-mono text-muted-foreground mb-1">Select.Group</div>
+                      <div class="text-xs font-mono text-muted-foreground pl-2">└ Select.Label</div>
+                      <div class="text-xs font-mono text-muted-foreground pl-2">└ Select.Item (ItemText + ItemIndicator)</div>
+                    </div>
+                  </div>
+                  <div class="text-xs font-mono text-muted-foreground">Select.Separator</div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Trigger</b> Boton que abre el menu. Muestra el Value actual.</li>
+              <li><b>Portal</b> Monta el Content fuera del flujo (evita overflow clipping).</li>
+              <li><b>Content</b> El popover con las opciones.</li>
+              <li><b>Viewport</b> Area scrolleable del content.</li>
+              <li><b>Group + Label</b> Agrupa items bajo un header.</li>
+              <li><b>Item</b> Una opcion. Contiene ItemText + ItemIndicator (check).</li>
+              <li><b>Separator</b> Linea divisoria entre groups.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <p class="component-page__section-lead">Nombres estandar para pedirlas al agente.</p>
+          <div class="demo-group">
+            <div class="demo-group__item">
+              <button class="inline-flex w-48 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm"><span>Argentina</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button>
+              <span class="demo-group__label">single</span>
+            </div>
+            <div class="demo-group__item">
+              <button class="inline-flex w-48 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm"><span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-500"></span>Activo</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button>
+              <span class="demo-group__label">with-icon</span>
+            </div>
+            <div class="demo-group__item">
+              <button class="inline-flex w-48 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm"><span class="text-muted-foreground">Seleccionar pais</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button>
+              <span class="demo-group__label">grouped</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item">
+              <button class="inline-flex w-48 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm"><span class="text-muted-foreground">Elegir...</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button>
+              <span class="demo-group__label">default</span>
+            </div>
+            <div class="demo-group__item">
+              <button class="inline-flex w-48 items-center justify-between rounded-md border border-foreground bg-background px-3 py-2 text-sm ring-2 ring-ring"><span>Argentina</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button>
+              <span class="demo-group__label">focus</span>
+            </div>
+            <div class="demo-group__item">
+              <button disabled class="inline-flex w-48 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm opacity-50 cursor-not-allowed"><span>Disabled</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button>
+              <span class="demo-group__label">disabled</span>
+            </div>
+            <div class="demo-group__item">
+              <button class="inline-flex w-48 items-center justify-between rounded-md border border-destructive bg-background px-3 py-2 text-sm"><span>Argentina</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button>
+              <span class="demo-group__label">error</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>HTML nativo</th><th>Shadcn / Radix</th><th>Material UI</th><th>ARIA role</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>&lt;select&gt;</td><td>Select.Root</td><td>Select</td><td>combobox</td></tr>
+              <tr><td>Trigger</td><td>(el select mismo)</td><td>Select.Trigger</td><td>Select (input)</td><td>button</td></tr>
+              <tr><td>Content</td><td>(nativo del browser)</td><td>Select.Content</td><td>MenuList (Popover)</td><td>listbox</td></tr>
+              <tr><td>Option</td><td>&lt;option&gt;</td><td>Select.Item</td><td>MenuItem</td><td>option</td></tr>
+              <tr><td>Group</td><td>&lt;optgroup&gt;</td><td>Select.Group</td><td>ListSubheader</td><td>group</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Tenes entre 5 y 20 opciones conocidas.</li>
+              <li>El usuario elige UNA sola opcion.</li>
+              <li>No necesitas filtrar/buscar dentro de la lista.</li>
+              <li>La lista no cambia dinamicamente.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Son 2-4 opciones: usa Radio Group.</li>
+              <li>Son 100+ opciones: usa Combobox.</li>
+              <li>El usuario necesita tipear: usa Combobox.</li>
+              <li>Eligen varias: usa MultiSelect o Checkbox group.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1">
+              <p class="prompt-library__label">Country select with flags</p>
+              <pre class="prompt-library__text" id="p1-text">Create a shadcn/ui Select for country selection. Each item has a flag emoji on the left and country name. Group items by continent using Select.Group + Select.Label. Include a Separator between groups.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p2">
+              <p class="prompt-library__label">Select grouped by category</p>
+              <pre class="prompt-library__text" id="p2-text">Build a Select with items grouped into [CATEGORY_A] and [CATEGORY_B]. Use Radix Select.Group, Select.Label, and Select.Separator. The currently selected item should show a checkmark via Select.ItemIndicator.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p3">
+              <p class="prompt-library__label">Select with form validation</p>
+              <pre class="prompt-library__text" id="p3-text">Wire up a shadcn Select to react-hook-form. Require a value, show destructive border and error message below on invalid submit. Label: "[LABEL]".</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="combobox.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Combobox</h3><p class="text-sm text-muted-foreground">Select filtrable por texto.</p></a>
+            <a href="radio-group.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Radio Group</h3><p class="text-sm text-muted-foreground">Para 2-4 opciones visibles.</p></a>
+            <a href="autocomplete.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Autocomplete</h3><p class="text-sm text-muted-foreground">Input con sugerencias.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://www.radix-ui.com/primitives/docs/components/select" target="_blank">Radix Select</a></li>
+            <li><a href="https://ui.shadcn.com/docs/components/select" target="_blank">Shadcn Select</a></li>
+            <li><a href="https://mui.com/material-ui/react-select/" target="_blank">MUI Select</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="textarea.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Textarea</span></a>
+          <a class="component-nav__link component-nav__link--next" href="combobox.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Combobox</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

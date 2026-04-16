@@ -1,0 +1,209 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inputs y Controles — UI Components Atlas</title>
+    <meta name="description" content="Los 15 componentes con los que el usuario le dice cosas a tu interfaz." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: { extend: { colors: {
+          background: "#09090b", foreground: "#fafafa",
+          muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+          border: "#27272a", ring: "#d4d4d8",
+          primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+          secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+          destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+          accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+          popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+          input: "#27272a",
+        }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } }
+      };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo">
+          <span class="atlas-header__logo-mark" aria-hidden="true">A</span>
+          <span>UI Components Atlas</span>
+        </a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Inputs y Controles</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link is-active" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="button.html">01 — Button</a></li>
+          <li><a class="sidebar-nav__link" href="input.html">02 — Input</a></li>
+          <li><a class="sidebar-nav__link" href="textarea.html">03 — Textarea</a></li>
+          <li><a class="sidebar-nav__link" href="select.html">04 — Select</a></li>
+          <li><a class="sidebar-nav__link" href="combobox.html">05 — Combobox</a></li>
+          <li><a class="sidebar-nav__link" href="autocomplete.html">06 — Autocomplete</a></li>
+          <li><a class="sidebar-nav__link" href="checkbox.html">07 — Checkbox</a></li>
+          <li><a class="sidebar-nav__link" href="radio-group.html">08 — Radio Group</a></li>
+          <li><a class="sidebar-nav__link" href="switch-toggle.html">09 — Switch / Toggle</a></li>
+          <li><a class="sidebar-nav__link" href="slider.html">10 — Slider</a></li>
+          <li><a class="sidebar-nav__link" href="date-picker.html">11 — Date Picker</a></li>
+          <li><a class="sidebar-nav__link" href="file-upload.html">12 — File Upload</a></li>
+          <li><a class="sidebar-nav__link" href="otp-input.html">13 — OTP Input</a></li>
+          <li><a class="sidebar-nav__link" href="rating.html">14 — Rating</a></li>
+          <li><a class="sidebar-nav__link" href="search-bar.html">15 — Search Bar</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Inputs y Controles</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Inputs y Controles</h1>
+          <p class="component-page__lead">
+            Los 15 componentes con los que el usuario le habla a tu interfaz: botones, campos de texto, selects, checkboxes, sliders y compañía. Son la primera línea de la experiencia. Si no tenés el vocabulario claro acá, vas a pedirle al agente "hace un selector" y te puede devolver cualquier cosa.
+          </p>
+        </header>
+
+        <section class="component-page__section">
+          <div class="rounded-lg border border-border bg-muted/40 p-5 text-muted-foreground">
+            <p class="text-foreground font-semibold mb-2">Cómo usar este módulo</p>
+            <p>Cada componente tiene demo real en Tailwind, anatomía, vocabulario cross-framework y prompts listos para copiar. Empezá por Button si venís de cero; si ya manejas lo básico, saltá al componente que te interesa. Los prompts están en inglés porque es como le hablás al agente.</p>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Los 15 componentes</h2>
+          <p class="component-page__section-lead">Listados en orden de complejidad creciente.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            <a href="button.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">01</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Button</h3>
+              <p class="text-sm text-muted-foreground mb-3">El disparador de acciones. 6 variantes estándar, 4 tamaños, estado loading.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Button</span><span class="rounded bg-background px-2 py-0.5 border border-border">btn</span></div>
+            </a>
+
+            <a href="input.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">02</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Input</h3>
+              <p class="text-sm text-muted-foreground mb-3">Campo de una línea para texto, email, password, number. La base de todos los formularios.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Input</span><span class="rounded bg-background px-2 py-0.5 border border-border">TextField</span></div>
+            </a>
+
+            <a href="textarea.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">03</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Textarea</h3>
+              <p class="text-sm text-muted-foreground mb-3">Input multilínea con altura fija o auto-resize. Con counter, con preview.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Textarea</span><span class="rounded bg-background px-2 py-0.5 border border-border">TextField multiline</span></div>
+            </a>
+
+            <a href="select.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">04</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Select</h3>
+              <p class="text-sm text-muted-foreground mb-3">Dropdown con lista fija de opciones. La anatomía de Radix es el estándar.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Select</span><span class="rounded bg-background px-2 py-0.5 border border-border">dropdown</span></div>
+            </a>
+
+            <a href="combobox.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">05</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Combobox</h3>
+              <p class="text-sm text-muted-foreground mb-3">Select filtrable. Compuesto con Popover + Command. Single o multi.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Combobox</span><span class="rounded bg-background px-2 py-0.5 border border-border">cmdk</span></div>
+            </a>
+
+            <a href="autocomplete.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">06</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Autocomplete</h3>
+              <p class="text-sm text-muted-foreground mb-3">Input con sugerencias. freeSolo acepta cualquier valor; restricted solo de la lista.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Autocomplete</span><span class="rounded bg-background px-2 py-0.5 border border-border">typeahead</span></div>
+            </a>
+
+            <a href="checkbox.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">07</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Checkbox</h3>
+              <p class="text-sm text-muted-foreground mb-3">Toggle binario con tercer estado: indeterminate. Select-all lo necesita.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Checkbox</span><span class="rounded bg-background px-2 py-0.5 border border-border">tickbox</span></div>
+            </a>
+
+            <a href="radio-group.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">08</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Radio Group</h3>
+              <p class="text-sm text-muted-foreground mb-3">Elegir UNA opción de varias. Vertical, horizontal o card-style.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">RadioGroup</span><span class="rounded bg-background px-2 py-0.5 border border-border">radio</span></div>
+            </a>
+
+            <a href="switch-toggle.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">09</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Switch / Toggle</h3>
+              <p class="text-sm text-muted-foreground mb-3">Tres primos: Switch (iOS), Toggle (pressable button), ToggleGroup.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Switch</span><span class="rounded bg-background px-2 py-0.5 border border-border">Toggle</span></div>
+            </a>
+
+            <a href="slider.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">10</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Slider</h3>
+              <p class="text-sm text-muted-foreground mb-3">Track + Range + Thumb. Single, range (dos thumbs) o con marks.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Slider</span><span class="rounded bg-background px-2 py-0.5 border border-border">range</span></div>
+            </a>
+
+            <a href="date-picker.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">11</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Date Picker</h3>
+              <p class="text-sm text-muted-foreground mb-3">Popover + Calendar. Single, range, con presets, con time.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">DatePicker</span><span class="rounded bg-background px-2 py-0.5 border border-border">Calendar</span></div>
+            </a>
+
+            <a href="file-upload.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">12</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">File Upload</h3>
+              <p class="text-sm text-muted-foreground mb-3">Dropzone + file list. Drag-over, progress, preview, validación de tamaño.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">FileUpload</span><span class="rounded bg-background px-2 py-0.5 border border-border">Dropzone</span></div>
+            </a>
+
+            <a href="otp-input.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">13</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">OTP Input</h3>
+              <p class="text-sm text-muted-foreground mb-3">Slots individuales para códigos de verificación. 4 o 6 dígitos.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">InputOTP</span><span class="rounded bg-background px-2 py-0.5 border border-border">PinInput</span></div>
+            </a>
+
+            <a href="rating.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">14</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Rating</h3>
+              <p class="text-sm text-muted-foreground mb-3">Estrellas clickeables con soporte para medias estrellas e iconos custom.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Rating</span><span class="rounded bg-background px-2 py-0.5 border border-border">Stars</span></div>
+            </a>
+
+            <a href="search-bar.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">15</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Search Bar</h3>
+              <p class="text-sm text-muted-foreground mb-3">Input con icono + clear button. Atención: NO es lo mismo que Command Palette.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">SearchBar</span><span class="rounded bg-background px-2 py-0.5 border border-border">SearchInput</span></div>
+            </a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

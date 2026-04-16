@@ -1,0 +1,161 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Navegacion — UI Components Atlas</title>
+    <meta name="description" content="Como los usuarios se mueven entre vistas y secciones de tu app." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Navegacion</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link is-active" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="navbar.html">01 — Navbar</a></li>
+          <li><a class="sidebar-nav__link" href="sidebar.html">02 — Sidebar</a></li>
+          <li><a class="sidebar-nav__link" href="tabs.html">03 — Tabs</a></li>
+          <li><a class="sidebar-nav__link" href="breadcrumbs.html">04 — Breadcrumbs</a></li>
+          <li><a class="sidebar-nav__link" href="pagination.html">05 — Pagination</a></li>
+          <li><a class="sidebar-nav__link" href="stepper.html">06 — Stepper</a></li>
+          <li><a class="sidebar-nav__link" href="command-palette.html">07 — Command Palette</a></li>
+          <li><a class="sidebar-nav__link" href="drawer.html">08 — Drawer</a></li>
+          <li><a class="sidebar-nav__link" href="bottom-nav.html">09 — Bottom Nav</a></li>
+          <li><a class="sidebar-nav__link" href="mega-menu.html">10 — Mega Menu</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Navegacion</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Navegacion</h1>
+          <p class="component-page__lead">Como los usuarios se mueven entre vistas y secciones de tu app. Navbar, sidebar, tabs, breadcrumbs, pagination, stepper, command palette, drawer, bottom nav y mega menu. Si no tenes claro cual usar cuando, el agente te va a devolver un navbar donde necesitabas un sidebar.</p>
+        </header>
+
+        <section class="component-page__section">
+          <div class="rounded-lg border border-border bg-muted/40 p-5 text-muted-foreground">
+            <p class="text-foreground font-semibold mb-2">Como usar este modulo</p>
+            <p>Cada componente tiene demo real en Tailwind, anatomia, vocabulario cross-framework y prompts listos. La regla de oro: <b>Navbar</b> para apps publicas, <b>Sidebar</b> para dashboards, <b>Tabs</b> para contenido hermano, <b>Breadcrumbs</b> para jerarquia profunda. Lo demas es salsa.</p>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Los 10 componentes</h2>
+          <p class="component-page__section-lead">De lo mas usado a lo mas especializado.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            <a href="navbar.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">01</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Navbar</h3>
+              <p class="text-sm text-muted-foreground mb-3">Barra horizontal superior con logo, links y acciones. La cara de toda app web.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Navbar</span><span class="rounded bg-background px-2 py-0.5 border border-border">AppBar</span></div>
+            </a>
+
+            <a href="sidebar.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">02</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Sidebar</h3>
+              <p class="text-sm text-muted-foreground mb-3">Panel lateral con navegacion jerarquica. El rey de los dashboards.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Sidebar</span><span class="rounded bg-background px-2 py-0.5 border border-border">Drawer</span></div>
+            </a>
+
+            <a href="tabs.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">03</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Tabs</h3>
+              <p class="text-sm text-muted-foreground mb-3">Pestanas para alternar vistas relacionadas. Horizontal, vertical, pills o underline.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Tabs</span><span class="rounded bg-background px-2 py-0.5 border border-border">SegmentedControl</span></div>
+            </a>
+
+            <a href="breadcrumbs.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">04</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Breadcrumbs</h3>
+              <p class="text-sm text-muted-foreground mb-3">Ruta jerarquica del usuario. "Estas aca, viniste de alla, podes volver".</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Breadcrumb</span><span class="rounded bg-background px-2 py-0.5 border border-border">Path</span></div>
+            </a>
+
+            <a href="pagination.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">05</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Pagination</h3>
+              <p class="text-sm text-muted-foreground mb-3">Prev/next + numeros + ellipsis. Para listas largas con total conocido.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Pagination</span><span class="rounded bg-background px-2 py-0.5 border border-border">Pager</span></div>
+            </a>
+
+            <a href="stepper.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">06</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Stepper</h3>
+              <p class="text-sm text-muted-foreground mb-3">Pasos secuenciales para wizards: checkout, onboarding, formularios largos.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Stepper</span><span class="rounded bg-background px-2 py-0.5 border border-border">Steps</span></div>
+            </a>
+
+            <a href="command-palette.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">07</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Command Palette</h3>
+              <p class="text-sm text-muted-foreground mb-3">Modal ⌘K estilo Linear/Raycast. Busqueda + acciones + navegacion.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Command</span><span class="rounded bg-background px-2 py-0.5 border border-border">cmdk</span></div>
+            </a>
+
+            <a href="drawer.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">08</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Drawer</h3>
+              <p class="text-sm text-muted-foreground mb-3">Panel que se desliza desde un borde. Mobile menu, filtros, detalles.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">Sheet</span><span class="rounded bg-background px-2 py-0.5 border border-border">Drawer</span></div>
+            </a>
+
+            <a href="bottom-nav.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">09</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Bottom Nav</h3>
+              <p class="text-sm text-muted-foreground mb-3">Barra inferior mobile. 3-5 items con icono y label. El estandar iOS/Android.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">BottomNav</span><span class="rounded bg-background px-2 py-0.5 border border-border">TabBar</span></div>
+            </a>
+
+            <a href="mega-menu.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">10</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Mega Menu</h3>
+              <p class="text-sm text-muted-foreground mb-3">Dropdown grande multi-columna. Ecommerce, sitios con muchas categorias.</p>
+              <div class="flex flex-wrap gap-1 text-xs text-muted-foreground"><span class="rounded bg-background px-2 py-0.5 border border-border">NavigationMenu</span><span class="rounded bg-background px-2 py-0.5 border border-border">MegaMenu</span></div>
+            </a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virtualized List · UI Components Atlas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      background: '#09090b', foreground: '#fafafa',
+      muted: { DEFAULT: '#27272a', foreground: '#a1a1aa' },
+      border: '#27272a', ring: '#d4d4d8',
+      primary: { DEFAULT: '#fafafa', foreground: '#18181b' },
+      secondary: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      destructive: { DEFAULT: '#7f1d1d', foreground: '#fafafa' },
+      accent: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      popover: { DEFAULT: '#18181b', foreground: '#fafafa' },
+      input: '#27272a',
+    }, borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' } } } }
+  </script>
+  <link rel="stylesheet" href="../css/atlas.css" />
+  <link rel="stylesheet" href="../css/demos.css" />
+</head>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+      <a href="../index.html" class="font-semibold text-lg">UI Components Atlas</a>
+      <input type="search" placeholder="Buscar componente..." class="flex-1 max-w-md bg-input border border-border rounded-md px-3 py-2 text-sm" />
+    </div>
+  </header>
+
+  <div class="component-page max-w-7xl mx-auto px-6 py-8 grid grid-cols-[220px_1fr] gap-8">
+    <aside class="sidebar-nav">
+      <h4 class="text-xs uppercase tracking-wider text-muted-foreground mb-3">Módulo 07</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="./data-table.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">01. Data Table</a></li>
+        <li><a href="./form.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">02. Form</a></li>
+        <li><a href="./form-wizard.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">03. Form Wizard</a></li>
+        <li><a href="./drag-drop.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">04. Drag & Drop</a></li>
+        <li><a href="./infinite-scroll.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">05. Infinite Scroll</a></li>
+        <li><a href="./virtualized-list.html" class="block px-2 py-1.5 rounded is-active bg-muted text-foreground">06. Virtualized List</a></li>
+        <li><a href="./rich-text-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">07. Rich Text Editor</a></li>
+        <li><a href="./code-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">08. Code Editor</a></li>
+        <li><a href="./kanban-board.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">09. Kanban Board</a></li>
+        <li><a href="./masked-input.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">10. Masked Input</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <nav class="breadcrumbs text-sm text-muted-foreground mb-6">
+        <a href="../index.html" class="hover:text-foreground">Atlas</a><span class="mx-2">/</span>
+        <a href="./index.html" class="hover:text-foreground">Patrones Avanzados</a><span class="mx-2">/</span>
+        <span class="text-foreground">Virtualized List</span>
+      </nav>
+
+      <header class="component-page__header mb-10">
+        <h1 class="component-page__title text-4xl font-bold mb-3">Virtualized List</h1>
+        <div class="component-page__aliases flex flex-wrap gap-2 mb-4">
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">react-window</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">react-virtual</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">@tanstack/react-virtual</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Windowing</span>
+        </div>
+        <p class="component-page__lead text-lg text-muted-foreground max-w-3xl">Renderiza SOLO los items visibles en el viewport. 10,000 items lógicos, ~12 nodos en el DOM. Es la diferencia entre una app que arrastra y una que vuela. Usalo apenas pasás los 500-1000 items.</p>
+      </header>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Demo interactiva</h2>
+        <div class="demo-container border border-border rounded-lg p-6 bg-muted/10">
+          <p class="text-xs text-muted-foreground mb-3">Lista lógica de <strong id="vl-total">10000</strong> items. DOM real: <strong id="vl-rendered">0</strong> nodos. Scrolleá el contenedor.</p>
+          <div id="vl-scroll" class="border border-border rounded-md overflow-y-auto relative" style="height: 400px;">
+            <div id="vl-inner" class="relative"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Anatomía</h2>
+        <div class="border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border-2 border-dashed border-border rounded p-4">
+            <div class="text-xs text-muted-foreground mb-2">Scroll Container (altura fija, overflow auto)</div>
+            <div class="border border-border rounded p-3 mb-3 text-xs">
+              <div class="text-muted-foreground mb-1">Inner Container (altura total calculada)</div>
+              <div class="px-2 py-1 bg-muted rounded inline-block">height = totalItems × itemHeight</div>
+            </div>
+            <div class="border border-border rounded p-3 text-xs">
+              <div class="text-muted-foreground mb-1">Visible Items (absolute positioned)</div>
+              <div class="px-2 py-1 bg-muted rounded">startIndex..endIndex + buffer</div>
+              <div class="mt-1 text-muted-foreground">top = index × itemHeight</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Variantes</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <li class="border border-border rounded p-3"><strong>Fixed-height</strong> — todas las rows iguales (fácil).</li>
+          <li class="border border-border rounded p-3"><strong>Variable-height</strong> — measurement dinámico.</li>
+          <li class="border border-border rounded p-3"><strong>Grid virtualization</strong> — 2D, rows × cols.</li>
+          <li class="border border-border rounded p-3"><strong>Horizontal</strong> — para timelines o carousels.</li>
+          <li class="border border-border rounded p-3"><strong>Infinite + virtual</strong> — combinación para feeds enormes.</li>
+          <li class="border border-border rounded p-3"><strong>Windowing con buffer</strong> — overscan para smooth scroll.</li>
+          <li class="border border-border rounded p-3"><strong>Sticky headers</strong> — group headers fijos.</li>
+          <li class="border border-border rounded p-3"><strong>Masonry virtualized</strong> — Pinterest-style.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Estados</h2>
+        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+          <li class="border border-border rounded p-3">Idle</li>
+          <li class="border border-border rounded p-3">Scrolling</li>
+          <li class="border border-border rounded p-3">Measuring (dynamic heights)</li>
+          <li class="border border-border rounded p-3">Resize (recalc)</li>
+          <li class="border border-border rounded p-3">Loading new chunk</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Vocabulario cross-framework</h2>
+        <div class="border border-border rounded-lg overflow-hidden">
+          <table class="vocab-table w-full text-sm">
+            <thead class="bg-muted/50"><tr><th class="px-4 py-2 text-left">Tool</th><th class="px-4 py-2 text-left">Paradigma</th><th class="px-4 py-2 text-left">Notas</th></tr></thead>
+            <tbody>
+              <tr class="border-t border-border"><td class="px-4 py-2">@tanstack/react-virtual</td><td class="px-4 py-2">Headless hook</td><td class="px-4 py-2">Moderno, recomendado</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">react-window</td><td class="px-4 py-2">Componentes</td><td class="px-4 py-2">Liviano, Brian Vaughn</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">react-virtualized</td><td class="px-4 py-2">Componentes</td><td class="px-4 py-2">Legacy, más features</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">MUI DataGrid</td><td class="px-4 py-2">Built-in</td><td class="px-4 py-2">Virtualización automática</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">rc-virtual-list</td><td class="px-4 py-2">Ant Design</td><td class="px-4 py-2">Usado internamente</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Cuándo usar</h2>
+        <div class="use-case-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-green-400">Sí, usalo cuando</h3>
+            <ul class="use-case-list do space-y-2 text-sm text-muted-foreground">
+              <li>Listas con 1000+ items</li>
+              <li>Logs, transaction history</li>
+              <li>Grandes catálogos, search results</li>
+              <li>Tablas con miles de rows</li>
+            </ul>
+          </div>
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-red-400">No, evitalo cuando</h3>
+            <ul class="use-case-list dont space-y-2 text-sm text-muted-foreground">
+              <li>&lt;100 items (overkill, complejidad sin beneficio)</li>
+              <li>Necesitás Ctrl+F nativo (solo ve items renderizados)</li>
+              <li>SEO (los items no están en el HTML inicial)</li>
+              <li>Alturas muy variables y desconocidas → complejo</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Prompts para coding agents</h2>
+        <div class="prompt-library space-y-3">
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Logs</div>
+            <p class="prompt-library__text text-sm font-mono">Virtualized list for 10000 log entries with fixed row height of 32px.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Dynamic heights</div>
+            <p class="prompt-library__text text-sm font-mono">Virtualized table with variable row heights and sticky header using @tanstack/react-virtual.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Grid</div>
+            <p class="prompt-library__text text-sm font-mono">Virtual grid for image gallery with 5000 thumbnails, 4 columns.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Alternativas relacionadas</h2>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><strong class="text-foreground">Pagination</strong> — corta el total en páginas manejables.</li>
+          <li><strong class="text-foreground">Infinite Scroll</strong> — carga progresiva, puede combinarse.</li>
+          <li><strong class="text-foreground">Data Table</strong> — si necesitás features de tabla además.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Referencias</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://tanstack.com/virtual/latest" class="text-blue-400 hover:underline" target="_blank">TanStack Virtual</a></li>
+          <li><a href="https://react-window.vercel.app/" class="text-blue-400 hover:underline" target="_blank">react-window</a></li>
+        </ul>
+      </section>
+
+      <nav class="component-nav border-t border-border pt-6 flex justify-between text-sm">
+        <a href="./infinite-scroll.html" class="component-nav__link text-muted-foreground hover:text-foreground">← Infinite Scroll</a>
+        <a href="./rich-text-editor.html" class="component-nav__link text-muted-foreground hover:text-foreground">Rich Text Editor →</a>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const TOTAL = 10000;
+      const ITEM_H = 40;
+      const BUFFER = 3;
+      const scrollEl = document.getElementById('vl-scroll');
+      const inner = document.getElementById('vl-inner');
+      const renderedCount = document.getElementById('vl-rendered');
+      inner.style.height = (TOTAL * ITEM_H) + 'px';
+
+      function render() {
+        const scrollTop = scrollEl.scrollTop;
+        const viewH = scrollEl.clientHeight;
+        const start = Math.max(0, Math.floor(scrollTop / ITEM_H) - BUFFER);
+        const visible = Math.ceil(viewH / ITEM_H) + BUFFER * 2;
+        const end = Math.min(TOTAL, start + visible);
+
+        inner.replaceChildren();
+        for (let i = start; i < end; i++) {
+          const row = document.createElement('div');
+          row.className = 'absolute left-0 right-0 px-4 flex items-center border-b border-border text-sm';
+          row.style.top = (i * ITEM_H) + 'px';
+          row.style.height = ITEM_H + 'px';
+          const num = document.createElement('span');
+          num.className = 'text-muted-foreground font-mono text-xs w-16';
+          num.textContent = '#' + (i + 1).toString().padStart(5, '0');
+          const txt = document.createElement('span');
+          txt.textContent = 'Item virtualizado — renderizado bajo demanda';
+          row.appendChild(num);
+          row.appendChild(txt);
+          inner.appendChild(row);
+        }
+        renderedCount.textContent = inner.children.length;
+      }
+      scrollEl.addEventListener('scroll', render);
+      render();
+    })();
+  </script>
+  <script src="../js/atlas.js"></script>
+  <script src="../js/demos.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

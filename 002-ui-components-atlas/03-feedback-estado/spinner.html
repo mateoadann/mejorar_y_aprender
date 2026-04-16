@@ -1,0 +1,223 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spinner — UI Components Atlas</title>
+    <meta name="description" content="Indicador circular de loading sin porcentaje conocido." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Feedback y Estado</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="toast.html">01 — Toast</a></li>
+          <li><a class="sidebar-nav__link" href="alert.html">02 — Alert</a></li>
+          <li><a class="sidebar-nav__link" href="banner.html">03 — Banner</a></li>
+          <li><a class="sidebar-nav__link" href="dialog.html">04 — Dialog</a></li>
+          <li><a class="sidebar-nav__link" href="alert-dialog.html">05 — Alert Dialog</a></li>
+          <li><a class="sidebar-nav__link" href="popover.html">06 — Popover</a></li>
+          <li><a class="sidebar-nav__link" href="tooltip.html">07 — Tooltip</a></li>
+          <li><a class="sidebar-nav__link" href="progress.html">08 — Progress</a></li>
+          <li><a class="sidebar-nav__link is-active" href="spinner.html">09 — Spinner</a></li>
+          <li><a class="sidebar-nav__link" href="skeleton.html">10 — Skeleton</a></li>
+          <li><a class="sidebar-nav__link" href="empty-state.html">11 — Empty State</a></li>
+          <li><a class="sidebar-nav__link" href="error-state.html">12 — Error State</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Feedback y Estado</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Spinner</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Spinner</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Spinner</span>
+            <span class="component-page__alias">CircularProgress</span>
+            <span class="component-page__alias">Loader2</span>
+            <span class="component-page__alias">Spin</span>
+            <span class="component-page__alias">Loading indicator</span>
+          </div>
+          <p class="component-page__lead">
+            Ícono circular que gira para comunicar "estoy haciendo algo, no sé cuánto falta". Es lo que usás cuando no tenés porcentaje ni skeleton. El caso más común: loading state en botones después del click, o spinner full-page durante auth check inicial.
+          </p>
+          <div class="rounded-md border border-border bg-muted/20 p-3 text-sm text-muted-foreground mt-3">
+            <b class="text-foreground">Regla:</b> si podés mostrar un Skeleton del layout, hacelo. El spinner es menos informativo. Solo usá spinner si el loading es corto (&lt; 1s) o no sabés qué va a cargar.
+          </div>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">3 tamaños + un botón con spinner inline.</p>
+          <div class="demo-container" data-atlas-demo>
+            <div class="demo-preview demo-preview--stack">
+              <div class="flex items-center gap-8">
+                <svg class="animate-spin h-4 w-4 text-foreground" viewBox="0 0 24 24" fill="none" aria-label="Loading sm"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+                <svg class="animate-spin h-6 w-6 text-foreground" viewBox="0 0 24 24" fill="none" aria-label="Loading md"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+                <svg class="animate-spin h-10 w-10 text-foreground" viewBox="0 0 24 24" fill="none" aria-label="Loading lg"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+              </div>
+              <div class="flex gap-3 items-center">
+                <button disabled class="inline-flex items-center gap-2 rounded-md bg-primary text-primary-foreground h-10 px-4 text-sm font-medium opacity-80">
+                  <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+                  Saving...
+                </button>
+                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                  <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+                  Fetching users...
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomía</h2>
+          <p class="component-page__section-lead">Un SVG con animate-spin, o un &lt;div&gt; con border + animation.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border-2 border-dashed border-border bg-muted/20 p-4">
+                <div class="text-xs text-muted-foreground mb-2 font-mono">Spinner (role="status" + sr-only label)</div>
+                <div class="flex items-center gap-3 rounded border border-border bg-background p-3">
+                  <svg class="animate-spin h-6 w-6 text-foreground" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+                  <span class="text-xs font-mono text-muted-foreground">SVG + animate-spin</span>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> SVG o div con role="status".</li>
+              <li><b>Label ARIA</b> sr-only "Loading" para screen readers.</li>
+              <li><b>Animation</b> Tailwind animate-spin (1s linear infinite).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><svg class="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg><span class="demo-group__label">xs (12px)</span></div>
+            <div class="demo-group__item"><svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg><span class="demo-group__label">sm (16px)</span></div>
+            <div class="demo-group__item"><svg class="animate-spin h-6 w-6" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg><span class="demo-group__label">md (24px)</span></div>
+            <div class="demo-group__item"><svg class="animate-spin h-10 w-10" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg><span class="demo-group__label">lg (40px)</span></div>
+            <div class="demo-group__item"><div class="flex items-center gap-2"><svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg><span class="text-xs">Loading...</span></div><span class="demo-group__label">with label</span></div>
+            <div class="demo-group__item"><div class="inline-block h-6 w-6 animate-spin rounded-full border-2 border-border border-t-foreground"></div><span class="demo-group__label">border-only</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><svg class="animate-spin h-6 w-6" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg><span class="demo-group__label">spinning</span></div>
+            <div class="demo-group__item"><div class="hidden">-</div><span class="demo-group__label">stopped (unmount)</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn (Lucide)</th><th>Material UI</th><th>Ant Design</th><th>Chakra</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Loader2 + animate-spin</td><td>CircularProgress</td><td>Spin</td><td>Spinner</td></tr>
+              <tr><td>Tamaño</td><td>h-4/h-6/h-10</td><td>size prop</td><td>size prop</td><td>size prop</td></tr>
+              <tr><td>Con label</td><td>children text</td><td>children</td><td>tip prop</td><td>label prop</td></tr>
+              <tr><td>Indeterminate</td><td>siempre</td><td>siempre</td><td>siempre</td><td>siempre</td></tr>
+              <tr><td>ARIA role</td><td>status</td><td>progressbar</td><td>status</td><td>status</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuándo usar y cuándo no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Button loading state (submit, async action)</li>
+              <li>Full-page loading durante auth check</li>
+              <li>Inline loading al lado de un texto ("Fetching...")</li>
+              <li>Acciones cortas (&lt; 2s) sin progreso conocido</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Cargás contenido de layout conocido → Skeleton</li>
+              <li>Tenés porcentaje → Progress</li>
+              <li>Loading infinito (&gt; 5s) sin info — frustra al usuario</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item"><p class="prompt-library__label">Button with spinner during submit</p><pre class="prompt-library__text">Wire a shadcn Button with isLoading state. When true: disable it, show a Loader2 lucide icon with animate-spin class before the label, and change the label from "Save" to "Saving...". Use the useTransition or useMutation pending state.</pre><button class="prompt-library__copy">Copiar</button></div>
+            <div class="prompt-library__item"><p class="prompt-library__label">Full-page spinner for auth check</p><pre class="prompt-library__text">While the initial session check is pending, render a full-screen centered container with a Loader2 lucide icon (size 32) and the text "Loading...". Once the check resolves, render the app or the login page.</pre><button class="prompt-library__copy">Copiar</button></div>
+            <div class="prompt-library__item"><p class="prompt-library__label">Inline spinner next to text</p><pre class="prompt-library__text">When the user clicks "Check availability", show a Loader2 spinner inline next to the label along with "Checking...". After 500ms, show the result (available or not).</pre><button class="prompt-library__copy">Copiar</button></div>
+            <div class="prompt-library__item"><p class="prompt-library__label">Suspense fallback spinner</p><pre class="prompt-library__text">Wrap a lazy-loaded route in &lt;Suspense fallback={&lt;CenteredSpinner /&gt;}&gt;. CenteredSpinner renders a full-height flex container with a Loader2 icon centered. role="status" and sr-only label "Loading".</pre><button class="prompt-library__copy">Copiar</button></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="skeleton.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors"><h3 class="font-semibold mb-1">Skeleton</h3><p class="text-sm text-muted-foreground">Cuando sabés el layout que va a cargar.</p></a>
+            <a href="progress.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors"><h3 class="font-semibold mb-1">Progress</h3><p class="text-sm text-muted-foreground">Cuando tenés porcentaje.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a class="underline" href="https://lucide.dev/icons/loader-2" target="_blank" rel="noopener">Lucide — Loader2</a></li>
+            <li><a class="underline" href="https://mui.com/material-ui/react-progress/" target="_blank" rel="noopener">MUI — CircularProgress</a></li>
+            <li><a class="underline" href="https://www.w3.org/WAI/ARIA/apg/patterns/" target="_blank" rel="noopener">W3C — status role</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" data-nav-prev href="progress.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Progress</span></a>
+          <a class="component-nav__link component-nav__link--next" href="skeleton.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Skeleton</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

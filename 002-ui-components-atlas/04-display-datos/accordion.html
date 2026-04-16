@@ -1,0 +1,282 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accordion — UI Components Atlas</title>
+    <meta name="description" content="Secciones colapsables múltiples." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Display de Datos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="card.html">01 — Card</a></li>
+          <li><a class="sidebar-nav__link" href="table.html">02 — Table</a></li>
+          <li><a class="sidebar-nav__link" href="list.html">03 — List</a></li>
+          <li><a class="sidebar-nav__link" href="tree-view.html">04 — Tree View</a></li>
+          <li><a class="sidebar-nav__link" href="timeline.html">05 — Timeline</a></li>
+          <li><a class="sidebar-nav__link is-active" href="accordion.html">06 — Accordion</a></li>
+          <li><a class="sidebar-nav__link" href="collapsible.html">07 — Collapsible</a></li>
+          <li><a class="sidebar-nav__link" href="carousel.html">08 — Carousel</a></li>
+          <li><a class="sidebar-nav__link" href="avatar.html">09 — Avatar</a></li>
+          <li><a class="sidebar-nav__link" href="badge-chip-tag.html">10 — Badge / Chip / Tag</a></li>
+          <li><a class="sidebar-nav__link" href="stat-card.html">11 — Stat Card</a></li>
+          <li><a class="sidebar-nav__link" href="kanban-card.html">12 — Kanban Card</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Display de Datos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Accordion</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Accordion</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Accordion</span>
+            <span class="component-page__alias">Collapse (Ant)</span>
+            <span class="component-page__alias">Expander</span>
+            <span class="component-page__alias">Disclosure group</span>
+          </div>
+          <p class="component-page__lead">Secciones colapsables donde solo una (single) o varias (multiple) pueden estar abiertas. Clásico FAQ. <b>OJO — Accordion vs Collapsible:</b> Accordion es una lista de items colapsables (piensa en FAQ con 5 preguntas). Collapsible es UN solo item con toggle ("show more"). No los confundas.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">FAQ con 4 items, modo single. Clickea para abrir.</p>
+          <div class="demo-container">
+            <div class="demo-preview">
+              <div class="w-full max-w-lg" id="acc-demo">
+                <div class="acc-item border-b border-border">
+                  <button class="acc-trigger flex items-center justify-between w-full py-4 text-sm font-medium text-foreground hover:underline">
+                    <span>Is it accessible?</span>
+                    <svg class="acc-chevron transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                  </button>
+                  <div class="acc-content hidden pb-4 text-sm text-muted-foreground">Yes. It adheres to the WAI-ARIA design pattern with proper roles and keyboard navigation.</div>
+                </div>
+                <div class="acc-item border-b border-border">
+                  <button class="acc-trigger flex items-center justify-between w-full py-4 text-sm font-medium text-foreground hover:underline">
+                    <span>Is it styled?</span>
+                    <svg class="acc-chevron transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                  </button>
+                  <div class="acc-content hidden pb-4 text-sm text-muted-foreground">Yes. It comes with default styles that match the other components aesthetic.</div>
+                </div>
+                <div class="acc-item border-b border-border">
+                  <button class="acc-trigger flex items-center justify-between w-full py-4 text-sm font-medium text-foreground hover:underline" data-initial-open>
+                    <span>Is it animated?</span>
+                    <svg class="acc-chevron transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                  </button>
+                  <div class="acc-content pb-4 text-sm text-muted-foreground">Yes. It uses a smooth expand/collapse animation via CSS height transitions. You can disable it if you prefer.</div>
+                </div>
+                <div class="acc-item border-b border-border">
+                  <button class="acc-trigger flex items-center justify-between w-full py-4 text-sm font-medium text-foreground hover:underline">
+                    <span>Does it support keyboard?</span>
+                    <svg class="acc-chevron transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                  </button>
+                  <div class="acc-content hidden pb-4 text-sm text-muted-foreground">Tab to navigate triggers, Enter or Space to toggle, Arrow keys to move between triggers.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function(){
+              const root = document.getElementById('acc-demo');
+              if (!root) return;
+              const items = root.querySelectorAll('.acc-item');
+              const mode = 'single'; // single | multiple
+              items.forEach(item => {
+                const trigger = item.querySelector('.acc-trigger');
+                const content = item.querySelector('.acc-content');
+                const chevron = item.querySelector('.acc-chevron');
+                if (trigger.hasAttribute('data-initial-open')) {
+                  chevron.style.transform = 'rotate(180deg)';
+                }
+                trigger.addEventListener('click', () => {
+                  const isOpen = !content.classList.contains('hidden');
+                  if (mode === 'single') {
+                    items.forEach(i => {
+                      i.querySelector('.acc-content').classList.add('hidden');
+                      i.querySelector('.acc-chevron').style.transform = '';
+                    });
+                  }
+                  if (!isOpen) {
+                    content.classList.remove('hidden');
+                    chevron.style.transform = 'rotate(180deg)';
+                  }
+                });
+              });
+            })();
+          </script>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Radix Accordion. Estándar cross-framework.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Accordion.Root (type="single" | "multiple")</div>
+                <div class="rounded border border-border bg-background p-3 mb-2">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">Accordion.Item (value="a")</div>
+                  <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono text-xs mb-1">Accordion.Trigger (header)</div>
+                  <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono text-xs">Accordion.Content (panel)</div>
+                </div>
+                <div class="rounded border border-border bg-background p-3 text-xs font-mono text-muted-foreground">Accordion.Item (value="b")</div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> Type="single" o "multiple". Mantiene estado global.</li>
+              <li><b>Item</b> Cada sección. Tiene un value único.</li>
+              <li><b>Trigger</b> Header clickeable con ícono chevron.</li>
+              <li><b>Content</b> Panel que se muestra/oculta con animación.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>single</b> Solo una sección abierta a la vez.</li>
+            <li><b>multiple</b> Varias secciones pueden estar abiertas simultáneamente.</li>
+            <li><b>controlled</b> Estado manejado desde el padre (prop value/onValueChange).</li>
+            <li><b>with chevron</b> Icono chevron-down que rota 180deg.</li>
+            <li><b>with plus/minus</b> Iconos + y − alternando.</li>
+            <li><b>bordered</b> Cada item con border full (tipo card).</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border border-border text-foreground">Collapsed</div><span class="demo-group__label">collapsed</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border border-foreground/40 bg-muted/30 text-foreground">Expanded</div><span class="demo-group__label">expanded</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border border-border text-muted-foreground opacity-50">Disabled</div><span class="demo-group__label">disabled</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn / Radix</th><th>Material UI</th><th>Ant Design</th><th>Chakra</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Accordion</td><td>(multiple Accordions)</td><td>Collapse</td><td>Accordion</td></tr>
+              <tr><td>Item</td><td>AccordionItem</td><td>Accordion</td><td>Collapse.Panel</td><td>AccordionItem</td></tr>
+              <tr><td>Trigger</td><td>AccordionTrigger</td><td>AccordionSummary</td><td>header prop</td><td>AccordionButton</td></tr>
+              <tr><td>Content</td><td>AccordionContent</td><td>AccordionDetails</td><td>children</td><td>AccordionPanel</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>FAQs con varias preguntas.</li>
+              <li>Settings agrupados por sección.</li>
+              <li>Contenido opcional que satura la página si se muestra todo.</li>
+              <li>Product details largos (descripción, specs, reviews).</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>El usuario siempre necesita ver el contenido → display directo.</li>
+              <li>Son vistas alternativas: Tabs (módulo 02).</li>
+              <li>Es un solo item: <a href="collapsible.html" class="underline">Collapsible</a>.</li>
+              <li>Jerarquía profunda: <a href="tree-view.html" class="underline">Tree View</a>.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">FAQ accordion single mode</p>
+              <pre class="prompt-library__text" id="p1-text">Build a shadcn Accordion with type="single" and collapsible. Include 5 FAQ items about a SaaS product. Each AccordionTrigger has a question, AccordionContent has the answer. Chevron rotates 180deg when open.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Settings accordion multiple</p>
+              <pre class="prompt-library__text" id="p2-text">Create an Accordion with type="multiple" for a settings page. Sections: Profile, Security, Notifications, Billing, Integrations. Each content has form fields. Multiple can be open at once.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Product details accordion</p>
+              <pre class="prompt-library__text" id="p3-text">Build an Accordion for a product page with sections: Description, Specifications (table), Shipping, Reviews. Use shadcn Accordion, first item open by default via defaultValue.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Accordion with plus/minus icons</p>
+              <pre class="prompt-library__text" id="p4-text">Create an Accordion where the trigger shows a Plus icon when collapsed and Minus when expanded. Use data-state in the AccordionTrigger to conditionally render. Border between items only.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="collapsible.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Collapsible</h3><p class="text-sm text-muted-foreground">Un solo toggle.</p></a>
+            <a href="../02-navegacion/tabs.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Tabs</h3><p class="text-sm text-muted-foreground">Para vistas alternativas.</p></a>
+            <a href="tree-view.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Tree View</h3><p class="text-sm text-muted-foreground">Jerarquía profunda.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://www.radix-ui.com/primitives/docs/components/accordion" target="_blank">Radix Accordion</a></li>
+            <li><a href="https://ui.shadcn.com/docs/components/accordion" target="_blank">Shadcn Accordion</a></li>
+            <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/accordion/" target="_blank">ARIA Accordion pattern</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="timeline.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Timeline</span></a>
+          <a class="component-nav__link component-nav__link--next" href="collapsible.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Collapsible</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lección 1 — ¿Qué son los Managed Agents?</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+        <link rel="stylesheet" href="modulo-1.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 1</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 1</a></li>
+                        <li>Lección 1</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="hero-meta">Lección 01 &middot; 8 min</span>
+                        <h1 class="mt-0">¿Qué son los Managed Agents?</h1>
+                        <p class="lead">
+                            Un harness gestionado donde Anthropic corre toda
+                            la infraestructura del agente: sandbox, event
+                            loop, estado, credenciales y persistencia. Vos
+                            solo describís qué querés que haga.
+                        </p>
+                    </div>
+
+                    <h2>El problema que resuelven</h2>
+                    <p class="slide-up">
+                        Antes, montar un agente productivo arriba de un LLM no
+                        era solo prompt engineering. Era infraestructura
+                        completa. Alguien tenía que resolver: sandboxing del
+                        código que genera el modelo, gestión del estado entre
+                        turns, streaming de eventos, manejo de credenciales,
+                        reintentos, rate limits, logs, y la lista sigue.
+                    </p>
+                    <p class="slide-up">
+                        Eso podía tomar <strong>meses</strong> de trabajo de
+                        infra antes de que tu agente generara valor. Y una vez
+                        que lo tenías, lo estabas manteniendo vos.
+                    </p>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">La clave del cambio</div>
+                        <p>
+                            Con Managed Agents, Anthropic levanta el agente en
+                            su infraestructura. Vos pasás a describir el
+                            comportamiento — system prompt, tools, permisos —
+                            y ellos se encargan del resto.
+                        </p>
+                    </div>
+
+                    <h2>Antes vs ahora</h2>
+                    <div class="before-after slide-up">
+                        <div class="side before">
+                            <h4>Antes (DIY)</h4>
+                            <ul>
+                                <li>Sandbox propio</li>
+                                <li>Event loop custom</li>
+                                <li>State store</li>
+                                <li>Retries &amp; backoff</li>
+                                <li>Credenciales seguras</li>
+                                <li>Logs y observabilidad</li>
+                                <li>Meses de infra</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="arrow arrow-right" aria-hidden="true"></span>
+                        </div>
+                        <div class="side after">
+                            <h4>Ahora (Managed)</h4>
+                            <ul>
+                                <li>System prompt</li>
+                                <li>Lista de tools</li>
+                                <li>Permission mode</li>
+                                <li>Environment config</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2>Qué maneja Anthropic por vos</h2>
+                    <div class="grid grid-2 stagger">
+                        <div class="card slide-up">
+                            <h4>Infraestructura de compute</h4>
+                            <p>
+                                Servers, contenedores efímeros, escalado,
+                                disponibilidad. No ves una máquina.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Sandboxing</h4>
+                            <p>
+                                El código que genera el agente corre en un
+                                contenedor aislado, con network configurable y
+                                límite de vida.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Manejo de errores y retries</h4>
+                            <p>
+                                Backoff, reintentos y recuperación cuando algo
+                                falla, sin que vos escribas un solo
+                                try/catch.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Sesiones persistentes</h4>
+                            <p>
+                                El estado de la ejecución sobrevive al cliente.
+                                Si se te cae la conexión, volvés y seguís.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h2>Lo único que vos hacés</h2>
+                    <p>
+                        Definís el <strong>agente</strong> (quién es, qué
+                        tools tiene, qué skills), el
+                        <strong>environment</strong> (qué podés acceder desde
+                        el sandbox) y abrís una <strong>sesión</strong>. El
+                        resto es del servidor.
+                    </p>
+
+                    <div class="callout warning slide-up">
+                        <div class="callout-title">Corrección al artículo original</div>
+                        <p>
+                            Si venís del artículo de blog, te habrán hablado
+                            de <strong>4 componentes</strong>: agent,
+                            environment, session y events. La documentación
+                            oficial de Anthropic dice que son
+                            <strong>3 primitivas</strong>: agent, environment
+                            y session. Los <em>events</em> son el stream
+                            Server-Sent Events generado por una sesión, no un
+                            recurso separado. Lo vemos en detalle en la
+                            lección 2.
+                        </p>
+                    </div>
+
+                    <h2>Fecha y estado</h2>
+                    <p>
+                        Managed Agents se lanzaron en <strong>public beta el
+                        8 de abril de 2026</strong>. Al momento de este
+                        módulo, la feature requiere el header
+                        <code>anthropic-beta: managed-agents-2026-04-01</code>
+                        en las llamadas a la API.
+                    </p>
+
+                    <div class="callout tip slide-up">
+                        <div class="callout-title">Modelo mental rápido</div>
+                        <p>
+                            Pensalo así: si antes tenías que
+                            <em>construir y operar</em> una fábrica para
+                            producir un auto, ahora le mandás los planos a
+                            alguien que ya tiene la fábrica armada. Vos
+                            seguís diseñando el auto; ellos se encargan de que
+                            se produzca.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="index.html" class="pager-prev">
+                            <span class="pager-label">&larr; Volver</span>
+                            <span class="pager-title">Índice del módulo</span>
+                        </a>
+                        <a href="02-arquitectura.html" class="pager-next">
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title">Arquitectura: las 3 primitivas</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">Módulo 1 &middot; Lección 1 &middot; Edición 2026</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

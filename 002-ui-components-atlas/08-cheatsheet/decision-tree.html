@@ -1,0 +1,436 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Decision Tree · UI Components Atlas</title>
+    <meta name="description" content="Árbol de decisión visual para elegir el componente correcto según el problema que querés resolver." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+    <style>
+      .decision-group { border: 1px solid #27272a; border-radius: 0.5rem; background: rgba(39, 39, 42, 0.1); padding: 1.5rem; margin-bottom: 1.5rem; }
+      .decision-group__title { font-size: 1.25rem; font-weight: 700; color: #fafafa; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+      .decision-group__num { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 9999px; background: #fafafa; color: #18181b; font-size: 0.875rem; font-weight: 700; }
+      .decision-branch { border-left: 2px solid #3f3f46; padding-left: 1.25rem; margin-bottom: 1.25rem; position: relative; }
+      .decision-branch:last-child { margin-bottom: 0; }
+      .decision-branch__question { font-size: 0.95rem; font-weight: 600; color: #e4e4e7; margin-bottom: 0.75rem; }
+      .decision-branch__options { display: flex; flex-direction: column; gap: 0.5rem; padding-left: 1rem; }
+      .decision-option { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; font-size: 0.875rem; color: #a1a1aa; }
+      .decision-option__label { flex: 1; min-width: 0; }
+      .decision-arrow { color: #52525b; flex-shrink: 0; }
+      .decision-pill { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.375rem 0.75rem; border-radius: 0.375rem; background: #27272a; border: 1px solid #3f3f46; color: #fafafa; font-size: 0.8125rem; font-weight: 500; text-decoration: none; transition: all 0.15s; white-space: nowrap; }
+      .decision-pill:hover { background: #3f3f46; border-color: #52525b; }
+      .decision-pill svg { width: 0.875rem; height: 0.875rem; opacity: 0.6; }
+    </style>
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Páginas del módulo">
+        <h2 class="sidebar-nav__title">Cheatsheet Global</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del módulo</a></li>
+          <li><a class="sidebar-nav__link" href="tabla-global.html">01 — Tabla Global</a></li>
+          <li><a class="sidebar-nav__link is-active" href="decision-tree.html">02 — Decision Tree</a></li>
+          <li><a class="sidebar-nav__link" href="prompt-library.html">03 — Prompt Library</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Cheatsheet Global</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Decision Tree</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">¿Qué componente usar?</h1>
+          <p class="component-page__lead">Un árbol de decisión visual para cuando sabés el problema pero no sabés el nombre del componente. Arrancá por el grupo que matchea tu caso y seguí las ramas hasta el componente.</p>
+        </header>
+
+        <section class="component-page__section">
+
+          <!-- GRUPO 1 -->
+          <div class="decision-group">
+            <h2 class="decision-group__title"><span class="decision-group__num">1</span>¿Necesito que el usuario elija entre opciones?</h2>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Cuántas opciones hay?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">2-4 opciones mutuamente excluyentes</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../01-inputs-controles/radio-group.html" class="decision-pill">Radio Group</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">5-15 opciones, una elegida</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../01-inputs-controles/select.html" class="decision-pill">Select</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">15+ con búsqueda</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../01-inputs-controles/combobox.html" class="decision-pill">Combobox</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Múltiples seleccionables a la vez</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../01-inputs-controles/checkbox.html" class="decision-pill">Checkbox Group</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Es un toggle binario de estado?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Estado persistido (dark mode, notifications)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../01-inputs-controles/switch-toggle.html" class="decision-pill">Switch</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Botón presionable (bold/italic en un editor)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../01-inputs-controles/switch-toggle.html" class="decision-pill">Toggle</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GRUPO 2 -->
+          <div class="decision-group">
+            <h2 class="decision-group__title"><span class="decision-group__num">2</span>¿Cómo mostrar información al usuario?</h2>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Es transitoria (aparece y desaparece sola)?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Confirmación de una acción que el usuario hizo</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../03-feedback-estado/toast.html" class="decision-pill">Toast</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Es contextual inline (no bloquea)?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Alerta dentro del flujo de la página</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../03-feedback-estado/alert.html" class="decision-pill">Alert</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Es page-level (afecta a toda la app)?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Cookies, mantenimiento, promos</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../03-feedback-estado/banner.html" class="decision-pill">Banner</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Es crítica y bloqueante?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Confirmación destructiva ("¿eliminar?")</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../03-feedback-estado/alert-dialog.html" class="decision-pill">Alert Dialog</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Formulario o acción contextual</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../03-feedback-estado/dialog.html" class="decision-pill">Dialog</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Imagen, video o contenido inmersivo</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../05-overlays/modal-fullscreen.html" class="decision-pill">Modal Fullscreen</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GRUPO 3 -->
+          <div class="decision-group">
+            <h2 class="decision-group__title"><span class="decision-group__num">3</span>¿Cómo estructurar datos en pantalla?</h2>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Son datos tabulares?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Simple, read-only</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../04-display-datos/table.html" class="decision-pill">Table</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Con sort, filter y pagination</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../07-patrones-avanzados/data-table.html" class="decision-pill">Data Table</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Son listas de items?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Items homogéneos (mismo tipo)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../04-display-datos/list.html" class="decision-pill">List</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Items heterogéneos con imágenes y CTAs</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../04-display-datos/card.html" class="decision-pill">Card Grid</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Jerárquicos (archivos, categorías)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../04-display-datos/tree-view.html" class="decision-pill">Tree View</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Cronológicos (activity, historial)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../04-display-datos/timeline.html" class="decision-pill">Timeline</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Son métricas o KPIs?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Dashboard con números grandes</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../04-display-datos/stat-card.html" class="decision-pill">Stat Card</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Son tasks con múltiples estados?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">To do / Doing / Done</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../07-patrones-avanzados/kanban-board.html" class="decision-pill">Kanban Board</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GRUPO 4 -->
+          <div class="decision-group">
+            <h2 class="decision-group__title"><span class="decision-group__num">4</span>¿Cómo navegar la app?</h2>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Navegación principal desktop?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Pocas secciones (3-6)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../02-navegacion/navbar.html" class="decision-pill">Navbar</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Muchas secciones o dashboard</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../02-navegacion/sidebar.html" class="decision-pill">Sidebar</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Navegación principal mobile?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">3-5 secciones principales</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../02-navegacion/bottom-nav.html" class="decision-pill">Bottom Nav</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Muchas secciones, oculto hasta abrir</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../02-navegacion/drawer.html" class="decision-pill">Drawer</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Contenido relacionado en la misma página?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Mismo contexto, vistas alternativas</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../02-navegacion/tabs.html" class="decision-pill">Tabs</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Páginas jerárquicas (ruta actual)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../02-navegacion/breadcrumbs.html" class="decision-pill">Breadcrumbs</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Listas largas?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Total de items conocido</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../02-navegacion/pagination.html" class="decision-pill">Pagination</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Feed continuo tipo social</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../07-patrones-avanzados/infinite-scroll.html" class="decision-pill">Infinite Scroll</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Pasos secuenciales?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Formulario largo partido en pasos</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../07-patrones-avanzados/form-wizard.html" class="decision-pill">Form Wizard</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Proceso visual (onboarding)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../02-navegacion/stepper.html" class="decision-pill">Stepper</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GRUPO 5 -->
+          <div class="decision-group">
+            <h2 class="decision-group__title"><span class="decision-group__num">5</span>¿Cómo mostrar loading?</h2>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Duración conocida?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Porcentaje exacto de avance</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../03-feedback-estado/progress.html" class="decision-pill">Progress</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Duración desconocida?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Acción puntual (save, submit)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../03-feedback-estado/spinner.html" class="decision-pill">Spinner</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Contenido cargando (lista, página)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../03-feedback-estado/skeleton.html" class="decision-pill">Skeleton</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GRUPO 6 -->
+          <div class="decision-group">
+            <h2 class="decision-group__title"><span class="decision-group__num">6</span>¿Cómo mostrar info contextual flotante?</h2>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Texto simple?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Hover de un label o botón icon-only</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../03-feedback-estado/tooltip.html" class="decision-pill">Tooltip</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-branch">
+              <p class="decision-branch__question">¿Contenido rico o interactivo?</p>
+              <div class="decision-branch__options">
+                <div class="decision-option">
+                  <span class="decision-option__label">Hover con info previa (perfil, link preview)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../05-overlays/hover-card.html" class="decision-pill">Hover Card</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Click con interacción (form inline)</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../03-feedback-estado/popover.html" class="decision-pill">Popover</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Menú de acciones disparado por botón</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../05-overlays/dropdown-menu.html" class="decision-pill">Dropdown Menu</a>
+                </div>
+                <div class="decision-option">
+                  <span class="decision-option__label">Menú disparado por click derecho</span>
+                  <svg class="decision-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  <a href="../05-overlays/context-menu.html" class="decision-pill">Context Menu</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <nav class="component-nav" aria-label="Navegación entre páginas">
+          <a class="component-nav__link" href="tabla-global.html">
+            <span class="component-nav__dir">Anterior</span>
+            <span class="component-nav__title">Tabla Global</span>
+          </a>
+          <a class="component-nav__link component-nav__link--next" href="prompt-library.html">
+            <span class="component-nav__dir">Siguiente</span>
+            <span class="component-nav__title">Prompt Library</span>
+          </a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

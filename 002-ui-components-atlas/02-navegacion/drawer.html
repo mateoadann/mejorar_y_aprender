@@ -1,0 +1,268 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drawer — UI Components Atlas</title>
+    <meta name="description" content="Panel que se desliza desde un borde de la pantalla." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Navegacion</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="navbar.html">01 — Navbar</a></li>
+          <li><a class="sidebar-nav__link" href="sidebar.html">02 — Sidebar</a></li>
+          <li><a class="sidebar-nav__link" href="tabs.html">03 — Tabs</a></li>
+          <li><a class="sidebar-nav__link" href="breadcrumbs.html">04 — Breadcrumbs</a></li>
+          <li><a class="sidebar-nav__link" href="pagination.html">05 — Pagination</a></li>
+          <li><a class="sidebar-nav__link" href="stepper.html">06 — Stepper</a></li>
+          <li><a class="sidebar-nav__link" href="command-palette.html">07 — Command Palette</a></li>
+          <li><a class="sidebar-nav__link is-active" href="drawer.html">08 — Drawer</a></li>
+          <li><a class="sidebar-nav__link" href="bottom-nav.html">09 — Bottom Nav</a></li>
+          <li><a class="sidebar-nav__link" href="mega-menu.html">10 — Mega Menu</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Navegacion</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Drawer</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Drawer</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Sheet</span>
+            <span class="component-page__alias">Drawer</span>
+            <span class="component-page__alias">Off-canvas</span>
+            <span class="component-page__alias">Side panel</span>
+            <span class="component-page__alias">Bottom Sheet</span>
+          </div>
+          <p class="component-page__lead">Panel que se desliza desde un borde (left, right, top, bottom) con overlay dimming el contenido. En Shadcn se llama <code>Sheet</code>, basado en Radix Dialog + animacion lateral. Sirve para mobile menus, filtros, detalles contextuales y forms cortos. Importante: un drawer NO es un modal tradicional centrado, tiene anclaje a un borde.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Click en el boton para abrir/cerrar el drawer desde la derecha.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <div class="relative w-full max-w-3xl h-96 rounded-lg border border-border bg-muted/10 overflow-hidden" data-drawer-root>
+                <div class="p-4">
+                  <button class="inline-flex h-9 items-center rounded-md bg-primary text-primary-foreground px-4 text-sm font-medium hover:bg-primary/90" data-drawer-trigger>Open filters</button>
+                  <p class="mt-3 text-sm text-muted-foreground">Este es tu contenido principal. El drawer se abre por encima.</p>
+                </div>
+                <div class="absolute inset-0 bg-black/60 hidden" data-drawer-overlay></div>
+                <aside class="absolute top-0 right-0 h-full w-80 bg-popover border-l border-border shadow-2xl translate-x-full transition-transform duration-300 flex flex-col" data-drawer-content>
+                  <div class="flex items-center justify-between px-5 py-4 border-b border-border">
+                    <div><h3 class="font-semibold text-foreground">Filters</h3><p class="text-xs text-muted-foreground">Refine your search</p></div>
+                    <button class="h-8 w-8 rounded-md hover:bg-accent grid place-items-center" data-drawer-close aria-label="Close">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </button>
+                  </div>
+                  <div class="flex-1 p-5 text-sm space-y-3">
+                    <div><label class="text-xs text-muted-foreground">Category</label><div class="mt-1 h-9 rounded-md border border-input bg-background"></div></div>
+                    <div><label class="text-xs text-muted-foreground">Price range</label><div class="mt-1 h-9 rounded-md border border-input bg-background"></div></div>
+                    <div><label class="text-xs text-muted-foreground">Rating</label><div class="mt-1 h-9 rounded-md border border-input bg-background"></div></div>
+                  </div>
+                  <div class="border-t border-border p-4 flex gap-2">
+                    <button class="flex-1 h-9 rounded-md border border-input text-sm" data-drawer-close>Cancel</button>
+                    <button class="flex-1 h-9 rounded-md bg-primary text-primary-foreground text-sm font-medium">Apply</button>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function(){
+              const root = document.querySelector('[data-drawer-root]');
+              if (!root) return;
+              const trigger = root.querySelector('[data-drawer-trigger]');
+              const content = root.querySelector('[data-drawer-content]');
+              const overlay = root.querySelector('[data-drawer-overlay]');
+              const closes = root.querySelectorAll('[data-drawer-close]');
+              const open = () => { content.classList.remove('translate-x-full'); overlay.classList.remove('hidden'); };
+              const close = () => { content.classList.add('translate-x-full'); overlay.classList.add('hidden'); };
+              trigger.addEventListener('click', open);
+              overlay.addEventListener('click', close);
+              closes.forEach(b => b.addEventListener('click', close));
+            })();
+          </script>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Shadcn Sheet hereda la estructura de Radix Dialog.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Sheet (Root)</div>
+                <div class="rounded border border-border bg-background p-3 mb-2"><div class="text-xs font-mono text-muted-foreground">SheetTrigger (button)</div></div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">SheetPortal &gt; SheetOverlay</div>
+                  <div class="rounded border border-border bg-muted/40 p-2">
+                    <div class="text-xs font-mono text-muted-foreground">SheetContent (side="left|right|top|bottom")</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-2">└ SheetHeader → SheetTitle + SheetDescription</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-2">└ (body content)</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-2">└ SheetFooter</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-2">└ SheetClose</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Sheet</b> Root con estado open/setOpen.</li>
+              <li><b>SheetTrigger</b> Boton que abre (usa <code>asChild</code> para customizar).</li>
+              <li><b>SheetPortal</b> Monta fuera del DOM para evitar clipping.</li>
+              <li><b>SheetOverlay</b> Backdrop oscuro clickeable para cerrar.</li>
+              <li><b>SheetContent</b> El panel en si. Prop <code>side</code> define el borde.</li>
+              <li><b>SheetHeader / Footer</b> Slots con spacing consistente.</li>
+              <li><b>SheetClose</b> Boton X. Cierra por accion manual.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>left</b> Mobile menu tradicional.</li>
+            <li><b>right</b> Filtros, detalles, forms.</li>
+            <li><b>top</b> Notificaciones o alertas temporales.</li>
+            <li><b>bottom</b> Bottom sheet mobile (action sheet, picker).</li>
+            <li><b>fullscreen</b> Drawer que ocupa toda la pantalla en mobile.</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="h-16 w-24 rounded border border-border bg-background"></div><span class="demo-group__label">closed</span></div>
+            <div class="demo-group__item"><div class="h-16 w-24 rounded border border-border bg-popover relative overflow-hidden"><div class="absolute inset-0 bg-black/60"></div><div class="absolute right-0 top-0 h-full w-10 bg-popover border-l border-border"></div></div><span class="demo-group__label">open</span></div>
+            <div class="demo-group__item"><div class="h-16 w-24 rounded border border-border bg-popover relative overflow-hidden"><div class="absolute inset-0 bg-black/30"></div><div class="absolute right-[-20px] top-0 h-full w-10 bg-popover border-l border-border"></div></div><span class="demo-group__label">closing</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn</th><th>Radix</th><th>Material UI</th><th>Ant Design</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Sheet</td><td>Dialog.Root</td><td>Drawer</td><td>Drawer</td></tr>
+              <tr><td>Trigger</td><td>SheetTrigger</td><td>Dialog.Trigger</td><td>(button)</td><td>(button)</td></tr>
+              <tr><td>Content</td><td>SheetContent</td><td>Dialog.Content</td><td>Drawer (open prop)</td><td>Drawer (open prop)</td></tr>
+              <tr><td>Overlay</td><td>SheetOverlay</td><td>Dialog.Overlay</td><td>(backdrop prop)</td><td>(mask prop)</td></tr>
+              <tr><td>Side</td><td>side="right"</td><td>(custom)</td><td>anchor="right"</td><td>placement="right"</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Mobile menu que reemplaza el sidebar.</li>
+              <li>Filtros que no deben tapar el contenido.</li>
+              <li>Form corto sin cambiar de pagina.</li>
+              <li>Detalles contextuales de un item.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Form largo con muchos campos: usa pagina dedicada.</li>
+              <li>Navegacion principal permanente: usa Sidebar.</li>
+              <li>Alerta critica que exige accion: usa Dialog.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1">
+              <p class="prompt-library__label">Right-side drawer for filters panel</p>
+              <pre class="prompt-library__text" id="p1-text">Create a shadcn Sheet that opens from the right with filters: Category select, Price range slider, Rating select. Include SheetHeader with title "Filters" and SheetFooter with Cancel and Apply buttons.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p2">
+              <p class="prompt-library__label">Bottom sheet drawer for mobile action menu</p>
+              <pre class="prompt-library__text" id="p2-text">Build a shadcn Sheet with side="bottom" that contains action items: Share, Edit, Duplicate, Delete (destructive). Each item has a lucide icon and label. Only show on mobile viewports.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p3">
+              <p class="prompt-library__label">Mobile navigation drawer</p>
+              <pre class="prompt-library__text" id="p3-text">Create a hamburger button that on mobile opens a left-side shadcn Sheet containing the navigation menu (Home, Products, About, Contact) and a footer with login button.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p4">
+              <p class="prompt-library__label">Drawer with form and validation</p>
+              <pre class="prompt-library__text" id="p4-text">Build a right-side Sheet containing a "New Project" form with react-hook-form (name, description, visibility). On submit validate, call API, close sheet on success.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="sidebar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Sidebar</h3><p class="text-sm text-muted-foreground">Drawer permanente desktop.</p></a>
+            <a href="command-palette.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Command Palette</h3><p class="text-sm text-muted-foreground">Modal de acciones.</p></a>
+            <a href="bottom-nav.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Bottom Nav</h3><p class="text-sm text-muted-foreground">Alternativa mobile fija.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://ui.shadcn.com/docs/components/sheet" target="_blank">Shadcn Sheet</a></li>
+            <li><a href="https://mui.com/material-ui/react-drawer/" target="_blank">MUI Drawer</a></li>
+            <li><a href="https://ant.design/components/drawer" target="_blank">Ant Drawer</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="command-palette.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Command Palette</span></a>
+          <a class="component-nav__link component-nav__link--next" href="bottom-nav.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Bottom Nav</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

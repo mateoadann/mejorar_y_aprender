@@ -1,0 +1,200 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkbox — UI Components Atlas</title>
+    <meta name="description" content="Toggle binario con tercer estado: indeterminate. Select-all lo necesita." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search"><div class="atlas-search"><svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" data-atlas-search-input autocomplete="off" spellcheck="false" /><kbd class="atlas-search__kbd">⌘K</kbd><div class="atlas-search__results" role="listbox" data-atlas-search-results></div></div></div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav">
+        <h2 class="sidebar-nav__title">Inputs y Controles</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="button.html">01 — Button</a></li>
+          <li><a class="sidebar-nav__link" href="input.html">02 — Input</a></li>
+          <li><a class="sidebar-nav__link" href="textarea.html">03 — Textarea</a></li>
+          <li><a class="sidebar-nav__link" href="select.html">04 — Select</a></li>
+          <li><a class="sidebar-nav__link" href="combobox.html">05 — Combobox</a></li>
+          <li><a class="sidebar-nav__link" href="autocomplete.html">06 — Autocomplete</a></li>
+          <li><a class="sidebar-nav__link is-active" href="checkbox.html">07 — Checkbox</a></li>
+          <li><a class="sidebar-nav__link" href="radio-group.html">08 — Radio Group</a></li>
+          <li><a class="sidebar-nav__link" href="switch-toggle.html">09 — Switch / Toggle</a></li>
+          <li><a class="sidebar-nav__link" href="slider.html">10 — Slider</a></li>
+          <li><a class="sidebar-nav__link" href="date-picker.html">11 — Date Picker</a></li>
+          <li><a class="sidebar-nav__link" href="file-upload.html">12 — File Upload</a></li>
+          <li><a class="sidebar-nav__link" href="otp-input.html">13 — OTP Input</a></li>
+          <li><a class="sidebar-nav__link" href="rating.html">14 — Rating</a></li>
+          <li><a class="sidebar-nav__link" href="search-bar.html">15 — Search Bar</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs"><li><a href="../index.html">Atlas</a></li><li class="breadcrumbs__sep">/</li><li><a href="index.html">Inputs y Controles</a></li><li class="breadcrumbs__sep">/</li><li aria-current="page">Checkbox</li></ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Checkbox</h1>
+          <div class="component-page__aliases"><span class="component-page__alias">Checkbox</span><span class="component-page__alias">tickbox</span><span class="component-page__alias">check</span></div>
+          <p class="component-page__lead">Toggle binario con un tercer estado: indeterminate. Se usa para select-all en tablas, configuraciones multi-opcion y terms & conditions. Siempre va con un label clickeable.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Select-all con estado indeterminate en vivo.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <div class="w-72 space-y-2">
+                <label class="flex items-center gap-2 text-sm font-medium">
+                  <input id="cb-all" type="checkbox" class="h-4 w-4 rounded border border-input accent-foreground" />
+                  <span>Seleccionar todo</span>
+                </label>
+                <div class="pl-6 space-y-1.5">
+                  <label class="flex items-center gap-2 text-sm"><input class="cb-child h-4 w-4 rounded border border-input accent-foreground" type="checkbox"/><span>Notificaciones por email</span></label>
+                  <label class="flex items-center gap-2 text-sm"><input class="cb-child h-4 w-4 rounded border border-input accent-foreground" type="checkbox"/><span>Notificaciones push</span></label>
+                  <label class="flex items-center gap-2 text-sm"><input class="cb-child h-4 w-4 rounded border border-input accent-foreground" type="checkbox"/><span>Newsletter semanal</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function(){ var all=document.getElementById('cb-all'); if(!all)return;
+              var children=document.querySelectorAll('.cb-child');
+              function sync(){var on=0;children.forEach(function(c){if(c.checked)on++;}); all.checked=on===children.length; all.indeterminate=on>0&&on<children.length;}
+              all.addEventListener('change',function(){children.forEach(function(c){c.checked=all.checked;});});
+              children.forEach(function(c){c.addEventListener('change',sync);});
+            })();
+          </script>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Checkbox.Root (button)</div>
+                <div class="rounded border border-border bg-background p-3"><div class="text-xs font-mono text-muted-foreground">Checkbox.Indicator (icono check/minus)</div></div>
+                <div class="mt-2 text-xs font-mono text-muted-foreground">+ &lt;label&gt; asociado via htmlFor</div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> El boton clickeable con el estado.</li>
+              <li><b>Indicator</b> El icono visible (check o minus).</li>
+              <li><b>Label</b> Texto clickeable asociado al input.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><label class="flex items-center gap-2 text-sm"><input type="checkbox" class="h-4 w-4 rounded border border-input accent-foreground"/><span>Acepto los terminos</span></label><span class="demo-group__label">single</span></div>
+            <div class="demo-group__item"><div class="space-y-1"><label class="flex items-center gap-2 text-sm"><input type="checkbox" class="h-4 w-4 rounded accent-foreground"/>Opcion A</label><label class="flex items-center gap-2 text-sm"><input type="checkbox" class="h-4 w-4 rounded accent-foreground"/>Opcion B</label></div><span class="demo-group__label">group</span></div>
+            <div class="demo-group__item"><label class="flex items-center gap-2 text-sm"><input type="checkbox" class="h-4 w-4 rounded accent-foreground" onload="this.indeterminate=true"/><span>Select all</span></label><span class="demo-group__label">indeterminate</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><input type="checkbox" class="h-4 w-4 rounded border border-input accent-foreground"/><span class="demo-group__label">unchecked</span></div>
+            <div class="demo-group__item"><input type="checkbox" checked class="h-4 w-4 rounded border border-input accent-foreground"/><span class="demo-group__label">checked</span></div>
+            <div class="demo-group__item"><input type="checkbox" disabled class="h-4 w-4 rounded border border-input accent-foreground opacity-50 cursor-not-allowed"/><span class="demo-group__label">disabled</span></div>
+            <div class="demo-group__item"><input type="checkbox" class="h-4 w-4 rounded border border-foreground accent-foreground ring-2 ring-ring"/><span class="demo-group__label">focus</span></div>
+            <div class="demo-group__item"><input type="checkbox" class="h-4 w-4 rounded border border-destructive accent-destructive"/><span class="demo-group__label">error</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>HTML nativo</th><th>Shadcn / Radix</th><th>Material UI</th><th>ARIA role</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>&lt;input type="checkbox"&gt;</td><td>Checkbox.Root</td><td>Checkbox</td><td>checkbox</td></tr>
+              <tr><td>Indicator</td><td>(native)</td><td>Checkbox.Indicator</td><td>(native icon)</td><td>-</td></tr>
+              <tr><td>Indeterminate</td><td>.indeterminate = true</td><td>checked="indeterminate"</td><td>indeterminate prop</td><td>aria-checked="mixed"</td></tr>
+              <tr><td>Group</td><td>(no nativo)</td><td>(group con &lt;fieldset&gt;)</td><td>FormGroup</td><td>group</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Opcion binaria independiente (on/off).</li>
+              <li>Multiples opciones donde cada una es independiente.</li>
+              <li>Select-all en tablas o listas.</li>
+              <li>Terms & conditions, consentimientos.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Opcion unica de varias: usa Radio Group.</li>
+              <li>Setting persistido tipo dark mode: usa Switch.</li>
+              <li>Toggle de formato (bold, italic): usa Toggle.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1"><p class="prompt-library__label">Checkbox with indeterminate state for select-all</p><pre class="prompt-library__text" id="p1-text">Build a data table header checkbox that controls all row checkboxes. When no rows are selected it is unchecked, all rows checked is checked, and some rows checked is indeterminate. Use shadcn Checkbox and sync via state.</pre><button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p2"><p class="prompt-library__label">Terms and conditions checkbox with link</p><pre class="prompt-library__text" id="p2-text">Create a terms checkbox where the label contains a link "I accept the [Terms of Service]". Disable the submit button until the checkbox is checked. Show a destructive error if user submits unchecked.</pre><button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p3"><p class="prompt-library__label">Checkbox group with react-hook-form</p><pre class="prompt-library__text" id="p3-text">Build a checkbox group for "Notification preferences" with 4 options. Use react-hook-form useFieldArray or a checkbox array field. Require at least one option selected.</pre><button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="radio-group.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Radio Group</h3><p class="text-sm text-muted-foreground">Para elegir UNA de varias.</p></a>
+            <a href="switch-toggle.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Switch / Toggle</h3><p class="text-sm text-muted-foreground">Para settings persistidos.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://www.radix-ui.com/primitives/docs/components/checkbox" target="_blank">Radix Checkbox</a></li>
+            <li><a href="https://ui.shadcn.com/docs/components/checkbox" target="_blank">Shadcn Checkbox</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav">
+          <a class="component-nav__link" href="autocomplete.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Autocomplete</span></a>
+          <a class="component-nav__link component-nav__link--next" href="radio-group.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Radio Group</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

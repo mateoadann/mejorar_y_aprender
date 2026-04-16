@@ -1,0 +1,284 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tree View — UI Components Atlas</title>
+    <meta name="description" content="Lista jerárquica con nodos colapsables." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Display de Datos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="card.html">01 — Card</a></li>
+          <li><a class="sidebar-nav__link" href="table.html">02 — Table</a></li>
+          <li><a class="sidebar-nav__link" href="list.html">03 — List</a></li>
+          <li><a class="sidebar-nav__link is-active" href="tree-view.html">04 — Tree View</a></li>
+          <li><a class="sidebar-nav__link" href="timeline.html">05 — Timeline</a></li>
+          <li><a class="sidebar-nav__link" href="accordion.html">06 — Accordion</a></li>
+          <li><a class="sidebar-nav__link" href="collapsible.html">07 — Collapsible</a></li>
+          <li><a class="sidebar-nav__link" href="carousel.html">08 — Carousel</a></li>
+          <li><a class="sidebar-nav__link" href="avatar.html">09 — Avatar</a></li>
+          <li><a class="sidebar-nav__link" href="badge-chip-tag.html">10 — Badge / Chip / Tag</a></li>
+          <li><a class="sidebar-nav__link" href="stat-card.html">11 — Stat Card</a></li>
+          <li><a class="sidebar-nav__link" href="kanban-card.html">12 — Kanban Card</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Display de Datos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Tree View</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Tree View</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">TreeView</span>
+            <span class="component-page__alias">Tree</span>
+            <span class="component-page__alias">File explorer</span>
+            <span class="component-page__alias">Hierarchical list</span>
+          </div>
+          <p class="component-page__lead">Lista jerárquica con nodos colapsables: carpetas que se abren para mostrar subcarpetas y archivos. Pensá en el explorador de VS Code. Es una <a href="list.html" class="underline">List</a> pero con profundidad y expand/collapse. Shadcn no lo tiene oficial — se arma custom o con MUI TreeView.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">File explorer con 3 niveles. Clickea los chevrons para expandir/colapsar.</p>
+          <div class="demo-container">
+            <div class="demo-preview">
+              <div class="w-full max-w-xs rounded-md border border-border bg-muted/10 p-2" id="tree-demo">
+                <div class="tree-node" data-expanded="true">
+                  <button class="tree-trigger flex items-center gap-1 w-full px-2 py-1 text-sm text-foreground hover:bg-muted/40 rounded">
+                    <svg class="tree-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+                    <span>src</span>
+                  </button>
+                  <div class="tree-children pl-4">
+                    <div class="tree-node" data-expanded="true">
+                      <button class="tree-trigger flex items-center gap-1 w-full px-2 py-1 text-sm text-foreground hover:bg-muted/40 rounded">
+                        <svg class="tree-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+                        <span>components</span>
+                      </button>
+                      <div class="tree-children pl-4">
+                        <div class="flex items-center gap-1 px-2 py-1 text-sm text-muted-foreground hover:bg-muted/40 rounded pl-5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg><span>Button.tsx</span></div>
+                        <div class="flex items-center gap-1 px-2 py-1 text-sm text-muted-foreground hover:bg-muted/40 rounded pl-5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg><span>Card.tsx</span></div>
+                      </div>
+                    </div>
+                    <div class="tree-node" data-expanded="false">
+                      <button class="tree-trigger flex items-center gap-1 w-full px-2 py-1 text-sm text-foreground hover:bg-muted/40 rounded">
+                        <svg class="tree-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+                        <span>lib</span>
+                      </button>
+                      <div class="tree-children pl-4 hidden">
+                        <div class="flex items-center gap-1 px-2 py-1 text-sm text-muted-foreground hover:bg-muted/40 rounded pl-5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg><span>utils.ts</span></div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-1 px-2 py-1 text-sm text-muted-foreground hover:bg-muted/40 rounded pl-5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg><span>index.ts</span></div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1 px-2 py-1 text-sm text-muted-foreground hover:bg-muted/40 rounded"><span class="w-[14px]"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg><span>package.json</span></div>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function(){
+              const tree = document.getElementById('tree-demo');
+              if (!tree) return;
+              tree.querySelectorAll('.tree-trigger').forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                  const node = trigger.closest('.tree-node');
+                  const children = node.querySelector('.tree-children');
+                  const chevron = trigger.querySelector('.tree-chevron');
+                  const expanded = node.dataset.expanded === 'true';
+                  node.dataset.expanded = expanded ? 'false' : 'true';
+                  if (children) children.classList.toggle('hidden', expanded);
+                  if (chevron) chevron.style.transform = expanded ? '' : 'rotate(90deg)';
+                });
+                // initial rotate if expanded
+                const node = trigger.closest('.tree-node');
+                if (node.dataset.expanded === 'true') {
+                  const chevron = trigger.querySelector('.tree-chevron');
+                  if (chevron) chevron.style.transform = 'rotate(90deg)';
+                }
+              });
+            })();
+          </script>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Tree.Root</div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">Tree.Node</div>
+                  <div class="flex gap-2 text-xs mb-2">
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Chevron (expand)</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Icon</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Label</div>
+                  </div>
+                  <div class="rounded border border-border bg-muted/20 p-2 ml-4">
+                    <div class="text-xs font-mono text-muted-foreground">Tree.Children (recursive)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> Contenedor top-level con <code>role="tree"</code>.</li>
+              <li><b>Node</b> Un item con posibles children.</li>
+              <li><b>Chevron</b> Indicador expand/collapse (rotate 90deg).</li>
+              <li><b>Label</b> Texto visible del nodo.</li>
+              <li><b>Children</b> Lista recursiva, hidden cuando collapsed.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>with icons</b> File/folder iconos tipo VS Code.</li>
+            <li><b>with checkboxes</b> Multi-select jerárquico.</li>
+            <li><b>draggable</b> Reorder drag & drop.</li>
+            <li><b>async loading</b> Cargar children on demand.</li>
+            <li><b>with search</b> Filtro que highlighta matches.</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border border-border">Collapsed</div><span class="demo-group__label">collapsed</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border border-border bg-muted/30">Expanded</div><span class="demo-group__label">expanded</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border border-foreground/40 bg-accent">Selected</div><span class="demo-group__label">selected</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border-2 border-ring">Focused</div><span class="demo-group__label">focused</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>MUI</th><th>Ant Design</th><th>Headless UI</th><th>ARIA</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>TreeView / RichTreeView</td><td>Tree</td><td>custom</td><td>role="tree"</td></tr>
+              <tr><td>Node</td><td>TreeItem</td><td>TreeNode / treeData</td><td>custom</td><td>role="treeitem"</td></tr>
+              <tr><td>Expanded state</td><td>expanded prop</td><td>expandedKeys</td><td>local state</td><td>aria-expanded</td></tr>
+              <tr><td>Selection</td><td>selected prop</td><td>selectedKeys</td><td>local state</td><td>aria-selected</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Estructuras jerárquicas: files, carpetas, categorías.</li>
+              <li>Org charts con varios niveles.</li>
+              <li>Nav con sub-sub-items.</li>
+              <li>Representar árboles DOM, JSON o XML.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Lista plana sin jerarquía: <a href="list.html" class="underline">List</a>.</li>
+              <li>Navegación principal: Sidebar con groups.</li>
+              <li>Solo 2 niveles: Accordion (<a href="accordion.html" class="underline">Accordion</a>).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">File explorer tree</p>
+              <pre class="prompt-library__text" id="p1-text">Build a recursive TreeView for a file explorer. Each node has a Folder or File icon (Lucide), a chevron that rotates on expand, and a label. Track expandedIds in state. Clicking the chevron or folder row toggles expansion.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Tree with checkboxes</p>
+              <pre class="prompt-library__text" id="p2-text">Create a TreeView with checkbox on each node. Parent checkbox shows indeterminate state when some but not all children are checked. Selecting a parent selects all descendants.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Async tree</p>
+              <pre class="prompt-library__text" id="p3-text">Build a TreeView that loads children asynchronously. On first expand of a node, show a spinner and fetch children from an API. Cache them so second expand is instant.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Keyboard navigation</p>
+              <pre class="prompt-library__text" id="p4-text">Add keyboard navigation to TreeView: ArrowDown/Up to move, ArrowRight to expand, ArrowLeft to collapse, Enter to select. Follow WAI-ARIA tree pattern with role="tree" and aria-expanded.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="list.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">List</h3><p class="text-sm text-muted-foreground">Sin jerarquía.</p></a>
+            <a href="accordion.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Accordion</h3><p class="text-sm text-muted-foreground">Dos niveles nomás.</p></a>
+            <a href="table.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Table</h3><p class="text-sm text-muted-foreground">Datos tabulares.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://mui.com/x/react-tree-view/" target="_blank">MUI TreeView</a></li>
+            <li><a href="https://ant.design/components/tree" target="_blank">Ant Design Tree</a></li>
+            <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/treeview/" target="_blank">ARIA TreeView pattern</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="list.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">List</span></a>
+          <a class="component-nav__link component-nav__link--next" href="timeline.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Timeline</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,270 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sidebar — UI Components Atlas</title>
+    <meta name="description" content="Panel lateral con navegacion jerarquica. El rey de los dashboards." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Navegacion</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="navbar.html">01 — Navbar</a></li>
+          <li><a class="sidebar-nav__link is-active" href="sidebar.html">02 — Sidebar</a></li>
+          <li><a class="sidebar-nav__link" href="tabs.html">03 — Tabs</a></li>
+          <li><a class="sidebar-nav__link" href="breadcrumbs.html">04 — Breadcrumbs</a></li>
+          <li><a class="sidebar-nav__link" href="pagination.html">05 — Pagination</a></li>
+          <li><a class="sidebar-nav__link" href="stepper.html">06 — Stepper</a></li>
+          <li><a class="sidebar-nav__link" href="command-palette.html">07 — Command Palette</a></li>
+          <li><a class="sidebar-nav__link" href="drawer.html">08 — Drawer</a></li>
+          <li><a class="sidebar-nav__link" href="bottom-nav.html">09 — Bottom Nav</a></li>
+          <li><a class="sidebar-nav__link" href="mega-menu.html">10 — Mega Menu</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Navegacion</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Sidebar</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Sidebar</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Sidebar</span>
+            <span class="component-page__alias">Side Nav</span>
+            <span class="component-page__alias">Drawer (desktop)</span>
+            <span class="component-page__alias">Menu mode="inline"</span>
+            <span class="component-page__alias">Shadcn Sidebar</span>
+          </div>
+          <p class="component-page__lead">Panel lateral fijo (o colapsable) con navegacion jerarquica. El componente que define dashboards, apps de productividad, admin panels. Shadcn saco su propio <code>Sidebar</code> componible con Groups, Items, Footer y collapsible modes. Si te piden un "layout de app SaaS", empezas por aca.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Sidebar con header, 3 grupos, sub-items y footer de usuario.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <aside class="w-64 rounded-lg border border-border bg-muted/20 p-3 text-sm">
+                <div class="flex items-center gap-2 px-2 py-2 mb-2 border-b border-border pb-3">
+                  <span class="h-7 w-7 rounded-md bg-foreground text-background grid place-items-center text-xs font-bold">A</span>
+                  <div><div class="font-semibold text-foreground">Acme Inc</div><div class="text-xs text-muted-foreground">Pro plan</div></div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="px-2 py-1 text-xs uppercase tracking-wide text-muted-foreground">Platform</div>
+                  <a href="#" class="flex items-center gap-2 px-2 py-1.5 rounded-md text-foreground bg-accent">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                    Dashboard
+                  </a>
+                  <a href="#" class="flex items-center gap-2 px-2 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18"/><path d="M6 12h12"/><path d="M9 17h6"/></svg>
+                    Projects
+                    <svg class="ml-auto" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                  </a>
+                  <div class="pl-6 mt-0.5 space-y-0.5">
+                    <a href="#" class="block px-2 py-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent text-xs">Active</a>
+                    <a href="#" class="block px-2 py-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent text-xs">Archived</a>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="px-2 py-1 text-xs uppercase tracking-wide text-muted-foreground">Team</div>
+                  <a href="#" class="flex items-center gap-2 px-2 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    Members
+                  </a>
+                  <a href="#" class="flex items-center gap-2 px-2 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Messages
+                  </a>
+                </div>
+
+                <div class="mb-3">
+                  <div class="px-2 py-1 text-xs uppercase tracking-wide text-muted-foreground">Settings</div>
+                  <a href="#" class="flex items-center gap-2 px-2 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    Preferences
+                  </a>
+                </div>
+
+                <div class="mt-auto pt-3 border-t border-border flex items-center gap-2 px-2">
+                  <div class="h-8 w-8 rounded-full bg-muted border border-border grid place-items-center text-xs font-semibold">MC</div>
+                  <div class="flex-1 min-w-0"><div class="truncate text-foreground text-xs font-medium">Mateo</div><div class="truncate text-xs text-muted-foreground">mateo@acme.io</div></div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Estructura Shadcn Sidebar: Root → Header + Content (Groups) + Footer.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Sidebar (aside)</div>
+                <div class="rounded border border-border bg-background p-3 mb-2"><div class="text-xs font-mono text-muted-foreground">SidebarHeader</div><div class="text-xs text-muted-foreground pl-2">└ Logo + Name</div></div>
+                <div class="rounded border border-border bg-background p-3 mb-2">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">SidebarContent</div>
+                  <div class="rounded border border-border bg-muted/40 p-2">
+                    <div class="text-xs font-mono text-muted-foreground">SidebarGroup</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-2">└ SidebarGroupLabel</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-2">└ SidebarMenu</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-4">└ SidebarMenuItem → MenuButton</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-4">└ SidebarMenuSub → SubItem</div>
+                  </div>
+                </div>
+                <div class="rounded border border-border bg-background p-3"><div class="text-xs font-mono text-muted-foreground">SidebarFooter</div><div class="text-xs text-muted-foreground pl-2">└ User profile / logout</div></div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> <code>&lt;aside&gt;</code>. Puede ser fixed, sticky o inset.</li>
+              <li><b>Header</b> Branding. Usualmente sticky arriba.</li>
+              <li><b>Content</b> El scroll area. Contiene Groups.</li>
+              <li><b>Group</b> Seccion con Label + Menu. Un sidebar tiene 2-5 groups.</li>
+              <li><b>MenuItem / MenuButton</b> Link individual. Puede tener icon + label + badge.</li>
+              <li><b>MenuSub</b> Items anidados para sub-navegacion.</li>
+              <li><b>Footer</b> Perfil de usuario, upgrade CTA, toggle de collapse.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>expanded</b> Width full (~240-280px) con iconos + labels.</li>
+            <li><b>collapsed (icon)</b> Solo iconos (~60px). Tooltip al hover.</li>
+            <li><b>collapsible</b> Boton para togglear entre expanded y collapsed.</li>
+            <li><b>floating</b> Con padding desde el borde y shadow. Shadcn variant="floating".</li>
+            <li><b>inset</b> Rodeado por el contenido con radius (Shadcn variant="inset").</li>
+            <li><b>mobile</b> En mobile se convierte en Sheet/Drawer que abre con un trigger.</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn</th><th>Material UI</th><th>Ant Design</th><th>HTML</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Sidebar</td><td>Drawer variant="permanent"</td><td>Layout.Sider</td><td>&lt;aside&gt;</td></tr>
+              <tr><td>Group</td><td>SidebarGroup</td><td>List + ListSubheader</td><td>Menu.ItemGroup</td><td>&lt;section&gt;</td></tr>
+              <tr><td>Item</td><td>SidebarMenuItem</td><td>ListItemButton</td><td>Menu.Item</td><td>&lt;li&gt; + &lt;a&gt;</td></tr>
+              <tr><td>Sub-item</td><td>SidebarMenuSub</td><td>Collapse + List</td><td>Menu.SubMenu</td><td>nested &lt;ul&gt;</td></tr>
+              <tr><td>Collapse</td><td>variant="icon"</td><td>variant="mini"</td><td>collapsed prop</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Dashboards y apps de productividad (Linear, Notion, Stripe).</li>
+              <li>Muchas secciones jerarquicas (10+).</li>
+              <li>Usuario se queda mucho tiempo en la app y necesita navegar frecuente.</li>
+              <li>Necesitas sub-niveles (projects > folders > docs).</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Landing pages o marketing: usa Navbar.</li>
+              <li>App de 3 pantallas: overkill, usa Tabs o Bottom Nav.</li>
+              <li>Mobile-first exclusive: usa Bottom Nav + Drawer.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1">
+              <p class="prompt-library__label">Collapsible sidebar with groups and sub-items</p>
+              <pre class="prompt-library__text" id="p1-text">Create a shadcn Sidebar with 3 groups: Platform (Dashboard, Projects with Active/Archived sub-items), Team (Members, Messages), Settings (Preferences). Include a header with logo and footer with user profile. Support collapsible icon mode.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p2">
+              <p class="prompt-library__label">Sidebar with user profile and logout at bottom</p>
+              <pre class="prompt-library__text" id="p2-text">Build a sticky left sidebar with menu items. At the bottom, show the current user (avatar + name + email) and a logout button. Use SidebarFooter slot.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p3">
+              <p class="prompt-library__label">Sidebar that becomes a Sheet on mobile</p>
+              <pre class="prompt-library__text" id="p3-text">On desktop render a permanent sidebar. On mobile (below md), hide it and show a hamburger button in the top navbar that opens a shadcn Sheet with the same sidebar content.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p4">
+              <p class="prompt-library__label">Sidebar with active route highlighting</p>
+              <pre class="prompt-library__text" id="p4-text">Build a sidebar where the currently active route has bg-accent and text-foreground. Use Next.js usePathname to detect active state. Inactive items use text-muted-foreground.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="navbar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Navbar</h3><p class="text-sm text-muted-foreground">Nav horizontal para apps simples.</p></a>
+            <a href="drawer.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Drawer</h3><p class="text-sm text-muted-foreground">Sidebar temporal en mobile.</p></a>
+            <a href="bottom-nav.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Bottom Nav</h3><p class="text-sm text-muted-foreground">Alternativa mobile.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://ui.shadcn.com/docs/components/sidebar" target="_blank">Shadcn Sidebar</a></li>
+            <li><a href="https://mui.com/material-ui/react-drawer/" target="_blank">MUI Drawer</a></li>
+            <li><a href="https://ant.design/components/layout#layoutsider" target="_blank">Ant Layout.Sider</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="navbar.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Navbar</span></a>
+          <a class="component-nav__link component-nav__link--next" href="tabs.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Tabs</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

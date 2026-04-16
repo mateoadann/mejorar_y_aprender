@@ -1,0 +1,244 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Navbar — UI Components Atlas</title>
+    <meta name="description" content="Barra horizontal superior con logo, links y acciones. La cara de toda app web." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Navegacion</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link is-active" href="navbar.html">01 — Navbar</a></li>
+          <li><a class="sidebar-nav__link" href="sidebar.html">02 — Sidebar</a></li>
+          <li><a class="sidebar-nav__link" href="tabs.html">03 — Tabs</a></li>
+          <li><a class="sidebar-nav__link" href="breadcrumbs.html">04 — Breadcrumbs</a></li>
+          <li><a class="sidebar-nav__link" href="pagination.html">05 — Pagination</a></li>
+          <li><a class="sidebar-nav__link" href="stepper.html">06 — Stepper</a></li>
+          <li><a class="sidebar-nav__link" href="command-palette.html">07 — Command Palette</a></li>
+          <li><a class="sidebar-nav__link" href="drawer.html">08 — Drawer</a></li>
+          <li><a class="sidebar-nav__link" href="bottom-nav.html">09 — Bottom Nav</a></li>
+          <li><a class="sidebar-nav__link" href="mega-menu.html">10 — Mega Menu</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Navegacion</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Navbar</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Navbar</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Navbar</span>
+            <span class="component-page__alias">AppBar</span>
+            <span class="component-page__alias">Header</span>
+            <span class="component-page__alias">Top Navigation</span>
+            <span class="component-page__alias">Menu mode="horizontal"</span>
+          </div>
+          <p class="component-page__lead">Barra horizontal en el tope de la pagina con logo, links de navegacion y acciones (search, user menu, CTA). No es un componente primitivo: casi ningun design system lo exporta como tal. Es un patron que armas componiendo un <code>&lt;nav&gt;</code> + links + Button + Avatar. Por eso cuando le pedis "un navbar" al agente tenes que ser especifico con la anatomia.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Sticky navbar Shadcn-style con logo, 4 links, search y user menu.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <nav class="w-full rounded-lg border border-border bg-background/95 backdrop-blur px-4 py-3 flex items-center gap-6">
+                <a href="#" class="flex items-center gap-2 font-bold text-foreground">
+                  <span class="h-6 w-6 rounded-md bg-foreground text-background grid place-items-center text-xs">A</span>
+                  <span>Acme</span>
+                </a>
+                <ul class="hidden md:flex items-center gap-1 text-sm">
+                  <li><a href="#" class="px-3 py-1.5 rounded-md text-foreground bg-accent font-medium">Dashboard</a></li>
+                  <li><a href="#" class="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent">Projects</a></li>
+                  <li><a href="#" class="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent">Team</a></li>
+                  <li><a href="#" class="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent">Docs</a></li>
+                </ul>
+                <div class="ml-auto flex items-center gap-2">
+                  <div class="relative hidden sm:block">
+                    <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input class="h-9 w-56 rounded-md border border-input bg-background pl-8 pr-3 text-sm" placeholder="Search..." />
+                  </div>
+                  <button class="h-9 w-9 rounded-md border border-input hover:bg-accent grid place-items-center" aria-label="Notifications">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                  </button>
+                  <button class="h-9 w-9 rounded-full border border-border bg-muted grid place-items-center text-xs font-semibold">MC</button>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Tres zonas: Brand, Links, Actions. Flex, gap, justify.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">nav.Root (container)</div>
+                <div class="flex gap-2 flex-wrap">
+                  <div class="rounded border border-border bg-background p-3 flex-1 min-w-[120px]">
+                    <div class="text-xs font-mono text-muted-foreground mb-1">Brand</div>
+                    <div class="text-xs text-muted-foreground">Logo + Name</div>
+                  </div>
+                  <div class="rounded border border-border bg-background p-3 flex-1 min-w-[120px]">
+                    <div class="text-xs font-mono text-muted-foreground mb-1">NavLinks (List)</div>
+                    <div class="text-xs text-muted-foreground">NavItem × N</div>
+                  </div>
+                  <div class="rounded border border-border bg-background p-3 flex-1 min-w-[120px]">
+                    <div class="text-xs font-mono text-muted-foreground mb-1">Actions</div>
+                    <div class="text-xs text-muted-foreground">Search · Button · UserMenu</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> Elemento <code>&lt;nav&gt;</code> semantico. Semantica importa.</li>
+              <li><b>Brand</b> Logo + nombre. Link al home.</li>
+              <li><b>NavLinks</b> Lista de links principales. Marca el activo con estado visual.</li>
+              <li><b>Actions</b> Todo lo que no es navegacion: search, notificaciones, avatar, CTA.</li>
+              <li><b>MobileMenuTrigger</b> En mobile, hamburguesa que abre un Drawer con los links.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <p class="component-page__section-lead">Nombres estandar para pedirlas al agente.</p>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>sticky</b> Se queda pegado arriba al scrollear (<code>sticky top-0</code>).</li>
+            <li><b>transparent</b> Sin bg al inicio, solido despues de scroll X px (landing pages).</li>
+            <li><b>with-search</b> Input de busqueda centrado o a la derecha.</li>
+            <li><b>with-user-menu</b> Avatar dropdown con profile, settings, logout.</li>
+            <li><b>centered-logo</b> Logo centrado, links a los costados (estilo e-commerce).</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>HTML</th><th>Shadcn / Radix</th><th>Material UI</th><th>Ant Design</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>&lt;nav&gt;</td><td>(compuesto)</td><td>AppBar + Toolbar</td><td>Menu mode="horizontal"</td></tr>
+              <tr><td>Brand</td><td>&lt;a&gt; con logo</td><td>(compuesto)</td><td>Typography variant="h6"</td><td>Menu.Item (logo)</td></tr>
+              <tr><td>NavLinks</td><td>&lt;ul&gt; + &lt;a&gt;</td><td>NavigationMenu</td><td>Tabs + Button</td><td>Menu.Item</td></tr>
+              <tr><td>Actions area</td><td>&lt;div&gt;</td><td>(compuesto)</td><td>Box ml="auto"</td><td>Space</td></tr>
+              <tr><td>Mobile trigger</td><td>&lt;button&gt;</td><td>Sheet + Trigger</td><td>IconButton + Drawer</td><td>Button + Drawer</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Paginas publicas, marketing, landing.</li>
+              <li>Apps desktop-first con pocas secciones (3-7).</li>
+              <li>Necesitas branding visible siempre.</li>
+              <li>Queres search global disponible en toda la app.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Tenes 15+ secciones jerarquicas: usa Sidebar.</li>
+              <li>App mobile-first con 3-5 tabs: usa Bottom Nav.</li>
+              <li>Dashboard complejo con sub-niveles: Sidebar es mejor.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1">
+              <p class="prompt-library__label">Sticky navbar with search and user menu</p>
+              <pre class="prompt-library__text" id="p1-text">Create a sticky top navbar with: logo on the left, 4 nav links in the center (Dashboard, Projects, Team, Docs), a search input and user avatar dropdown on the right. Use Tailwind, dark theme, backdrop-blur on scroll. Mark active link with bg-accent.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p2">
+              <p class="prompt-library__label">Transparent navbar that becomes solid on scroll</p>
+              <pre class="prompt-library__text" id="p2-text">Build a transparent navbar for a landing page. When the user scrolls past 80px, add a solid background and subtle border-bottom. Use React state + scroll listener. Tailwind classes only.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p3">
+              <p class="prompt-library__label">Responsive navbar with mobile drawer</p>
+              <pre class="prompt-library__text" id="p3-text">Create a navbar that on mobile collapses nav links into a hamburger button that opens a shadcn Sheet from the right containing the same links vertically. Desktop shows all links inline.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p4">
+              <p class="prompt-library__label">Navbar with dropdown menu item</p>
+              <pre class="prompt-library__text" id="p4-text">Build a navbar where one of the items ("Products") opens a dropdown on hover using shadcn NavigationMenu. Include 4 sub-items with icon + title + description.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="sidebar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Sidebar</h3><p class="text-sm text-muted-foreground">Para apps con muchas secciones.</p></a>
+            <a href="mega-menu.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Mega Menu</h3><p class="text-sm text-muted-foreground">Navbar con dropdowns gigantes.</p></a>
+            <a href="bottom-nav.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Bottom Nav</h3><p class="text-sm text-muted-foreground">Equivalente mobile.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://ui.shadcn.com/blocks" target="_blank">Shadcn Blocks (navbar examples)</a></li>
+            <li><a href="https://mui.com/material-ui/react-app-bar/" target="_blank">MUI AppBar</a></li>
+            <li><a href="https://ant.design/components/menu" target="_blank">Ant Design Menu (horizontal)</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="index.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Portada del modulo</span></a>
+          <a class="component-nav__link component-nav__link--next" href="sidebar.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Sidebar</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>El framework cognitivo | Módulo 2</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 2</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 02</a></li>
+                        <li>Lección 03</li>
+                    </ul>
+
+                    <span class="tag primary fade-in">Lección 03</span>
+                    <h1 class="slide-up">
+                        El framework cognitivo de Lilian Weng
+                    </h1>
+                    <p class="lead slide-up" data-animate-delay="100">
+                        Hasta ahora vimos la evolución técnica de la
+                        memoria. Ahora vamos a subir un nivel y ver por qué
+                        hay que mirar esto desde la cognición humana. Es la
+                        propuesta que hizo Lilian Weng en su post clásico
+                        sobre LLM-powered agents.
+                    </p>
+
+                    <p>
+                        Referencia original:
+                        <a
+                            href="https://lilianweng.github.io/posts/2023-06-23-agent/"
+                            target="_blank"
+                            rel="noopener"
+                            >LLM Powered Autonomous Agents</a
+                        >. Si no lo leíste, hacelo. Es la base conceptual
+                        de todo lo que sigue.
+                    </p>
+
+                    <div class="callout info">
+                        <div class="callout-title">La ecuación central</div>
+                        <p>
+                            <strong
+                                >Agent = LLM + Memory + Planning + Tool
+                                Use</strong
+                            >. La memoria es uno de los 4 pilares. No es un
+                            add-on. No es una optimización. Es
+                            constitutiva: sin memoria no hay agente, hay
+                            chatbot.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">
+                        Los 3 sistemas de memoria humana
+                    </h2>
+                    <p>
+                        Weng toma un modelo de la psicología cognitiva y
+                        lo mapea a sistemas de agentes. Tres niveles, cada
+                        uno con su rol, su capacidad y su bottleneck.
+                    </p>
+
+                    <div class="diagram vertical fade-in">
+                        <div class="diagram-box">
+                            <strong>Sensory memory</strong>
+                            <span class="label"
+                                >milisegundos &middot; embeddings crudos</span
+                            >
+                        </div>
+                        <span class="arrow arrow-down"></span>
+                        <div class="diagram-box primary">
+                            <strong>Working memory</strong>
+                            <span class="label"
+                                >7&plusmn;2 items &middot; context window</span
+                            >
+                        </div>
+                        <span class="arrow arrow-down"></span>
+                        <div class="diagram-box secondary">
+                            <strong>Long-term memory</strong>
+                            <span class="label"
+                                >infinita &middot; vector store externo</span
+                            >
+                        </div>
+                    </div>
+
+                    <div class="grid grid-3 stagger">
+                        <div class="card slide-up" data-animate-delay="0">
+                            <h4>1. Sensory memory</h4>
+                            <p>
+                                En humanos, es el registro perceptual
+                                crudo (lo que ves, oís) que dura
+                                milisegundos. En LLMs, el análogo son los
+                                embeddings crudos de la entrada: tokens
+                                transformados en vectores antes de llegar
+                                al modelo.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="100">
+                            <h4>2. Working memory</h4>
+                            <p>
+                                El famoso "7 &plusmn; 2" de Miller (1956):
+                                la cantidad de items que podemos mantener
+                                activos en la conciencia. En LLMs, el
+                                context window ES la working memory. Es
+                                finita y cara.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="200">
+                            <h4>3. Long-term memory</h4>
+                            <p>
+                                Capacidad prácticamente infinita. El
+                                bottleneck no es el almacenamiento, es el
+                                retrieval. En LLMs, esto es el vector
+                                store externo (o, mejor, el hybrid
+                                graph+vector de la capa 4).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">
+                        El split del long-term (Tulving)
+                    </h2>
+                    <p>
+                        Acá aparece otro aporte fundamental: Endel Tulving
+                        (1972, 1985) mostró que la "memoria de largo
+                        plazo" en realidad son 3 sistemas distintos, con
+                        mecanismos distintos. Para agentes, esto es oro
+                        puro, porque te dice CÓMO tenés que estructurar el
+                        vector store.
+                    </p>
+
+                    <div class="grid grid-3 stagger">
+                        <div class="card slide-up" data-animate-delay="0">
+                            <span class="tag primary">Episódica</span>
+                            <h4>Eventos específicos</h4>
+                            <p>
+                                "El martes 14 a las 15:30, el cluster de
+                                Postgres en us-east-1 cayó por 4 horas."
+                                Con tiempo, lugar y actores. Sin
+                                generalización.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="100">
+                            <span class="tag primary">Semántica</span>
+                            <h4>Hechos y conceptos</h4>
+                            <p>
+                                "PostgreSQL es una base de datos relacional
+                                open source." Es conocimiento
+                                descontextualizado. No depende de cuándo
+                                lo aprendiste.
+                            </p>
+                        </div>
+                        <div class="card slide-up" data-animate-delay="200">
+                            <span class="tag primary">Procedural</span>
+                            <h4>Skills y workflows</h4>
+                            <p>
+                                "Si un cliente pide refund, primero
+                                verificá la fecha de compra, después el
+                                método de pago, después la política
+                                aplicable." Es el cómo, no el qué.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout info">
+                        <div class="callout-title">
+                            Por qué importa para diseño
+                        </div>
+                        <p>
+                            Un agente de soporte técnico necesita los 3
+                            tipos: episódica (los tickets específicos),
+                            semántica (las docs del producto) y
+                            procedural (los runbooks). Si metés todo en el
+                            mismo vector store sin distinguir, el retrieval
+                            te devuelve mezcla. Y la mezcla genera
+                            respuestas malas.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">
+                        Memory consolidation: el bridge
+                    </h2>
+                    <p>
+                        Hay un proceso que casi ningún agente de producción
+                        implementa y que es clave en humanos: la
+                        consolidación de memoria. Es el puente entre
+                        episódica y semántica. Cuando un evento se repite
+                        muchas veces, deja de vivir como un episodio
+                        específico y se destila en un hecho general.
+                    </p>
+
+                    <div class="diagram fade-in">
+                        <div class="diagram-box">
+                            <strong>Episodio 1</strong>
+                            <span class="label">Tuesday outage</span>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box">
+                            <strong>Episodio 2</strong>
+                            <span class="label">Thursday outage</span>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box">
+                            <strong>Episodio N</strong>
+                            <span class="label">...</span>
+                        </div>
+                        <span class="arrow arrow-right"></span>
+                        <div class="diagram-box primary">
+                            <strong>Fact semántico</strong>
+                            <span class="label"
+                                >"Postgres cluster es frágil los martes"</span
+                            >
+                        </div>
+                    </div>
+
+                    <div class="callout warning">
+                        <div class="callout-title">
+                            Sin consolidación, loop
+                        </div>
+                        <p>
+                            Los agentes sin consolidación replay cada
+                            evento individual en lugar de aprender
+                            patrones. Te cuentan 50 tickets similares en
+                            vez de decirte "tenés un patrón acá". Es una
+                            de las razones por las que Cognee introduce
+                            <code>memify()</code>: es
+                            consolidación artificial.
+                        </p>
+                    </div>
+
+                    <h2 class="slide-up">Recapitulación</h2>
+                    <table class="comparison-table fade-in">
+                        <thead>
+                            <tr>
+                                <th>Sistema</th>
+                                <th>Humano</th>
+                                <th>LLM / Agente</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Sensory</strong></td>
+                                <td>Percepción cruda, milisegundos</td>
+                                <td>Embeddings de input</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Working</strong></td>
+                                <td>7 &plusmn; 2 items (Miller)</td>
+                                <td>Context window</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td><strong>Long-term</strong></td>
+                                <td>Episódica + semántica + procedural</td>
+                                <td>Vector store / graph</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Consolidation</strong></td>
+                                <td>Sueño, repetición</td>
+                                <td><code>memify()</code>, RL-tuning</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <nav class="nav-pager">
+                        <a href="02-capas.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title">02 — Las 4 capas</span>
+                        </a>
+                        <a
+                            href="04-cognee.html"
+                            class="pager-next"
+                            data-mark-completed="modulo-2/leccion-3"
+                        >
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title">04 — Cognee</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

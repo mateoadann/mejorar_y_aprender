@@ -1,0 +1,281 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Command Palette — UI Components Atlas</title>
+    <meta name="description" content="Modal global de busqueda y acciones con atajo de teclado." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Navegacion</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="navbar.html">01 — Navbar</a></li>
+          <li><a class="sidebar-nav__link" href="sidebar.html">02 — Sidebar</a></li>
+          <li><a class="sidebar-nav__link" href="tabs.html">03 — Tabs</a></li>
+          <li><a class="sidebar-nav__link" href="breadcrumbs.html">04 — Breadcrumbs</a></li>
+          <li><a class="sidebar-nav__link" href="pagination.html">05 — Pagination</a></li>
+          <li><a class="sidebar-nav__link" href="stepper.html">06 — Stepper</a></li>
+          <li><a class="sidebar-nav__link is-active" href="command-palette.html">07 — Command Palette</a></li>
+          <li><a class="sidebar-nav__link" href="drawer.html">08 — Drawer</a></li>
+          <li><a class="sidebar-nav__link" href="bottom-nav.html">09 — Bottom Nav</a></li>
+          <li><a class="sidebar-nav__link" href="mega-menu.html">10 — Mega Menu</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Navegacion</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Command Palette</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Command Palette</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Command</span>
+            <span class="component-page__alias">cmdk</span>
+            <span class="component-page__alias">Command Menu</span>
+            <span class="component-page__alias">⌘K</span>
+            <span class="component-page__alias">Quick Actions</span>
+          </div>
+          <p class="component-page__lead">Modal que se abre con <kbd>⌘K</kbd> (o <kbd>Ctrl+K</kbd>) y te deja buscar, navegar y ejecutar acciones con el teclado. Lo popularizaron Linear, Raycast, Vercel y VS Code. Shadcn lo tiene como <code>Command</code>, basado en el hook <code>cmdk</code> de Paco Coursey. Es el componente de power-users por excelencia.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva (filtro funcional)</h2>
+          <p class="component-page__section-lead">Escribi en el input para filtrar. Los items coinciden por substring.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <div class="w-full max-w-md rounded-lg border border-border bg-popover shadow-lg overflow-hidden" data-cmdk>
+                <div class="flex items-center border-b border-border px-3">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  <input type="text" placeholder="Type a command or search..." class="flex h-11 w-full bg-transparent py-3 px-2 text-sm outline-none placeholder:text-muted-foreground" data-cmdk-input />
+                </div>
+                <div class="max-h-80 overflow-y-auto p-1" data-cmdk-list>
+                  <div class="px-2 py-1.5 text-xs font-semibold text-muted-foreground" data-group-label>Suggestions</div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent gap-2" data-cmdk-item data-value="calendar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span class="flex-1">Calendar</span>
+                  </div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent gap-2" data-cmdk-item data-value="search emoji">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                    <span class="flex-1">Search Emoji</span>
+                  </div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent gap-2" data-cmdk-item data-value="calculator">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+                    <span class="flex-1">Calculator</span>
+                  </div>
+                  <div class="-mx-1 my-1 h-px bg-border"></div>
+                  <div class="px-2 py-1.5 text-xs font-semibold text-muted-foreground" data-group-label>Settings</div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent gap-2" data-cmdk-item data-value="profile">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span class="flex-1">Profile</span>
+                    <kbd class="ml-auto text-xs text-muted-foreground">⌘P</kbd>
+                  </div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent gap-2" data-cmdk-item data-value="billing">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                    <span class="flex-1">Billing</span>
+                    <kbd class="ml-auto text-xs text-muted-foreground">⌘B</kbd>
+                  </div>
+                  <div class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent gap-2" data-cmdk-item data-value="settings">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg>
+                    <span class="flex-1">Settings</span>
+                    <kbd class="ml-auto text-xs text-muted-foreground">⌘S</kbd>
+                  </div>
+                  <div class="px-2 py-6 text-center text-sm text-muted-foreground hidden" data-cmdk-empty>No results found.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function(){
+              const root = document.querySelector('[data-cmdk]');
+              if (!root) return;
+              const input = root.querySelector('[data-cmdk-input]');
+              const items = root.querySelectorAll('[data-cmdk-item]');
+              const empty = root.querySelector('[data-cmdk-empty]');
+              input.addEventListener('input', () => {
+                const q = input.value.toLowerCase().trim();
+                let visible = 0;
+                items.forEach(it => {
+                  const match = !q || it.dataset.value.toLowerCase().includes(q);
+                  it.classList.toggle('hidden', !match);
+                  if (match) visible++;
+                });
+                empty.classList.toggle('hidden', visible > 0);
+              });
+            })();
+          </script>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Shadcn Command es un wrapper sobre cmdk. Estructura clara.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">CommandDialog (modal wrapper)</div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">Command</div>
+                  <div class="rounded border border-border bg-muted/40 p-2 mb-2"><div class="text-xs font-mono text-muted-foreground">CommandInput</div></div>
+                  <div class="rounded border border-border bg-muted/40 p-2">
+                    <div class="text-xs font-mono text-muted-foreground">CommandList</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-2">└ CommandEmpty</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-2">└ CommandGroup (heading)</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-4">└ CommandItem → CommandShortcut</div>
+                    <div class="text-xs font-mono text-muted-foreground pl-2">└ CommandSeparator</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>CommandDialog</b> El modal. Se abre con <code>open</code> + <code>setOpen</code>.</li>
+              <li><b>Command</b> Root del cmdk. Maneja filtrado y teclado.</li>
+              <li><b>CommandInput</b> Input con autofocus.</li>
+              <li><b>CommandList</b> Contenedor scrolleable de items.</li>
+              <li><b>CommandEmpty</b> Se muestra cuando no hay matches.</li>
+              <li><b>CommandGroup</b> Seccion con heading.</li>
+              <li><b>CommandItem</b> Una accion. <code>onSelect</code> con el value.</li>
+              <li><b>CommandShortcut</b> Muestra atajo (<code>⌘P</code>) a la derecha del item.</li>
+              <li><b>CommandSeparator</b> Divisor entre groups.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>standalone</b> Embebido en la pagina (ej: search de docs).</li>
+            <li><b>dialog</b> Modal con overlay y atajo global (el clasico).</li>
+            <li><b>with-recent</b> Muestra recientes cuando el input esta vacio.</li>
+            <li><b>actions + navigation</b> Combina "ir a" + "ejecutar accion" (Linear-style).</li>
+            <li><b>nested</b> Entrar a un item abre otro nivel de opciones.</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn / cmdk</th><th>Material UI</th><th>Ant Design</th><th>Headless UI</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Command / CommandDialog</td><td>Autocomplete (custom)</td><td>AutoComplete (custom)</td><td>Combobox</td></tr>
+              <tr><td>Input</td><td>CommandInput</td><td>TextField</td><td>Input</td><td>Combobox.Input</td></tr>
+              <tr><td>List</td><td>CommandList</td><td>Listbox</td><td>(built-in)</td><td>Combobox.Options</td></tr>
+              <tr><td>Item</td><td>CommandItem</td><td>ListItem</td><td>AutoComplete.Option</td><td>Combobox.Option</td></tr>
+              <tr><td>Group</td><td>CommandGroup</td><td>ListSubheader</td><td>OptGroup</td><td>(custom)</td></tr>
+              <tr><td>Shortcut</td><td>CommandShortcut</td><td>(custom)</td><td>(custom)</td><td>(custom)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Apps con muchas acciones (Linear, Notion, Figma).</li>
+              <li>Power users que prefieren teclado sobre mouse.</li>
+              <li>Navegacion global + acciones en un solo lugar.</li>
+              <li>Necesitas acceso rapido desde cualquier pantalla.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Busqueda de contenido simple: usa Search Bar.</li>
+              <li>Seleccionar de una lista conocida: usa Select/Combobox.</li>
+              <li>Apps casuales donde nadie va a usar ⌘K.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1">
+              <p class="prompt-library__label">Command palette with ⌘K global shortcut</p>
+              <pre class="prompt-library__text" id="p1-text">Create a shadcn Command dialog that opens with ⌘K (or Ctrl+K). Use useEffect with keydown listener. Include 2 groups (Suggestions: Calendar, Search Emoji, Calculator and Settings: Profile, Billing, Settings) with keyboard shortcuts shown on the right via CommandShortcut.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p2">
+              <p class="prompt-library__label">Command palette with recent items and fuzzy search</p>
+              <pre class="prompt-library__text" id="p2-text">Build a shadcn Command with a "Recent" group shown when input is empty. Use cmdk's built-in fuzzy search via the filter prop. Persist recent items in localStorage.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p3">
+              <p class="prompt-library__label">Command palette with navigation actions</p>
+              <pre class="prompt-library__text" id="p3-text">Create a Command menu where each item is either a "Go to" action (navigates via Next.js router) or an "Action" (calls a function). Display a small badge next to each item indicating its type.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p4">
+              <p class="prompt-library__label">Nested command palette (pages)</p>
+              <pre class="prompt-library__text" id="p4-text">Build a command palette where selecting certain items (like "Change theme") opens a nested level with sub-options (Light, Dark, System). Use a pages state array. Esc goes back one level.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="../01-inputs-controles/search-bar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Search Bar</h3><p class="text-sm text-muted-foreground">Para busqueda de contenido.</p></a>
+            <a href="../01-inputs-controles/combobox.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Combobox</h3><p class="text-sm text-muted-foreground">Select con filtro.</p></a>
+            <a href="drawer.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Drawer</h3><p class="text-sm text-muted-foreground">Modal lateral alternativo.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://ui.shadcn.com/docs/components/command" target="_blank">Shadcn Command</a></li>
+            <li><a href="https://cmdk.paco.me/" target="_blank">cmdk (Paco Coursey)</a></li>
+            <li><a href="https://linear.app/method/command-menu" target="_blank">Linear Command Menu design</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="stepper.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Stepper</span></a>
+          <a class="component-nav__link component-nav__link--next" href="drawer.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Drawer</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,265 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Combobox — UI Components Atlas</title>
+    <meta name="description" content="Select filtrable. Compuesto con Popover + Command. Single o multi." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Inputs y Controles</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="button.html">01 — Button</a></li>
+          <li><a class="sidebar-nav__link" href="input.html">02 — Input</a></li>
+          <li><a class="sidebar-nav__link" href="textarea.html">03 — Textarea</a></li>
+          <li><a class="sidebar-nav__link" href="select.html">04 — Select</a></li>
+          <li><a class="sidebar-nav__link is-active" href="combobox.html">05 — Combobox</a></li>
+          <li><a class="sidebar-nav__link" href="autocomplete.html">06 — Autocomplete</a></li>
+          <li><a class="sidebar-nav__link" href="checkbox.html">07 — Checkbox</a></li>
+          <li><a class="sidebar-nav__link" href="radio-group.html">08 — Radio Group</a></li>
+          <li><a class="sidebar-nav__link" href="switch-toggle.html">09 — Switch / Toggle</a></li>
+          <li><a class="sidebar-nav__link" href="slider.html">10 — Slider</a></li>
+          <li><a class="sidebar-nav__link" href="date-picker.html">11 — Date Picker</a></li>
+          <li><a class="sidebar-nav__link" href="file-upload.html">12 — File Upload</a></li>
+          <li><a class="sidebar-nav__link" href="otp-input.html">13 — OTP Input</a></li>
+          <li><a class="sidebar-nav__link" href="rating.html">14 — Rating</a></li>
+          <li><a class="sidebar-nav__link" href="search-bar.html">15 — Search Bar</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Inputs y Controles</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Combobox</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Combobox</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Combobox</span>
+            <span class="component-page__alias">Command Select</span>
+            <span class="component-page__alias">Searchable Select</span>
+            <span class="component-page__alias">cmdk</span>
+          </div>
+          <p class="component-page__lead">Select filtrable por texto. Compuesto en Shadcn con Popover + Command (cmdk). Ideal cuando tenes muchas opciones y el usuario necesita buscar. Puede ser single, multi-select con tags, o creatable.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Tipea para filtrar la lista de frameworks.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <div class="w-72">
+                <div class="rounded-md border border-border bg-popover shadow-lg">
+                  <div class="flex items-center border-b border-border px-3">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 opacity-50"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input id="cb-input" type="text" placeholder="Buscar framework..." class="flex h-10 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground" />
+                  </div>
+                  <div id="cb-list" class="max-h-48 overflow-y-auto p-1">
+                    <div class="px-2 py-1.5 text-xs font-semibold text-muted-foreground">Frontend</div>
+                    <div class="cb-item relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent" data-label="react">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2 opacity-0 data-[sel=true]:opacity-100" data-sel="true"><polyline points="20 6 9 17 4 12"/></svg>
+                      React
+                    </div>
+                    <div class="cb-item relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent" data-label="vue">
+                      <span class="mr-2 w-3.5"></span>Vue
+                    </div>
+                    <div class="cb-item relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent" data-label="svelte">
+                      <span class="mr-2 w-3.5"></span>Svelte
+                    </div>
+                    <div class="cb-item relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent" data-label="angular">
+                      <span class="mr-2 w-3.5"></span>Angular
+                    </div>
+                    <div class="cb-item relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent" data-label="solid">
+                      <span class="mr-2 w-3.5"></span>Solid
+                    </div>
+                  </div>
+                  <div id="cb-empty" class="hidden p-4 text-center text-sm text-muted-foreground">Sin resultados.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function(){
+              var inp=document.getElementById('cb-input'), items=document.querySelectorAll('#cb-list .cb-item'), empty=document.getElementById('cb-empty');
+              if(!inp) return;
+              inp.addEventListener('input', function(){
+                var q=inp.value.toLowerCase(), shown=0;
+                items.forEach(function(el){ var m=el.dataset.label.indexOf(q)>-1; el.style.display=m?'':'none'; if(m)shown++; });
+                empty.classList.toggle('hidden', shown>0);
+              });
+            })();
+          </script>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Un Combobox real se arma componiendo Popover + Command.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Popover.Root</div>
+                <div class="rounded border border-border bg-background p-3 mb-2">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">Popover.Trigger (Button)</div>
+                </div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="text-xs font-mono text-muted-foreground mb-2">Popover.Content &gt; Command</div>
+                  <div class="text-xs font-mono text-muted-foreground pl-2">├ CommandInput</div>
+                  <div class="text-xs font-mono text-muted-foreground pl-2">├ CommandList</div>
+                  <div class="text-xs font-mono text-muted-foreground pl-4">├ CommandEmpty</div>
+                  <div class="text-xs font-mono text-muted-foreground pl-4">└ CommandGroup &gt; CommandItem</div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Popover</b> Abre y cierra el panel sobre el trigger.</li>
+              <li><b>Command</b> Motor de filtrado (cmdk). Matchea por texto.</li>
+              <li><b>CommandInput</b> El input que filtra en vivo.</li>
+              <li><b>CommandList</b> Lista scrolleable de items.</li>
+              <li><b>CommandEmpty</b> Mensaje cuando no hay resultados.</li>
+              <li><b>CommandGroup</b> Agrupacion opcional con heading.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <div class="demo-group">
+            <div class="demo-group__item">
+              <button class="inline-flex w-56 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm"><span>React</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button>
+              <span class="demo-group__label">single</span>
+            </div>
+            <div class="demo-group__item">
+              <div class="inline-flex w-56 flex-wrap gap-1 rounded-md border border-input bg-background px-2 py-2 text-sm">
+                <span class="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs">React <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg></span>
+                <span class="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs">Vue <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg></span>
+                <span class="text-muted-foreground text-xs">+mas...</span>
+              </div>
+              <span class="demo-group__label">multi-tags</span>
+            </div>
+            <div class="demo-group__item">
+              <button class="inline-flex w-56 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm"><span class="text-muted-foreground">Buscar o crear...</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="M12 5v14M5 12h14"/></svg></button>
+              <span class="demo-group__label">creatable</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><button class="inline-flex w-48 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm"><span class="text-muted-foreground">Elegir...</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button><span class="demo-group__label">default</span></div>
+            <div class="demo-group__item"><button class="inline-flex w-48 items-center justify-between rounded-md border border-foreground bg-background px-3 py-2 text-sm ring-2 ring-ring"><span>React</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button><span class="demo-group__label">focus</span></div>
+            <div class="demo-group__item"><button disabled class="inline-flex w-48 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm opacity-50 cursor-not-allowed"><span>Disabled</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg></button><span class="demo-group__label">disabled</span></div>
+            <div class="demo-group__item"><div class="inline-flex w-48 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm"><span class="text-muted-foreground">Cargando...</span><svg class="animate-spin h-4 w-4 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></div><span class="demo-group__label">loading</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>HTML nativo</th><th>Shadcn / Radix</th><th>Material UI</th><th>ARIA role</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>(no nativo)</td><td>Combobox (Popover + Command)</td><td>Autocomplete</td><td>combobox</td></tr>
+              <tr><td>Input filter</td><td>-</td><td>CommandInput</td><td>InputBase</td><td>searchbox</td></tr>
+              <tr><td>List</td><td>-</td><td>CommandList</td><td>Listbox</td><td>listbox</td></tr>
+              <tr><td>Empty state</td><td>-</td><td>CommandEmpty</td><td>noOptionsText</td><td>status</td></tr>
+              <tr><td>Item</td><td>-</td><td>CommandItem</td><td>AutocompleteOption</td><td>option</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Tenes 20+ opciones y el usuario necesita filtrar.</li>
+              <li>La lista es conocida de antemano (no async).</li>
+              <li>Queres multi-select con tags.</li>
+              <li>Necesitas crear items on-the-fly (creatable).</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Son pocas opciones: usa Select o Radio Group.</li>
+              <li>Datos vienen de API: considera Autocomplete async.</li>
+              <li>Es una accion global: usa Command Palette (modal).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1"><p class="prompt-library__label">Searchable combobox for framework selection</p><pre class="prompt-library__text" id="p1-text">Build a shadcn Combobox composed of Popover + Command for selecting a frontend framework. Use CommandInput for filtering, CommandGroup with heading "Frontend", and CommandItem for each framework. Show a checkmark next to the selected one.</pre><button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p2"><p class="prompt-library__label">Multi-select combobox with tags</p><pre class="prompt-library__text" id="p2-text">Create a multi-select combobox. Selected values appear as removable tags inside the trigger. Clicking an item toggles it. Show up to 3 tags inline, then "+N more". Use shadcn Popover + Command.</pre><button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p3"><p class="prompt-library__label">Creatable combobox for tags</p><pre class="prompt-library__text" id="p3-text">Build a creatable combobox: if the typed query does not match any existing item, show a "Create [query]" item at the bottom. Clicking it adds the new value to the list.</pre><button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="select.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Select</h3><p class="text-sm text-muted-foreground">Cuando no hace falta filtrar.</p></a>
+            <a href="autocomplete.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Autocomplete</h3><p class="text-sm text-muted-foreground">Cuando acepta valores libres o datos async.</p></a>
+            <a href="search-bar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Search Bar</h3><p class="text-sm text-muted-foreground">Cuando es busqueda de contenido, no seleccion.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://ui.shadcn.com/docs/components/combobox" target="_blank">Shadcn Combobox</a></li>
+            <li><a href="https://cmdk.paco.me/" target="_blank">cmdk (Command)</a></li>
+            <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/combobox/" target="_blank">ARIA APG: Combobox</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="select.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Select</span></a>
+          <a class="component-nav__link component-nav__link--next" href="autocomplete.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Autocomplete</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

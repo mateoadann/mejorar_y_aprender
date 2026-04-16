@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lección 1 — Cómo se conectan los 3 artículos</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 4</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 4</a></li>
+                        <li>Lección 1</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="hero-meta"
+                            >Lección 01 &middot; 12 min</span
+                        >
+                        <h1 class="mt-0">
+                            Cómo se conectan los 3 artículos
+                        </h1>
+                        <p class="lead">
+                            Los 3 artículos del curso no son listas separadas
+                            de cosas para aprender. Son tres vistas del mismo
+                            sistema: infraestructura, memoria y aplicación.
+                            En esta lección los unimos en un solo mapa mental.
+                        </p>
+                    </div>
+
+                    <h2>El diagrama central del curso</h2>
+                    <p class="slide-up">
+                        Si te tuviera que dar una sola imagen para llevarte,
+                        sería esta. Todo lo demás del curso cuelga de acá:
+                    </p>
+
+                    <div
+                        class="diagram vertical slide-up"
+                        style="margin: var(--space-10) 0"
+                    >
+                        <div class="diagram-box primary draw-line">
+                            <span class="label">Infraestructura</span>
+                            <strong>Managed Agents</strong>
+                            <p style="margin: 0.5rem 0 0; font-size: 0.875rem;">
+                                Sandbox, event loop, sesiones, credenciales
+                            </p>
+                        </div>
+                        <span
+                            class="arrow arrow-down"
+                            aria-hidden="true"
+                        ></span>
+                        <div class="diagram-box draw-line">
+                            <span class="label">Capa de ejecución</span>
+                            <strong>Agent con loops y tools</strong>
+                            <p style="margin: 0.5rem 0 0; font-size: 0.875rem;">
+                                El agente corre adentro de la infra
+                            </p>
+                        </div>
+                        <span
+                            class="arrow arrow-down"
+                            aria-hidden="true"
+                        ></span>
+                        <div class="diagram-box secondary draw-line">
+                            <span class="label">Persistencia</span>
+                            <strong>Memory (Cognee)</strong>
+                            <p style="margin: 0.5rem 0 0; font-size: 0.875rem;">
+                                Graph + vector, para que NO olvide
+                            </p>
+                        </div>
+                        <span
+                            class="arrow arrow-down"
+                            aria-hidden="true"
+                        ></span>
+                        <div class="diagram-box primary draw-line">
+                            <span class="label">Roadmap</span>
+                            <strong>Proyectos production-grade</strong>
+                            <p style="margin: 0.5rem 0 0; font-size: 0.875rem;">
+                                Los 5 proyectos del artículo 3
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">Leelo de arriba hacia abajo</div>
+                        <p>
+                            Managed Agents <em>corre</em> el agente. El agente
+                            <em>necesita</em> memoria persistente para no
+                            empezar de cero cada sesión. Con esas dos piezas
+                            armadas, los proyectos del roadmap dejan de ser
+                            demos de laboratorio y se convierten en sistemas
+                            que un cliente te paga.
+                        </p>
+                    </div>
+
+                    <h2>La pregunta que responde cada artículo</h2>
+                    <p class="slide-up">
+                        Si memorizás nada más que esto, ya estás mejor que el
+                        90% de los devs que leen papers sin entender qué
+                        problema resuelven.
+                    </p>
+
+                    <div class="grid grid-3 stagger">
+                        <div class="card slide-up">
+                            <span class="tag">Artículo 1</span>
+                            <h4>Managed Agents</h4>
+                            <p>
+                                <strong
+                                    >¿Cómo corro un agente en producción sin
+                                    morir en infra?</strong
+                                >
+                            </p>
+                            <p>
+                                Respuesta: no lo corrés vos. Anthropic maneja
+                                sandbox, sesiones y credenciales. Vos definís
+                                comportamiento.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <span class="tag">Artículo 2</span>
+                            <h4>Memoria</h4>
+                            <p>
+                                <strong
+                                    >¿Cómo hago que mi agente NO olvide?</strong
+                                >
+                            </p>
+                            <p>
+                                Respuesta: memory hierarchy. De listas en
+                                Python hasta graph + vector híbrido con
+                                Cognee.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <span class="tag">Artículo 3</span>
+                            <h4>Roadmap 2026</h4>
+                            <p>
+                                <strong>¿Qué proyecto construyo primero?</strong>
+                            </p>
+                            <p>
+                                Respuesta: los 5 proyectos ordenados por
+                                complejidad, desde meeting prep hasta
+                                enterprise workflow.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h2>Tabla de conexiones cruzadas</h2>
+                    <p class="slide-up">
+                        Acá se ve la trama: cada concepto aparece en más de un
+                        artículo, y ahí está la magia. Cuando armás un
+                        proyecto, estás combinando piezas de los 3.
+                    </p>
+
+                    <table class="comparison-table slide-up">
+                        <thead>
+                            <tr>
+                                <th>Concepto</th>
+                                <th>Art. 1 (Managed)</th>
+                                <th>Art. 2 (Memoria)</th>
+                                <th>Art. 3 (Roadmap)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Session persistente</strong></td>
+                                <td class="check">Managed session</td>
+                                <td class="cross">&ndash;</td>
+                                <td class="check">Proyectos 2, 4, 5</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Memory hierarchy</strong></td>
+                                <td class="cross">&ndash;</td>
+                                <td class="check">Core del artículo</td>
+                                <td class="check">Proyecto 2, 4</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Multi-agent</strong></td>
+                                <td class="check">Environments</td>
+                                <td class="cross">&ndash;</td>
+                                <td class="check">Proyecto 5</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sandboxing</strong></td>
+                                <td class="check">Nativo</td>
+                                <td class="cross">&ndash;</td>
+                                <td class="check">Proyecto 2</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Graph + Vector memory</strong>
+                                </td>
+                                <td class="cross">&ndash;</td>
+                                <td class="check">Cognee</td>
+                                <td class="check">Proyecto 4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2>El insight clave</h2>
+                    <p class="slide-up">
+                        Mirá la última columna de la tabla. El proyecto 5 del
+                        roadmap (enterprise workflow) aparece referenciando
+                        conceptos de los 3 artículos. Eso no es casualidad.
+                    </p>
+
+                    <div class="callout tip slide-up">
+                        <div class="callout-title">
+                            El truco que nadie te dice
+                        </div>
+                        <p>
+                            Si construís el proyecto 5 del roadmap
+                            (enterprise workflow) <strong>usando</strong>
+                            Managed Agents como infra y Cognee como memoria,
+                            tenés las 3 piezas del curso corriendo en
+                            producción a la vez. Un solo proyecto que te da
+                            retorno de los 3 módulos. Esa es tu palanca.
+                        </p>
+                    </div>
+
+                    <h2>El modelo mental que tenés que llevarte</h2>
+                    <p class="slide-up">
+                        No pienses en "aprender managed agents", "aprender
+                        memoria" y "armar portfolio" como tres cosas
+                        distintas. Es una sola cosa con tres capas:
+                    </p>
+
+                    <ul>
+                        <li>
+                            <strong>Infra</strong> (managed agents) es el
+                            <em>dónde corre</em>.
+                        </li>
+                        <li>
+                            <strong>Memoria</strong> (Cognee) es el
+                            <em>qué recuerda</em>.
+                        </li>
+                        <li>
+                            <strong>Roadmap</strong> (proyectos) es el
+                            <em>para qué sirve</em>.
+                        </li>
+                    </ul>
+
+                    <div class="callout success slide-up">
+                        <div class="callout-title">Callout clave</div>
+                        <p>
+                            Los 3 artículos no son listas separadas de cosas
+                            para aprender. Son tres vistas del mismo sistema:
+                            infra, memoria, aplicación. Cuando lo entendés así,
+                            dejás de estudiar y empezás a diseñar.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="index.html" class="pager-prev">
+                            <span class="pager-label">&larr; Volver</span>
+                            <span class="pager-title"
+                                >Índice del módulo</span
+                            >
+                        </a>
+                        <a href="02-tu-negocio.html" class="pager-next">
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title"
+                                >Aplicación a tu negocio</span
+                            >
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">
+                        Módulo 4 &middot; Lección 1 &middot; Edición 2026
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

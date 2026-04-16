@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lección 5 — Tu primer agente en 30 minutos</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+        <link rel="stylesheet" href="modulo-1.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 1</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 1</a></li>
+                        <li>Lección 5</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="hero-meta">Lección 05 &middot; 30 min hands-on</span>
+                        <h1 class="mt-0">Tu primer agente en 30 minutos</h1>
+                        <p class="lead">
+                            Vamos a construir un Meeting Prep Agent de punta
+                            a punta. Copy-paste, un poco de configuración y
+                            listo. Si al final podés correr una session y
+                            ver el SSE stream, ganaste.
+                        </p>
+                    </div>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">Lo que necesitás</div>
+                        <p>
+                            Una <code>ANTHROPIC_API_KEY</code> con acceso al
+                            beta de Managed Agents, Claude Code instalado y
+                            una terminal abierta. Nada más.
+                        </p>
+                    </div>
+
+                    <div class="step-card slide-up" data-step="1">
+                        <h3>Abrir Claude Code y arrancar onboarding</h3>
+                        <p>
+                            Claude Code tiene un comando que te guía por
+                            todo el setup del beta. Pegale esto en el prompt:
+                        </p>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>prompt</span>
+                                <button class="code-block-copy">Copiar</button>
+                            </div>
+<pre><code>start onboarding for managed agents in Claude API</code></pre>
+                        </div>
+                        <p>
+                            Claude Code te va a preguntar por tu API key, te
+                            va a habilitar el header beta y te va a dejar el
+                            ambiente listo para crear recursos.
+                        </p>
+                    </div>
+
+                    <div class="step-card slide-up" data-step="2">
+                        <h3>Crear el agent con un system prompt</h3>
+                        <p>
+                            Creá el recurso agent con este prompt. Está
+                            pensado para Meeting Prep: claro, acotado, sin
+                            tareas fuera de alcance.
+                        </p>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>system-prompt</span>
+                                <button class="code-block-copy">Copiar</button>
+                            </div>
+<pre><code>Sos un asistente de meeting prep. Tu única tarea es
+preparar briefings breves antes de cada reunión.
+
+Para cada meeting en el calendario:
+1. Identificá a los participantes externos
+2. Buscá contexto público reciente sobre ellos y la empresa
+3. Revisá comunicación interna previa si está disponible
+4. Armá un briefing de máximo 10 líneas con:
+   - Quién es quién
+   - 3 puntos hablados la última vez
+   - 2 temas abiertos pendientes
+   - 1 pregunta que deberíamos hacer
+
+Reglas:
+- No mandes emails. Solo preparás briefings.
+- No accedas a conversaciones privadas ajenas.
+- Si no encontrás contexto, decilo explícitamente.
+- Máximo 10 líneas por briefing. Siempre.</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="step-card slide-up" data-step="3">
+                        <h3>Configurar tools</h3>
+                        <p>
+                            El agente necesita tres tools para hacer su
+                            trabajo: el MCP de calendario para leer
+                            meetings, web search para el research público, y
+                            acceso de solo lectura al inbox para el contexto
+                            histórico.
+                        </p>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>tools</span>
+                                <button class="code-block-copy">Copiar</button>
+                            </div>
+<pre><code>tools:
+  - name: calendar
+    type: mcp
+    server: calendar-mcp
+    scope: [read]
+  - name: web_search
+    type: builtin
+  - name: email
+    type: mcp
+    server: gmail-mcp
+    scope: [read]</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="step-card slide-up" data-step="4">
+                        <h3>Setear permission mode a approval</h3>
+                        <p>
+                            Es tu primer agente. No te confíes. Arrancamos
+                            con approval-required para todo; después de
+                            verlo correr un par de veces vas a decidir si
+                            relajarlo.
+                        </p>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>config</span>
+                                <button class="code-block-copy">Copiar</button>
+                            </div>
+<pre><code>permission_mode: approval_required
+approval_scope: all_tools</code></pre>
+                        </div>
+
+                        <div class="callout tip">
+                            <div class="callout-title">Por qué arrancar duro</div>
+                            <p>
+                                Cada acción que el agente proponga vas a
+                                tener que aprobarla. Es tedioso, pero te
+                                permite ver exactamente qué hace antes de
+                                que lo haga. En 5 minutos vas a entender su
+                                comportamiento mejor que leyendo cualquier
+                                doc.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="step-card slide-up" data-step="5">
+                        <h3>Correr la primera session</h3>
+                        <p>
+                            Usá un meeting de prueba: algo de mañana, con
+                            al menos un participante externo. Creá la
+                            sesión así:
+                        </p>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>bash</span>
+                                <button class="code-block-copy">Copiar</button>
+                            </div>
+<pre><code>curl -sS https://api.anthropic.com/v1/sessions \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "anthropic-beta: managed-agents-2026-04-01" \
+  -H "content-type: application/json" \
+  -d '{
+    "agent": "meeting-prep-v1",
+    "environment_id": "env_test_01",
+    "input": "Preparame un briefing para mi próximo meeting externo"
+  }'</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="step-card slide-up" data-step="6">
+                        <h3>Revisar el SSE stream y el costo</h3>
+                        <p>
+                            El response abre un stream. Vas a ver eventos
+                            con tipos como <code>message.delta</code>,
+                            <code>tool_use</code>,
+                            <code>approval_required</code>. Cada vez que
+                            aparezca un approval, mirá qué pide la tool
+                            antes de confirmar.
+                        </p>
+                        <p>
+                            Cuando termine, revisá el panel de billing. Vas a
+                            ver: tiempo de session, tokens consumidos y si
+                            hubo web searches, su costo. Para un briefing
+                            típico esperá entre 2 y 8 centavos por ejecución.
+                        </p>
+                    </div>
+
+                    <h2>Checklist final</h2>
+                    <p>
+                        Si podés marcar todo esto, ya sabés Managed Agents:
+                    </p>
+                    <ul class="checklist">
+                        <li>Creaste un recurso agent con system prompt, modelo y tools</li>
+                        <li>Creaste un environment y lo asociaste a una session</li>
+                        <li>Arrancaste una sesión vía API con el header beta correcto</li>
+                        <li>Consumiste el SSE stream y viste los eventos</li>
+                        <li>Aprobaste al menos una acción en modo approval-required</li>
+                        <li>Viste el costo real en billing y lo entendés</li>
+                        <li>Entendés por qué events no es una cuarta primitiva</li>
+                    </ul>
+
+                    <div class="callout success slide-up">
+                        <div class="callout-title">Si llegaste hasta acá</div>
+                        <p>
+                            Ya tenés el modelo mental completo: los tres
+                            recursos, el stream, los permisos y el ciclo
+                            completo. A partir de acá, cualquier agente que
+                            leas en la doc o en el blog de Anthropic lo vas
+                            a entender en dos minutos. Es así de fácil.
+                        </p>
+                    </div>
+
+                    <div style="text-align: center; margin: var(--space-10) 0;">
+                        <button
+                            class="btn btn-primary"
+                            data-mark-completed="modulo-1/ejercicio"
+                        >
+                            Marcar lección como completada
+                        </button>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="04-ejemplos.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title">5 agentes prácticos</span>
+                        </a>
+                        <a href="../index.html" class="pager-next">
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title">Volver al home del curso</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">Módulo 1 &middot; Lección 5 &middot; Edición 2026</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

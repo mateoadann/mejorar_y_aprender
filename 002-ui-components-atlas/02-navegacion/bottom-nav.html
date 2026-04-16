@@ -1,0 +1,266 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bottom Nav — UI Components Atlas</title>
+    <meta name="description" content="Barra inferior de navegacion para apps mobile." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Navegacion</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="navbar.html">01 — Navbar</a></li>
+          <li><a class="sidebar-nav__link" href="sidebar.html">02 — Sidebar</a></li>
+          <li><a class="sidebar-nav__link" href="tabs.html">03 — Tabs</a></li>
+          <li><a class="sidebar-nav__link" href="breadcrumbs.html">04 — Breadcrumbs</a></li>
+          <li><a class="sidebar-nav__link" href="pagination.html">05 — Pagination</a></li>
+          <li><a class="sidebar-nav__link" href="stepper.html">06 — Stepper</a></li>
+          <li><a class="sidebar-nav__link" href="command-palette.html">07 — Command Palette</a></li>
+          <li><a class="sidebar-nav__link" href="drawer.html">08 — Drawer</a></li>
+          <li><a class="sidebar-nav__link is-active" href="bottom-nav.html">09 — Bottom Nav</a></li>
+          <li><a class="sidebar-nav__link" href="mega-menu.html">10 — Mega Menu</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Navegacion</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Bottom Nav</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Bottom Nav</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Bottom Navigation</span>
+            <span class="component-page__alias">Tab Bar</span>
+            <span class="component-page__alias">Footer Nav</span>
+            <span class="component-page__alias">Mobile Tabs</span>
+          </div>
+          <p class="component-page__lead">Barra fija en el borde inferior de apps mobile. 3-5 items con icono (+ label opcional) para saltar entre las secciones principales. Es el estandar de iOS (Tab Bar) y Android (Bottom Navigation Bar). Shadcn no la trae oficial, la armas con Tailwind <code>fixed bottom-0</code>. No la confundas con Tabs: bottom nav es navegacion entre PANTALLAS, Tabs son alternativas dentro de una vista.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Bottom nav mobile con 5 items, Home activo, Notifications con badge.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <div class="w-64 rounded-[32px] border-4 border-border bg-background p-2 shadow-2xl">
+                <div class="h-80 rounded-[24px] bg-muted/20 flex flex-col">
+                  <div class="flex-1 p-4"><p class="text-xs text-muted-foreground">App content area</p></div>
+                  <nav class="border-t border-border bg-background/95 backdrop-blur px-2 py-2">
+                    <ul class="flex items-center justify-around">
+                      <li>
+                        <a href="#" class="flex flex-col items-center gap-0.5 px-2 py-1 text-foreground">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                          <span class="text-[10px] font-medium">Home</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" class="flex flex-col items-center gap-0.5 px-2 py-1 text-muted-foreground">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                          <span class="text-[10px]">Search</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" class="flex flex-col items-center gap-0.5">
+                          <div class="h-10 w-10 rounded-full bg-foreground text-background grid place-items-center -mt-4 shadow-lg">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" class="relative flex flex-col items-center gap-0.5 px-2 py-1 text-muted-foreground">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                          <span class="absolute top-0 right-1 h-4 w-4 rounded-full bg-destructive text-destructive-foreground text-[9px] font-bold grid place-items-center">3</span>
+                          <span class="text-[10px]">Alerts</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" class="flex flex-col items-center gap-0.5 px-2 py-1 text-muted-foreground">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                          <span class="text-[10px]">Profile</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Simple: Root con N items. Cada item tiene icon + label + (badge).</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">BottomNav (nav fixed bottom-0)</div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">ul (flex justify-around)</div>
+                  <div class="flex gap-2 text-xs">
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">NavItem → Icon + Label + (Badge)</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">NavItem (active)</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">NavItem</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> <code>&lt;nav&gt;</code> fixed al bottom con safe-area inset.</li>
+              <li><b>Item</b> Un link por seccion. 3-5 items maximo.</li>
+              <li><b>Icon</b> SVG outline en inactive, filled en active.</li>
+              <li><b>Label</b> Texto corto (10px). A veces se omite en Android.</li>
+              <li><b>Badge</b> Contador de notificaciones (opcional).</li>
+              <li><b>Active indicator</b> Color, underline, o pill de fondo.</li>
+              <li><b>FAB</b> (Material) boton elevado al centro.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>icon-only</b> Solo iconos, sin labels (Twitter X mobile).</li>
+            <li><b>icon + label</b> El default Material.</li>
+            <li><b>with-fab</b> Boton de accion principal elevado al centro.</li>
+            <li><b>pill-active</b> Active con pill de fondo (Material 3).</li>
+            <li><b>ios-style</b> Icon + label chico, active con color tint.</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="flex flex-col items-center gap-0.5 px-3 py-1 text-muted-foreground"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="text-[10px]">Home</span></div><span class="demo-group__label">inactive</span></div>
+            <div class="demo-group__item"><div class="flex flex-col items-center gap-0.5 px-3 py-1 text-foreground"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="text-[10px] font-semibold">Home</span></div><span class="demo-group__label">active</span></div>
+            <div class="demo-group__item"><div class="relative flex flex-col items-center gap-0.5 px-3 py-1 text-muted-foreground"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/></svg><span class="absolute top-0 right-1 h-4 w-4 rounded-full bg-destructive text-destructive-foreground text-[9px] font-bold grid place-items-center">9</span><span class="text-[10px]">Alerts</span></div><span class="demo-group__label">badge</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Material UI</th><th>Ant Design Mobile</th><th>iOS HIG</th><th>Shadcn</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>BottomNavigation</td><td>TabBar</td><td>Tab Bar</td><td>(custom nav)</td></tr>
+              <tr><td>Item</td><td>BottomNavigationAction</td><td>TabBar.Item</td><td>Tab Bar Item</td><td>(custom link)</td></tr>
+              <tr><td>Icon</td><td>icon prop</td><td>icon prop</td><td>SF Symbol</td><td>(svg)</td></tr>
+              <tr><td>Label</td><td>label prop</td><td>title prop</td><td>title</td><td>(span)</td></tr>
+              <tr><td>Badge</td><td>Badge</td><td>badge prop</td><td>badgeValue</td><td>Badge</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>App mobile con 3-5 secciones principales.</li>
+              <li>Necesitas acceso rapido siempre visible.</li>
+              <li>Las secciones son de igual jerarquia.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Desktop: usa Navbar o Sidebar.</li>
+              <li>Mas de 5 secciones: usa Drawer o Sidebar.</li>
+              <li>App de un solo flujo: no necesitas nav persistente.</li>
+              <li>Contenido dentro de una pantalla: usa Tabs.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1">
+              <p class="prompt-library__label">Mobile bottom nav with 5 icons and active indicator</p>
+              <pre class="prompt-library__text" id="p1-text">Create a mobile bottom navigation bar with 5 items: Home, Search, Add (center, elevated as FAB), Notifications, Profile. Use lucide icons. Active item has filled icon and bold label. Fixed to bottom with border-top and backdrop-blur. Only visible below md breakpoint.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p2">
+              <p class="prompt-library__label">Bottom nav with notification badge</p>
+              <pre class="prompt-library__text" id="p2-text">Build a bottom nav where the Notifications item shows a red badge with the unread count (from a prop). Badge is positioned top-right of the icon. Use Tailwind.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p3">
+              <p class="prompt-library__label">Bottom nav synced with React Router</p>
+              <pre class="prompt-library__text" id="p3-text">Create a bottom nav where each item is a NavLink from react-router-dom. Use useLocation to determine the active item by matching pathname startsWith the item's "to" prop.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p4">
+              <p class="prompt-library__label">Bottom nav with safe-area for iOS</p>
+              <pre class="prompt-library__text" id="p4-text">Build a bottom navigation bar that respects iOS safe-area-inset-bottom using pb-[env(safe-area-inset-bottom)]. The bar itself should be sticky at the bottom with a solid background.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="navbar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Navbar</h3><p class="text-sm text-muted-foreground">Equivalente desktop.</p></a>
+            <a href="drawer.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Drawer</h3><p class="text-sm text-muted-foreground">Si necesitas mas items.</p></a>
+            <a href="tabs.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Tabs</h3><p class="text-sm text-muted-foreground">Para vistas dentro de una pantalla.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://mui.com/material-ui/react-bottom-navigation/" target="_blank">MUI BottomNavigation</a></li>
+            <li><a href="https://m3.material.io/components/navigation-bar/overview" target="_blank">Material 3 Navigation Bar</a></li>
+            <li><a href="https://developer.apple.com/design/human-interface-guidelines/tab-bars" target="_blank">Apple HIG Tab Bars</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="drawer.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Drawer</span></a>
+          <a class="component-nav__link component-nav__link--next" href="mega-menu.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Mega Menu</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

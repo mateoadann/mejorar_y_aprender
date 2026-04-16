@@ -1,0 +1,280 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timeline — UI Components Atlas</title>
+    <meta name="description" content="Secuencia vertical de eventos ordenados cronológicamente." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Display de Datos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="card.html">01 — Card</a></li>
+          <li><a class="sidebar-nav__link" href="table.html">02 — Table</a></li>
+          <li><a class="sidebar-nav__link" href="list.html">03 — List</a></li>
+          <li><a class="sidebar-nav__link" href="tree-view.html">04 — Tree View</a></li>
+          <li><a class="sidebar-nav__link is-active" href="timeline.html">05 — Timeline</a></li>
+          <li><a class="sidebar-nav__link" href="accordion.html">06 — Accordion</a></li>
+          <li><a class="sidebar-nav__link" href="collapsible.html">07 — Collapsible</a></li>
+          <li><a class="sidebar-nav__link" href="carousel.html">08 — Carousel</a></li>
+          <li><a class="sidebar-nav__link" href="avatar.html">09 — Avatar</a></li>
+          <li><a class="sidebar-nav__link" href="badge-chip-tag.html">10 — Badge / Chip / Tag</a></li>
+          <li><a class="sidebar-nav__link" href="stat-card.html">11 — Stat Card</a></li>
+          <li><a class="sidebar-nav__link" href="kanban-card.html">12 — Kanban Card</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Display de Datos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Timeline</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Timeline</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Timeline</span>
+            <span class="component-page__alias">Activity feed</span>
+            <span class="component-page__alias">Event log</span>
+            <span class="component-page__alias">History</span>
+          </div>
+          <p class="component-page__lead">Secuencia vertical de eventos ordenados en el tiempo. Cada evento tiene un dot + connector + contenido. Ideal para activity feeds, order tracking, changelogs. <b>No confundas con Stepper:</b> Timeline es histórico (pasó), Stepper es procedural (vas a pasar).</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Timeline vertical con 5 eventos con distintos estados.</p>
+          <div class="demo-container">
+            <div class="demo-preview">
+              <ol class="w-full max-w-md relative">
+                <li class="flex gap-4 pb-6 relative">
+                  <div class="flex flex-col items-center">
+                    <div class="w-4 h-4 rounded-full bg-green-500 ring-4 ring-green-500/20 z-10"></div>
+                    <div class="w-0.5 flex-1 bg-border mt-1"></div>
+                  </div>
+                  <div class="flex-1 pb-4">
+                    <p class="text-sm font-semibold text-foreground">Project started</p>
+                    <p class="text-xs text-muted-foreground mt-0.5">Initial kickoff meeting with stakeholders</p>
+                    <p class="text-xs text-muted-foreground mt-1">Jan 12, 2026</p>
+                  </div>
+                </li>
+                <li class="flex gap-4 pb-6 relative">
+                  <div class="flex flex-col items-center">
+                    <div class="w-4 h-4 rounded-full bg-green-500 ring-4 ring-green-500/20 z-10"></div>
+                    <div class="w-0.5 flex-1 bg-border mt-1"></div>
+                  </div>
+                  <div class="flex-1 pb-4">
+                    <p class="text-sm font-semibold text-foreground">Design approved</p>
+                    <p class="text-xs text-muted-foreground mt-0.5">Mockups signed off by product team</p>
+                    <p class="text-xs text-muted-foreground mt-1">Feb 3, 2026</p>
+                  </div>
+                </li>
+                <li class="flex gap-4 pb-6 relative">
+                  <div class="flex flex-col items-center">
+                    <div class="w-4 h-4 rounded-full bg-green-500 ring-4 ring-green-500/20 z-10"></div>
+                    <div class="w-0.5 flex-1 bg-border mt-1"></div>
+                  </div>
+                  <div class="flex-1 pb-4">
+                    <p class="text-sm font-semibold text-foreground">Development started</p>
+                    <p class="text-xs text-muted-foreground mt-0.5">Frontend + backend teams kicked off sprint 1</p>
+                    <p class="text-xs text-muted-foreground mt-1">Feb 10, 2026</p>
+                  </div>
+                </li>
+                <li class="flex gap-4 pb-6 relative">
+                  <div class="flex flex-col items-center">
+                    <div class="w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-500/20 z-10 animate-pulse"></div>
+                    <div class="w-0.5 flex-1 bg-border mt-1"></div>
+                  </div>
+                  <div class="flex-1 pb-4">
+                    <p class="text-sm font-semibold text-foreground">Testing phase</p>
+                    <p class="text-xs text-muted-foreground mt-0.5">QA running regression + user acceptance tests</p>
+                    <p class="text-xs text-blue-400 mt-1">In progress</p>
+                  </div>
+                </li>
+                <li class="flex gap-4 relative">
+                  <div class="flex flex-col items-center">
+                    <div class="w-4 h-4 rounded-full border-2 border-border bg-background z-10"></div>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-semibold text-muted-foreground">Release</p>
+                    <p class="text-xs text-muted-foreground mt-0.5">Scheduled production deployment</p>
+                    <p class="text-xs text-muted-foreground mt-1">Pending</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Timeline.Root</div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">Timeline.Item</div>
+                  <div class="flex gap-2 text-xs">
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Dot / Icon</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Connector line</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Content (Title + Desc + Date)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> Lista vertical (<code>&lt;ol&gt;</code>) con posición relative.</li>
+              <li><b>Item</b> Cada evento. Flex horizontal.</li>
+              <li><b>Dot</b> Círculo que marca el punto exacto del evento.</li>
+              <li><b>Connector</b> Línea vertical que une items (el último no la tiene).</li>
+              <li><b>Content</b> Title + description + timestamp.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>vertical left</b> El default. Dot a la izquierda, contenido a la derecha.</li>
+            <li><b>alternating</b> Zig-zag: items pares a la derecha, impares a la izquierda.</li>
+            <li><b>horizontal</b> Pasos en fila. Menos común.</li>
+            <li><b>with icons</b> Dot reemplazado por iconos temáticos.</li>
+            <li><b>with status colors</b> Colores según estado (completed, active, error).</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="w-4 h-4 rounded-full bg-green-500 ring-4 ring-green-500/20"></div><span class="demo-group__label">completed</span></div>
+            <div class="demo-group__item"><div class="w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-500/20"></div><span class="demo-group__label">active</span></div>
+            <div class="demo-group__item"><div class="w-4 h-4 rounded-full border-2 border-border bg-background"></div><span class="demo-group__label">pending</span></div>
+            <div class="demo-group__item"><div class="w-4 h-4 rounded-full bg-red-500 ring-4 ring-red-500/20"></div><span class="demo-group__label">error</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>MUI Lab</th><th>Ant Design</th><th>Chakra (custom)</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Timeline</td><td>Timeline</td><td>Flex col</td></tr>
+              <tr><td>Item</td><td>TimelineItem</td><td>Timeline.Item</td><td>Flex row</td></tr>
+              <tr><td>Dot</td><td>TimelineDot</td><td>dot prop</td><td>Circle</td></tr>
+              <tr><td>Connector</td><td>TimelineConnector</td><td>(auto)</td><td>Divider</td></tr>
+              <tr><td>Content</td><td>TimelineContent</td><td>children</td><td>Box</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Historial de eventos (audit log, activity feed).</li>
+              <li>Order tracking (pedido → en camino → entregado).</li>
+              <li>Changelog visual.</li>
+              <li>Project milestones, version history.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Pasos secuenciales de un formulario: Stepper (módulo 02).</li>
+              <li>Datos tabulares: <a href="table.html" class="underline">Table</a>.</li>
+              <li>Lista plana sin tiempo: <a href="list.html" class="underline">List</a>.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Order tracking timeline</p>
+              <pre class="prompt-library__text" id="p1-text">Build a vertical Timeline with 5 steps for order tracking: Ordered, Payment confirmed, Shipped, Out for delivery, Delivered. Each step has a dot, title, description, and timestamp. Completed steps green, active blue with pulse animation, pending gray.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Activity feed with avatars</p>
+              <pre class="prompt-library__text" id="p2-text">Create an activity Timeline where each item has a user Avatar instead of a dot, action text (e.g., "Alice commented on..."), and a relative timestamp ("2 hours ago"). Connector line between items.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Alternating timeline</p>
+              <pre class="prompt-library__text" id="p3-text">Build an alternating (zig-zag) Timeline with items on the left and right of a central axis line. Use grid-cols-[1fr,auto,1fr] layout. Each item has a year label, title, and description.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Changelog timeline</p>
+              <pre class="prompt-library__text" id="p4-text">Create a Timeline for a product changelog. Each entry has version tag (v1.2.0), date, list of changes (Added, Fixed, Changed) with colored bullets. Most recent on top.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="list.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">List</h3><p class="text-sm text-muted-foreground">Lista sin tiempo.</p></a>
+            <a href="../02-navegacion/stepper.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Stepper</h3><p class="text-sm text-muted-foreground">Pasos procedurales.</p></a>
+            <a href="table.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Table</h3><p class="text-sm text-muted-foreground">Log tabular con más columnas.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://mui.com/material-ui/react-timeline/" target="_blank">MUI Timeline (Lab)</a></li>
+            <li><a href="https://ant.design/components/timeline" target="_blank">Ant Design Timeline</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="tree-view.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Tree View</span></a>
+          <a class="component-nav__link component-nav__link--next" href="accordion.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Accordion</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

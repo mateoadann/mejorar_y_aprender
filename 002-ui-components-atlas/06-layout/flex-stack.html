@@ -1,0 +1,270 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flex / Stack — UI Components Atlas</title>
+    <meta name="description" content="Layout unidimensional con Flexbox: horizontal (HStack) o vertical (VStack)." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Layout</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="container.html">01 — Container</a></li>
+          <li><a class="sidebar-nav__link" href="grid.html">02 — Grid</a></li>
+          <li><a class="sidebar-nav__link is-active" href="flex-stack.html">03 — Flex / Stack</a></li>
+          <li><a class="sidebar-nav__link" href="divider.html">04 — Divider</a></li>
+          <li><a class="sidebar-nav__link" href="spacer.html">05 — Spacer</a></li>
+          <li><a class="sidebar-nav__link" href="aspect-ratio.html">06 — Aspect Ratio</a></li>
+          <li><a class="sidebar-nav__link" href="scroll-area.html">07 — Scroll Area</a></li>
+          <li><a class="sidebar-nav__link" href="resizable.html">08 — Resizable</a></li>
+          <li><a class="sidebar-nav__link" href="separator-section.html">09 — Separator Section</a></li>
+          <li><a class="sidebar-nav__link" href="page-layout.html">10 — Page Layout</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Layout</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Flex / Stack</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Flex / Stack</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Flex</span>
+            <span class="component-page__alias">Stack</span>
+            <span class="component-page__alias">HStack</span>
+            <span class="component-page__alias">VStack</span>
+            <span class="component-page__alias">Box</span>
+          </div>
+          <p class="component-page__lead">
+            Layout lineal. Una sola dimensión: o filas (HStack) o columnas (VStack). El 80% del layout de una app real es esto. Grid es para estructuras 2D. Flex es para toolbars, listas, form rows, headers. Aprendé a distinguirlo y no vas a sufrir más.
+          </p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">HStack, VStack, y un header con justify-between: los tres patrones que usás todo el día.</p>
+          <div class="demo-container" data-atlas-demo>
+            <div class="demo-preview demo-preview--stack" style="gap: 1.5rem;">
+              <div class="w-full">
+                <div class="text-xs text-muted-foreground mb-2 font-mono">HStack · flex items-center gap-3 · toolbar</div>
+                <div class="flex items-center gap-3 rounded border-2 border-dashed border-border bg-muted/20 p-3">
+                  <button class="rounded bg-primary text-primary-foreground h-9 px-3 text-sm">Save</button>
+                  <button class="rounded border border-border h-9 px-3 text-sm">Cancel</button>
+                  <button class="rounded border border-border h-9 px-3 text-sm">Preview</button>
+                  <button class="rounded border border-border h-9 px-3 text-sm">Share</button>
+                </div>
+              </div>
+              <div class="w-full">
+                <div class="text-xs text-muted-foreground mb-2 font-mono">VStack · flex flex-col gap-3 · cards list</div>
+                <div class="flex flex-col gap-3 rounded border-2 border-dashed border-border bg-muted/20 p-3">
+                  <div class="rounded border border-border bg-background p-3 text-sm">Card item 1</div>
+                  <div class="rounded border border-border bg-background p-3 text-sm">Card item 2</div>
+                  <div class="rounded border border-border bg-background p-3 text-sm">Card item 3</div>
+                </div>
+              </div>
+              <div class="w-full">
+                <div class="text-xs text-muted-foreground mb-2 font-mono">justify-between · header layout</div>
+                <div class="flex items-center justify-between rounded border-2 border-dashed border-border bg-muted/20 p-3">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">A</div>
+                    <span class="text-sm font-semibold">Atlas</span>
+                  </div>
+                  <nav class="flex items-center gap-4 text-sm text-muted-foreground">
+                    <a href="#">Docs</a><a href="#">Blog</a><a href="#">Pricing</a>
+                  </nav>
+                  <button class="rounded bg-primary text-primary-foreground h-9 px-3 text-sm">Sign in</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomía</h2>
+          <p class="component-page__section-lead">Un flex container tiene 4 propiedades fundamentales.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border-2 border-dashed border-border bg-muted/20 p-4">
+                <div class="text-xs text-muted-foreground mb-2 font-mono">Flex.Root — display: flex + direction + align + justify + gap</div>
+                <div class="flex items-center justify-between gap-2 rounded border border-border bg-background p-3">
+                  <div class="rounded border border-dashed border-border px-3 py-2 text-xs text-muted-foreground font-mono">child 1</div>
+                  <div class="rounded border border-dashed border-border px-3 py-2 text-xs text-muted-foreground font-mono">child 2</div>
+                  <div class="rounded border border-dashed border-border px-3 py-2 text-xs text-muted-foreground font-mono">child 3</div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>flex-direction</b> row (horizontal) o column (vertical). Es el eje principal.</li>
+              <li><b>align-items</b> Alineación en el eje CRUZADO. center / start / end / stretch.</li>
+              <li><b>justify-content</b> Alineación en el eje PRINCIPAL. between / around / evenly / center.</li>
+              <li><b>gap</b> Espacio entre hijos. Mucho mejor que margin.</li>
+              <li><b>flex-wrap</b> wrap / nowrap. Si los items no entran, saltan a la siguiente línea.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes de align/justify</h2>
+          <p class="component-page__section-lead">Las combinaciones más comunes que vas a usar.</p>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="flex items-center gap-1 w-40 h-12 rounded border border-dashed border-border bg-muted/30 p-1"><div class="h-4 w-4 rounded bg-muted"></div><div class="h-4 w-4 rounded bg-muted"></div></div><span class="demo-group__label">items-center</span></div>
+            <div class="demo-group__item"><div class="flex items-start gap-1 w-40 h-12 rounded border border-dashed border-border bg-muted/30 p-1"><div class="h-4 w-4 rounded bg-muted"></div><div class="h-4 w-4 rounded bg-muted"></div></div><span class="demo-group__label">items-start</span></div>
+            <div class="demo-group__item"><div class="flex items-end gap-1 w-40 h-12 rounded border border-dashed border-border bg-muted/30 p-1"><div class="h-4 w-4 rounded bg-muted"></div><div class="h-4 w-4 rounded bg-muted"></div></div><span class="demo-group__label">items-end</span></div>
+            <div class="demo-group__item"><div class="flex justify-between items-center w-40 h-12 rounded border border-dashed border-border bg-muted/30 p-1"><div class="h-4 w-4 rounded bg-muted"></div><div class="h-4 w-4 rounded bg-muted"></div></div><span class="demo-group__label">justify-between</span></div>
+            <div class="demo-group__item"><div class="flex justify-center items-center gap-1 w-40 h-12 rounded border border-dashed border-border bg-muted/30 p-1"><div class="h-4 w-4 rounded bg-muted"></div><div class="h-4 w-4 rounded bg-muted"></div></div><span class="demo-group__label">justify-center</span></div>
+            <div class="demo-group__item"><div class="flex justify-evenly items-center w-40 h-12 rounded border border-dashed border-border bg-muted/30 p-1"><div class="h-4 w-4 rounded bg-muted"></div><div class="h-4 w-4 rounded bg-muted"></div><div class="h-4 w-4 rounded bg-muted"></div></div><span class="demo-group__label">justify-evenly</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">HStack vs VStack</h2>
+          <p class="component-page__section-lead">Mismo concepto, dos direcciones. Chakra los nombra explícitamente.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-border bg-muted/20 p-4">
+              <div class="text-xs text-muted-foreground mb-2 font-mono">HStack · flex-row</div>
+              <div class="flex flex-row gap-2">
+                <div class="rounded border border-dashed border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">A</div>
+                <div class="rounded border border-dashed border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">B</div>
+                <div class="rounded border border-dashed border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">C</div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/20 p-4">
+              <div class="text-xs text-muted-foreground mb-2 font-mono">VStack · flex-col</div>
+              <div class="flex flex-col gap-2">
+                <div class="rounded border border-dashed border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">A</div>
+                <div class="rounded border border-dashed border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">B</div>
+                <div class="rounded border border-dashed border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">C</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Tailwind</th><th>Material UI</th><th>Chakra</th><th>Ant Design</th></tr></thead>
+            <tbody>
+              <tr><td>Flex container</td><td>flex</td><td>&lt;Stack direction&gt; / &lt;Box display="flex"&gt;</td><td>&lt;Flex&gt;</td><td>&lt;Flex&gt;</td></tr>
+              <tr><td>Horizontal stack</td><td>flex-row</td><td>&lt;Stack direction="row"&gt;</td><td>&lt;HStack&gt;</td><td>&lt;Flex&gt;</td></tr>
+              <tr><td>Vertical stack</td><td>flex-col</td><td>&lt;Stack&gt; (default)</td><td>&lt;VStack&gt;</td><td>&lt;Flex vertical&gt;</td></tr>
+              <tr><td>Gap</td><td>gap-4</td><td>spacing=&#123;2&#125;</td><td>spacing=&#123;4&#125;</td><td>gap=&#123;16&#125;</td></tr>
+              <tr><td>Push to ends</td><td>justify-between</td><td>justifyContent="space-between"</td><td>justify="space-between"</td><td>justify="space-between"</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuándo usar y cuándo no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Toolbars, button groups, action bars</li>
+              <li>Headers con logo a la izquierda y nav a la derecha</li>
+              <li>Listas verticales de cards o items</li>
+              <li>Form rows (label + input + helper text)</li>
+              <li>Navegación tab-like</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Layouts 2D con filas Y columnas → Grid</li>
+              <li>Necesitás posiciones específicas (header arriba, sidebar izq, main) → Grid con areas</li>
+              <li>Solo querés centrar contenido en un max-width → Container</li>
+              <li>Estás armando un formulario complejo con alineación perfecta de columnas → Grid</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1">
+              <p class="prompt-library__label">Horizontal button toolbar</p>
+              <pre class="prompt-library__text" id="p1-text">Create a horizontal toolbar using flex with items-center and gap-3. Include 4 buttons: Save (primary), Cancel (outline), Preview (outline), Share (outline). All buttons h-9 px-3 text-sm.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p2">
+              <p class="prompt-library__label">Vertical stack of cards</p>
+              <pre class="prompt-library__text" id="p2-text">Create a VStack (flex flex-col gap-4) containing 3 card components. Each card has a title, description, and action button. The stack should stretch to full width of its container.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p3">
+              <p class="prompt-library__label">Header with logo and nav</p>
+              <pre class="prompt-library__text" id="p3-text">Create a sticky header using flex items-center justify-between with px-6 py-4. Left side: logo + brand name (flex items-center gap-2). Right side: nav links + user avatar.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p4">
+              <p class="prompt-library__label">Wrapping chip list</p>
+              <pre class="prompt-library__text" id="p4-text">Create a flex container with flex-wrap and gap-2 that holds a list of tag chips. Chips should wrap to the next line when they overflow the container width.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="grid.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors"><h3 class="font-semibold mb-1">Grid</h3><p class="text-sm text-muted-foreground">Cuando necesitás 2 ejes (filas Y columnas).</p></a>
+            <a href="spacer.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors"><h3 class="font-semibold mb-1">Spacer</h3><p class="text-sm text-muted-foreground">Complemento: empuja items a los extremos.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a class="underline" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout" target="_blank" rel="noopener">MDN — Flexbox</a></li>
+            <li><a class="underline" href="https://chakra-ui.com/docs/components/stack" target="_blank" rel="noopener">Chakra — Stack / HStack / VStack</a></li>
+            <li><a class="underline" href="https://mui.com/material-ui/react-stack/" target="_blank" rel="noopener">MUI — Stack</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" data-nav-prev href="grid.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name" data-nav-prev-name>Grid</span></a>
+          <a class="component-nav__link component-nav__link--next" href="divider.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Divider</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

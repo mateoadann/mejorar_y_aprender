@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Proyecto 3 — Video Editor AI Agent | Módulo 3</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 3</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 3</a></li>
+                        <li>Proyecto 03</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="tag">Advanced &middot; Proyecto 03</span>
+                        <h1 class="mt-0">Video Editor AI Agent</h1>
+                        <p class="lead">
+                            Forkeá un editor open source y buildeá un agente
+                            que entiende intent artístico. El usuario dice
+                            "hacelo cinematográfico" y el agente maneja cuts,
+                            transitions, color grading y sonido.
+                        </p>
+                    </div>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">Qué prueba este proyecto</div>
+                        <p>
+                            <strong>Multimodal AI + complex tool integration.</strong>
+                            No es solo texto. Vision, audio, timeline
+                            state, y una herramienta real de edición con su
+                            propio formato (EDL).
+                        </p>
+                    </div>
+
+                    <div class="callout tip slide-up">
+                        <div class="callout-title">Consejo práctico</div>
+                        <p>
+                            Forkeá Shotcut. Es open source, está en C++ con
+                            bindings de Python, tiene una arquitectura
+                            limpia y una comunidad activa. Te ahorra 6 meses
+                            de construir un editor desde cero.
+                        </p>
+                    </div>
+
+                    <h2>El challenge</h2>
+                    <p class="slide-up">
+                        "Hacelo cinematográfico" no es un comando. Es una
+                        dirección artística vaga que un humano editor puede
+                        interpretar porque vio 500 películas. Tu agente tiene
+                        que traducir eso a decisiones concretas: duración
+                        promedio de los cuts, qué LUT aplicar, cuándo
+                        desaturar, qué música poner debajo, cómo respirar el
+                        audio.
+                    </p>
+                    <p class="slide-up">
+                        Y después tiene que ejecutarlo sin que el render
+                        tarde 45 minutos cada vez que el user pide un ajuste.
+                        Esto es donde multimodal deja de ser un demo y se
+                        vuelve un problema real de ingeniería.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Pipeline multimodal</h2>
+                    <p class="slide-up" style="color: var(--color-muted, #64748b)">
+                        Dos streams paralelos — visión y audio — que
+                        fusionan en una representación compartida del intent
+                        del usuario.
+                    </p>
+
+                    <div class="diagram stagger" style="margin-top: var(--space-6)">
+                        <div class="diagram-box slide-up">
+                            <div class="label">Stream 01</div>
+                            <strong>Vision Model</strong>
+                            <p>
+                                Procesa cada frame (keyframes + sampling).
+                                Detecta escenas, objetos, iluminación,
+                                composición, color palette.
+                            </p>
+                        </div>
+                        <div class="diagram-box slide-up">
+                            <div class="label">Stream 02</div>
+                            <strong>Audio Model</strong>
+                            <p>
+                                Separa diálogo, música y ambient. Detecta
+                                beats, silencios, cambios de tono, puntos
+                                emocionales del track.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-down draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box primary slide-up">
+                            <div class="label">Fusion</div>
+                            <strong>Intent Representation</strong>
+                            <p>
+                                Embeddings combinados. Scene beats alineados
+                                con audio beats. El agente planea sobre esta
+                                representación, no sobre raw video.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-down draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box secondary slide-up">
+                            <div class="label">Output</div>
+                            <strong>EDL Plan</strong>
+                            <p>
+                                Edit Decision List validada contra el
+                                narrative arc. Ejecutable por Shotcut.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Decisiones arquitectónicas</h2>
+                    <div class="grid grid-2 stagger">
+                        <div class="card slide-up">
+                            <h4>Multimodal understanding</h4>
+                            <p>
+                                Vision model pasa por cada frame relevante.
+                                Audio model corre en paralelo sobre diálogo,
+                                música y ambient separados. Los dos streams
+                                se fusionan en un timeline unificado con
+                                tags semánticos.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Intent translation</h4>
+                            <p>
+                                "Cinematográfico" → slow pacing (cuts 80%
+                                más largos que el default), LUT desaturado,
+                                gaussian blur leve en background, música
+                                dramática. Cada adjetivo artístico mapea a
+                                parámetros concretos.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Scene detection</h4>
+                            <p>
+                                Frame diff + embedding similarity. Los
+                                cambios de escena no son solo cortes; son
+                                story beats. El agente detecta inicio, nudo
+                                y desenlace de cada secuencia.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>EDL generation</h4>
+                            <p>
+                                El agente genera el plan completo de edit
+                                decisions antes de ejecutar. Pasa por una
+                                validación narrativa: ¿tiene arco? ¿hay
+                                rhythm? Si no, replanea. El render viene
+                                después.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Incremental preview</h4>
+                            <p>
+                                Solo se rerenderean las sections que
+                                cambiaron. Cache de frames ya procesados,
+                                invalidación quirúrgica. Un ajuste de color
+                                no debería recalcular cortes.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Feedback incorporation</h4>
+                            <p>
+                                "Está muy oscuro" → el agente toma histogram
+                                de luminancia de los frames afectados,
+                                identifica rangos problemáticos y aplica
+                                correction targetted, no global.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Undo/redo con reasoning</h4>
+                            <p>
+                                Cada edit guarda su razón: "desaturé este
+                                segmento porque dijiste cinematográfico". Al
+                                deshacer no solo se revierte el valor, se
+                                revierte el intent, así el agente no lo
+                                vuelve a aplicar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Por qué este es advanced</h2>
+                    <p class="slide-up">
+                        Porque te fuerza a manejar multimodal AI en serio e
+                        integrar con una herramienta compleja que no fue
+                        diseñada para agentes. Esto te separa del 99% de
+                        gente que buildea chatbots genéricos. Si shipeás
+                        esto, tenés algo que mostrar que casi nadie más
+                        tiene.
+                    </p>
+
+                    <div class="callout success slide-up">
+                        <div class="callout-title">El portfolio filter</div>
+                        <p>
+                            Un proyecto como este, aunque sea imperfecto, te
+                            saca del pool de "hice un clon de ChatGPT" y te
+                            pone en el pool de "este loco entiende sistemas
+                            reales". Ese cambio de pool es el que mueve el
+                            salario.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="02-proyecto-2.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title">Coding Agent</span>
+                        </a>
+                        <a href="04-proyecto-4.html" class="pager-next">
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title">Personal Life OS</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">Módulo 3 &middot; Proyecto 03 &middot; Edición 2026</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

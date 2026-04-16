@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form · UI Components Atlas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      background: '#09090b', foreground: '#fafafa',
+      muted: { DEFAULT: '#27272a', foreground: '#a1a1aa' },
+      border: '#27272a', ring: '#d4d4d8',
+      primary: { DEFAULT: '#fafafa', foreground: '#18181b' },
+      secondary: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      destructive: { DEFAULT: '#7f1d1d', foreground: '#fafafa' },
+      accent: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      popover: { DEFAULT: '#18181b', foreground: '#fafafa' },
+      input: '#27272a',
+    }, borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' } } } }
+  </script>
+  <link rel="stylesheet" href="../css/atlas.css" />
+  <link rel="stylesheet" href="../css/demos.css" />
+</head>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+      <a href="../index.html" class="font-semibold text-lg">UI Components Atlas</a>
+      <input type="search" placeholder="Buscar componente..." class="flex-1 max-w-md bg-input border border-border rounded-md px-3 py-2 text-sm" />
+    </div>
+  </header>
+
+  <div class="component-page max-w-7xl mx-auto px-6 py-8 grid grid-cols-[220px_1fr] gap-8">
+    <aside class="sidebar-nav">
+      <h4 class="text-xs uppercase tracking-wider text-muted-foreground mb-3">Módulo 07</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="./data-table.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">01. Data Table</a></li>
+        <li><a href="./form.html" class="block px-2 py-1.5 rounded is-active bg-muted text-foreground">02. Form</a></li>
+        <li><a href="./form-wizard.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">03. Form Wizard</a></li>
+        <li><a href="./drag-drop.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">04. Drag & Drop</a></li>
+        <li><a href="./infinite-scroll.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">05. Infinite Scroll</a></li>
+        <li><a href="./virtualized-list.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">06. Virtualized List</a></li>
+        <li><a href="./rich-text-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">07. Rich Text Editor</a></li>
+        <li><a href="./code-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">08. Code Editor</a></li>
+        <li><a href="./kanban-board.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">09. Kanban Board</a></li>
+        <li><a href="./masked-input.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">10. Masked Input</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <nav class="breadcrumbs text-sm text-muted-foreground mb-6">
+        <a href="../index.html" class="hover:text-foreground">Atlas</a><span class="mx-2">/</span>
+        <a href="./index.html" class="hover:text-foreground">Patrones Avanzados</a><span class="mx-2">/</span>
+        <span class="text-foreground">Form</span>
+      </nav>
+
+      <header class="component-page__header mb-10">
+        <h1 class="component-page__title text-4xl font-bold mb-3">Form</h1>
+        <div class="component-page__aliases flex flex-wrap gap-2 mb-4">
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Shadcn Form</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">MUI FormControl</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Ant Form</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">React Hook Form</span>
+        </div>
+        <p class="component-page__lead text-lg text-muted-foreground max-w-3xl">Formulario completo con validación en vivo, error handling, accessibility y estados de submit. No es un input suelto — es el patrón que junta label + control + description + error message.</p>
+      </header>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Demo interactiva</h2>
+        <div class="demo-container border border-border rounded-lg p-6 bg-muted/10">
+          <form id="demo-form" class="max-w-md space-y-4" novalidate>
+            <div>
+              <label for="f-name" class="block text-sm font-medium mb-1.5">Nombre completo</label>
+              <input id="f-name" name="name" type="text" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm" />
+              <p class="text-xs text-muted-foreground mt-1">Así va a aparecer en tu perfil público.</p>
+              <p class="text-xs text-red-400 mt-1 hidden" data-err="name"></p>
+            </div>
+            <div>
+              <label for="f-email" class="block text-sm font-medium mb-1.5">Email</label>
+              <input id="f-email" name="email" type="email" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm" />
+              <p class="text-xs text-red-400 mt-1 hidden" data-err="email"></p>
+            </div>
+            <div>
+              <label for="f-pass" class="block text-sm font-medium mb-1.5">Password</label>
+              <input id="f-pass" name="password" type="password" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm" />
+              <p class="text-xs text-muted-foreground mt-1">Mínimo 8 caracteres.</p>
+              <p class="text-xs text-red-400 mt-1 hidden" data-err="password"></p>
+            </div>
+            <div>
+              <label for="f-country" class="block text-sm font-medium mb-1.5">País</label>
+              <select id="f-country" name="country" class="w-full bg-input border border-border rounded-md px-3 py-2 text-sm">
+                <option value="">Seleccioná...</option>
+                <option value="ar">Argentina</option>
+                <option value="uy">Uruguay</option>
+                <option value="cl">Chile</option>
+                <option value="mx">México</option>
+              </select>
+              <p class="text-xs text-red-400 mt-1 hidden" data-err="country"></p>
+            </div>
+            <button type="submit" id="f-submit" class="w-full bg-primary text-primary-foreground font-medium rounded-md px-4 py-2 text-sm hover:opacity-90">Crear cuenta</button>
+            <p id="f-success" class="text-sm text-green-400 hidden">Cuenta creada. Enviamos el link de confirmación al email.</p>
+          </form>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Anatomía</h2>
+        <div class="border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border-2 border-dashed border-border rounded p-4">
+            <div class="text-xs text-muted-foreground mb-2">Form (provider con schema)</div>
+            <div class="border border-border rounded p-3 space-y-2">
+              <div class="text-xs text-muted-foreground">FormField → FormItem</div>
+              <div class="pl-4 space-y-1 text-xs">
+                <div class="px-2 py-1 bg-muted rounded">FormLabel</div>
+                <div class="px-2 py-1 bg-muted rounded">FormControl → Input / Select / Textarea</div>
+                <div class="px-2 py-1 bg-muted rounded">FormDescription (hint)</div>
+                <div class="px-2 py-1 bg-muted rounded">FormMessage (error text)</div>
+              </div>
+            </div>
+            <div class="border border-border rounded p-3 mt-3 text-xs">
+              <div class="text-muted-foreground mb-1">Submit area</div>
+              <span class="px-2 py-1 bg-muted rounded">Button (loading state)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Variantes</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <li class="border border-border rounded p-3"><strong>Single-column</strong> — default, mobile-first.</li>
+          <li class="border border-border rounded p-3"><strong>Two-column</strong> — para forms largos en desktop.</li>
+          <li class="border border-border rounded p-3"><strong>Inline</strong> — filters, search bars.</li>
+          <li class="border border-border rounded p-3"><strong>Con fieldsets</strong> — secciones agrupadas.</li>
+          <li class="border border-border rounded p-3"><strong>Validación on blur</strong> — valida al salir del campo.</li>
+          <li class="border border-border rounded p-3"><strong>Validación on submit</strong> — valida al enviar.</li>
+          <li class="border border-border rounded p-3"><strong>Con server errors</strong> — errores del backend.</li>
+          <li class="border border-border rounded p-3"><strong>Optimistic UI</strong> — actualiza UI antes del response.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Estados</h2>
+        <ul class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+          <li class="border border-border rounded p-3">Pristine</li>
+          <li class="border border-border rounded p-3">Dirty</li>
+          <li class="border border-border rounded p-3">Validating</li>
+          <li class="border border-border rounded p-3">Submitting</li>
+          <li class="border border-border rounded p-3">Success</li>
+          <li class="border border-border rounded p-3">Error (campo)</li>
+          <li class="border border-border rounded p-3">Error (servidor)</li>
+          <li class="border border-border rounded p-3">Disabled</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Vocabulario cross-framework</h2>
+        <div class="border border-border rounded-lg overflow-hidden">
+          <table class="vocab-table w-full text-sm">
+            <thead class="bg-muted/50"><tr><th class="px-4 py-2 text-left">Framework</th><th class="px-4 py-2 text-left">Componente</th><th class="px-4 py-2 text-left">Notas</th></tr></thead>
+            <tbody>
+              <tr class="border-t border-border"><td class="px-4 py-2">Shadcn</td><td class="px-4 py-2"><code>Form + FormField</code></td><td class="px-4 py-2">React Hook Form + Zod</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">MUI</td><td class="px-4 py-2"><code>TextField + FormControl</code></td><td class="px-4 py-2">Formik o RHF</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Ant Design</td><td class="px-4 py-2"><code>Form + Form.Item</code></td><td class="px-4 py-2">Validación built-in</td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Chakra</td><td class="px-4 py-2"><code>FormControl + FormLabel</code></td><td class="px-4 py-2">+ FormErrorMessage</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Cuándo usar</h2>
+        <div class="use-case-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-green-400">Sí, usalo cuando</h3>
+            <ul class="use-case-list do space-y-2 text-sm text-muted-foreground">
+              <li>Signup, login, edit profile, settings</li>
+              <li>Necesitás validación custom</li>
+              <li>Hay dependencias entre campos</li>
+            </ul>
+          </div>
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-red-400">No, evitalo cuando</h3>
+            <ul class="use-case-list dont space-y-2 text-sm text-muted-foreground">
+              <li>Un solo input → input standalone</li>
+              <li>Búsqueda simple → Search bar</li>
+              <li>Flujo largo secuencial → Form Wizard</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Prompts para coding agents</h2>
+        <div class="prompt-library space-y-3">
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Signup</div>
+            <p class="prompt-library__text text-sm font-mono">Signup form with inline validation for email format and password strength meter.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Multi-section</div>
+            <p class="prompt-library__text text-sm font-mono">Settings form with fieldset groups, collapsible sections and error summary at top.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Optimistic</div>
+            <p class="prompt-library__text text-sm font-mono">Edit profile form with optimistic UI update and rollback on server error.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Zod schema</div>
+            <p class="prompt-library__text text-sm font-mono">React Hook Form with Zod schema for user registration (name, email, password, country).</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Alternativas relacionadas</h2>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><strong class="text-foreground">Form Wizard</strong> — forms largos divididos en pasos.</li>
+          <li><strong class="text-foreground">Masked Input</strong> — para campos con formato estricto.</li>
+          <li><strong class="text-foreground">Dialog con Form</strong> — para edit rápido inline.</li>
+        </ul>
+      </section>
+
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Referencias</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://ui.shadcn.com/docs/components/form" class="text-blue-400 hover:underline" target="_blank">Shadcn — Form</a></li>
+          <li><a href="https://react-hook-form.com/" class="text-blue-400 hover:underline" target="_blank">React Hook Form</a></li>
+          <li><a href="https://zod.dev/" class="text-blue-400 hover:underline" target="_blank">Zod</a></li>
+        </ul>
+      </section>
+
+      <nav class="component-nav border-t border-border pt-6 flex justify-between text-sm">
+        <a href="./data-table.html" class="component-nav__link text-muted-foreground hover:text-foreground">← Data Table</a>
+        <a href="./form-wizard.html" class="component-nav__link text-muted-foreground hover:text-foreground">Form Wizard →</a>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const form = document.getElementById('demo-form');
+      const success = document.getElementById('f-success');
+      const btn = document.getElementById('f-submit');
+      function showErr(name, msg) {
+        const el = form.querySelector(`[data-err="${name}"]`);
+        if (msg) { el.textContent = msg; el.classList.remove('hidden'); }
+        else { el.classList.add('hidden'); }
+      }
+      function validate(field) {
+        const v = field.value.trim();
+        if (field.name === 'name') return v.length >= 2 ? '' : 'Ingresá al menos 2 caracteres.';
+        if (field.name === 'email') return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) ? '' : 'Email inválido.';
+        if (field.name === 'password') return v.length >= 8 ? '' : 'Mínimo 8 caracteres.';
+        if (field.name === 'country') return v ? '' : 'Elegí un país.';
+        return '';
+      }
+      form.querySelectorAll('input, select').forEach(f => {
+        f.addEventListener('blur', () => showErr(f.name, validate(f)));
+      });
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        let ok = true;
+        form.querySelectorAll('input, select').forEach(f => {
+          const err = validate(f);
+          if (err) ok = false;
+          showErr(f.name, err);
+        });
+        if (!ok) return;
+        btn.disabled = true;
+        btn.textContent = 'Creando...';
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = 'Crear cuenta';
+          success.classList.remove('hidden');
+          form.reset();
+          setTimeout(() => success.classList.add('hidden'), 3000);
+        }, 900);
+      });
+    })();
+  </script>
+  <script src="../js/atlas.js"></script>
+  <script src="../js/demos.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

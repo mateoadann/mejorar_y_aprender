@@ -1,0 +1,158 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overlays — UI Components Atlas</title>
+    <meta name="description" content="Paneles, menús y capas que aparecen sobre el contenido principal." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Overlays</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link is-active" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="dropdown-menu.html">01 — Dropdown Menu</a></li>
+          <li><a class="sidebar-nav__link" href="context-menu.html">02 — Context Menu</a></li>
+          <li><a class="sidebar-nav__link" href="hover-card.html">03 — Hover Card</a></li>
+          <li><a class="sidebar-nav__link" href="menubar.html">04 — Menubar</a></li>
+          <li><a class="sidebar-nav__link" href="sheet.html">05 — Sheet</a></li>
+          <li><a class="sidebar-nav__link" href="modal-fullscreen.html">06 — Modal Fullscreen</a></li>
+          <li><a class="sidebar-nav__link" href="toast-overlay-system.html">07 — Toast Overlay System</a></li>
+          <li><a class="sidebar-nav__link" href="backdrop.html">08 — Backdrop</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Overlays</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Overlays</h1>
+          <p class="component-page__lead">
+            Paneles, menús y capas que aparecen <b>por encima</b> del contenido principal. Son los componentes que rompen el flujo vertical de la página para mostrar algo temporal: un menú de acciones, un panel lateral de edit, un lightbox, una notificación stackeada. Si los elegís mal, bloqueás al usuario o perdés jerarquía visual.
+          </p>
+          <p class="component-page__lead">
+            <b>Regla del módulo:</b> cada overlay responde a una pregunta distinta. ¿Es una lista de acciones estructuradas? DropdownMenu. ¿Es una barra de menús estilo desktop? Menubar. ¿Es un edit rápido contextual? Sheet. ¿Es inmersivo y bloquea todo? Modal Fullscreen. Si confundís estas categorías, el usuario pierde el hilo.
+          </p>
+          <div class="rounded-md border border-border bg-muted/20 p-3 text-sm text-muted-foreground mt-3">
+            <b class="text-foreground">Solapamiento con el módulo 03:</b> Dialog, AlertDialog, Popover y Tooltip viven en <a class="underline" href="../03-feedback-estado/index.html">Feedback y Estado</a>. Acá cubrimos las variantes que no vimos allá: menús estructurados, hover cards, barras de menús, sheets, modals fullscreen, sistemas de toast y el backdrop base.
+          </div>
+        </header>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Los 8 componentes</h2>
+          <div class="category-grid">
+            <a href="dropdown-menu.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">01 — Dropdown Menu</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">DropdownMenu · Menu</p>
+              <p class="text-sm text-muted-foreground">Lista de acciones estructuradas, disparada por un trigger button.</p>
+            </a>
+            <a href="context-menu.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">02 — Context Menu</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">ContextMenu · Right-click</p>
+              <p class="text-sm text-muted-foreground">El mismo menú, pero disparado por click derecho.</p>
+            </a>
+            <a href="hover-card.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">03 — Hover Card</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">HoverCard · Link preview</p>
+              <p class="text-sm text-muted-foreground">Tarjeta rica con contenido al hover (profile, link preview).</p>
+            </a>
+            <a href="menubar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">04 — Menubar</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Menubar · App menu</p>
+              <p class="text-sm text-muted-foreground">Barra horizontal con múltiples menús, estilo desktop app.</p>
+            </a>
+            <a href="sheet.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">05 — Sheet</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Sheet · Side panel</p>
+              <p class="text-sm text-muted-foreground">Panel que desliza desde un borde para forms contextuales rápidos.</p>
+            </a>
+            <a href="modal-fullscreen.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">06 — Modal Fullscreen</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Lightbox · Fullscreen Dialog</p>
+              <p class="text-sm text-muted-foreground">Modal que ocupa toda la pantalla (media, onboarding, mobile).</p>
+            </a>
+            <a href="toast-overlay-system.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">07 — Toast Overlay System</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Toaster · SnackbarProvider</p>
+              <p class="text-sm text-muted-foreground">Sistema que stackea, posiciona y coordina múltiples toasts.</p>
+            </a>
+            <a href="backdrop.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors">
+              <h3 class="font-semibold mb-1">08 — Backdrop</h3>
+              <p class="text-xs text-muted-foreground mb-2 font-mono">Overlay · Scrim · Mask</p>
+              <p class="text-sm text-muted-foreground">Capa semitransparente que da foco al overlay de encima.</p>
+            </a>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Cheat sheet: cuál usar</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Necesito...</th><th>Usá</th><th>NO uses</th></tr></thead>
+            <tbody>
+              <tr><td>Lista de acciones de un botón (edit, delete, duplicate)</td><td>Dropdown Menu</td><td>Popover, Select</td></tr>
+              <tr><td>Acciones avanzadas al click derecho sobre un ítem</td><td>Context Menu</td><td>Dropdown Menu (invisible)</td></tr>
+              <tr><td>Preview rico al hover de un @username o link</td><td>Hover Card</td><td>Tooltip, Popover</td></tr>
+              <tr><td>Múltiples menús agrupados (File, Edit, View)</td><td>Menubar</td><td>Dropdown individual × N</td></tr>
+              <tr><td>Edit rápido contextual sin salir de la lista</td><td>Sheet</td><td>Dialog, Drawer</td></tr>
+              <tr><td>Lightbox / onboarding / mobile workflow</td><td>Modal Fullscreen</td><td>Dialog normal</td></tr>
+              <tr><td>Coordinar 5+ toasts async simultáneos</td><td>Toast Overlay System</td><td>Toast manual</td></tr>
+              <tr><td>Capa base detrás de todo overlay bloqueante</td><td>Backdrop</td><td>div ad-hoc sin z-index ni scroll lock</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Reglas comunes a todos los overlays</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>Portal:</b> siempre montalos en un portal afuera del DOM parent. Evita problemas de overflow hidden y z-index.</li>
+            <li><b>Focus trap:</b> los bloqueantes (Dialog, Sheet, Modal) deben atrapar el foco dentro.</li>
+            <li><b>ESC to close:</b> todos deben cerrarse con la tecla Escape (salvo AlertDialog destructivo).</li>
+            <li><b>Click outside:</b> los no bloqueantes deben cerrarse al click afuera.</li>
+            <li><b>Scroll lock:</b> los bloqueantes deben lockear el scroll del body mientras están abiertos.</li>
+            <li><b>Animaciones:</b> fade + scale o slide. Nunca "aparecer" de golpe, rompe la percepción de jerarquía.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

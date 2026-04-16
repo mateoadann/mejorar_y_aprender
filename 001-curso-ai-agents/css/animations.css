@@ -1,0 +1,261 @@
+/* ==========================================================================
+   animations.css — Animaciones reutilizables activadas por JS al entrar
+   en el viewport. Respetan prefers-reduced-motion.
+   ========================================================================== */
+
+/* Keyframes ---------------------------------------------------------------- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(32px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-32px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(32px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.6);
+    }
+    50% {
+        transform: scale(1.04);
+        box-shadow: 0 0 0 12px rgba(255, 107, 53, 0);
+    }
+}
+
+@keyframes drawLine {
+    from {
+        stroke-dashoffset: 1000;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes drawLineBar {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes floatUp {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* .fade-in
+   Estado inicial invisible. JS añade .visible cuando entra al viewport.  */
+.fade-in {
+    opacity: 0;
+    transition:
+        opacity 600ms ease,
+        transform 600ms ease;
+    transition-delay: var(--animate-delay, 0ms);
+}
+
+.fade-in.visible {
+    opacity: 1;
+}
+
+/* .slide-up
+   Estado inicial desplazado y translúcido. Al ser visible, vuelve.       */
+.slide-up {
+    opacity: 0;
+    transform: translateY(32px);
+    transition:
+        opacity 600ms ease,
+        transform 600ms ease;
+    transition-delay: var(--animate-delay, 0ms);
+}
+
+.slide-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* .slide-in-left / .slide-in-right
+   Variantes laterales para entradas desde los costados.                  */
+.slide-in-left {
+    opacity: 0;
+    transform: translateX(-32px);
+    transition:
+        opacity 600ms ease,
+        transform 600ms ease;
+    transition-delay: var(--animate-delay, 0ms);
+}
+
+.slide-in-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slide-in-right {
+    opacity: 0;
+    transform: translateX(32px);
+    transition:
+        opacity 600ms ease,
+        transform 600ms ease;
+    transition-delay: var(--animate-delay, 0ms);
+}
+
+.slide-in-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* .pulse
+   Animación continua usada para llamar atención a puntos clave.          */
+.pulse {
+    animation: pulse 2.4s ease-in-out infinite;
+    border-radius: var(--radius-full);
+}
+
+/* .float
+   Flotación suave vertical, para decorar elementos.                      */
+.float {
+    animation: floatUp 4s ease-in-out infinite;
+}
+
+/* .draw-line
+   Animación de línea dibujándose. Pensada para SVG con stroke-dasharray
+   o para barras que escalan horizontalmente.                             */
+.draw-line {
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 800ms ease;
+    transition-delay: var(--animate-delay, 0ms);
+}
+
+.draw-line.visible {
+    transform: scaleX(1);
+}
+
+.draw-line-svg path,
+.draw-line-svg line {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+}
+
+.draw-line-svg.visible path,
+.draw-line-svg.visible line {
+    animation: drawLine 1.5s ease forwards;
+    animation-delay: var(--animate-delay, 0ms);
+}
+
+/* .shimmer
+   Efecto de brillo pasando por el elemento. Útil para placeholders.      */
+.shimmer {
+    background: linear-gradient(
+        90deg,
+        var(--bg-raised) 0%,
+        var(--bg-overlay) 50%,
+        var(--bg-raised) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Stagger helpers — permiten retrasar animaciones en hijos consecutivos.   */
+.stagger > *:nth-child(1) {
+    --animate-delay: 0ms;
+}
+.stagger > *:nth-child(2) {
+    --animate-delay: 100ms;
+}
+.stagger > *:nth-child(3) {
+    --animate-delay: 200ms;
+}
+.stagger > *:nth-child(4) {
+    --animate-delay: 300ms;
+}
+.stagger > *:nth-child(5) {
+    --animate-delay: 400ms;
+}
+.stagger > *:nth-child(6) {
+    --animate-delay: 500ms;
+}
+.stagger > *:nth-child(7) {
+    --animate-delay: 600ms;
+}
+.stagger > *:nth-child(8) {
+    --animate-delay: 700ms;
+}
+
+/* prefers-reduced-motion -------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .fade-in,
+    .slide-up,
+    .slide-in-left,
+    .slide-in-right,
+    .draw-line {
+        opacity: 1;
+        transform: none;
+    }
+
+    .pulse,
+    .float,
+    .shimmer {
+        animation: none;
+    }
+}

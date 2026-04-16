@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Table · UI Components Atlas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      background: '#09090b', foreground: '#fafafa',
+      muted: { DEFAULT: '#27272a', foreground: '#a1a1aa' },
+      border: '#27272a', ring: '#d4d4d8',
+      primary: { DEFAULT: '#fafafa', foreground: '#18181b' },
+      secondary: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      destructive: { DEFAULT: '#7f1d1d', foreground: '#fafafa' },
+      accent: { DEFAULT: '#27272a', foreground: '#fafafa' },
+      popover: { DEFAULT: '#18181b', foreground: '#fafafa' },
+      input: '#27272a',
+    }, borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' } } } }
+  </script>
+  <link rel="stylesheet" href="../css/atlas.css" />
+  <link rel="stylesheet" href="../css/demos.css" />
+</head>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+      <a href="../index.html" class="font-semibold text-lg">UI Components Atlas</a>
+      <input type="search" placeholder="Buscar componente..." class="flex-1 max-w-md bg-input border border-border rounded-md px-3 py-2 text-sm" />
+    </div>
+  </header>
+
+  <div class="component-page max-w-7xl mx-auto px-6 py-8 grid grid-cols-[220px_1fr] gap-8">
+    <aside class="sidebar-nav">
+      <h4 class="text-xs uppercase tracking-wider text-muted-foreground mb-3">Módulo 07</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="./data-table.html" class="block px-2 py-1.5 rounded is-active bg-muted text-foreground">01. Data Table</a></li>
+        <li><a href="./form.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">02. Form</a></li>
+        <li><a href="./form-wizard.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">03. Form Wizard</a></li>
+        <li><a href="./drag-drop.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">04. Drag & Drop</a></li>
+        <li><a href="./infinite-scroll.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">05. Infinite Scroll</a></li>
+        <li><a href="./virtualized-list.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">06. Virtualized List</a></li>
+        <li><a href="./rich-text-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">07. Rich Text Editor</a></li>
+        <li><a href="./code-editor.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">08. Code Editor</a></li>
+        <li><a href="./kanban-board.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">09. Kanban Board</a></li>
+        <li><a href="./masked-input.html" class="block px-2 py-1.5 rounded text-muted-foreground hover:text-foreground">10. Masked Input</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <nav class="breadcrumbs text-sm text-muted-foreground mb-6">
+        <a href="../index.html" class="hover:text-foreground">Atlas</a>
+        <span class="mx-2">/</span>
+        <a href="./index.html" class="hover:text-foreground">Patrones Avanzados</a>
+        <span class="mx-2">/</span>
+        <span class="text-foreground">Data Table</span>
+      </nav>
+
+      <header class="component-page__header mb-10">
+        <h1 class="component-page__title text-4xl font-bold mb-3">Data Table</h1>
+        <div class="component-page__aliases flex flex-wrap gap-2 mb-4">
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Shadcn DataTable</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">MUI DataGrid</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Ant Table</span>
+          <span class="component-page__alias text-xs px-2 py-1 rounded bg-muted text-muted-foreground">TanStack Table</span>
+        </div>
+        <p class="component-page__lead text-lg text-muted-foreground max-w-3xl">Tabla avanzada con sorting, filtering, pagination, selection y column visibility. Es EL patrón dominante en dashboards admin. No es un componente — es una receta que combina Table + Toolbar + Pagination + Dropdowns.</p>
+      </header>
+
+      <!-- Demo -->
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Demo interactiva</h2>
+        <div class="demo-container border border-border rounded-lg p-6 bg-muted/10">
+          <div class="flex items-center gap-3 mb-4">
+            <input type="search" id="dt-search" placeholder="Buscar por nombre o email..." class="flex-1 max-w-sm bg-input border border-border rounded-md px-3 py-2 text-sm" />
+            <span id="dt-count" class="text-xs text-muted-foreground"></span>
+          </div>
+          <div class="border border-border rounded-md overflow-hidden">
+            <table class="w-full text-sm">
+              <thead class="bg-muted/50">
+                <tr>
+                  <th class="px-4 py-3 text-left w-10"><input type="checkbox" id="dt-select-all" /></th>
+                  <th class="px-4 py-3 text-left cursor-pointer select-none" data-sort="name">Name <span class="text-muted-foreground text-xs">↕</span></th>
+                  <th class="px-4 py-3 text-left cursor-pointer select-none" data-sort="email">Email <span class="text-muted-foreground text-xs">↕</span></th>
+                  <th class="px-4 py-3 text-left">Role</th>
+                  <th class="px-4 py-3 text-left cursor-pointer select-none" data-sort="status">Status <span class="text-muted-foreground text-xs">↕</span></th>
+                </tr>
+              </thead>
+              <tbody id="dt-body"></tbody>
+            </table>
+          </div>
+          <div class="flex items-center justify-between mt-4">
+            <span id="dt-info" class="text-xs text-muted-foreground"></span>
+            <div class="flex gap-2">
+              <button id="dt-prev" class="px-3 py-1.5 text-xs border border-border rounded-md hover:bg-muted">Prev</button>
+              <button id="dt-next" class="px-3 py-1.5 text-xs border border-border rounded-md hover:bg-muted">Next</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Anatomía -->
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Anatomía</h2>
+        <div class="border border-border rounded-lg p-6 bg-muted/10">
+          <div class="border-2 border-dashed border-border rounded p-4">
+            <div class="text-xs text-muted-foreground mb-2">DataTable Root</div>
+            <div class="border border-border rounded p-3 mb-3">
+              <div class="text-xs text-muted-foreground mb-2">Toolbar</div>
+              <div class="flex gap-2 text-xs">
+                <span class="px-2 py-1 bg-muted rounded">Search Input</span>
+                <span class="px-2 py-1 bg-muted rounded">Filter Dropdown</span>
+                <span class="px-2 py-1 bg-muted rounded">Column Visibility</span>
+                <span class="px-2 py-1 bg-muted rounded">Export</span>
+              </div>
+            </div>
+            <div class="border border-border rounded p-3 mb-3">
+              <div class="text-xs text-muted-foreground mb-2">Table</div>
+              <div class="space-y-2 text-xs">
+                <div class="px-2 py-1 bg-muted rounded">TableHeader (con sort indicators)</div>
+                <div class="px-2 py-1 bg-muted rounded">TableBody → TableRow (con checkbox selection)</div>
+              </div>
+            </div>
+            <div class="border border-border rounded p-3">
+              <div class="text-xs text-muted-foreground mb-2">Pagination</div>
+              <div class="flex gap-2 text-xs">
+                <span class="px-2 py-1 bg-muted rounded">Page info</span>
+                <span class="px-2 py-1 bg-muted rounded">Prev/Next</span>
+                <span class="px-2 py-1 bg-muted rounded">Rows per page</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Variantes -->
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Variantes</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <li class="border border-border rounded p-3"><strong>Sortable</strong> — click en header ordena asc/desc.</li>
+          <li class="border border-border rounded p-3"><strong>Filterable</strong> — search + filtros por columna.</li>
+          <li class="border border-border rounded p-3"><strong>Paginated</strong> — server-side o client-side.</li>
+          <li class="border border-border rounded p-3"><strong>Selectable</strong> — single o multi con checkbox.</li>
+          <li class="border border-border rounded p-3"><strong>Expandable rows</strong> — click para ver detalle.</li>
+          <li class="border border-border rounded p-3"><strong>Virtualized</strong> — para 10K+ rows sin lag.</li>
+          <li class="border border-border rounded p-3"><strong>Column resizing</strong> — drag del borde del header.</li>
+          <li class="border border-border rounded p-3"><strong>Column reordering</strong> — drag del header.</li>
+          <li class="border border-border rounded p-3"><strong>Fixed columns</strong> — sticky left/right.</li>
+          <li class="border border-border rounded p-3"><strong>Row grouping</strong> — agrupa por columna.</li>
+        </ul>
+      </section>
+
+      <!-- Estados -->
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Estados</h2>
+        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+          <li class="border border-border rounded p-3">Loading (skeleton rows)</li>
+          <li class="border border-border rounded p-3">Empty (sin datos)</li>
+          <li class="border border-border rounded p-3">Error (fetch falló)</li>
+          <li class="border border-border rounded p-3">Selected row</li>
+          <li class="border border-border rounded p-3">Sorted column</li>
+          <li class="border border-border rounded p-3">Filtered</li>
+        </ul>
+      </section>
+
+      <!-- Vocabulario -->
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Vocabulario cross-framework</h2>
+        <div class="border border-border rounded-lg overflow-hidden">
+          <table class="vocab-table w-full text-sm">
+            <thead class="bg-muted/50">
+              <tr><th class="px-4 py-2 text-left">Framework</th><th class="px-4 py-2 text-left">Componente</th><th class="px-4 py-2 text-left">Package</th></tr>
+            </thead>
+            <tbody>
+              <tr class="border-t border-border"><td class="px-4 py-2">Shadcn</td><td class="px-4 py-2"><code>DataTable</code> (receta)</td><td class="px-4 py-2"><code>@tanstack/react-table</code></td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">MUI</td><td class="px-4 py-2"><code>DataGrid</code> / <code>DataGridPro</code></td><td class="px-4 py-2"><code>@mui/x-data-grid</code></td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">Ant Design</td><td class="px-4 py-2"><code>Table</code></td><td class="px-4 py-2"><code>antd</code></td></tr>
+              <tr class="border-t border-border"><td class="px-4 py-2">TanStack</td><td class="px-4 py-2">Headless Table</td><td class="px-4 py-2"><code>@tanstack/react-table</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Cuándo usar -->
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Cuándo usar</h2>
+        <div class="use-case-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-green-400">Sí, usalo cuando</h3>
+            <ul class="use-case-list do space-y-2 text-sm text-muted-foreground">
+              <li>Dashboards admin con listas de entidades</li>
+              <li>Más de 20 items que necesitan exploración</li>
+              <li>Usuario necesita sort, filter, search, bulk actions</li>
+            </ul>
+          </div>
+          <div class="border border-border rounded-lg p-5">
+            <h3 class="use-case-list__title font-semibold mb-3 text-red-400">No, evitalo cuando</h3>
+            <ul class="use-case-list dont space-y-2 text-sm text-muted-foreground">
+              <li>Datos simples read-only → Table (Módulo 04)</li>
+              <li>Muy pocos items (&lt;10) → List</li>
+              <li>Datos jerárquicos → Tree View</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Prompts -->
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Prompts para coding agents</h2>
+        <div class="prompt-library space-y-3">
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Básico</div>
+            <p class="prompt-library__text text-sm font-mono">Data table with sortable columns, search filter and pagination (10 rows per page).</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Con selection</div>
+            <p class="prompt-library__text text-sm font-mono">Data table with row selection, bulk actions toolbar and column visibility toggle dropdown.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Performance</div>
+            <p class="prompt-library__text text-sm font-mono">Virtualized data table for 10000+ rows with sticky header and fixed first column.</p>
+          </div>
+          <div class="prompt-library__item border border-border rounded-lg p-4">
+            <div class="prompt-library__label text-xs text-muted-foreground mb-1">Server-side</div>
+            <p class="prompt-library__text text-sm font-mono">Data table with server-side pagination, debounced search and URL-synced filters.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Alternativas -->
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Alternativas relacionadas</h2>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><strong class="text-foreground">Table (Módulo 04)</strong> — para datos simples read-only.</li>
+          <li><strong class="text-foreground">List</strong> — para pocos items sin interacciones complejas.</li>
+          <li><strong class="text-foreground">Kanban Board</strong> — si el foco es status/workflow.</li>
+          <li><strong class="text-foreground">Tree View</strong> — para datos jerárquicos.</li>
+        </ul>
+      </section>
+
+      <!-- Referencias -->
+      <section class="component-page__section mb-12">
+        <h2 class="component-page__section-title text-2xl font-semibold mb-4">Referencias</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://ui.shadcn.com/docs/components/data-table" class="text-blue-400 hover:underline" target="_blank">Shadcn — Data Table</a></li>
+          <li><a href="https://tanstack.com/table/latest" class="text-blue-400 hover:underline" target="_blank">TanStack Table</a></li>
+          <li><a href="https://mui.com/x/react-data-grid/" class="text-blue-400 hover:underline" target="_blank">MUI X DataGrid</a></li>
+        </ul>
+      </section>
+
+      <!-- Footer nav -->
+      <nav class="component-nav border-t border-border pt-6 flex justify-between text-sm">
+        <a href="./index.html" class="component-nav__link text-muted-foreground hover:text-foreground">← Módulo 07</a>
+        <a href="./form.html" class="component-nav__link text-muted-foreground hover:text-foreground">Form →</a>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const users = [
+        { id: 1, name: 'Ana García', email: 'ana@acme.com', role: 'Admin', status: 'active' },
+        { id: 2, name: 'Bruno López', email: 'bruno@acme.com', role: 'Editor', status: 'active' },
+        { id: 3, name: 'Carla Méndez', email: 'carla@acme.com', role: 'Viewer', status: 'inactive' },
+        { id: 4, name: 'Diego Ruiz', email: 'diego@acme.com', role: 'Admin', status: 'active' },
+        { id: 5, name: 'Elena Torres', email: 'elena@acme.com', role: 'Editor', status: 'pending' },
+        { id: 6, name: 'Facundo Paz', email: 'facu@acme.com', role: 'Viewer', status: 'active' },
+        { id: 7, name: 'Gisela Ríos', email: 'gisela@acme.com', role: 'Editor', status: 'active' },
+        { id: 8, name: 'Hernán Suárez', email: 'hernan@acme.com', role: 'Admin', status: 'inactive' },
+        { id: 9, name: 'Inés Fernández', email: 'ines@acme.com', role: 'Viewer', status: 'active' },
+        { id: 10, name: 'Julián Ortiz', email: 'julian@acme.com', role: 'Editor', status: 'pending' },
+      ];
+      const PAGE = 5;
+      let sortKey = null, sortDir = 1, query = '', page = 0;
+      const body = document.getElementById('dt-body');
+      const info = document.getElementById('dt-info');
+      const count = document.getElementById('dt-count');
+
+      function render() {
+        let data = users.filter(u => {
+          if (!query) return true;
+          const q = query.toLowerCase();
+          return u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q);
+        });
+        if (sortKey) {
+          data = [...data].sort((a, b) => (a[sortKey] > b[sortKey] ? 1 : -1) * sortDir);
+        }
+        const total = data.length;
+        const start = page * PAGE;
+        const pageData = data.slice(start, start + PAGE);
+        body.replaceChildren();
+        pageData.forEach(u => {
+          const tr = document.createElement('tr');
+          tr.className = 'border-t border-border hover:bg-muted/30';
+          const cells = [
+            { html: 'checkbox' },
+            { text: u.name },
+            { text: u.email },
+            { text: u.role },
+            { badge: u.status },
+          ];
+          cells.forEach(c => {
+            const td = document.createElement('td');
+            td.className = 'px-4 py-3';
+            if (c.html === 'checkbox') {
+              const cb = document.createElement('input');
+              cb.type = 'checkbox';
+              td.appendChild(cb);
+            } else if (c.badge) {
+              const span = document.createElement('span');
+              const colors = { active: 'bg-green-900 text-green-300', inactive: 'bg-muted text-muted-foreground', pending: 'bg-yellow-900 text-yellow-300' };
+              span.className = 'text-xs px-2 py-0.5 rounded ' + colors[c.badge];
+              span.textContent = c.badge;
+              td.appendChild(span);
+            } else {
+              td.textContent = c.text;
+            }
+            tr.appendChild(td);
+          });
+          body.appendChild(tr);
+        });
+        info.textContent = `${start + 1}-${Math.min(start + PAGE, total)} de ${total}`;
+        count.textContent = `${total} usuarios`;
+      }
+
+      document.getElementById('dt-search').addEventListener('input', e => { query = e.target.value; page = 0; render(); });
+      document.getElementById('dt-prev').addEventListener('click', () => { if (page > 0) { page--; render(); } });
+      document.getElementById('dt-next').addEventListener('click', () => { page++; render(); });
+      document.querySelectorAll('[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+          const key = th.dataset.sort;
+          if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
+          render();
+        });
+      });
+      render();
+    })();
+  </script>
+  <script src="../js/atlas.js"></script>
+  <script src="../js/demos.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

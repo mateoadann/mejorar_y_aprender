@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Proyecto 5 — Enterprise Workflow Agent | Módulo 3</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 3</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 3</a></li>
+                        <li>Proyecto 05</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="tag primary">Master &middot; Proyecto 05 &middot; Final boss</span>
+                        <h1 class="mt-0">Enterprise Workflow Agent</h1>
+                        <p class="lead">
+                            El final boss. Un agente que runs a business.
+                            Monitorea Slack y Jira, planea execution,
+                            delega tasks, reporta outcomes con full audit
+                            logs. Production-grade en serio.
+                        </p>
+                    </div>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">Qué prueba este proyecto</div>
+                        <p>
+                            <strong>Production-grade orchestration.</strong>
+                            Combina orchestration, security, observability
+                            y multi-agent delegation en un sistema
+                            escalable. Esto es lo que demuestra que estás
+                            listo para el tier de $150K+.
+                        </p>
+                    </div>
+
+                    <div class="callout warning slide-up">
+                        <div class="callout-title">Conexión con Módulo 1</div>
+                        <p>
+                            Este proyecto es donde <strong>Managed Agents</strong>
+                            brilla. Podés armar todo esto con managed
+                            agents + MCP en lugar de construir cada
+                            primitiva desde cero. La diferencia son meses
+                            de infra vs un sistema operativo la semana que
+                            viene.
+                        </p>
+                    </div>
+
+                    <h2>El challenge</h2>
+                    <p class="slide-up">
+                        Un agente personal falla silenciosamente y como
+                        mucho te arruina un día. Un agente enterprise
+                        falla y te manda un email a todo el board con data
+                        equivocada, borra un ticket en Jira que no tenía
+                        que tocar, o aprueba un PR roto en producción.
+                        Esto no es juguete.
+                    </p>
+                    <p class="slide-up">
+                        Por eso este proyecto no es "hacé que funcione",
+                        es "hacé que falle bien". RBAC, audit trails,
+                        observability, human-in-the-loop para ops
+                        críticas, circuit breakers. La mayoría de estas
+                        decisiones no son sobre el LLM, son sobre el
+                        sistema que lo rodea.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <h2 class="slide-up">Arquitectura completa</h2>
+                    <p class="slide-up" style="color: var(--color-muted, #64748b)">
+                        Event bus que ingesta eventos de múltiples
+                        sistemas, un orchestrator que planea, specialists
+                        que ejecutan, audit log immutable y observability
+                        stack sobre todo.
+                    </p>
+
+                    <div class="diagram stagger" style="margin-top: var(--space-6)">
+                        <div class="diagram-box slide-up">
+                            <div class="label">Layer 01</div>
+                            <strong>Event Bus</strong>
+                            <p>
+                                Slack events, Jira webhooks, emails,
+                                monitoring alerts. Pattern recognition →
+                                trigger workflow templates.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-down draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box primary slide-up">
+                            <div class="label">Layer 02</div>
+                            <strong>Orchestrator</strong>
+                            <p>
+                                Recibe el trigger, planea workflow
+                                multi-step, decide paralelismo, delega a
+                                specialists, maneja durable state.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-down draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box slide-up">
+                            <div class="label">Layer 03a</div>
+                            <strong>Communication Specialist</strong>
+                            <p>
+                                Slack, email, notificaciones. Con tone
+                                control por audiencia.
+                            </p>
+                        </div>
+                        <div class="diagram-box slide-up">
+                            <div class="label">Layer 03b</div>
+                            <strong>Data Specialist</strong>
+                            <p>
+                                Queries a DBs, ETL, reportes.
+                                Read-first, write con approval.
+                            </p>
+                        </div>
+                        <div class="diagram-box slide-up">
+                            <div class="label">Layer 03c</div>
+                            <strong>Analysis Specialist</strong>
+                            <p>
+                                Crunching de métricas, detección de
+                                anomalías, forecasting.
+                            </p>
+                        </div>
+                        <div class="diagram-box slide-up">
+                            <div class="label">Layer 03d</div>
+                            <strong>Documentation Specialist</strong>
+                            <p>
+                                Actualiza Notion, Confluence, changelogs.
+                                Templates versionados.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-down draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box secondary slide-up">
+                            <div class="label">Layer 04</div>
+                            <strong>Audit Log + Observability</strong>
+                            <p>
+                                Immutable log de cada decisión, trace de
+                                cada LLM call, métricas de success rate,
+                                latencia, costo. Todo queryable.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Decisiones arquitectónicas</h2>
+                    <div class="grid grid-2 stagger">
+                        <div class="card slide-up">
+                            <h4>Event-driven architecture</h4>
+                            <p>
+                                Listeners en Slack, Jira, email y
+                                monitoring systems. Pattern recognition
+                                mapea eventos a workflow templates
+                                conocidos. Si el patrón es nuevo, se
+                                escala al humano antes de improvisar.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Workflow orchestration</h4>
+                            <p>
+                                Steps con dependencies explícitas,
+                                paralelismo donde los steps son
+                                independientes, durable state para
+                                recovery después de crash o restart. Nada
+                                se pierde a mitad de ejecución.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Multi-agent delegation</h4>
+                            <p>
+                                Orchestrator es coordinator puro. Delega
+                                a specialists (communication, data,
+                                analysis, documentation). Cada specialist
+                                tiene su system prompt, sus tools y sus
+                                límites.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Self-healing</h4>
+                            <p>
+                                Monitor de success/failure por step.
+                                Decide retry vs escalate según contexto.
+                                Exponential backoff para errores
+                                transient, circuit breakers para errores
+                                que repiten.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Audit trail</h4>
+                            <p>
+                                Immutable log de todo: qué se decidió,
+                                por qué, quién autorizó, qué outcome tuvo.
+                                Append-only, con hash chains. Esto no es
+                                nice-to-have; es el requirement legal.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>RBAC</h4>
+                            <p>
+                                Los permisos del agente están limitados a
+                                los del usuario que invocó el workflow.
+                                Ops sensitivas (pagos, borrar recursos,
+                                cambios en prod) requieren approval
+                                humano explícito. Sin excepciones.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Observability</h4>
+                            <p>
+                                Trace de cada LLM call: inputs, outputs,
+                                latency, tokens. Métricas agregadas:
+                                success rate por workflow, time-to-complete,
+                                cost per outcome. Dashboards vivos.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Human-in-the-loop</h4>
+                            <p>
+                                Antes de ejecutar workflows críticos, el
+                                agente propone el plan completo y
+                                highlight-ea los pasos high-risk.
+                                Esperar aprobación por Slack. Ejecutar
+                                solo si llega el OK.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Workflow learning</h4>
+                            <p>
+                                Post-workflow, evaluación automática del
+                                outcome. Patterns exitosos se guardan
+                                como templates reutilizables. Los
+                                templates evolucionan con uso.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Cost management</h4>
+                            <p>
+                                Track de tokens por workflow, budget
+                                limits por team, alertas cuando un
+                                workflow se sale de lo esperado. Prompt
+                                optimization continua en los templates
+                                caros.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Por qué este es master</h2>
+                    <p class="slide-up">
+                        Porque no es un proyecto de LLM. Es un proyecto
+                        de sistemas distribuidos con un LLM adentro. El
+                        orchestrator, el event bus, el audit log, el
+                        RBAC, la observability stack — todo esto lo tenés
+                        que entender bien antes de siquiera pensar en el
+                        prompt engineering. Es ingeniería de verdad.
+                    </p>
+
+                    <div class="callout success slide-up">
+                        <div class="callout-title">Portfolio closer</div>
+                        <p>
+                            Este proyecto es el portfolio closer. Si lo
+                            shipeás, estás unfireable. La gente que sabe
+                            armar esto cabe en un avión. Las empresas
+                            están pagando lo que sea por encontrarlas.
+                        </p>
+                    </div>
+
+                    <div class="callout tip slide-up">
+                        <div class="callout-title">Cierre del módulo</div>
+                        <p>
+                            Ahora andá a construir. El mercado premia
+                            shipping, no estudiar. Leíste el roadmap
+                            completo; la parte difícil empieza cuando
+                            cerrás esta pestaña y abrís el editor.
+                        </p>
+                    </div>
+
+                    <div style="margin: var(--space-8) 0; text-align: center;">
+                        <button
+                            class="btn btn-primary"
+                            data-mark-completed="modulo-3/leccion-5"
+                        >
+                            Marcar módulo como completado
+                        </button>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="04-proyecto-4.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title">Personal Life OS</span>
+                        </a>
+                        <a href="index.html" class="pager-next">
+                            <span class="pager-label">Volver &rarr;</span>
+                            <span class="pager-title">Índice del módulo</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">Módulo 3 &middot; Proyecto 05 &middot; Edición 2026</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

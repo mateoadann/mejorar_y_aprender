@@ -1,0 +1,198 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Upload — UI Components Atlas</title>
+    <meta name="description" content="Dropzone + file list. Drag-over, progress, preview, validacion de tamaño." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" /><link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header"><div class="atlas-header__inner"><a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark">A</span><span>UI Components Atlas</span></a><div class="atlas-header__search"><div class="atlas-search"><svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" data-atlas-search-input autocomplete="off" spellcheck="false" /><kbd class="atlas-search__kbd">⌘K</kbd><div class="atlas-search__results" role="listbox" data-atlas-search-results></div></div></div><div class="atlas-header__meta" data-atlas-meta></div></div></header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav">
+        <h2 class="sidebar-nav__title">Inputs y Controles</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="button.html">01 — Button</a></li>
+          <li><a class="sidebar-nav__link" href="input.html">02 — Input</a></li>
+          <li><a class="sidebar-nav__link" href="textarea.html">03 — Textarea</a></li>
+          <li><a class="sidebar-nav__link" href="select.html">04 — Select</a></li>
+          <li><a class="sidebar-nav__link" href="combobox.html">05 — Combobox</a></li>
+          <li><a class="sidebar-nav__link" href="autocomplete.html">06 — Autocomplete</a></li>
+          <li><a class="sidebar-nav__link" href="checkbox.html">07 — Checkbox</a></li>
+          <li><a class="sidebar-nav__link" href="radio-group.html">08 — Radio Group</a></li>
+          <li><a class="sidebar-nav__link" href="switch-toggle.html">09 — Switch / Toggle</a></li>
+          <li><a class="sidebar-nav__link" href="slider.html">10 — Slider</a></li>
+          <li><a class="sidebar-nav__link" href="date-picker.html">11 — Date Picker</a></li>
+          <li><a class="sidebar-nav__link is-active" href="file-upload.html">12 — File Upload</a></li>
+          <li><a class="sidebar-nav__link" href="otp-input.html">13 — OTP Input</a></li>
+          <li><a class="sidebar-nav__link" href="rating.html">14 — Rating</a></li>
+          <li><a class="sidebar-nav__link" href="search-bar.html">15 — Search Bar</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs"><li><a href="../index.html">Atlas</a></li><li class="breadcrumbs__sep">/</li><li><a href="index.html">Inputs y Controles</a></li><li class="breadcrumbs__sep">/</li><li aria-current="page">File Upload</li></ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">File Upload</h1>
+          <div class="component-page__aliases"><span class="component-page__alias">FileUpload</span><span class="component-page__alias">Dropzone</span><span class="component-page__alias">FileInput</span></div>
+          <p class="component-page__lead">Subir archivos desde el filesystem del usuario. Se compone de un dropzone area + input type=file oculto + lista de archivos seleccionados con progress, preview y boton de quitar.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Dropzone con file list simulada.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <div class="w-full max-w-md space-y-3">
+                <div class="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/20 p-8 text-center hover:border-foreground/40 cursor-pointer">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-muted-foreground mb-3"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <p class="text-sm text-foreground font-medium">Arrastra archivos aqui o hace click</p>
+                  <p class="text-xs text-muted-foreground mt-1">PNG, JPG o PDF (max 10 MB)</p>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center gap-3 rounded-md border border-border bg-background p-3">
+                    <div class="h-8 w-8 rounded bg-muted flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm truncate">contract-v2.pdf</p>
+                      <div class="mt-1 flex items-center gap-2"><div class="h-1 flex-1 rounded-full bg-muted"><div class="h-full w-full rounded-full bg-foreground"></div></div><span class="text-xs text-muted-foreground">2.4 MB</span></div>
+                    </div>
+                    <button class="text-muted-foreground hover:text-destructive"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                  </div>
+                  <div class="flex items-center gap-3 rounded-md border border-border bg-background p-3">
+                    <div class="h-8 w-8 rounded bg-muted flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm truncate">hero-image.jpg</p>
+                      <div class="mt-1 flex items-center gap-2"><div class="h-1 flex-1 rounded-full bg-muted"><div class="h-full rounded-full bg-foreground" style="width:60%"></div></div><span class="text-xs text-muted-foreground">60%</span></div>
+                    </div>
+                    <button class="text-muted-foreground hover:text-destructive"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">FileUpload.Root</div>
+                <div class="rounded border-2 border-dashed border-border bg-background p-3 mb-2"><div class="text-xs font-mono text-muted-foreground">Dropzone (click + drag target)</div><div class="text-xs font-mono text-muted-foreground">+ &lt;input type="file" hidden /&gt;</div></div>
+                <div class="rounded border border-border bg-background p-3"><div class="text-xs font-mono text-muted-foreground mb-1">FileList</div><div class="text-xs font-mono text-muted-foreground pl-2">└ FileItem (Icon + Name + Size + Progress + Remove)</div></div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Dropzone</b> Area grande clickeable que tambien acepta drag.</li>
+              <li><b>Input hidden</b> El input file nativo, escondido.</li>
+              <li><b>FileList</b> Lista de archivos seleccionados.</li>
+              <li><b>FileItem</b> Cada archivo: icon, nombre, tamaño, progress, remove.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><button class="inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Subir archivo</button><span class="demo-group__label">button-only</span></div>
+            <div class="demo-group__item"><div class="h-20 w-40 rounded-lg border-2 border-dashed border-border bg-muted/20 flex items-center justify-center text-xs text-muted-foreground">Arrastra aqui</div><span class="demo-group__label">dropzone</span></div>
+            <div class="demo-group__item"><div class="h-20 w-40 rounded-lg border border-border bg-muted/40 flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div><span class="demo-group__label">image-preview</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="h-16 w-32 rounded border-2 border-dashed border-border"></div><span class="demo-group__label">idle</span></div>
+            <div class="demo-group__item"><div class="h-16 w-32 rounded border-2 border-dashed border-foreground bg-muted/40"></div><span class="demo-group__label">drag-over</span></div>
+            <div class="demo-group__item"><div class="h-16 w-32 rounded border-2 border-dashed border-border bg-muted/20 flex items-center justify-center"><svg class="animate-spin h-5 w-5 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></div><span class="demo-group__label">uploading</span></div>
+            <div class="demo-group__item"><div class="h-16 w-32 rounded border-2 border-dashed border-destructive"></div><span class="demo-group__label">rejected</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>HTML nativo</th><th>Shadcn / Radix</th><th>Material UI</th><th>ARIA role</th></tr></thead>
+            <tbody>
+              <tr><td>Input</td><td>&lt;input type="file"&gt;</td><td>Input hidden</td><td>input hidden</td><td>button</td></tr>
+              <tr><td>Dropzone</td><td>(no nativo)</td><td>react-dropzone</td><td>(custom)</td><td>button</td></tr>
+              <tr><td>Multiple</td><td>multiple attr</td><td>multiple prop</td><td>multiple prop</td><td>-</td></tr>
+              <tr><td>Accept types</td><td>accept attr</td><td>accept prop</td><td>accept prop</td><td>-</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Subir documentos, imagenes, attachments.</li>
+              <li>Queres drag & drop.</li>
+              <li>Necesitas mostrar progress de subida.</li>
+              <li>Multi-file con limite.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Basta con la camara: usa capture attr.</li>
+              <li>Es un avatar circular: usa Avatar Uploader especializado.</li>
+              <li>Import masivo: considera CSV importer con preview.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1"><p class="prompt-library__label">Image dropzone with preview and upload progress</p><pre class="prompt-library__text" id="p1-text">Build an image upload component using react-dropzone. Accept only image/*. Show thumbnails in a grid. Each thumbnail displays a progress bar while uploading. Use PUT to [UPLOAD_URL].</pre><button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p2"><p class="prompt-library__label">Multi-file upload with max 5 files</p><pre class="prompt-library__text" id="p2-text">Create a FileUpload with max 5 files, max 10 MB each, PDF only. Show a list with name, size and remove button. Disable dropzone when limit is reached. Use shadcn styling.</pre><button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button></div>
+            <div class="prompt-library__item" id="p3"><p class="prompt-library__label">Avatar uploader with crop</p><pre class="prompt-library__text" id="p3-text">Build a round avatar uploader: clicking opens file picker, after select show a modal with a square crop tool, save cropped image to [ENDPOINT].</pre><button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="input.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Input</h3><p class="text-sm text-muted-foreground">Cuando solo necesitas type=file nativo.</p></a>
+            <a href="button.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Button</h3><p class="text-sm text-muted-foreground">Para upload con un boton simple.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://react-dropzone.js.org/" target="_blank">react-dropzone</a></li>
+            <li><a href="https://uploadthing.com/" target="_blank">Uploadthing</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav">
+          <a class="component-nav__link" href="date-picker.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Date Picker</span></a>
+          <a class="component-nav__link component-nav__link--next" href="otp-input.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">OTP Input</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

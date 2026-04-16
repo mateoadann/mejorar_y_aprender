@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Práctica: agente con memoria | Módulo 2</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 2</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 02</a></li>
+                        <li>Lección 05</li>
+                    </ul>
+
+                    <span class="tag primary fade-in">Lección 05</span>
+                    <h1 class="slide-up">
+                        Práctica: agente de soporte con memoria
+                    </h1>
+                    <p class="lead slide-up" data-animate-delay="100">
+                        Llegó la hora de ensuciarse las manos. Vas a
+                        construir un agente de soporte técnico con memoria
+                        persistente usando Cognee. Paso a paso. Con código
+                        que funciona. Y con un checklist al final para
+                        verificar que entendiste cada decisión, no que
+                        copiaste y pegaste.
+                    </p>
+
+                    <div class="callout info">
+                        <div class="callout-title">Qué vas a construir</div>
+                        <p>
+                            Un <code>CogneeMemoryAgent</code> que ingiere
+                            tickets de soporte, construye un graph+vector
+                            de conocimiento, resuelve consultas
+                            multi-hop, consolida facts repetidos con
+                            <code>memify()</code> y resuelve pronombres
+                            dentro de una sesión.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">Paso 1 &mdash; Setup</h2>
+                    <p>
+                        Instalá Cognee y configurá la API key de tu
+                        provider de LLM favorito (OpenAI, Anthropic,
+                        etc.). Cognee usa un modelo para la fase de
+                        extracción de entidades durante
+                        <code>cognify()</code>.
+                    </p>
+
+                    <div class="code-block fade-in">
+                        <div class="code-block-header">
+                            <span>bash &middot; install</span>
+                        </div>
+                        <pre><code>pip install cognee
+export LLM_API_KEY="sk-..."</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">
+                        Paso 2 &mdash; Ingresar 5 tickets
+                    </h2>
+                    <p>
+                        Vamos a usar 5 tickets de ejemplo que representan
+                        casos típicos: reportes de usuario, incidentes de
+                        infraestructura y escalaciones. Cada uno se
+                        ingresa con <code>cognee.add()</code>.
+                    </p>
+
+                    <div class="code-block fade-in">
+                        <div class="code-block-header">
+                            <span>python &middot; ingest tickets</span>
+                        </div>
+                        <pre><code>import asyncio
+import cognee
+
+TICKETS = [
+    "Ticket #1042: Alice, lead engineer on Project Atlas, "
+    "reports the staging API returns 502 intermittently since Monday.",
+
+    "Ticket #1043: Bob from Project Nova escalates a DB connection "
+    "timeout. The Postgres cluster in us-east-1 is the suspect.",
+
+    "Ticket #1044: On Tuesday at 15:30 UTC, the production "
+    "PostgreSQL cluster in us-east-1 went down for 4 hours. "
+    "Services affected: Atlas, Nova, Helix.",
+
+    "Ticket #1045: Carol, PM of Project Helix, asks why dashboards "
+    "showed stale data on Tuesday afternoon.",
+
+    "Ticket #1046: Infra team confirms the Tuesday outage root cause "
+    "was a runaway vacuum process on the primary replica."
+]
+
+async def ingest():
+    for t in TICKETS:
+        await cognee.add(t)
+
+asyncio.run(ingest())</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">Paso 3 &mdash; Correr cognify()</h2>
+                    <p>
+                        Acá Cognee hace el trabajo pesado: clasifica,
+                        chunkea, extrae entidades (Alice, Atlas, Postgres,
+                        us-east-1, Tuesday outage...), arma las
+                        relaciones, dedup e indexa en vector + graph.
+                        Tardarse unos segundos es normal: está corriendo
+                        varios llamados al LLM.
+                    </p>
+
+                    <div class="code-block fade-in">
+                        <div class="code-block-header">
+                            <span>python &middot; build the memory</span>
+                        </div>
+                        <pre><code>async def build():
+    await cognee.cognify()
+    print("Memoria construida. Entidades y relaciones extraídas.")
+
+asyncio.run(build())</code></pre>
+                    </div>
+
+                    <div class="callout tip">
+                        <div class="callout-title">Qué inspeccionar</div>
+                        <p>
+                            Si podés, abrí el graph store (Kuzu por
+                            default) y mirá los nodos creados. Vas a ver
+                            <code>Alice &rarr; leads &rarr; Atlas</code>,
+                            <code
+                                >Atlas &rarr; depends_on &rarr; Postgres</code
+                            >, <code
+                                >Postgres &rarr; affected_by &rarr;
+                                Tuesday_Outage</code
+                            >. Esa cadena es la razón por la que vector
+                            solo falla.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">
+                        Paso 4 &mdash; 3 queries con distintos SearchType
+                    </h2>
+                    <p>
+                        Ahora la parte divertida. Vamos a hacer la misma
+                        pregunta multi-hop con tres modes distintos y
+                        comparar resultados. Esto te enseña por qué el
+                        mode importa.
+                    </p>
+
+                    <div class="code-block fade-in">
+                        <div class="code-block-header">
+                            <span
+                                >python &middot; compare search modes</span
+                            >
+                        </div>
+                        <pre><code>from cognee.api.v1.search import SearchType
+
+QUERY = "Was Alice's project affected by Tuesday's outage?"
+
+async def compare_modes():
+    # Mode 1: RAG clásico — solo vector similarity
+    rag = await cognee.search(
+        query_type=SearchType.RAG_COMPLETION,
+        query_text=QUERY,
+    )
+    print("RAG_COMPLETION:", rag)
+
+    # Mode 2: Graph + LLM synthesis — el default
+    graph = await cognee.search(
+        query_type=SearchType.GRAPH_COMPLETION,
+        query_text=QUERY,
+    )
+    print("GRAPH_COMPLETION:", graph)
+
+    # Mode 3: Con chain-of-thought
+    cot = await cognee.search(
+        query_type=SearchType.GRAPH_COMPLETION_COT,
+        query_text=QUERY,
+    )
+    print("GRAPH_COMPLETION_COT:", cot)
+
+asyncio.run(compare_modes())</code></pre>
+                    </div>
+
+                    <div class="callout warning">
+                        <div class="callout-title">Qué observar</div>
+                        <p>
+                            RAG_COMPLETION probablemente te devuelva algo
+                            vago o incompleto (le falta el fact puente).
+                            GRAPH_COMPLETION te da la respuesta completa:
+                            sí, Atlas fue afectado porque depende de
+                            Postgres us-east-1, que cayó el martes.
+                            GRAPH_COMPLETION_COT te muestra el
+                            razonamiento paso a paso. Anotá las
+                            diferencias. Eso es la lección.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">
+                        Paso 5 &mdash; memify() sobre tickets nuevos
+                    </h2>
+                    <p>
+                        Ahora agregá tickets adicionales que repiten un
+                        patrón: más outages en el mismo cluster, mismos
+                        días de la semana. Después corré
+                        <code>memify()</code> y volvé a consultar. Vas a
+                        ver cómo la memoria consolida patrones.
+                    </p>
+
+                    <div class="code-block fade-in">
+                        <div class="code-block-header">
+                            <span>python &middot; memify pass</span>
+                        </div>
+                        <pre><code>NEW_TICKETS = [
+    "Ticket #1055: Tuesday again. Postgres us-east-1 had a "
+    "slowdown between 15:00 and 16:00. Services Atlas and Nova "
+    "reported stale reads.",
+
+    "Ticket #1067: Tuesday outage repeated. 14:45 UTC. "
+    "Primary replica swap took 12 minutes.",
+]
+
+async def consolidate():
+    for t in NEW_TICKETS:
+        await cognee.add(t)
+    await cognee.cognify()
+    await cognee.memify()
+
+    result = await cognee.search(
+        query_type=SearchType.TEMPORAL,
+        query_text="Is there a pattern with Postgres outages?",
+    )
+    print(result)
+
+asyncio.run(consolidate())</code></pre>
+                    </div>
+
+                    <div class="callout success">
+                        <div class="callout-title">
+                            Consolidación en acción
+                        </div>
+                        <p>
+                            Después de <code>memify()</code>, Cognee
+                            debería poder responder con algo parecido a
+                            "tres incidentes en martes sobre el mismo
+                            cluster sugieren un problema recurrente con
+                            la ventana de mantenimiento o con
+                            vacuum/replica swap". Es el puente episódica
+                            &rarr; semántica del que hablamos en la
+                            lección 03.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">
+                        Paso 6 &mdash; Pronoun resolution con session_id
+                    </h2>
+                    <p>
+                        Último paso: envolvemos todo en un agente que
+                        mantiene contexto de sesión. Cuando un usuario
+                        pregunta "y qué hay de su proyecto?", el agente
+                        resuelve "su" usando la sesión activa y
+                        recuperando el último referente humano mencionado.
+                    </p>
+
+                    <div class="code-block fade-in">
+                        <div class="code-block-header">
+                            <span
+                                >python &middot; cognee memory agent</span
+                            >
+                        </div>
+                        <pre><code>class CogneeMemoryAgent:
+    def __init__(self, client, model="claude-sonnet-4"):
+        self.client = client
+        self.model = model
+        self.sessions = {}  # session_id -> turnos
+
+    async def chat(self, session_id: str, user_msg: str) -> str:
+        self.sessions.setdefault(session_id, [])
+
+        # 1. Resolver pronombres usando la sesión
+        resolved = await self._resolve_pronouns(
+            user_msg, self.sessions[session_id]
+        )
+
+        # 2. Consultar memoria persistente (Cognee)
+        mem = await cognee.search(
+            query_type=SearchType.GRAPH_COMPLETION,
+            query_text=resolved,
+        )
+
+        # 3. LLM final que sintetiza con contexto
+        reply = self.client.messages.create(
+            model=self.model,
+            max_tokens=1024,
+            messages=[
+                {
+                    "role": "user",
+                    "content": (
+                        f"Contexto de memoria:\n{mem}\n\n"
+                        f"Pregunta: {resolved}"
+                    ),
+                }
+            ],
+        ).content[0].text
+
+        # 4. Guardar turno en la sesión
+        self.sessions[session_id].append(
+            {"user": user_msg, "assistant": reply}
+        )
+        return reply
+
+    async def _resolve_pronouns(self, msg, history):
+        if not history:
+            return msg
+        last = history[-1]["user"]
+        # Heurística mínima: si hay pronombre, incluir contexto
+        if any(p in msg.lower() for p in ["su ", "él ", "ella ", "ese "]):
+            return f"{last}\n{msg}"
+        return msg</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2 class="slide-up">Checklist final</h2>
+                    <p>
+                        Respondé cada punto antes de declarar completado
+                        el módulo. Si alguno te cuesta, volvé a la lección
+                        correspondiente. No pasa nada, es para aprender
+                        de verdad, no para ganar badges.
+                    </p>
+
+                    <div class="grid grid-2 stagger">
+                        <div class="card slide-up">
+                            <h4>1. Stateless</h4>
+                            <p>
+                                ¿Podés explicar por qué un LLM es
+                                stateless y cómo la aplicación que lo
+                                envuelve crea la ilusión de conversación?
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>2. Las 4 capas</h4>
+                            <p>
+                                ¿Podés listar las 4 capas de memoria y
+                                decir qué problema nuevo genera cada una?
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>3. Alice + Postgres</h4>
+                            <p>
+                                ¿Entendés por qué vector search solo NO
+                                puede responder la pregunta de Alice y
+                                Tuesday, y por qué el grafo sí?
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>4. Framework cognitivo</h4>
+                            <p>
+                                ¿Podés mapear sensory / working /
+                                long-term a sus equivalentes en un agente
+                                LLM?
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>5. Tulving</h4>
+                            <p>
+                                ¿Podés dar un ejemplo de memoria
+                                episódica, semántica y procedural en tu
+                                propio dominio?
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>6. Los 4 verbos de Cognee</h4>
+                            <p>
+                                ¿Podés explicar qué hace cada uno y en qué
+                                orden se llaman: add, cognify, memify,
+                                search?
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>7. Search modes</h4>
+                            <p>
+                                ¿Podés elegir el mode apropiado para una
+                                query temporal, una query relacional y
+                                una query puramente semántica?
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>8. Consolidación</h4>
+                            <p>
+                                ¿Podés explicar qué hace
+                                <code>memify()</code> y por qué es
+                                equivalente a la consolidación de
+                                memoria en humanos?
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout success">
+                        <div class="callout-title">Cerraste el módulo 2</div>
+                        <p>
+                            Si podés defender los 8 puntos de arriba con
+                            tus propias palabras, ya no sos de los que
+                            dicen "le paso RAG a mi agente y listo". Sos
+                            de los que entienden por qué la memoria es el
+                            corazón de un agente serio. Nos vemos en el
+                            módulo 3.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="04-cognee.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title">04 — Cognee</span>
+                        </a>
+                        <a
+                            href="../index.html#modulos"
+                            class="pager-next"
+                            data-mark-completed="modulo-2/leccion-5"
+                        >
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title"
+                                >Volver al índice del curso</span
+                            >
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Proyecto 2 — Self-improving Coding Agent | Módulo 3</title>
+        <link rel="stylesheet" href="../css/main.css" />
+        <link rel="stylesheet" href="../css/components.css" />
+        <link rel="stylesheet" href="../css/animations.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <a href="../index.html" class="site-logo"
+                    >Dominando <span>AI Agents</span></a
+                >
+                <nav class="site-nav">
+                    <a href="../index.html#modulos">Módulos</a>
+                    <a href="index.html">Módulo 3</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container-narrow">
+                    <ul class="nav-breadcrumb fade-in">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Módulo 3</a></li>
+                        <li>Proyecto 02</li>
+                    </ul>
+
+                    <div class="slide-up">
+                        <span class="tag">Intermediate &middot; Proyecto 02</span>
+                        <h1 class="mt-0">Self-improving Coding Agent</h1>
+                        <p class="lead">
+                            Un chatbot espera un prompt. Un agente espera un
+                            goal. Build an autonomous agent que escribe
+                            código, corre tests, y aprende de sus fallas.
+                        </p>
+                    </div>
+
+                    <div class="callout info slide-up">
+                        <div class="callout-title">Qué prueba este proyecto</div>
+                        <p>
+                            <strong>Agentic loops + production debugging.</strong>
+                            El primer salto real: dejás de pensar en
+                            request/response y empezás a pensar en loops,
+                            reflection, y recovery de fallas.
+                        </p>
+                    </div>
+
+                    <h2>El challenge</h2>
+                    <p class="slide-up">
+                        La gente le dice "agente" a un chatbot con tools y no
+                        lo es. Un agente de verdad recibe un goal ("arreglá
+                        este test que falla"), se arma un plan, ejecuta,
+                        verifica el outcome contra el goal, y si falla
+                        reflexiona sobre por qué. Y la próxima vez que ve un
+                        problema parecido, no repite el error.
+                    </p>
+                    <p class="slide-up">
+                        Eso suena hermoso en un blog post. En la práctica el
+                        loop se rompe por cinco lados: el código generado
+                        rompe el sandbox, el agente se queda en un infinite
+                        loop corrigiendo el mismo error, o peor, borra
+                        archivos que no tenía que tocar. Acá es donde aprendés
+                        a poner límites.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>El loop central</h2>
+                    <p class="slide-up" style="color: var(--color-muted, #64748b)">
+                        Todo el proyecto vive en este loop. Si el loop no
+                        termina, no tenés un agente; tenés un while(true) con
+                        un LLM adentro.
+                    </p>
+
+                    <div class="diagram stagger" style="margin-top: var(--space-6)">
+                        <div class="diagram-box primary slide-up">
+                            <div class="label">Fase 01</div>
+                            <strong>Plan</strong>
+                            <p>
+                                LLM recibe el goal, inspecciona contexto,
+                                propone pasos concretos. Output estructurado,
+                                no free-form.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-right draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box slide-up">
+                            <div class="label">Fase 02</div>
+                            <strong>Execute</strong>
+                            <p>
+                                Corre los pasos en sandbox. Cada paso tiene
+                                un timeout. Outputs capturados.
+                            </p>
+                        </div>
+                        <span class="arrow arrow-right draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box slide-up">
+                            <div class="label">Fase 03</div>
+                            <strong>Test</strong>
+                            <p>
+                                Corre los tests contra el resultado. Pasa o
+                                no pasa. Binario. Nada de "parece que anda".
+                            </p>
+                        </div>
+                        <span class="arrow arrow-right draw-line" aria-hidden="true"></span>
+                        <div class="diagram-box secondary slide-up">
+                            <div class="label">Fase 04</div>
+                            <strong>Reflect</strong>
+                            <p>
+                                Si falló, analiza por qué, extrae el pattern,
+                                y vuelve a plan con ese contexto. Si pasó,
+                                guarda el éxito.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout warning slide-up" style="margin-top: var(--space-6)">
+                        <div class="callout-title">Circuit breaker</div>
+                        <p>
+                            El loop tiene max iterations (5 por default) y
+                            un circuit breaker: si las últimas 3 reflexiones
+                            son idénticas, cortás. Eso significa que el
+                            agente está loopeando en el mismo bug y no va a
+                            salir solo. Escalás al humano.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Decisiones arquitectónicas</h2>
+                    <div class="grid grid-2 stagger">
+                        <div class="card slide-up">
+                            <h4>Execution loop</h4>
+                            <p>
+                                Plan → execute → test → reflect. Max
+                                iterations configurables. Circuit breaker si
+                                el agente repite el mismo fix dos veces
+                                seguidas. Timeout global para cortar runs
+                                descontrolados.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Sandboxing</h4>
+                            <p>
+                                Ambiente aislado (Docker o Firecracker), con
+                                resource limits: CPU quota, memory cap,
+                                walltime, filesystem restringido a un working
+                                dir. Sin network a menos que el goal lo
+                                requiera.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Memory hierarchy</h4>
+                            <p>
+                                Short-term: últimas 5 iteraciones del loop.
+                                Long-term: patterns exitosos indexados.
+                                Failure memory: errores con solución que
+                                funcionó. Las tres se buscan antes de
+                                planear.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Reflection mechanism</h4>
+                            <p>
+                                Al fallar, extraer error pattern + root
+                                cause, no el error literal. Comparar con
+                                failure memory via vector similarity. Si hay
+                                match, usar esa solución como starting
+                                point.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Learning from mistakes</h4>
+                            <p>
+                                Cada falla se guarda con contexto completo:
+                                goal, plan, error, fix que funcionó. La
+                                próxima vez que el agente ve un problema
+                                parecido, retrieve antes de generar plan
+                                nuevo desde cero.
+                            </p>
+                        </div>
+                        <div class="card slide-up">
+                            <h4>Code safety</h4>
+                            <p>
+                                Static analysis antes de ejecutar (AST
+                                parsing, linting). Operaciones de filesystem
+                                o network requieren approval explícito del
+                                usuario. El agente nunca corre
+                                <code>rm -rf</code> sin confirmar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-narrow">
+                    <h2>Por qué este es intermediate</h2>
+                    <p class="slide-up">
+                        Porque introduce agentic loops reales. Dejás de
+                        pensar "el LLM responde una vez" y empezás a pensar
+                        en términos de iteraciones, estado entre turnos y
+                        recovery. También te fuerza a enfrentar production
+                        debugging: cómo sabés qué pasó en la iteración 4 si
+                        tu agente corrió 7 y falló en la última.
+                    </p>
+
+                    <div class="callout tip slide-up">
+                        <div class="callout-title">Observability desde el día 1</div>
+                        <p>
+                            Cada iteración del loop loggeada con trace
+                            completo. Goal, plan, output del execute, tests,
+                            reflection. Sin esto, no podés debuggear. Con
+                            esto, cada falla es una lección.
+                        </p>
+                    </div>
+
+                    <nav class="nav-pager">
+                        <a href="01-proyecto-1.html" class="pager-prev">
+                            <span class="pager-label">&larr; Anterior</span>
+                            <span class="pager-title">SLM Mobile App</span>
+                        </a>
+                        <a href="03-proyecto-3.html" class="pager-next">
+                            <span class="pager-label">Siguiente &rarr;</span>
+                            <span class="pager-title">Video Editor Agent</span>
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p class="mb-0">Módulo 3 &middot; Proyecto 02 &middot; Edición 2026</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="../js/main.js"></script>
+        <script src="../js/animations.js"></script>
+        <script src="../js/diagrams.js"></script>
+    </body>
+</html>

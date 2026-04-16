@@ -1,0 +1,256 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avatar — UI Components Atlas</title>
+    <meta name="description" content="Representación visual circular de un usuario." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Display de Datos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="card.html">01 — Card</a></li>
+          <li><a class="sidebar-nav__link" href="table.html">02 — Table</a></li>
+          <li><a class="sidebar-nav__link" href="list.html">03 — List</a></li>
+          <li><a class="sidebar-nav__link" href="tree-view.html">04 — Tree View</a></li>
+          <li><a class="sidebar-nav__link" href="timeline.html">05 — Timeline</a></li>
+          <li><a class="sidebar-nav__link" href="accordion.html">06 — Accordion</a></li>
+          <li><a class="sidebar-nav__link" href="collapsible.html">07 — Collapsible</a></li>
+          <li><a class="sidebar-nav__link" href="carousel.html">08 — Carousel</a></li>
+          <li><a class="sidebar-nav__link is-active" href="avatar.html">09 — Avatar</a></li>
+          <li><a class="sidebar-nav__link" href="badge-chip-tag.html">10 — Badge / Chip / Tag</a></li>
+          <li><a class="sidebar-nav__link" href="stat-card.html">11 — Stat Card</a></li>
+          <li><a class="sidebar-nav__link" href="kanban-card.html">12 — Kanban Card</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Display de Datos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Avatar</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Avatar</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Avatar</span>
+            <span class="component-page__alias">User image</span>
+            <span class="component-page__alias">Profile pic</span>
+            <span class="component-page__alias">Gravatar</span>
+          </div>
+          <p class="component-page__lead">Representación visual circular de un usuario: imagen, iniciales como fallback, o ícono genérico. Shadcn/Radix Avatar maneja la cascada automáticamente: intenta la imagen, si falla muestra el fallback.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Cuatro avatars: imagen, iniciales, ícono y grupo con overflow.</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--grid">
+              <div class="flex flex-col items-center gap-2">
+                <div class="w-12 h-12 rounded-full overflow-hidden bg-muted">
+                  <div class="w-full h-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"></div>
+                </div>
+                <span class="text-xs text-muted-foreground">image</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div class="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-sm font-medium text-foreground">AC</div>
+                <span class="text-xs text-muted-foreground">initials</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div class="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <span class="text-xs text-muted-foreground">icon fallback</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div class="flex -space-x-2">
+                  <div class="w-10 h-10 rounded-full ring-2 ring-background bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xs text-white font-medium">AC</div>
+                  <div class="w-10 h-10 rounded-full ring-2 ring-background bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-xs text-white font-medium">BD</div>
+                  <div class="w-10 h-10 rounded-full ring-2 ring-background bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-xs text-white font-medium">CK</div>
+                  <div class="w-10 h-10 rounded-full ring-2 ring-background bg-muted flex items-center justify-center text-xs text-muted-foreground font-medium">+3</div>
+                </div>
+                <span class="text-xs text-muted-foreground">group</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Radix Avatar: Image + Fallback.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Avatar.Root (circular container)</div>
+                <div class="rounded border border-border bg-background p-3 mb-2 text-xs font-mono text-muted-foreground">Avatar.Image (img con onError)</div>
+                <div class="rounded border border-border bg-background p-3 text-xs font-mono text-muted-foreground">Avatar.Fallback (shown if Image fails)</div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> Contenedor redondo con overflow-hidden.</li>
+              <li><b>Image</b> Intenta cargar la imagen. Si falla, se esconde.</li>
+              <li><b>Fallback</b> Aparece cuando Image no existe o falla. Suele mostrar iniciales o ícono.</li>
+              <li><b>Badge / Status</b> (Opcional) Dot absoluto en la esquina para status online/offline.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>image</b> Imagen real del usuario.</li>
+            <li><b>initials</b> Iniciales del nombre con bg colorido.</li>
+            <li><b>icon fallback</b> Ícono genérico cuando no hay nada más.</li>
+            <li><b>with status dot</b> Indicador online/offline/busy.</li>
+            <li><b>with badge</b> Notification count en la esquina.</li>
+            <li><b>group</b> Stack de avatars con overflow ("+3 more").</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="tamanos">
+          <h2 class="component-page__section-title">Tamaños</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-[10px] font-medium">XS</div><span class="demo-group__label">xs (24)</span></div>
+            <div class="demo-group__item"><div class="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium">SM</div><span class="demo-group__label">sm (32)</span></div>
+            <div class="demo-group__item"><div class="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">MD</div><span class="demo-group__label">md (40)</span></div>
+            <div class="demo-group__item"><div class="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-base font-medium">LG</div><span class="demo-group__label">lg (48)</span></div>
+            <div class="demo-group__item"><div class="w-16 h-16 rounded-full bg-muted flex items-center justify-center text-lg font-medium">XL</div><span class="demo-group__label">xl (64)</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados de status</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="relative w-10 h-10 rounded-full bg-muted"><div class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-500 ring-2 ring-background"></div></div><span class="demo-group__label">online</span></div>
+            <div class="demo-group__item"><div class="relative w-10 h-10 rounded-full bg-muted"><div class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-yellow-500 ring-2 ring-background"></div></div><span class="demo-group__label">away</span></div>
+            <div class="demo-group__item"><div class="relative w-10 h-10 rounded-full bg-muted"><div class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-red-500 ring-2 ring-background"></div></div><span class="demo-group__label">busy</span></div>
+            <div class="demo-group__item"><div class="relative w-10 h-10 rounded-full bg-muted"><div class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-zinc-500 ring-2 ring-background"></div></div><span class="demo-group__label">offline</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn / Radix</th><th>Material UI</th><th>Ant Design</th><th>Chakra</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Avatar</td><td>Avatar</td><td>Avatar</td><td>Avatar</td></tr>
+              <tr><td>Image</td><td>AvatarImage</td><td>src prop</td><td>src prop</td><td>AvatarImage / src</td></tr>
+              <tr><td>Fallback</td><td>AvatarFallback</td><td>children</td><td>children</td><td>name prop</td></tr>
+              <tr><td>Group</td><td>(custom)</td><td>AvatarGroup</td><td>Avatar.Group</td><td>AvatarGroup</td></tr>
+              <tr><td>Badge</td><td>(custom)</td><td>Badge wrapper</td><td>Badge</td><td>AvatarBadge</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Representar usuarios en comments, posts, headers.</li>
+              <li>Listas de miembros de un equipo.</li>
+              <li>Author info en cards o artículos.</li>
+              <li>Chat messages con sender.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Representar cosas/conceptos: usá <a href="badge-chip-tag.html" class="underline">Badge</a> o ícono.</li>
+              <li>Es una marca/logo: logo dedicado.</li>
+              <li>No hay persona real (empty state): ícono placeholder.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Avatar with fallback</p>
+              <pre class="prompt-library__text" id="p1-text">Build a shadcn Avatar with AvatarImage (src from user.photoUrl) and AvatarFallback showing the user's initials. Size md (h-10 w-10). Handle onError gracefully.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Avatar group with overflow</p>
+              <pre class="prompt-library__text" id="p2-text">Create an Avatar group stack showing up to 4 members with -space-x-2 overlap and ring-2 ring-background. If there are more than 4, show a "+N" avatar at the end with the count.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Avatar with status dot</p>
+              <pre class="prompt-library__text" id="p3-text">Build an Avatar with a colored status indicator dot in the bottom-right corner (green=online, yellow=away, red=busy, gray=offline). Use absolute positioning with ring-2 ring-background.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Avatar sizes</p>
+              <pre class="prompt-library__text" id="p4-text">Create an Avatar component with 5 size variants (xs=24, sm=32, md=40, lg=48, xl=64). Scale the font-size of the fallback text proportionally.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="badge-chip-tag.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Badge</h3><p class="text-sm text-muted-foreground">Para status o counts.</p></a>
+            <a href="list.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">List con avatar</h3><p class="text-sm text-muted-foreground">Lista de usuarios.</p></a>
+            <a href="card.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Profile Card</h3><p class="text-sm text-muted-foreground">Card con avatar grande.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://www.radix-ui.com/primitives/docs/components/avatar" target="_blank">Radix Avatar</a></li>
+            <li><a href="https://ui.shadcn.com/docs/components/avatar" target="_blank">Shadcn Avatar</a></li>
+            <li><a href="https://mui.com/material-ui/react-avatar/" target="_blank">MUI Avatar</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="carousel.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Carousel</span></a>
+          <a class="component-nav__link component-nav__link--next" href="badge-chip-tag.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Badge / Chip / Tag</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

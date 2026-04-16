@@ -1,0 +1,275 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dropdown Menu — UI Components Atlas</title>
+    <meta name="description" content="Menú contextual con items estructurados, disparado por un trigger button." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Overlays</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link is-active" href="dropdown-menu.html">01 — Dropdown Menu</a></li>
+          <li><a class="sidebar-nav__link" href="context-menu.html">02 — Context Menu</a></li>
+          <li><a class="sidebar-nav__link" href="hover-card.html">03 — Hover Card</a></li>
+          <li><a class="sidebar-nav__link" href="menubar.html">04 — Menubar</a></li>
+          <li><a class="sidebar-nav__link" href="sheet.html">05 — Sheet</a></li>
+          <li><a class="sidebar-nav__link" href="modal-fullscreen.html">06 — Modal Fullscreen</a></li>
+          <li><a class="sidebar-nav__link" href="toast-overlay-system.html">07 — Toast Overlay System</a></li>
+          <li><a class="sidebar-nav__link" href="backdrop.html">08 — Backdrop</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Overlays</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Dropdown Menu</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Dropdown Menu</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">DropdownMenu</span>
+            <span class="component-page__alias">Menu</span>
+            <span class="component-page__alias">Dropdown</span>
+            <span class="component-page__alias">ActionsMenu</span>
+          </div>
+          <p class="component-page__lead">
+            Menú contextual con <b>items estructurados</b> (item, checkbox, radio, submenu, separator, shortcut) disparado por un trigger button. Es el "..." de toda la UI moderna: abrir el menú del user, mostrar acciones de una row, exponer opciones secundarias. A diferencia de un Popover, los items ya vienen con keyboard navigation, roving tabindex y roles ARIA correctos.
+          </p>
+          <div class="rounded-md border border-border bg-muted/20 p-3 text-sm text-muted-foreground mt-3">
+            <b class="text-foreground">Dropdown Menu vs Popover vs Select:</b> Popover = contenido libre. Select = elegir un valor de un form. Dropdown Menu = lista de <em>acciones</em> estructuradas con keyboard nav built-in.
+          </div>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Clickeá "Options". Items + separator + checkbox + submenu anidado.</p>
+          <div class="demo-container" data-atlas-demo>
+            <div class="demo-preview demo-preview--stack">
+              <div class="relative w-fit" data-ddm>
+                <button data-ddm-trigger class="inline-flex items-center gap-2 rounded-md border border-border bg-background h-10 px-4 text-sm font-medium hover:bg-accent">
+                  Options
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div data-ddm-content class="hidden absolute left-0 top-full mt-2 w-56 rounded-lg border border-border bg-popover p-1 shadow-xl z-10 text-sm">
+                  <div class="px-2 py-1.5 text-xs font-semibold text-muted-foreground">My Account</div>
+                  <button class="w-full flex items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-accent text-left">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Profile
+                    <span class="ml-auto text-xs text-muted-foreground">⇧⌘P</span>
+                  </button>
+                  <button class="w-full flex items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-accent text-left">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    Settings
+                    <span class="ml-auto text-xs text-muted-foreground">⌘S</span>
+                  </button>
+                  <div class="my-1 h-px bg-border"></div>
+                  <label class="w-full flex items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-accent cursor-pointer">
+                    <input type="checkbox" class="size-3.5 accent-foreground" checked />
+                    Show status bar
+                  </label>
+                  <label class="w-full flex items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-accent cursor-pointer">
+                    <input type="checkbox" class="size-3.5 accent-foreground" />
+                    Show activity bar
+                  </label>
+                  <div class="my-1 h-px bg-border"></div>
+                  <div class="relative" data-ddm-sub>
+                    <button data-ddm-sub-trigger class="w-full flex items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-accent text-left">
+                      More tools
+                      <svg class="ml-auto" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                    <div data-ddm-sub-content class="hidden absolute left-full top-0 ml-1 w-44 rounded-lg border border-border bg-popover p-1 shadow-xl">
+                      <button class="w-full flex items-center rounded-sm px-2 py-1.5 hover:bg-accent text-left">Save Page As…</button>
+                      <button class="w-full flex items-center rounded-sm px-2 py-1.5 hover:bg-accent text-left">Create Shortcut…</button>
+                      <button class="w-full flex items-center rounded-sm px-2 py-1.5 hover:bg-accent text-left">Developer Tools</button>
+                    </div>
+                  </div>
+                  <div class="my-1 h-px bg-border"></div>
+                  <button class="w-full flex items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-accent text-left text-destructive-foreground">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                    Log out
+                    <span class="ml-auto text-xs text-muted-foreground">⇧⌘Q</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <script>
+          (function(){
+            document.querySelectorAll('[data-ddm]').forEach(function(w){
+              var t = w.querySelector('[data-ddm-trigger]');
+              var c = w.querySelector('[data-ddm-content]');
+              t.addEventListener('click', function(e){ e.stopPropagation(); c.classList.toggle('hidden'); });
+              document.addEventListener('click', function(e){ if(!w.contains(e.target)){ c.classList.add('hidden'); w.querySelectorAll('[data-ddm-sub-content]').forEach(function(s){ s.classList.add('hidden'); }); } });
+              document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ c.classList.add('hidden'); } });
+              var sub = w.querySelector('[data-ddm-sub]');
+              if(sub){
+                var st = sub.querySelector('[data-ddm-sub-trigger]');
+                var sc = sub.querySelector('[data-ddm-sub-content]');
+                st.addEventListener('click', function(e){ e.stopPropagation(); sc.classList.toggle('hidden'); });
+              }
+            });
+          })();
+        </script>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomía (Radix completa)</h2>
+          <p class="component-page__section-lead">Este componente tiene la anatomía más rica del módulo.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border-2 border-dashed border-border bg-muted/20 p-4 space-y-2">
+                <div class="text-xs text-muted-foreground font-mono">DropdownMenu.Root</div>
+                <div class="rounded border border-border bg-background p-3 text-xs font-mono">DropdownMenu.Trigger</div>
+                <div class="rounded border border-border bg-background p-3 space-y-1">
+                  <div class="text-xs text-muted-foreground font-mono">DropdownMenu.Portal</div>
+                  <div class="rounded border border-dashed border-border p-2 space-y-1">
+                    <div class="text-xs font-mono">DropdownMenu.Content</div>
+                    <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">DropdownMenu.Label</div>
+                    <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">DropdownMenu.Item + Shortcut</div>
+                    <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">DropdownMenu.CheckboxItem</div>
+                    <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">DropdownMenu.RadioGroup → RadioItem</div>
+                    <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">DropdownMenu.Separator</div>
+                    <div class="rounded border border-dashed border-border px-2 py-1 text-xs font-mono">DropdownMenu.Sub → SubTrigger + SubContent</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> Controla open/close state.</li>
+              <li><b>Trigger</b> El botón que abre el menú (recibe focus y aria).</li>
+              <li><b>Portal</b> Monta el Content fuera del DOM parent, evita overflow hidden.</li>
+              <li><b>Content</b> El panel flotante con todos los items.</li>
+              <li><b>Item</b> Acción normal, cierra el menú al click.</li>
+              <li><b>CheckboxItem / RadioItem</b> Estado toggleable, NO cierran el menú.</li>
+              <li><b>Sub</b> Submenu anidado que se abre al hover del SubTrigger.</li>
+              <li><b>Shortcut</b> Muestra el atajo (cosmético, no lo registra).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="rounded-lg border border-border bg-popover p-2 w-44 text-xs space-y-1"><div class="px-2 py-1 rounded hover:bg-accent">Edit</div><div class="px-2 py-1 rounded hover:bg-accent">Duplicate</div><div class="px-2 py-1 rounded hover:bg-accent text-destructive-foreground">Delete</div></div><span class="demo-group__label">simple items</span></div>
+            <div class="demo-group__item"><div class="rounded-lg border border-border bg-popover p-2 w-44 text-xs space-y-1"><div class="px-2 py-1 rounded flex items-center gap-2"><span class="size-3 border border-border rounded-sm flex items-center justify-center text-[10px]">✓</span>Status bar</div><div class="px-2 py-1 rounded flex items-center gap-2"><span class="size-3 border border-border rounded-sm"></span>Activity bar</div></div><span class="demo-group__label">checkbox items</span></div>
+            <div class="demo-group__item"><div class="rounded-lg border border-border bg-popover p-2 w-44 text-xs space-y-1"><div class="px-2 py-1 rounded flex items-center gap-2"><span class="size-2.5 rounded-full bg-foreground"></span>Top</div><div class="px-2 py-1 rounded flex items-center gap-2"><span class="size-2.5 rounded-full border border-border"></span>Bottom</div></div><span class="demo-group__label">radio group</span></div>
+            <div class="demo-group__item"><div class="rounded-lg border border-border bg-popover p-2 w-44 text-xs space-y-1"><div class="px-2 py-1 rounded hover:bg-accent flex">More tools<span class="ml-auto">›</span></div></div><span class="demo-group__label">con submenu</span></div>
+            <div class="demo-group__item"><div class="rounded-lg border border-border bg-popover p-2 w-44 text-xs"><div class="px-2 py-1 rounded flex">New tab<span class="ml-auto text-muted-foreground">⌘T</span></div></div><span class="demo-group__label">con shortcuts</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn / Radix</th><th>Material UI</th><th>Ant Design</th><th>Chakra</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>DropdownMenu.Root</td><td>Menu</td><td>Dropdown</td><td>Menu</td></tr>
+              <tr><td>Trigger</td><td>DropdownMenu.Trigger</td><td>anchorEl</td><td>children</td><td>MenuButton</td></tr>
+              <tr><td>Content</td><td>DropdownMenu.Content</td><td>MenuList</td><td>overlay</td><td>MenuList</td></tr>
+              <tr><td>Item</td><td>DropdownMenu.Item</td><td>MenuItem</td><td>Menu.Item</td><td>MenuItem</td></tr>
+              <tr><td>Checkbox item</td><td>DropdownMenu.CheckboxItem</td><td>MenuItem + Checkbox</td><td>(custom)</td><td>MenuItemOption</td></tr>
+              <tr><td>Submenu</td><td>DropdownMenu.Sub</td><td>NestedMenu (custom)</td><td>SubMenu</td><td>MenuGroup (no nativo)</td></tr>
+              <tr><td>Separator</td><td>DropdownMenu.Separator</td><td>Divider</td><td>Menu.Divider</td><td>MenuDivider</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuándo usar y cuándo no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Acciones contextuales sobre un item (edit, delete, duplicate)</li>
+              <li>Menús "..." de more actions en tables o cards</li>
+              <li>User menu (profile, settings, logout)</li>
+              <li>Necesitás keyboard nav built-in con roles ARIA correctos</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Selección de valor para un form → Select / Combobox</li>
+              <li>Navegación principal del sitio → Navbar</li>
+              <li>Contenido libre (form, preview) → Popover</li>
+              <li>Right-click en un elemento → Context Menu</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item"><p class="prompt-library__label">Dropdown menu with items, separator and keyboard shortcuts</p><pre class="prompt-library__text">Create a shadcn DropdownMenu triggered by an "Options" button. Inside render a Label "My Account", two Items (Profile with ⇧⌘P, Settings with ⌘S), a Separator, a CheckboxItem "Show status bar", another Separator, and a destructive Item "Log out" with ⇧⌘Q shortcut visible on the right.</pre><button class="prompt-library__copy">Copiar</button></div>
+            <div class="prompt-library__item"><p class="prompt-library__label">User menu dropdown with profile, settings and logout</p><pre class="prompt-library__text">Create a DropdownMenu triggered by the user avatar in the top-right. Inside render the user name and email as a Label, a Separator, Items for Profile, Billing, Team, then a Separator, then a Log out item that calls signOut() on click.</pre><button class="prompt-library__copy">Copiar</button></div>
+            <div class="prompt-library__item"><p class="prompt-library__label">Table row actions dropdown</p><pre class="prompt-library__text">Add a DropdownMenu triggered by a MoreHorizontal icon button at the end of each table row. Items: View, Edit, Duplicate, Separator, Delete (destructive). Each item calls the correct mutation with the row id.</pre><button class="prompt-library__copy">Copiar</button></div>
+            <div class="prompt-library__item"><p class="prompt-library__label">Dropdown with nested submenu</p><pre class="prompt-library__text">Create a DropdownMenu with a SubMenu "More tools" that contains Save Page As, Create Shortcut, Name Window, Developer Tools. The submenu should open to the right of the parent on hover.</pre><button class="prompt-library__copy">Copiar</button></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="context-menu.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors"><h3 class="font-semibold mb-1">Context Menu</h3><p class="text-sm text-muted-foreground">La misma idea pero disparada con click derecho.</p></a>
+            <a href="../03-feedback-estado/popover.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40 transition-colors"><h3 class="font-semibold mb-1">Popover</h3><p class="text-sm text-muted-foreground">Para contenido libre (no una lista de items).</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a class="underline" href="https://ui.shadcn.com/docs/components/dropdown-menu" target="_blank" rel="noopener">Shadcn — Dropdown Menu</a></li>
+            <li><a class="underline" href="https://www.radix-ui.com/primitives/docs/components/dropdown-menu" target="_blank" rel="noopener">Radix — Dropdown Menu</a></li>
+            <li><a class="underline" href="https://www.w3.org/WAI/ARIA/apg/patterns/menu/" target="_blank" rel="noopener">ARIA APG — Menu pattern</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="index.html"><span class="component-nav__label">Módulo</span><span class="component-nav__name">Overlays</span></a>
+          <a class="component-nav__link component-nav__link--next" href="context-menu.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Context Menu</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

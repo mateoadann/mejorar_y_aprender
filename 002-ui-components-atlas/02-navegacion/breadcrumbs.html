@@ -1,0 +1,233 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breadcrumbs — UI Components Atlas</title>
+    <meta name="description" content="Ruta jerarquica del usuario en la app." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Navegacion</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="navbar.html">01 — Navbar</a></li>
+          <li><a class="sidebar-nav__link" href="sidebar.html">02 — Sidebar</a></li>
+          <li><a class="sidebar-nav__link" href="tabs.html">03 — Tabs</a></li>
+          <li><a class="sidebar-nav__link is-active" href="breadcrumbs.html">04 — Breadcrumbs</a></li>
+          <li><a class="sidebar-nav__link" href="pagination.html">05 — Pagination</a></li>
+          <li><a class="sidebar-nav__link" href="stepper.html">06 — Stepper</a></li>
+          <li><a class="sidebar-nav__link" href="command-palette.html">07 — Command Palette</a></li>
+          <li><a class="sidebar-nav__link" href="drawer.html">08 — Drawer</a></li>
+          <li><a class="sidebar-nav__link" href="bottom-nav.html">09 — Bottom Nav</a></li>
+          <li><a class="sidebar-nav__link" href="mega-menu.html">10 — Mega Menu</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Navegacion</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Breadcrumbs</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Breadcrumbs</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Breadcrumb</span>
+            <span class="component-page__alias">Path</span>
+            <span class="component-page__alias">Trail</span>
+            <span class="component-page__alias">Crumbs</span>
+          </div>
+          <p class="component-page__lead">Ruta jerarquica que muestra donde esta el usuario dentro de la app y le deja volver a niveles superiores. Util solo cuando la estructura es profunda (3+ niveles) y el usuario podria haber llegado desde links externos. HTML no tiene un elemento nativo: siempre es <code>&lt;nav aria-label="breadcrumb"&gt;</code> + <code>&lt;ol&gt;</code>.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Ruta tipica con chevron separators y el ultimo item como current (no clickable).</p>
+          <div class="demo-container">
+            <div class="demo-preview demo-preview--stack">
+              <nav aria-label="breadcrumb" class="text-sm">
+                <ol class="flex items-center gap-1.5 text-muted-foreground">
+                  <li><a href="#" class="hover:text-foreground flex items-center gap-1">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Home
+                  </a></li>
+                  <li aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></li>
+                  <li><a href="#" class="hover:text-foreground">Products</a></li>
+                  <li aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></li>
+                  <li><a href="#" class="hover:text-foreground">Electronics</a></li>
+                  <li aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></li>
+                  <li aria-current="page" class="text-foreground font-medium">Laptop XPS 15</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <p class="component-page__section-lead">Shadcn Breadcrumb. Mapea 1:1 con HTML semantico.</p>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">Breadcrumb (nav)</div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="text-xs font-mono text-muted-foreground mb-1">BreadcrumbList (ol)</div>
+                  <div class="flex flex-wrap gap-2 text-xs">
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">BreadcrumbItem → BreadcrumbLink</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">BreadcrumbSeparator</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">BreadcrumbItem → BreadcrumbLink</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">BreadcrumbSeparator</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">BreadcrumbPage (current)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Breadcrumb</b> <code>&lt;nav aria-label="breadcrumb"&gt;</code>.</li>
+              <li><b>BreadcrumbList</b> <code>&lt;ol&gt;</code>. Lista ordenada porque el orden importa.</li>
+              <li><b>BreadcrumbItem</b> <code>&lt;li&gt;</code>. Contiene un Link o un Page.</li>
+              <li><b>BreadcrumbLink</b> Link clickable a un nivel superior.</li>
+              <li><b>BreadcrumbSeparator</b> Chevron, slash u otro divisor.</li>
+              <li><b>BreadcrumbPage</b> El ultimo item: no clickable, con <code>aria-current="page"</code>.</li>
+              <li><b>BreadcrumbEllipsis</b> Para truncar rutas largas.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>chevron</b> Separador con ">" (el mas usado).</li>
+            <li><b>slash</b> Separador con "/".</li>
+            <li><b>with-home-icon</b> Primer item es un icono de casa en vez de texto.</li>
+            <li><b>truncated</b> Con ellipsis en el medio cuando el path es largo: "Home / ... / Current".</li>
+            <li><b>dropdown-ellipsis</b> El ellipsis abre un menu con los items ocultos.</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn</th><th>Material UI</th><th>Ant Design</th><th>ARIA</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Breadcrumb</td><td>Breadcrumbs</td><td>Breadcrumb</td><td>nav[aria-label]</td></tr>
+              <tr><td>List</td><td>BreadcrumbList</td><td>(built-in ol)</td><td>(built-in)</td><td>ol</td></tr>
+              <tr><td>Item link</td><td>BreadcrumbLink</td><td>Link</td><td>Breadcrumb.Item</td><td>li + a</td></tr>
+              <tr><td>Current</td><td>BreadcrumbPage</td><td>Typography</td><td>Breadcrumb.Item (last)</td><td>aria-current="page"</td></tr>
+              <tr><td>Separator</td><td>BreadcrumbSeparator</td><td>separator prop</td><td>separator prop</td><td>aria-hidden</td></tr>
+              <tr><td>Ellipsis</td><td>BreadcrumbEllipsis</td><td>maxItems prop</td><td>(custom)</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Jerarquia profunda (3+ niveles).</li>
+              <li>Ecommerce, docs, file systems.</li>
+              <li>Usuarios pueden llegar por deep links.</li>
+              <li>Complementa al Sidebar mostrando "donde estoy".</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Navegacion plana (2 niveles): usa Tabs o titulo simple.</li>
+              <li>Single-page apps sin jerarquia: es ruido visual.</li>
+              <li>Wizard steps: usa Stepper.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item" id="p1">
+              <p class="prompt-library__label">Breadcrumb with chevron separators and home icon</p>
+              <pre class="prompt-library__text" id="p1-text">Create a shadcn Breadcrumb component. First item is a home icon (lucide Home) that links to "/". Use chevron-right as separators. Last item is the current page, non-clickable, bold. Path: Home / Products / Electronics / Laptop XPS 15.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p2">
+              <p class="prompt-library__label">Truncated breadcrumb with ellipsis dropdown</p>
+              <pre class="prompt-library__text" id="p2-text">Build a breadcrumb that when the path has more than 4 segments, shows the first + ellipsis + last 2. The ellipsis is clickable and opens a DropdownMenu with the hidden items.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p3">
+              <p class="prompt-library__label">Auto-generated breadcrumb from URL</p>
+              <pre class="prompt-library__text" id="p3-text">Generate breadcrumbs automatically from the current Next.js pathname. Split by "/" and create a BreadcrumbLink for each segment except the last. Capitalize segment names.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item" id="p4">
+              <p class="prompt-library__label">Breadcrumb with slash separators and no icons</p>
+              <pre class="prompt-library__text" id="p4-text">Build a minimal breadcrumb with "/" as separator, no icons. Links use text-muted-foreground hover:text-foreground. Current page is text-foreground.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="tabs.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Tabs</h3><p class="text-sm text-muted-foreground">Para alternativas, no jerarquia.</p></a>
+            <a href="sidebar.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Sidebar</h3><p class="text-sm text-muted-foreground">Complementa al breadcrumb.</p></a>
+            <a href="stepper.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Stepper</h3><p class="text-sm text-muted-foreground">Para flujos secuenciales.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://ui.shadcn.com/docs/components/breadcrumb" target="_blank">Shadcn Breadcrumb</a></li>
+            <li><a href="https://mui.com/material-ui/react-breadcrumbs/" target="_blank">MUI Breadcrumbs</a></li>
+            <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/" target="_blank">WAI-ARIA Breadcrumb Pattern</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="tabs.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Tabs</span></a>
+          <a class="component-nav__link component-nav__link--next" href="pagination.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Pagination</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

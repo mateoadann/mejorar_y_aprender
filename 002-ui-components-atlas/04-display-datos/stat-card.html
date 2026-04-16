@@ -1,0 +1,271 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stat Card — UI Components Atlas</title>
+    <meta name="description" content="Card especializada en mostrar una métrica clave con trend." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Display de Datos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="card.html">01 — Card</a></li>
+          <li><a class="sidebar-nav__link" href="table.html">02 — Table</a></li>
+          <li><a class="sidebar-nav__link" href="list.html">03 — List</a></li>
+          <li><a class="sidebar-nav__link" href="tree-view.html">04 — Tree View</a></li>
+          <li><a class="sidebar-nav__link" href="timeline.html">05 — Timeline</a></li>
+          <li><a class="sidebar-nav__link" href="accordion.html">06 — Accordion</a></li>
+          <li><a class="sidebar-nav__link" href="collapsible.html">07 — Collapsible</a></li>
+          <li><a class="sidebar-nav__link" href="carousel.html">08 — Carousel</a></li>
+          <li><a class="sidebar-nav__link" href="avatar.html">09 — Avatar</a></li>
+          <li><a class="sidebar-nav__link" href="badge-chip-tag.html">10 — Badge / Chip / Tag</a></li>
+          <li><a class="sidebar-nav__link is-active" href="stat-card.html">11 — Stat Card</a></li>
+          <li><a class="sidebar-nav__link" href="kanban-card.html">12 — Kanban Card</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Display de Datos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Stat Card</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Stat Card</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Stat</span>
+            <span class="component-page__alias">Metric card</span>
+            <span class="component-page__alias">KPI card</span>
+            <span class="component-page__alias">Dashboard tile</span>
+          </div>
+          <p class="component-page__lead">Card especializada para mostrar UNA métrica con su trend. Label chico arriba, número grande abajo, porcentaje de cambio al pie. Es el componente rey de los dashboards. Shadcn no lo tiene como componente oficial pero es una composición trivial sobre <a href="card.html" class="underline">Card</a>.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo interactiva</h2>
+          <p class="component-page__section-lead">Dashboard grid con 4 KPIs.</p>
+          <div class="demo-container">
+            <div class="demo-preview">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
+                <div class="rounded-lg border border-border bg-muted/20 p-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm text-muted-foreground">Total Revenue</p>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-muted-foreground"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  </div>
+                  <p class="text-3xl font-bold text-foreground">$45,231.89</p>
+                  <p class="text-xs text-green-500 mt-1 flex items-center gap-1">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg>
+                    +12.5% from last month
+                  </p>
+                </div>
+
+                <div class="rounded-lg border border-border bg-muted/20 p-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm text-muted-foreground">Active Users</p>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-muted-foreground"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  </div>
+                  <p class="text-3xl font-bold text-foreground">1,205</p>
+                  <p class="text-xs text-red-500 mt-1 flex items-center gap-1">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 17-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></svg>
+                    -3.2% from last month
+                  </p>
+                </div>
+
+                <div class="rounded-lg border border-border bg-muted/20 p-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm text-muted-foreground">Conversion Rate</p>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-muted-foreground"><path d="m16 17 5-5-5-5"/><path d="m8 17-5-5 5-5"/><path d="m14.5 4-5 16"/></svg>
+                  </div>
+                  <p class="text-3xl font-bold text-foreground">3.24%</p>
+                  <p class="text-xs text-green-500 mt-1 flex items-center gap-1">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg>
+                    +0.5% from last month
+                  </p>
+                </div>
+
+                <div class="rounded-lg border border-border bg-muted/20 p-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm text-muted-foreground">Avg Session</p>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-muted-foreground"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  </div>
+                  <p class="text-3xl font-bold text-foreground">4m 32s</p>
+                  <p class="text-xs text-green-500 mt-1 flex items-center gap-1">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg>
+                    +8.1% from last month
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">StatCard (Root — extiende Card)</div>
+                <div class="rounded border border-border bg-background p-3 mb-2">
+                  <div class="flex justify-between text-xs">
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Label (small)</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">[Icon]</div>
+                  </div>
+                </div>
+                <div class="rounded border border-border bg-background p-3 mb-2 text-xs font-mono text-muted-foreground">Value (big number)</div>
+                <div class="rounded border border-border bg-background p-3 text-xs font-mono text-muted-foreground">Trend (arrow + % + period)</div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Root</b> Card con padding 6.</li>
+              <li><b>Label</b> Nombre de la métrica. Small + muted-foreground.</li>
+              <li><b>Icon</b> Opcional, a la derecha del label.</li>
+              <li><b>Value</b> El número. Grande (text-3xl) + bold.</li>
+              <li><b>Trend</b> Arrow up/down + percentage + "vs last month".</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>with trend</b> Porcentaje + flecha de dirección.</li>
+            <li><b>with sparkline</b> Mini-chart al fondo o lateral.</li>
+            <li><b>with icon</b> Ícono temático en la esquina.</li>
+            <li><b>with comparison</b> "vs last month" / "vs Q1".</li>
+            <li><b>colored accent</b> Border-left de color para categorizar.</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados de trend</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded text-green-500 border border-green-500/20 bg-green-500/10">+12.5%</div><span class="demo-group__label">positive</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded text-red-500 border border-red-500/20 bg-red-500/10">-3.2%</div><span class="demo-group__label">negative</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded text-muted-foreground border border-border">0.0%</div><span class="demo-group__label">neutral</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-framework</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Shadcn</th><th>MUI</th><th>Chakra</th></tr></thead>
+            <tbody>
+              <tr><td>Root</td><td>Card (custom)</td><td>Card (custom)</td><td>Stat</td></tr>
+              <tr><td>Label</td><td>CardDescription</td><td>Typography</td><td>StatLabel</td></tr>
+              <tr><td>Value</td><td>h3</td><td>Typography h3</td><td>StatNumber</td></tr>
+              <tr><td>Trend</td><td>span</td><td>Chip</td><td>StatHelpText + StatArrow</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Dashboards y analytics.</li>
+              <li>KPIs con comparación temporal.</li>
+              <li>Resúmenes ejecutivos.</li>
+              <li>Cards de overview al top de una página.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Es texto narrativo: párrafo normal.</li>
+              <li>Son varios datapoints: usá Chart.</li>
+              <li>Es info general no numérica: usá <a href="card.html" class="underline">Card</a>.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Revenue stat card with trend</p>
+              <pre class="prompt-library__text" id="p1-text">Build a Stat Card: small muted label "Total Revenue", big number "$45,231.89" (text-3xl font-bold), and a trend line below with an up arrow icon and "+20.1% from last month" in green-500. Use shadcn Card with p-6.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Dashboard grid of 4 KPIs</p>
+              <pre class="prompt-library__text" id="p2-text">Create a responsive grid (1 col mobile, 2 tablet, 4 desktop) of 4 StatCards: Revenue, Users, Conversion, Avg Session. Each with label, icon, big value, and colored trend (green positive, red negative).</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Stat card with sparkline</p>
+              <pre class="prompt-library__text" id="p3-text">Build a StatCard that includes a mini sparkline chart (use recharts LineChart, width 100, height 30, no axes) below the main value. Sparkline color matches trend direction.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Stat card with period comparison</p>
+              <pre class="prompt-library__text" id="p4-text">Create a StatCard showing current value, previous period value (smaller, muted), and the delta as a colored chip ("+$1,234 vs last week"). Use lucide TrendingUp / TrendingDown icons.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="card.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Card</h3><p class="text-sm text-muted-foreground">Para info general.</p></a>
+            <a href="kanban-card.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Kanban Card</h3><p class="text-sm text-muted-foreground">Para tareas.</p></a>
+            <a href="../03-feedback-estado/progress.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Progress</h3><p class="text-sm text-muted-foreground">Para métricas con meta.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://ui.shadcn.com/examples/dashboard" target="_blank">Shadcn Dashboard example</a></li>
+            <li><a href="https://chakra-ui.com/docs/components/stat" target="_blank">Chakra Stat</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="badge-chip-tag.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Badge / Chip / Tag</span></a>
+          <a class="component-nav__link component-nav__link--next" href="kanban-card.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Kanban Card</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

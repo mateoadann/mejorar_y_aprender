@@ -1,0 +1,300 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kanban Card — UI Components Atlas</title>
+    <meta name="description" content="Card para representar tareas en boards tipo Trello/Jira/Linear." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+        background: "#09090b", foreground: "#fafafa",
+        muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+        border: "#27272a", ring: "#d4d4d8",
+        primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+        secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+        accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+        popover: { DEFAULT: "#18181b", foreground: "#fafafa" },
+        input: "#27272a",
+      }, borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" } } } };
+    </script>
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo"><span class="atlas-header__logo-mark" aria-hidden="true">A</span><span>UI Components Atlas</span></a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Componentes del modulo">
+        <h2 class="sidebar-nav__title">Display de Datos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="card.html">01 — Card</a></li>
+          <li><a class="sidebar-nav__link" href="table.html">02 — Table</a></li>
+          <li><a class="sidebar-nav__link" href="list.html">03 — List</a></li>
+          <li><a class="sidebar-nav__link" href="tree-view.html">04 — Tree View</a></li>
+          <li><a class="sidebar-nav__link" href="timeline.html">05 — Timeline</a></li>
+          <li><a class="sidebar-nav__link" href="accordion.html">06 — Accordion</a></li>
+          <li><a class="sidebar-nav__link" href="collapsible.html">07 — Collapsible</a></li>
+          <li><a class="sidebar-nav__link" href="carousel.html">08 — Carousel</a></li>
+          <li><a class="sidebar-nav__link" href="avatar.html">09 — Avatar</a></li>
+          <li><a class="sidebar-nav__link" href="badge-chip-tag.html">10 — Badge / Chip / Tag</a></li>
+          <li><a class="sidebar-nav__link" href="stat-card.html">11 — Stat Card</a></li>
+          <li><a class="sidebar-nav__link is-active" href="kanban-card.html">12 — Kanban Card</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Display de Datos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Kanban Card</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Kanban Card</h1>
+          <div class="component-page__aliases" aria-label="Aliases">
+            <span class="component-page__alias">Task card</span>
+            <span class="component-page__alias">Issue card</span>
+            <span class="component-page__alias">Trello card</span>
+            <span class="component-page__alias">Linear issue</span>
+          </div>
+          <p class="component-page__lead">Card especializada para representar tareas en boards kanban (Trello, Jira, Linear, Notion). No es componente oficial de ninguna library estándar — es un patrón de composición sobre <a href="card.html" class="underline">Card</a>. Incluye título, descripción corta, priority badge, assignees, due date y checklist progress.</p>
+        </header>
+
+        <section class="component-page__section" id="demo">
+          <h2 class="component-page__section-title">Demo</h2>
+          <p class="component-page__section-lead">Tres cards apiladas con variaciones: priority high, multi-assignee, overdue.</p>
+          <div class="demo-container">
+            <div class="demo-preview">
+              <div class="flex flex-col gap-3 w-full max-w-xs">
+                <!-- Card 1: high priority -->
+                <div class="rounded-md border border-border bg-muted/20 p-3 hover:border-foreground/40 cursor-pointer">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <h3 class="text-sm font-medium text-foreground">Implement authentication flow</h3>
+                    <span class="inline-flex shrink-0 items-center rounded-full bg-red-500/10 border border-red-500/20 px-2 py-0.5 text-[10px] font-medium text-red-400 uppercase">High</span>
+                  </div>
+                  <p class="text-xs text-muted-foreground mb-3">OAuth with Google and email magic links.</p>
+                  <div class="flex flex-wrap gap-1 mb-3">
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">backend</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">security</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex -space-x-1">
+                      <div class="w-6 h-6 rounded-full ring-2 ring-background bg-gradient-to-br from-indigo-500 to-purple-600"></div>
+                    </div>
+                    <div class="flex items-center gap-2 text-[10px] text-muted-foreground">
+                      <span class="flex items-center gap-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>Apr 20</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 2: multi assignees + checklist -->
+                <div class="rounded-md border border-border bg-muted/20 p-3 hover:border-foreground/40 cursor-pointer">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <h3 class="text-sm font-medium text-foreground">Design dashboard v2</h3>
+                    <span class="inline-flex shrink-0 items-center rounded-full bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 text-[10px] font-medium text-yellow-400 uppercase">Med</span>
+                  </div>
+                  <p class="text-xs text-muted-foreground mb-3">New layout with widgets and filters.</p>
+                  <div class="mb-3">
+                    <div class="flex items-center gap-1 text-[10px] text-muted-foreground mb-1">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                      3/5
+                    </div>
+                    <div class="h-1 rounded bg-muted overflow-hidden"><div class="h-full bg-green-500" style="width:60%"></div></div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex -space-x-1">
+                      <div class="w-6 h-6 rounded-full ring-2 ring-background bg-gradient-to-br from-pink-500 to-orange-500"></div>
+                      <div class="w-6 h-6 rounded-full ring-2 ring-background bg-gradient-to-br from-emerald-500 to-teal-600"></div>
+                      <div class="w-6 h-6 rounded-full ring-2 ring-background bg-gradient-to-br from-cyan-500 to-blue-600"></div>
+                    </div>
+                    <div class="flex items-center gap-2 text-[10px] text-muted-foreground">
+                      <span class="flex items-center gap-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>4</span>
+                      <span class="flex items-center gap-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 17.98 8.83l-8.58 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>2</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 3: overdue -->
+                <div class="rounded-md border border-red-500/40 bg-red-500/5 p-3 hover:border-red-500/60 cursor-pointer">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <h3 class="text-sm font-medium text-foreground">Fix payment webhook bug</h3>
+                    <span class="inline-flex shrink-0 items-center rounded-full bg-red-500/10 border border-red-500/20 px-2 py-0.5 text-[10px] font-medium text-red-400 uppercase">High</span>
+                  </div>
+                  <p class="text-xs text-muted-foreground mb-3">Stripe webhooks failing on retry attempts.</p>
+                  <div class="flex items-center justify-between">
+                    <div class="flex -space-x-1">
+                      <div class="w-6 h-6 rounded-full ring-2 ring-background bg-gradient-to-br from-amber-500 to-red-500"></div>
+                    </div>
+                    <div class="flex items-center gap-1 text-[10px] text-red-400 font-medium">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                      Overdue · Apr 10
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="anatomia">
+          <h2 class="component-page__section-title">Anatomia</h2>
+          <div class="component-anatomy">
+            <div class="component-anatomy__diagram">
+              <div class="rounded-lg border border-border bg-muted/20 p-4">
+                <div class="text-xs font-mono text-muted-foreground mb-2">KanbanCard (Root — extiende Card)</div>
+                <div class="rounded border border-border bg-background p-3 mb-2">
+                  <div class="flex justify-between text-xs">
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Title</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Priority badge</div>
+                  </div>
+                </div>
+                <div class="rounded border border-border bg-background p-3 mb-2 text-xs font-mono text-muted-foreground">Description (short, 1-2 lines)</div>
+                <div class="rounded border border-border bg-background p-3 mb-2 text-xs font-mono text-muted-foreground">[Progress bar] / [Tags]</div>
+                <div class="rounded border border-border bg-background p-3">
+                  <div class="flex justify-between text-xs">
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Assignees (stacked)</div>
+                    <div class="rounded border border-border bg-muted/40 px-2 py-1 font-mono">Due date</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="component-anatomy__legend">
+              <li><b>Header</b> Título + priority badge alineado a la derecha.</li>
+              <li><b>Body</b> Descripción corta (opcional).</li>
+              <li><b>Meta</b> Tags, checklist progress, cover image.</li>
+              <li><b>Footer</b> Assignees stack + due date + counters (comments, attachments).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="variantes">
+          <h2 class="component-page__section-title">Variantes</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><b>simple</b> Solo título + assignee.</li>
+            <li><b>with cover image</b> Imagen arriba como Trello.</li>
+            <li><b>with checklist</b> Progress bar de subtasks completadas.</li>
+            <li><b>with multiple assignees</b> Stack de avatars con +N.</li>
+            <li><b>overdue</b> Border rojo + badge "Overdue".</li>
+            <li><b>dragging</b> Sombra + opacidad mientras se arrastra.</li>
+          </ul>
+        </section>
+
+        <section class="component-page__section" id="estados">
+          <h2 class="component-page__section-title">Estados</h2>
+          <div class="demo-group">
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border border-border bg-muted/20">Default</div><span class="demo-group__label">default</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border border-foreground/40 bg-muted/30">Hover</div><span class="demo-group__label">hover</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border border-border bg-muted/20 opacity-50 shadow-lg">Dragging</div><span class="demo-group__label">dragging</span></div>
+            <div class="demo-group__item"><div class="px-3 py-1.5 text-sm rounded border border-red-500/40 bg-red-500/5">Overdue</div><span class="demo-group__label">overdue</span></div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="vocabulario">
+          <h2 class="component-page__section-title">Vocabulario cross-product</h2>
+          <table class="vocab-table">
+            <thead><tr><th>Concepto</th><th>Trello</th><th>Jira</th><th>Linear</th><th>Notion</th></tr></thead>
+            <tbody>
+              <tr><td>Container</td><td>Card</td><td>Issue</td><td>Issue</td><td>Page</td></tr>
+              <tr><td>Title</td><td>Card name</td><td>Summary</td><td>Title</td><td>Title</td></tr>
+              <tr><td>Priority</td><td>Label color</td><td>Priority</td><td>Priority icon</td><td>Select prop</td></tr>
+              <tr><td>Assignee</td><td>Members</td><td>Assignee</td><td>Assignee</td><td>Person prop</td></tr>
+              <tr><td>Subtasks</td><td>Checklists</td><td>Sub-tasks</td><td>Sub-issues</td><td>Child pages</td></tr>
+              <tr><td>Labels</td><td>Labels</td><td>Labels</td><td>Labels</td><td>Multi-select</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section" id="uso">
+          <h2 class="component-page__section-title">Cuando usar y cuando no</h2>
+          <div class="use-case-grid">
+            <ul class="use-case-list do">
+              <li class="use-case-list__title">Usalo cuando</li>
+              <li>Construís un board kanban (Trello, Jira, Linear).</li>
+              <li>Issue tracker o bug tracker.</li>
+              <li>Project management con sprint boards.</li>
+              <li>Task lists con metadata rica.</li>
+            </ul>
+            <ul class="use-case-list dont">
+              <li class="use-case-list__title">NO lo uses cuando</li>
+              <li>Lista simple sin metadata: <a href="list.html" class="underline">List</a>.</li>
+              <li>Datos tabulares: <a href="table.html" class="underline">Table</a>.</li>
+              <li>Métrica: <a href="stat-card.html" class="underline">Stat Card</a>.</li>
+              <li>Info general: <a href="card.html" class="underline">Card</a>.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="prompts">
+          <h2 class="component-page__section-title">Prompts para coding agents</h2>
+          <div class="prompt-library">
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Task card with priority and avatars</p>
+              <pre class="prompt-library__text" id="p1-text">Build a Kanban task Card with: title (truncate-2), priority Badge top-right (High red / Medium yellow / Low blue), short description, avatar stack footer, due date with Calendar icon. Use shadcn Card + Badge + Avatar.</pre>
+              <button class="prompt-library__copy" data-copy-target="p1-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Task card with checklist progress</p>
+              <pre class="prompt-library__text" id="p2-text">Create a task Card showing subtask progress: "3/5 subtasks" label with a CheckSquare icon, and a thin Progress bar below. Bar fills proportional to completed count. Color changes to green when 100%.</pre>
+              <button class="prompt-library__copy" data-copy-target="p2-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Overdue task styling</p>
+              <pre class="prompt-library__text" id="p3-text">Build a task Card that shows an "Overdue" state when dueDate &lt; today: change border to red-500/40, add a red Calendar with AlertCircle icon, and show "Overdue · [date]" in red-400 text in the footer.</pre>
+              <button class="prompt-library__copy" data-copy-target="p3-text">Copiar</button>
+            </div>
+            <div class="prompt-library__item">
+              <p class="prompt-library__label">Draggable kanban board</p>
+              <pre class="prompt-library__text" id="p4-text">Set up a Kanban board with 3 columns (Todo, In Progress, Done) using @dnd-kit/core. Each column is a SortableContext containing task Cards. On drag end, update the task's status in state.</pre>
+              <button class="prompt-library__copy" data-copy-target="p4-text">Copiar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="alternativas">
+          <h2 class="component-page__section-title">Alternativas relacionadas</h2>
+          <div class="category-grid">
+            <a href="card.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Card</h3><p class="text-sm text-muted-foreground">Para info general.</p></a>
+            <a href="list.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">List</h3><p class="text-sm text-muted-foreground">Lista simple.</p></a>
+            <a href="table.html" class="block rounded-lg border border-border bg-muted/30 p-4 hover:border-foreground/40"><h3 class="font-semibold">Table</h3><p class="text-sm text-muted-foreground">Vista tabular de tareas.</p></a>
+          </div>
+        </section>
+
+        <section class="component-page__section" id="referencias">
+          <h2 class="component-page__section-title">Referencias</h2>
+          <ul class="use-case-list" style="list-style: disc; padding-left: 2rem;">
+            <li><a href="https://linear.app" target="_blank">Linear</a></li>
+            <li><a href="https://trello.com" target="_blank">Trello</a></li>
+            <li><a href="https://dndkit.com/" target="_blank">dnd-kit</a></li>
+          </ul>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre componentes">
+          <a class="component-nav__link" href="stat-card.html"><span class="component-nav__label">Anterior</span><span class="component-nav__name">Stat Card</span></a>
+          <a class="component-nav__link component-nav__link--next" href="../index.html"><span class="component-nav__label">Siguiente</span><span class="component-nav__name">Volver al Atlas</span></a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

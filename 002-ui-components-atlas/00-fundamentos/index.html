@@ -1,0 +1,138 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fundamentos — UI Components Atlas</title>
+    <meta name="description" content="Antes de catalogar componentes, hay que entender el lenguaje que usamos para hablar de ellos." />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              background: "#09090b",
+              foreground: "#fafafa",
+              muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+              border: "#27272a",
+              primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+              secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+              destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+              accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+            },
+            borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo">
+          <span class="atlas-header__logo-mark" aria-hidden="true">A</span>
+          <span>UI Components Atlas</span>
+        </a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Lecciones del modulo">
+        <h2 class="sidebar-nav__title">Fundamentos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link is-active" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link" href="01-ui-vs-ux.html">01 — UI vs UX vs Design Patterns</a></li>
+          <li><a class="sidebar-nav__link" href="02-vocabulario.html">02 — Vocabulario para coding agents</a></li>
+          <li><a class="sidebar-nav__link" href="03-anatomia.html">03 — Anatomia de un componente</a></li>
+          <li><a class="sidebar-nav__link" href="04-shadcn-primer.html">04 — Shadcn primer</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">Fundamentos</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">Fundamentos</h1>
+          <p class="component-page__lead">
+            Antes de catalogar componentes, hay que entender el lenguaje que
+            usamos para hablar de ellos. Este modulo te da el vocabulario y
+            los conceptos que necesitas para pedirle a un coding agent
+            exactamente lo que queres, sin ambiguedades.
+          </p>
+        </header>
+
+        <section class="component-page__section">
+          <div class="rounded-lg border border-border bg-muted/40 p-5 text-muted-foreground">
+            <p class="text-foreground font-semibold mb-2">Lee estas 4 paginas antes de ir a los componentes.</p>
+            <p>Te van a ahorrar mucho tiempo. Los modulos que vienen despues asumen que ya manejas este vocabulario. Si saltas directo a "Button" sin entender que es un Trigger o un Slot, vas a estar peleando con el agente en lugar de dirigirlo.</p>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Las 4 lecciones del modulo</h2>
+          <p class="component-page__section-lead">Leelas en orden. Cada una construye sobre la anterior.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <a href="01-ui-vs-ux.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">Leccion 01</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">UI vs UX vs Design Patterns</h3>
+              <p class="text-sm text-muted-foreground">Tres terminos que se confunden constantemente. Te muestro la diferencia con ejemplos concretos y por que importa cuando le hablas a un agente.</p>
+            </a>
+
+            <a href="02-vocabulario.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">Leccion 02</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Vocabulario para hablar con coding agents</h3>
+              <p class="text-sm text-muted-foreground">La leccion mas importante del modulo. Root, Trigger, Content, Portal, Item, Slot... los terminos que te dejan pedir modificaciones quirurgicas.</p>
+            </a>
+
+            <a href="03-anatomia.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">Leccion 03</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Como leer la anatomia de un componente</h3>
+              <p class="text-sm text-muted-foreground">Composition over configuration. Por que Radix/Shadcn exponen partes nombradas en lugar de 40 props, y como leer esos planos.</p>
+            </a>
+
+            <a href="04-shadcn-primer.html" class="block rounded-lg border border-border bg-muted/30 p-5 hover:border-foreground/40 transition-colors">
+              <div class="text-xs uppercase tracking-wide text-muted-foreground mb-2">Leccion 04</div>
+              <h3 class="text-lg font-semibold text-foreground mb-1">Que es Shadcn y por que lo usamos</h3>
+              <p class="text-sm text-muted-foreground">No es una library que instalas por npm. Es un registro copy-paste. Te cuento el stack Radix + Tailwind + CVA y por que los agentes lo conocen tan bien.</p>
+            </a>
+          </div>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre lecciones">
+          <span></span>
+          <a class="component-nav__link component-nav__link--next" href="01-ui-vs-ux.html">
+            <span class="component-nav__label">Siguiente</span>
+            <span class="component-nav__name">UI vs UX vs Design Patterns</span>
+          </a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>

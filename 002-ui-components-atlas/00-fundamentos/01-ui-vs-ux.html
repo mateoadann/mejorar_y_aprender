@@ -1,0 +1,226 @@
+<!doctype html>
+<html class="dark" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UI vs UX vs Design Patterns — UI Components Atlas</title>
+    <meta name="description" content="Tres terminos que se confunden constantemente, explicados con ejemplos concretos." />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              background: "#09090b",
+              foreground: "#fafafa",
+              muted: { DEFAULT: "#27272a", foreground: "#a1a1aa" },
+              border: "#27272a",
+              primary: { DEFAULT: "#fafafa", foreground: "#18181b" },
+              secondary: { DEFAULT: "#27272a", foreground: "#fafafa" },
+              destructive: { DEFAULT: "#7f1d1d", foreground: "#fafafa" },
+              accent: { DEFAULT: "#27272a", foreground: "#fafafa" },
+            },
+            borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="../css/atlas.css" />
+    <link rel="stylesheet" href="../css/demos.css" />
+  </head>
+
+  <body class="bg-background text-foreground">
+    <header class="atlas-header">
+      <div class="atlas-header__inner">
+        <a href="../index.html" class="atlas-header__logo">
+          <span class="atlas-header__logo-mark" aria-hidden="true">A</span>
+          <span>UI Components Atlas</span>
+        </a>
+        <div class="atlas-header__search">
+          <div class="atlas-search">
+            <svg class="atlas-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input type="search" class="atlas-search__input" placeholder="Buscar componente... (⌘K)" aria-label="Buscar componente" data-atlas-search-input autocomplete="off" spellcheck="false" />
+            <kbd class="atlas-search__kbd" aria-hidden="true">⌘K</kbd>
+            <div class="atlas-search__results" role="listbox" data-atlas-search-results></div>
+          </div>
+        </div>
+        <div class="atlas-header__meta" data-atlas-meta></div>
+      </div>
+    </header>
+
+    <div class="component-page">
+      <aside class="sidebar-nav" aria-label="Lecciones del modulo">
+        <h2 class="sidebar-nav__title">Fundamentos</h2>
+        <ul class="sidebar-nav__list">
+          <li><a class="sidebar-nav__link" href="index.html">Portada del modulo</a></li>
+          <li><a class="sidebar-nav__link is-active" href="01-ui-vs-ux.html">01 — UI vs UX vs Design Patterns</a></li>
+          <li><a class="sidebar-nav__link" href="02-vocabulario.html">02 — Vocabulario para coding agents</a></li>
+          <li><a class="sidebar-nav__link" href="03-anatomia.html">03 — Anatomia de un componente</a></li>
+          <li><a class="sidebar-nav__link" href="04-shadcn-primer.html">04 — Shadcn primer</a></li>
+        </ul>
+      </aside>
+
+      <main class="component-page__main">
+        <ol class="breadcrumbs" aria-label="Breadcrumb">
+          <li><a href="../index.html">Atlas</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li><a href="index.html">Fundamentos</a></li>
+          <li class="breadcrumbs__sep" aria-hidden="true">/</li>
+          <li aria-current="page">UI vs UX vs Design Patterns</li>
+        </ol>
+
+        <header class="component-page__header">
+          <h1 class="component-page__title">UI vs UX vs Design Patterns</h1>
+          <p class="component-page__lead">
+            Tres terminos que se confunden constantemente y que, cuando los
+            mezclas, le pedis cosas al agente que no tienen sentido. Acá te
+            muestro la diferencia con ejemplos concretos y por que te conviene
+            hablar en terminos de <b>patterns</b> antes que de componentes.
+          </p>
+        </header>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Las definiciones, sin vueltas</h2>
+          <table class="vocab-table">
+            <thead>
+              <tr>
+                <th scope="col">Termino</th>
+                <th scope="col">Que es</th>
+                <th scope="col">Que responde</th>
+                <th scope="col">Ejemplo concreto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>UI</b> (User Interface)</td>
+                <td>La capa visual. Pixeles, colores, tipografia, espaciados, componentes.</td>
+                <td>"Como se ve?"</td>
+                <td>El boton es de color negro, bordes redondeados, 16px de padding.</td>
+              </tr>
+              <tr>
+                <td><b>UX</b> (User Experience)</td>
+                <td>La experiencia completa al usar el producto. Flujo, friccion, emocion, percepcion.</td>
+                <td>"Como se siente usarlo?"</td>
+                <td>Completar el checkout en 2 pasos sin preguntar datos innecesarios.</td>
+              </tr>
+              <tr>
+                <td><b>Design Pattern</b></td>
+                <td>Una solucion reusable a un problema de interaccion recurrente.</td>
+                <td>"Como resolvemos este problema?"</td>
+                <td>"Selección única" → Radio Group, Select, Combobox o Segmented Control.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">El concepto clave</h2>
+          <p class="component-page__section-lead">
+            Un mismo design pattern puede resolverse con distintos componentes
+            segun el contexto. El pattern es el problema, el componente es la
+            herramienta.
+          </p>
+
+          <div class="rounded-lg border border-border bg-muted/30 p-5 mt-4">
+            <p class="font-semibold mb-3">Pattern: "Seleccion unica entre N opciones"</p>
+            <table class="vocab-table">
+              <thead>
+                <tr>
+                  <th scope="col">Contexto</th>
+                  <th scope="col">Componente recomendado</th>
+                  <th scope="col">Por que</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2 a 4 opciones</td>
+                  <td><b>Radio Group</b></td>
+                  <td>Todas visibles al mismo tiempo, comparacion instantanea.</td>
+                </tr>
+                <tr>
+                  <td>5 a 15 opciones</td>
+                  <td><b>Select</b></td>
+                  <td>Ahorra espacio vertical, el usuario busca rapido.</td>
+                </tr>
+                <tr>
+                  <td>15+ con busqueda</td>
+                  <td><b>Combobox</b></td>
+                  <td>Filtrado por texto reduce la friccion de scroll.</td>
+                </tr>
+                <tr>
+                  <td>Filtros persistentes visibles</td>
+                  <td><b>Segmented Control / Tabs</b></td>
+                  <td>El usuario necesita ver en que estado esta sin abrir nada.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <h2 class="component-page__section-title">Patterns comunes que vale la pena conocer</h2>
+          <p class="component-page__section-lead">
+            Estos nombres aparecen todo el tiempo en literatura de diseño y en
+            documentacion de frameworks. Mencionarlos explicitamente cuando le
+            hablas al agente te ahorra parrafos de explicacion.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Master-Detail</h3>
+              <p class="text-sm text-muted-foreground">Lista de items a la izquierda, detalle del seleccionado a la derecha. <b>Ejemplo:</b> Gmail, Finder, Slack.</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Wizard / Stepper</h3>
+              <p class="text-sm text-muted-foreground">Un proceso largo dividido en pasos numerados. <b>Ejemplo:</b> checkout de e-commerce, onboarding de una app.</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Optimistic UI</h3>
+              <p class="text-sm text-muted-foreground">Actualizas la UI antes de confirmar con el servidor, y revertis si falla. <b>Ejemplo:</b> el "me gusta" de Twitter, que se pinta rojo instantaneo.</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Empty State</h3>
+              <p class="text-sm text-muted-foreground">Lo que mostras cuando no hay datos. <b>Ejemplo:</b> "Todavia no creaste ningun proyecto" con un boton "Crear el primero".</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Skeleton Loading</h3>
+              <p class="text-sm text-muted-foreground">Placeholder con la forma del contenido mientras carga, en lugar de un spinner generico. <b>Ejemplo:</b> el feed de Facebook o LinkedIn mientras carga.</p>
+            </div>
+            <div class="rounded-lg border border-border bg-muted/30 p-5">
+              <h3 class="text-base font-semibold mb-1">Infinite Scroll vs Pagination</h3>
+              <p class="text-sm text-muted-foreground">Dos formas de mostrar listas largas. Infinite es mejor para consumo pasivo (feeds); pagination es mejor cuando hay que encontrar algo especifico.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="component-page__section">
+          <div class="rounded-lg border border-border bg-muted/40 p-5">
+            <p class="text-foreground font-semibold mb-2">Tip para vibe-coding</p>
+            <p class="text-muted-foreground">Cuando le hablas a un coding agent, menciona el <b>PATTERN</b>, no solo el componente. "Quiero un master-detail para mis tickets" le da muchisimo mas contexto que "quiero una lista con un panel". El agente reconoce el pattern, carga todas las convenciones asociadas (foco del teclado, responsive, URL sync) y te genera algo que funciona bien de entrada.</p>
+          </div>
+        </section>
+
+        <nav class="component-nav" aria-label="Navegacion entre lecciones">
+          <a class="component-nav__link" href="index.html">
+            <span class="component-nav__label">Anterior</span>
+            <span class="component-nav__name">Portada de Fundamentos</span>
+          </a>
+          <a class="component-nav__link component-nav__link--next" href="02-vocabulario.html">
+            <span class="component-nav__label">Siguiente</span>
+            <span class="component-nav__name">Vocabulario para coding agents</span>
+          </a>
+        </nav>
+      </main>
+    </div>
+
+    <script src="../js/atlas.js"></script>
+    <script src="../js/demos.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
+</html>
