@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 02 · Storage · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 02 · Servicios</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 02 · Página 02</span>
+  <h1>Storage — dónde guardás datos</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Toda app necesita guardar algo: archivos que suben los usuarios, config
+    que se lee muchas veces, datos estructurados en una base de datos.
+    Vercel tiene tres productos bien distintos para cada caso, y un
+    <strong>Marketplace</strong> para conectar lo que te falta.
+  </p>
+
+  <p>
+    Una cosa importante antes de arrancar: Vercel <em>no compite con
+    PostgreSQL, MySQL ni MongoDB</em>. Lo que te da son piezas específicas
+    (Blob, Edge Config) y un hub (Marketplace) para integrarte rápido con
+    los proveedores de DBs tradicionales. El diseño es "usá lo mejor de cada
+    lado, pero sin fricción de setup".
+  </p>
+
+  <h2>Vercel Blob — file storage</h2>
+  <p>
+    Blob es el servicio para guardar <strong>archivos</strong>: imágenes,
+    videos, PDFs, CSVs, cualquier cosa que no encaje en filas y columnas de
+    una DB. Cuando un usuario sube una foto de perfil, un cliente te manda
+    un PDF firmado, o generás un reporte para descargar — todo eso va a Blob.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Feature 01</div>
+      <div class="concept-card-term">URLs únicas no adivinables</div>
+      <p class="concept-card-desc">
+        Cada archivo recibe una URL con un token difícil de adivinar. Aunque
+        el acceso sea público, nadie lo va a encontrar por fuerza bruta.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Feature 02</div>
+      <div class="concept-card-term">Acceso público o privado</div>
+      <p class="concept-card-desc">
+        Elegís: si es público, cualquiera con la URL lo ve. Si es privado,
+        solo tu app puede servirlo con autenticación.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Feature 03</div>
+      <div class="concept-card-term">Pensado para frontend</div>
+      <p class="concept-card-desc">
+        Upload directo desde el navegador (sin pasar por tu función) y
+        servido con la CDN global de Vercel. Latencia baja, costos más bajos.
+      </p>
+    </div>
+  </div>
+
+  <h2>Edge Config — configuración global ultra-rápida</h2>
+  <p>
+    Edge Config resuelve un caso muy específico: datos que tu app <strong>lee
+    muchas veces y cambia poco</strong>. Feature flags, configuración de A/B
+    testing, redirects, whitelist de países, banners de promoción, horarios
+    de apertura — cosas que todos los requests consultan pero que actualizás
+    una vez al día (si eso).
+  </p>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-icon">DB</div>
+      <div class="analogy-title">Base de datos tradicional</div>
+      <p class="analogy-desc">Conexión, query, latencia de decenas de ms. Perfecto para datos transaccionales, pésimo para leer config en cada request.</p>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-side">
+      <div class="analogy-icon">EC</div>
+      <div class="analogy-title">Edge Config</div>
+      <p class="analogy-desc">Lectura sub-milisegundo desde cualquier nodo edge. Pensado para "todos leen, uno actualiza de vez en cuando".</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">Un caso típico de Edge Config</div>
+    <p style="margin:0">
+      Tenés una landing con un banner promocional. No vas a golpear Postgres
+      en cada pageview para ver si el banner está activo — lo ponés en Edge
+      Config, lo leés en el middleware, y la respuesta llega desde el nodo
+      más cercano al usuario en menos de un milisegundo.
+    </p>
+  </div>
+
+  <h2>Vercel Marketplace — integración con DBs de terceros</h2>
+  <p>
+    Para datos estructurados (usuarios, órdenes, productos, chats) seguís
+    necesitando una base de datos de verdad. Acá Vercel no reinventa la
+    rueda: armó un <strong>Marketplace</strong> donde podés conectar
+    proveedores especializados con un par de clicks, y las credenciales se
+    <strong>inyectan automáticamente</strong> como variables de entorno de tu
+    proyecto.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-icon">1</div>
+      <div class="flow-step-title">Elegís integración</div>
+      <p class="flow-step-desc">En el Marketplace clickeás "add Postgres" o "add KV" según lo que necesités.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">2</div>
+      <div class="flow-step-title">Elegís proveedor</div>
+      <p class="flow-step-desc">Para Postgres tenés Neon, Supabase, AWS Aurora. Para KV, Upstash Redis. Para NoSQL, más opciones.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">3</div>
+      <div class="flow-step-title">Credenciales auto</div>
+      <p class="flow-step-desc">Vercel inyecta el DATABASE_URL y demás secrets directamente como env vars del proyecto.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">4</div>
+      <div class="flow-step-title">Usás en tu código</div>
+      <p class="flow-step-desc">Tu app ya tiene las credenciales listas. Sin copiar, sin pegar, sin olvidarte un .env.</p>
+    </div>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Postgres</div>
+      <div class="concept-card-term">SQL relacional</div>
+      <p class="concept-card-desc">
+        Proveedores como <strong>Neon</strong>, <strong>Supabase</strong> y
+        <strong>AWS Aurora</strong>. Para datos estructurados con relaciones
+        (usuarios, órdenes, inventario).
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">KV</div>
+      <div class="concept-card-term">Key-Value / Redis</div>
+      <p class="concept-card-desc">
+        Proveedor estrella: <strong>Upstash Redis</strong>. Para cache,
+        sessions, rate limiting, colas — todo lo que necesita lecturas
+        rapidísimas.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">NoSQL</div>
+      <div class="concept-card-term">Documentos flexibles</div>
+      <p class="concept-card-desc">
+        Varias opciones para documentos sin schema fijo. Útil para datos
+        heterogéneos donde cada item puede tener campos distintos.
+      </p>
+    </div>
+  </div>
+
+  <h2>Comparativa rápida: cuándo usás cada uno</h2>
+
+  <div class="data-table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Servicio</th>
+          <th>Qué es</th>
+          <th>Para qué sirve</th>
+          <th>Ejemplo de uso</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Vercel Blob</strong></td>
+          <td>Object storage para archivos grandes</td>
+          <td>Subir y servir imágenes, videos, PDFs, documentos</td>
+          <td>Avatar del usuario, facturas en PDF, video de producto</td>
+        </tr>
+        <tr>
+          <td><strong>Edge Config</strong></td>
+          <td>Almacén de config low-latency global</td>
+          <td>Feature flags, A/B tests, redirects, config que se lee mucho y cambia poco</td>
+          <td>Banner promocional activo/inactivo, whitelist de países</td>
+        </tr>
+        <tr>
+          <td><strong>Postgres (Marketplace)</strong></td>
+          <td>Base de datos SQL relacional</td>
+          <td>Datos estructurados con relaciones y transacciones</td>
+          <td>Usuarios, órdenes, inventario, relaciones complejas</td>
+        </tr>
+        <tr>
+          <td><strong>KV / Redis (Marketplace)</strong></td>
+          <td>Almacén key-value en memoria</td>
+          <td>Cache, sessions, rate limiting, colas de mensajes</td>
+          <td>Cache de respuestas de API, contador de intentos de login</td>
+        </tr>
+        <tr>
+          <td><strong>NoSQL (Marketplace)</strong></td>
+          <td>Base de datos de documentos</td>
+          <td>Datos heterogéneos sin schema fijo</td>
+          <td>Logs de eventos, contenido editorial variable</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout success">
+    <div class="callout-title">Adiós al "copiar credenciales al .env"</div>
+    <p style="margin:0">
+      El setup clásico era: creás una DB en Neon, copiás la connection string,
+      la pegás en tu <code>.env</code>, te olvidás de actualizar el
+      <code>.env.production</code>, deployás, rompe todo, debuggeás una hora.
+      Con el Marketplace de Vercel, las credenciales se inyectan por
+      environment (dev, preview, production) automáticamente. Un paso menos
+      donde meter la pata.
+    </p>
+  </div>
+
+  <h2>Una decisión clave: dónde metés cada cosa</h2>
+  <p>
+    Cuando empezás un proyecto en Vercel, tenés que pensar el mapa de storage:
+    los archivos a Blob, la config volátil a Edge Config, los datos
+    estructurados a una DB del Marketplace. Mezclar los tres te da lo mejor
+    de cada mundo, sin pagar por features que no usás.
+  </p>
+
+  <div class="callout ai">
+    <div class="callout-title">Aplicado a tu negocio de automatizaciones</div>
+    <p style="margin:0">
+      Cliente te pide una app que reciba PDFs, los procese con IA y guarde
+      los resultados. Tu stack de storage en Vercel: <strong>Blob</strong>
+      para los PDFs entrantes, <strong>Postgres</strong> (via Neon en el
+      Marketplace) para los datos extraídos estructurados, <strong>Edge
+      Config</strong> para feature flags del cliente (por ejemplo, "activar
+      módulo de reportes avanzados"). Todo integrado, credenciales
+      automáticas, sin días perdidos en infra.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Tenés claro dónde va cada tipo de dato?</span>
+    <button class="mark-btn" data-mark-complete="m02-02">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-core-platform.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">01 · Core Platform</span>
+    </a>
+    <a href="03-security.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">03 · Security</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 02 · Servicios · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

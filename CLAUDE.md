@@ -50,6 +50,21 @@ mejorar_y_aprender/
   - Los prompts para coding agents estan en INGLES (es el idioma que mejor entienden los agentes)
   - El Modulo 08 (Cheatsheet) tiene: tabla global buscable, decision tree con 6 grupos de preguntas, y biblioteca de 54 prompts
 
+### 003-curso-vercel
+- **Que es**: Curso teorico-visual sobre Vercel — que es, que servicios provee, como encaja en el ecosistema de agentes AI y por que un emprendedor deberia considerarlo para deploy. Cero codigo ejecutable, todo conceptual con diagramas.
+- **Stack**: HTML/CSS/JS vanilla, dark mode inspirado en Vercel (negro + brand blue/violeta + gradiente AI rosa/violeta/azul)
+- **Estructura**: 7 modulos (00-fundamentos-deploy, 01-que-es-vercel, 02-servicios, 03-vercel-ai, 04-flujo-deploy, 05-por-que-vercel, 06-cheatsheet), 29 paginas HTML total
+- **Paleta**: bg `#000000`, text `#fafafa`, brand `#0070f3`, brand-2 `#7928ca`, ai-grad (rosa #ff0080 → violeta #7928ca → azul #0070f3), success `#0cce6b`, warning `#f5a623`
+- **API JS publica**: `window.CourseProgress` (localStorage key `curso_vercel_progreso_v1`, total 29 paginas), `window.CourseUtils`
+- **Notas importantes**:
+  - Datos verificados con docs oficiales de Vercel 2026 (via context7 `/llmstxt/vercel_llms_txt`)
+  - Pricing confirmado: Hobby $0 (non-commercial, 100GB BW + 1M edge + 4h CPU + 1M invocations), Pro $20/mes/seat con $20 credit incluido, Enterprise custom con 99.99% SLA
+  - Vercel se auto-define hoy como "AI Cloud" — no es solo frontend hosting
+  - Fluid Compute: NO cobra tiempo esperando APIs externas (DBs, APIs, LLMs) — diferenciador clave para apps AI
+  - Productos AI cubiertos: v0, AI SDK (sdk.vercel.ai), AI Gateway, Vercel Agent (nuevo 2026), Vercel Sandbox (nuevo 2026)
+  - Target de usuario: Mateo NUNCA hizo un deploy en la practica, tiene teoria — el curso es el puente teoria→practica
+  - Los prompts del cheatsheet (M06) estan en INGLES (mismo patron que 002-ui-components-atlas)
+
 ## Reglas para crear nuevos proyectos
 
 1. Crear carpeta con el siguiente numero disponible: `NNN-slug-del-proyecto/`

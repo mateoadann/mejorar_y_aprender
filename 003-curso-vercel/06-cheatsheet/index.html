@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 06 · Cheatsheet · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 06 · Cheatsheet</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link active">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="page-narrow">
+    <span class="badge">MÓDULO 06 · Referencia rápida</span>
+    <h1>Cheatsheet completo</h1>
+    <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+      Glosario de términos, tabla de servicios con cuándo usarlos, árbol de
+      decisión, y prompts listos para darle a un coding agent. Guardá esta
+      página en favoritos — es la referencia que vas a abrir una y otra vez.
+    </p>
+
+    <h2>Índice</h2>
+    <p>
+      Usá estos atajos para saltar directo a lo que necesitás. Todo el módulo
+      vive en una sola página para que puedas buscar con <kbd>Ctrl</kbd> +
+      <kbd>F</kbd> (o <kbd>Cmd</kbd> + <kbd>F</kbd>) sin cambiar de pestaña.
+    </p>
+
+    <div class="concept-grid">
+      <a href="#glosario" class="concept-card">
+        <div class="concept-card-label">Sección 1</div>
+        <div class="concept-card-term">Glosario</div>
+        <p class="concept-card-desc">Más de 40 términos ordenados alfabéticamente. Desde "AI Cloud" hasta "WAF".</p>
+      </a>
+      <a href="#servicios" class="concept-card">
+        <div class="concept-card-label">Sección 2</div>
+        <div class="concept-card-term">Tabla de servicios</div>
+        <p class="concept-card-desc">Qué hace cada servicio de Vercel, cuándo lo usás y qué alternativas hay fuera de Vercel.</p>
+      </a>
+      <a href="#decision" class="concept-card">
+        <div class="concept-card-label">Sección 3</div>
+        <div class="concept-card-term">Árbol de decisión</div>
+        <p class="concept-card-desc">¿Vercel es para este proyecto? Seis preguntas y salís con una respuesta clara.</p>
+      </a>
+      <a href="#prompts" class="concept-card">
+        <div class="concept-card-label">Sección 4</div>
+        <div class="concept-card-term">Prompts para coding agents</div>
+        <p class="concept-card-desc">Ocho prompts en inglés listos para pegar en Claude Code, Cursor, Copilot o v0.</p>
+      </a>
+      <a href="#recursos" class="concept-card">
+        <div class="concept-card-label">Sección 5</div>
+        <div class="concept-card-term">Recursos oficiales</div>
+        <p class="concept-card-desc">Enlaces directos a docs, pricing, changelog, AI SDK, v0 y comunidad.</p>
+      </a>
+    </div>
+  </section>
+
+  <section id="glosario">
+    <h2>Glosario</h2>
+    <p style="max-width:72ch;">
+      Términos que vas a escuchar todo el tiempo cuando trabajes con Vercel.
+      Si alguno te quedó flojo en los módulos anteriores, este es el lugar
+      para refrescarlo sin tener que volver atrás.
+    </p>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 240px;">Término</th>
+            <th>Qué significa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>AI Cloud</strong></td>
+            <td>Posicionamiento actual de Vercel. Plataforma unificada para apps modernas y workloads AI, no sólo hosting de frontends.</td>
+          </tr>
+          <tr>
+            <td><strong>AI Gateway</strong></td>
+            <td>API unificada que routea a múltiples proveedores de LLM (OpenAI, Anthropic, Google, etc.) con una sola API key.</td>
+          </tr>
+          <tr>
+            <td><strong>AI SDK</strong></td>
+            <td>Toolkit TypeScript open-source para construir apps con LLMs: streaming, tool calling, UI hooks listos para React/Svelte/Vue.</td>
+          </tr>
+          <tr>
+            <td><strong>API Key</strong></td>
+            <td>Token secreto que identifica tu cuenta con un servicio externo. Nunca va en el código fuente ni en Git.</td>
+          </tr>
+          <tr>
+            <td><strong>Build</strong></td>
+            <td>Proceso que transforma tu código fuente en artefactos optimizados listos para producción (bundles, HTML, imágenes comprimidas).</td>
+          </tr>
+          <tr>
+            <td><strong>Build time</strong></td>
+            <td>Momento en que se ejecuta el build. Opuesto a runtime, que es cuando tu código corre en producción respondiendo pedidos.</td>
+          </tr>
+          <tr>
+            <td><strong>CDN (Content Delivery Network)</strong></td>
+            <td>Red de servidores distribuidos geográficamente que sirven contenido desde el nodo más cercano al usuario para bajar latencia.</td>
+          </tr>
+          <tr>
+            <td><strong>Cold start</strong></td>
+            <td>Primera vez que una función serverless arranca. Toma un poco más de tiempo porque hay que inicializar el runtime.</td>
+          </tr>
+          <tr>
+            <td><strong>CSR (Client-Side Rendering)</strong></td>
+            <td>La app renderiza en el navegador del usuario. El servidor sólo manda un HTML mínimo y un bundle JS.</td>
+          </tr>
+          <tr>
+            <td><strong>Custom domain</strong></td>
+            <td>Tu dominio propio (ej: mibiz.com) apuntado a tu proyecto, en vez de la URL por default tipo proyecto.vercel.app.</td>
+          </tr>
+          <tr>
+            <td><strong>Deploy / Deployment</strong></td>
+            <td>Hacer accesible públicamente tu app en internet. En Vercel cada push a Git genera un deployment.</td>
+          </tr>
+          <tr>
+            <td><strong>DNS</strong></td>
+            <td>Sistema que traduce nombres de dominio (mibiz.com) a direcciones IP. Lo configurás en tu registrar o en Cloudflare.</td>
+          </tr>
+          <tr>
+            <td><strong>Edge</strong></td>
+            <td>Nodos de cómputo cerca del usuario, no en un datacenter central lejano. Bajan la latencia a decenas de ms.</td>
+          </tr>
+          <tr>
+            <td><strong>Edge Middleware</strong></td>
+            <td>Código que corre en el edge antes de llegar a tu servidor. Útil para auth, redirects, A/B testing, geo-routing.</td>
+          </tr>
+          <tr>
+            <td><strong>Environment Variable</strong></td>
+            <td>Variable de configuración inyectada en runtime, típicamente secretos (API keys, connection strings). No van al código.</td>
+          </tr>
+          <tr>
+            <td><strong>Fluid Compute</strong></td>
+            <td>Modelo de compute de Vercel que no cobra el tiempo esperando APIs externas. Ideal para workloads AI con llamadas a LLMs.</td>
+          </tr>
+          <tr>
+            <td><strong>Framework preset</strong></td>
+            <td>Configuración automática de Vercel para frameworks conocidos (Next.js, Svelte, Astro, Remix). Detecta y configura solo.</td>
+          </tr>
+          <tr>
+            <td><strong>Function invocation</strong></td>
+            <td>Una ejecución de una función serverless. Es la unidad que Vercel cuenta para pricing en el plan Pro.</td>
+          </tr>
+          <tr>
+            <td><strong>Git integration</strong></td>
+            <td>Conexión automática entre Vercel y tu repo (GitHub, GitLab, Bitbucket). Cada push dispara un deploy.</td>
+          </tr>
+          <tr>
+            <td><strong>HTTPS</strong></td>
+            <td>Versión segura de HTTP, con certificado SSL/TLS. Vercel lo provisiona automático y gratis para todos tus dominios.</td>
+          </tr>
+          <tr>
+            <td><strong>ISR (Incremental Static Regeneration)</strong></td>
+            <td>Páginas estáticas que se regeneran en background bajo demanda. Combina la velocidad de SSG con datos frescos.</td>
+          </tr>
+          <tr>
+            <td><strong>Latency</strong></td>
+            <td>Tiempo de respuesta desde que se hace un pedido hasta que llega la respuesta. Se mide en milisegundos.</td>
+          </tr>
+          <tr>
+            <td><strong>Monorepo</strong></td>
+            <td>Varios proyectos en un solo repositorio. Vercel los soporta con paths y builds independientes por proyecto.</td>
+          </tr>
+          <tr>
+            <td><strong>Next.js</strong></td>
+            <td>Framework React creado por Vercel. Es el stack de referencia de la plataforma — soporta todas las features de primera.</td>
+          </tr>
+          <tr>
+            <td><strong>Preview deployment</strong></td>
+            <td>Deploy único por cada branch o PR, con URL propia. Ideal para compartir con clientes antes de mergear a producción.</td>
+          </tr>
+          <tr>
+            <td><strong>Production deployment</strong></td>
+            <td>El deploy que responde en tu dominio custom. Normalmente el de la branch main. Los otros son preview.</td>
+          </tr>
+          <tr>
+            <td><strong>Pull Request (PR)</strong></td>
+            <td>Propuesta de cambio en Git, previa al merge. Vercel comenta automáticamente la URL del preview en cada PR.</td>
+          </tr>
+          <tr>
+            <td><strong>Rolling release</strong></td>
+            <td>Liberación gradual de tráfico a una nueva versión. Empezás con 1%, medís, y vas subiendo si no hay problemas.</td>
+          </tr>
+          <tr>
+            <td><strong>Rollback</strong></td>
+            <td>Volver a un deploy anterior. En Vercel es un click — promovés cualquier deployment viejo a producción.</td>
+          </tr>
+          <tr>
+            <td><strong>Runtime</strong></td>
+            <td>Entorno de ejecución donde corre tu código: Node.js, navegador, Edge runtime (subset de Node), Python, etc.</td>
+          </tr>
+          <tr>
+            <td><strong>Serverless</strong></td>
+            <td>Modelo donde no gestionás servidores. La plataforma los abstrae: escala, parcha, monitorea. Vos sólo escribís funciones.</td>
+          </tr>
+          <tr>
+            <td><strong>SSG (Static Site Generation)</strong></td>
+            <td>Sitios pre-renderizados a HTML estático en build time. Máxima velocidad, cacheado en el CDN.</td>
+          </tr>
+          <tr>
+            <td><strong>SSR (Server-Side Rendering)</strong></td>
+            <td>HTML renderizado en el servidor en cada request. Contenido siempre fresco, SEO perfecto, un poco más lento que SSG.</td>
+          </tr>
+          <tr>
+            <td><strong>Stream / Streaming</strong></td>
+            <td>Respuesta que llega por partes (letra por letra o token por token). Típico de LLMs para que el usuario vea progreso.</td>
+          </tr>
+          <tr>
+            <td><strong>TLD</strong></td>
+            <td>Top-Level Domain, la extensión del dominio (.com, .ar, .io, .app). Cambia el precio anual de renovación.</td>
+          </tr>
+          <tr>
+            <td><strong>Tool calling</strong></td>
+            <td>LLM llamando funciones que vos definís. Clave para agentes que leen DBs, mandan emails o ejecutan acciones.</td>
+          </tr>
+          <tr>
+            <td><strong>v0</strong></td>
+            <td>Generador de UIs con IA de Vercel. Le pedís una pantalla en lenguaje natural y te devuelve componentes React listos.</td>
+          </tr>
+          <tr>
+            <td><strong>Vercel Agent</strong></td>
+            <td>Producto gestionado para agentes AI. Abstrae sesiones, memoria y herramientas para que no tengas que armar la infra.</td>
+          </tr>
+          <tr>
+            <td><strong>Vercel Blob</strong></td>
+            <td>Storage de archivos de Vercel. Para subir imágenes, PDFs, uploads de usuarios, sin montar S3 aparte.</td>
+          </tr>
+          <tr>
+            <td><strong>Vercel Marketplace</strong></td>
+            <td>Hub de integraciones con DBs y servicios third-party (Neon, Supabase, Upstash). Facturación unificada con Vercel.</td>
+          </tr>
+          <tr>
+            <td><strong>Vercel Sandbox</strong></td>
+            <td>Entorno aislado para ejecutar código generado por IA. Útil cuando un agente escribe código que hay que correr seguro.</td>
+          </tr>
+          <tr>
+            <td><strong>WAF (Web Application Firewall)</strong></td>
+            <td>Filtro de tráfico malicioso a nivel red. Bloquea bots, scrapers, ataques comunes antes de que lleguen a tu app.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="servicios">
+    <h2>Tabla de servicios de Vercel</h2>
+    <p style="max-width:72ch;">
+      El ecosistema completo en una sola tabla. Úsala como checklist cuando
+      arrancás un proyecto para decidir qué encendés y qué no. Las alternativas
+      te sirven para cotizar contra otras plataformas si el cliente lo pide.
+    </p>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Servicio</th>
+            <th>Qué hace</th>
+            <th>Cuándo lo usás</th>
+            <th>Alternativas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Hosting + CDN</strong></td>
+            <td>Sirve tu app desde nodos cerca del usuario con HTTPS automático.</td>
+            <td>Siempre. Es la base de cualquier proyecto en Vercel.</td>
+            <td>Netlify, Cloudflare Pages, AWS CloudFront</td>
+          </tr>
+          <tr>
+            <td><strong>Fluid Compute</strong></td>
+            <td>Ejecuta funciones sin cobrar tiempo de espera en I/O externo.</td>
+            <td>Endpoints que llaman LLMs o APIs lentas. Evita la sorpresa en la factura.</td>
+            <td>AWS Lambda, Cloudflare Workers, Fly Machines</td>
+          </tr>
+          <tr>
+            <td><strong>Vercel Blob</strong></td>
+            <td>Storage de archivos (imágenes, PDFs, uploads) con URL pública.</td>
+            <td>Subidas de usuarios, avatars, generated assets de IA.</td>
+            <td>AWS S3, Cloudflare R2, Backblaze B2</td>
+          </tr>
+          <tr>
+            <td><strong>Edge Config</strong></td>
+            <td>Config key-value de baja latencia leído desde el edge.</td>
+            <td>Feature flags, redirects dinámicos, A/B testing sin redeploy.</td>
+            <td>LaunchDarkly, Cloudflare KV, Upstash Redis</td>
+          </tr>
+          <tr>
+            <td><strong>Vercel Marketplace (DBs)</strong></td>
+            <td>Provisioná Neon, Supabase, Upstash con facturación unificada.</td>
+            <td>Cuando necesitás DB pero no querés gestionar cuentas separadas.</td>
+            <td>Directo con el provider (Neon, PlanetScale, Turso)</td>
+          </tr>
+          <tr>
+            <td><strong>AI SDK</strong></td>
+            <td>Toolkit TS para llamar LLMs, hacer streaming y tool calling.</td>
+            <td>Cualquier app con IA: chatbots, agentes, generación de contenido.</td>
+            <td>LangChain, LlamaIndex, SDKs nativos de cada provider</td>
+          </tr>
+          <tr>
+            <td><strong>AI Gateway</strong></td>
+            <td>API unificada a múltiples proveedores de LLM con caching y logs.</td>
+            <td>Cuando querés switchear entre OpenAI/Anthropic/Google sin refactor.</td>
+            <td>OpenRouter, Portkey, LiteLLM</td>
+          </tr>
+          <tr>
+            <td><strong>v0</strong></td>
+            <td>Generador de UIs con IA: pedís una pantalla y te da componentes.</td>
+            <td>Arranque rápido de prototipos, landings, dashboards internos.</td>
+            <td>Bolt.new, Lovable, Claude Artifacts</td>
+          </tr>
+          <tr>
+            <td><strong>Vercel Agent</strong></td>
+            <td>Runtime gestionado para agentes AI: sesiones, memoria, herramientas.</td>
+            <td>Agentes de larga duración que no querés armar desde cero.</td>
+            <td>LangGraph Cloud, Claude Managed Agents, Mastra</td>
+          </tr>
+          <tr>
+            <td><strong>Vercel Sandbox</strong></td>
+            <td>Entorno aislado para ejecutar código generado por IA.</td>
+            <td>Agentes que escriben y corren código. Code interpreters seguros.</td>
+            <td>E2B, Modal, Daytona</td>
+          </tr>
+          <tr>
+            <td><strong>WAF / BotID</strong></td>
+            <td>Firewall de aplicación + detección de bots a nivel red.</td>
+            <td>Apps públicas expuestas a scraping o tráfico malicioso.</td>
+            <td>Cloudflare WAF, AWS WAF, Arcjet</td>
+          </tr>
+          <tr>
+            <td><strong>Cron Jobs</strong></td>
+            <td>Tareas programadas que corren en schedule (cada X horas/días).</td>
+            <td>Resúmenes diarios, cleanup, envío de emails, scraping periódico.</td>
+            <td>GitHub Actions cron, Upstash QStash, Trigger.dev</td>
+          </tr>
+          <tr>
+            <td><strong>Edge Middleware</strong></td>
+            <td>Código que corre antes de llegar a tu función, en el edge.</td>
+            <td>Auth, geo-routing, redirects, rewrites, A/B testing.</td>
+            <td>Cloudflare Workers, NGINX, AWS Lambda@Edge</td>
+          </tr>
+          <tr>
+            <td><strong>Preview Deployments</strong></td>
+            <td>URL única por branch/PR para compartir antes de mergear.</td>
+            <td>Mostrar avances a clientes, QA por feature, code review visual.</td>
+            <td>Netlify Deploy Previews, Railway PR envs</td>
+          </tr>
+          <tr>
+            <td><strong>Analytics / Speed Insights</strong></td>
+            <td>Métricas de tráfico real y performance Core Web Vitals.</td>
+            <td>Para saber qué páginas son lentas y cuáles reciben más tráfico.</td>
+            <td>Plausible, Fathom, Google Analytics + PageSpeed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="decision" class="page-narrow" style="padding-top:0;padding-bottom:0;">
+    <h2>Árbol de decisión: ¿Vercel para mi proyecto?</h2>
+    <p>
+      Bajá por las preguntas en orden. Si al final de las seis seguís diciendo
+      que sí, Vercel es una muy buena opción. Si en alguna te frenaste, la
+      alternativa te lo dice sola.
+    </p>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-card-label">Pregunta 1</div>
+        <div class="concept-card-term">¿Es una app web?</div>
+        <p class="concept-card-desc">Frontend + API + backend liviano. Si es un servicio pesado de backend, colas, workers 24/7 o microservicios complejos, mirá AWS, Railway o Render.</p>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-label">Pregunta 2</div>
+        <div class="concept-card-term">¿Es comercial?</div>
+        <p class="concept-card-desc">Si es personal o hobby, arrancá gratis con el plan Hobby. Si hay clientes o facturación, vas a plan Pro — USD 20 por seat al mes.</p>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-label">Pregunta 3</div>
+        <div class="concept-card-term">¿Usás Next.js u otro framework moderno?</div>
+        <p class="concept-card-desc">Si sí, Vercel es óptimo — detecta el framework, configura todo solo, y tenés las features más nuevas de primera.</p>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-label">Pregunta 4</div>
+        <div class="concept-card-term">¿Tenés features AI?</div>
+        <p class="concept-card-desc">LLMs, agentes, streaming de respuestas. Si sí, Vercel + AI SDK + Gateway + Fluid Compute te ahorra semanas de armado y plata en la factura.</p>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-label">Pregunta 5</div>
+        <div class="concept-card-term">¿Tráfico predecible y estable?</div>
+        <p class="concept-card-desc">Si el tráfico es plano y alto, un VPS tradicional puede ser más barato. Si es spiky (picos impredecibles), Vercel escala mejor y no pagás idle.</p>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-label">Pregunta 6</div>
+        <div class="concept-card-term">¿Tu equipo no tiene DevOps dedicado?</div>
+        <p class="concept-card-desc">Si sí, Vercel es ideal — la developer experience es sobresaliente. Git push y listo. Sin YAML de Kubernetes, sin pipelines custom.</p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-title">Regla rápida para tu negocio</div>
+      <p style="margin:0;">
+        Si armás software a medida o automatizaciones para clientes y el
+        stack es moderno (Next.js, React, IA), Vercel te da el tiempo que
+        hoy perdés en infra para que lo uses vendiendo o construyendo.
+      </p>
+    </div>
+  </section>
+
+  <section id="prompts" class="page-narrow" style="padding-top:0;padding-bottom:0;">
+    <h2>Prompts para coding agents</h2>
+    <p>
+      Usá estos prompts cuando le pidas a Claude Code, Cursor, Copilot o
+      similares que te ayude con cosas de Vercel. Están en inglés a propósito
+      — es el idioma que mejor entienden los agentes y donde dan los mejores
+      resultados.
+    </p>
+
+    <h3>Setup initial Next.js deploy on Vercel</h3>
+    <div class="code-block">Help me set up a new Next.js project and deploy it to Vercel. I need:
+- Next.js 15 App Router with TypeScript
+- Tailwind CSS configured
+- A basic landing page with hero section
+- Ready to push to GitHub and connect to Vercel
+Walk me through each step before executing.</div>
+
+    <h3>Configure Vercel AI SDK with multiple providers</h3>
+    <div class="code-block">Set up Vercel AI SDK in my Next.js app with support for:
+- OpenAI GPT-4
+- Anthropic Claude
+- Google Gemini
+Route through AI Gateway using a single API key.
+Include streaming responses in a simple chat UI.</div>
+
+    <h3>Add environment variables for Vercel</h3>
+    <div class="code-block">I need to configure environment variables for my Vercel project:
+- OPENAI_API_KEY
+- DATABASE_URL
+- NEXTAUTH_SECRET
+Show me how to set them in Vercel dashboard, use them in code safely, and document them in .env.example.
+Make sure secrets never get committed to git.</div>
+
+    <h3>Configure custom domain on Vercel</h3>
+    <div class="code-block">I just bought a domain "mybiz.com" on Cloudflare. I want to point it to my Vercel project.
+Walk me through:
+- Which DNS records to add on Cloudflare
+- How to verify in Vercel dashboard
+- How to redirect apex to www (or vice versa)
+- When HTTPS gets provisioned automatically</div>
+
+    <h3>Set up Vercel Cron job</h3>
+    <div class="code-block">I need a Vercel Cron Job that runs every day at 3 AM UTC to:
+- Fetch data from an external API
+- Store results in Vercel Blob
+- Send me an email summary
+Build the function in Next.js App Router.</div>
+
+    <h3>Debug Vercel deployment failure</h3>
+    <div class="code-block">My Vercel deployment is failing. I will paste the build log. Help me:
+- Identify the root cause
+- Propose a fix
+- Explain what to change in my code or configuration
+Ask clarifying questions if needed.</div>
+
+    <h3>Add Vercel Preview Deployments comments to GitHub</h3>
+    <div class="code-block">I want Vercel to automatically comment on every pull request with the preview deployment URL.
+Guide me through the GitHub integration setup and what the comment will look like.</div>
+
+    <h3>Migrate from Heroku to Vercel</h3>
+    <div class="code-block">I have a Node.js Express app deployed on Heroku. Help me migrate it to Vercel:
+- Assess if it fits the serverless model
+- Refactor the Express routes into Vercel serverless functions
+- Migrate environment variables
+- Set up custom domain
+Flag any incompatibilities before migrating.</div>
+
+    <div class="callout ai">
+      <div class="callout-title">Tip de uso</div>
+      <p style="margin:0;">
+        Pegá el prompt tal cual, y antes de darle enter agregale contexto
+        específico tuyo: nombre del proyecto, stack actual, dónde estás
+        parado. Los agentes performan mucho mejor con contexto que con
+        prompts genéricos.
+      </p>
+    </div>
+  </section>
+
+  <section id="recursos" class="page-narrow" style="padding-top:0;padding-bottom:0;">
+    <h2>Recursos oficiales</h2>
+    <p>
+      Los enlaces a los que vas a volver una y otra vez. Todo lo que no
+      entra en este curso, lo encontrás acá.
+    </p>
+
+    <div class="concept-grid">
+      <a href="https://vercel.com" class="concept-card" target="_blank" rel="noopener">
+        <div class="concept-card-label">Sitio oficial</div>
+        <div class="concept-card-term">vercel.com</div>
+        <p class="concept-card-desc">Home de la plataforma. Desde acá entrás al dashboard de tu cuenta.</p>
+      </a>
+
+      <a href="https://vercel.com/docs" class="concept-card" target="_blank" rel="noopener">
+        <div class="concept-card-label">Documentación</div>
+        <div class="concept-card-term">vercel.com/docs</div>
+        <p class="concept-card-desc">Docs completas: deployment, configuración, functions, domains, todo.</p>
+      </a>
+
+      <a href="https://vercel.com/pricing" class="concept-card" target="_blank" rel="noopener">
+        <div class="concept-card-label">Precios</div>
+        <div class="concept-card-term">vercel.com/pricing</div>
+        <p class="concept-card-desc">Planes Hobby, Pro y Enterprise con lo que incluye cada uno.</p>
+      </a>
+
+      <a href="https://sdk.vercel.ai" class="concept-card" target="_blank" rel="noopener">
+        <div class="concept-card-label">AI SDK</div>
+        <div class="concept-card-term">sdk.vercel.ai</div>
+        <p class="concept-card-desc">Docs del AI SDK con ejemplos de chat, tool calling y streaming.</p>
+      </a>
+
+      <a href="https://v0.app" class="concept-card" target="_blank" rel="noopener">
+        <div class="concept-card-label">Generador de UIs</div>
+        <div class="concept-card-term">v0.app</div>
+        <p class="concept-card-desc">Generador de componentes React con IA. Ideal para arranque de landings.</p>
+      </a>
+
+      <a href="https://vercel.com/ai-gateway" class="concept-card" target="_blank" rel="noopener">
+        <div class="concept-card-label">AI Gateway</div>
+        <div class="concept-card-term">vercel.com/ai-gateway</div>
+        <p class="concept-card-desc">Página del AI Gateway con los proveedores soportados y pricing.</p>
+      </a>
+
+      <a href="https://community.vercel.com" class="concept-card" target="_blank" rel="noopener">
+        <div class="concept-card-label">Comunidad</div>
+        <div class="concept-card-term">community.vercel.com</div>
+        <p class="concept-card-desc">Foro oficial con preguntas, respuestas y anuncios del equipo.</p>
+      </a>
+
+      <a href="https://github.com/vercel" class="concept-card" target="_blank" rel="noopener">
+        <div class="concept-card-label">Open source</div>
+        <div class="concept-card-term">github.com/vercel</div>
+        <p class="concept-card-desc">Repos open source: Next.js, AI SDK, swr, turbo, y varios ejemplos.</p>
+      </a>
+
+      <a href="https://vercel.com/changelog" class="concept-card" target="_blank" rel="noopener">
+        <div class="concept-card-label">Novedades</div>
+        <div class="concept-card-term">vercel.com/changelog</div>
+        <p class="concept-card-desc">Lanzamientos y cambios recientes. Seguí este feed si te interesa estar al día.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="page-narrow" style="padding-top:0;">
+    <div class="callout success">
+      <div class="callout-title">Cerramos el curso</div>
+      <p style="margin:0;">
+        Si llegaste hasta acá, ya tenés más teoría que el 80% de la gente
+        que usa Vercel en la práctica. Ahora armá tu primer deploy real —
+        los conceptos se fijan construyendo, no leyendo.
+      </p>
+    </div>
+
+    <div class="mark-complete-bar">
+      <span class="mark-complete-label">¿Ya tenés la referencia a mano para tus próximos proyectos?</span>
+      <button class="mark-btn" data-mark-complete="m06">Marcar como visto</button>
+    </div>
+
+    <div class="page-nav">
+      <a href="../05-por-que-vercel/03-casos-de-uso.html" class="page-nav-link">
+        <span class="page-nav-label">← Anterior</span>
+        <span class="page-nav-title">03 · Casos de uso para tu negocio</span>
+      </a>
+      <a href="../index.html" class="page-nav-link next">
+        <span class="page-nav-label">Fin del curso</span>
+        <span class="page-nav-title">Volver al inicio →</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 06 · Cheatsheet · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

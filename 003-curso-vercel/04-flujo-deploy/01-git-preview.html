@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 04 · Git push → Preview · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 04 · Flujo del deploy</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 04 · Página 01</span>
+  <h1>Git push → Preview deployment</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Arranca acá el corazón del flujo de Vercel. Cada branch que pusheás
+    genera automáticamente una URL propia y navegable — sin configuración,
+    sin tocar servidores. Esto es lo que diferencia a Vercel del hosting
+    tradicional.
+  </p>
+
+  <h2>El setup inicial — una sola vez</h2>
+  <p>
+    Antes de que toda la magia arranque, hay un paso de onboarding que
+    hacés una vez por proyecto. Después te olvidás. Son básicamente cuatro
+    clicks:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">PASO 1</div>
+      <div class="concept-card-term">Conectar cuenta</div>
+      <p class="concept-card-desc">Vinculás tu Vercel con GitHub, GitLab o Bitbucket. Vercel te pide permisos para leer repos y recibir eventos de push.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">PASO 2</div>
+      <div class="concept-card-term">Importar repo</div>
+      <p class="concept-card-desc">Elegís el repo que querés deployar de una lista. No hay que subir archivos a ningún lado — Vercel clona directo desde Git.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">PASO 3</div>
+      <div class="concept-card-term">Framework detectado</div>
+      <p class="concept-card-desc">Vercel detecta solo si es Next.js, Svelte, Astro, Vite, etc., y sugiere la configuración. Build command, output dir, install command — todo precargado.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">PASO 4</div>
+      <div class="concept-card-term">Click "Deploy"</div>
+      <p class="concept-card-desc">El primer deploy arranca. En menos de un minuto tenés una URL viva. Listo, te olvidás del setup y a trabajar.</p>
+    </div>
+  </div>
+
+  <h2>Qué pasa cada vez que hacés push a una branch</h2>
+  <p>
+    Una vez que el proyecto está conectado, cada push es un deploy
+    automático. Mirá los seis pasos que ocurren en paralelo mientras vos
+    seguís trabajando:
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Paso 1</div>
+      <div class="flow-step-title">Push</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Paso 2</div>
+      <div class="flow-step-title">Webhook</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Paso 3</div>
+      <div class="flow-step-title">Clone</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Paso 4</div>
+      <div class="flow-step-title">Install deps</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Paso 5</div>
+      <div class="flow-step-title">Build</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Paso 6</div>
+      <div class="flow-step-title">Deploy preview</div>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="stack-layer">
+      <strong>1 · Push.</strong> Hacés git push a tu branch. No tiene que ser main — cualquier branch dispara el proceso.
+    </div>
+    <div class="stack-layer">
+      <strong>2 · Webhook.</strong> GitHub/GitLab/Bitbucket le avisa a Vercel "hey, hubo un push en tal repo, tal commit". Es una notificación instantánea.
+    </div>
+    <div class="stack-layer">
+      <strong>3 · Clone.</strong> Vercel agarra una máquina efímera y clona tu repo en ese commit exacto. Ambiente limpio, cero contaminación de deploys anteriores.
+    </div>
+    <div class="stack-layer">
+      <strong>4 · Install deps.</strong> Corre npm install (o pnpm, yarn, bun — lo que uses). Usa cache inteligente para que no baje todo de cero cada vez.
+    </div>
+    <div class="stack-layer">
+      <strong>5 · Build.</strong> Ejecuta tu build script — el que compila tu código a los archivos que realmente se sirven. Si falla acá, el deploy no sigue y te avisa.
+    </div>
+    <div class="stack-layer">
+      <strong>6 · Deploy preview.</strong> Sube los artefactos al CDN y te genera una URL única. En un rato la compartís.
+    </div>
+  </div>
+
+  <h2>Preview URLs — la joya de la corona</h2>
+  <p>
+    Cada branch tiene su URL única, con forma
+    <code>&lt;hash&gt;-&lt;project&gt;.vercel.app</code>. Esto parece un detalle,
+    pero es lo que cambia cómo trabaja un equipo entero.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">ÚNICA</div>
+      <div class="concept-card-term">Una URL por branch</div>
+      <p class="concept-card-desc">Dos branches activas, dos URLs distintas, las dos navegables al mismo tiempo. Nada se pisa con nada.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">SHAREABLE</div>
+      <div class="concept-card-term">Link pegable</div>
+      <p class="concept-card-desc">Podés mandársela por WhatsApp a un cliente, a un diseñador, a un stakeholder. Abre el link y ve el cambio — no tiene que instalar nada.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">PERSISTENTE</div>
+      <div class="concept-card-term">Sobrevive</div>
+      <p class="concept-card-desc">La URL vive mientras la branch exista. Borrás la branch, se apaga la URL. Así de simple.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">REAL</div>
+      <div class="concept-card-term">Deploy de verdad</div>
+      <p class="concept-card-desc">No es una simulación. Es tu app corriendo igual que en producción, con CDN, HTTPS, edge functions. Lo que ves es lo que va a ser.</p>
+    </div>
+  </div>
+
+  <p>
+    El valor real: podés ver cambios <strong>ANTES</strong> de mergear. Antes
+    tenías que clonar la branch, instalar deps, correr build, levantar server
+    local, compartir screenshots. Ahora mandás un link. Chau ciclo de 20
+    minutos, hola ciclo de 20 segundos.
+  </p>
+
+  <h2>Comment bot en tus PRs</h2>
+  <p>
+    Cada vez que abrís un Pull Request, Vercel deja automáticamente un
+    comentario con el link del preview de esa branch. No tenés que ir a
+    buscarlo al dashboard — está ahí, abajo del diff, a un click.
+  </p>
+
+  <div class="callout">
+    <div class="callout-title">Qué ves en el comentario del bot</div>
+    <p style="margin:0">
+      El estado del build (en curso, listo, falló), el link al deployment,
+      links a logs si algo explotó, y si tenés analytics también te agrega
+      un resumen. Es como tener un semáforo en cada PR.
+    </p>
+  </div>
+
+  <div class="analogy">
+    <strong>Analogía — emplatar antes de servir.</strong> Los preview
+    deployments son como maquetar el plato antes de servirlo — mirás,
+    probás, ajustás, después mandás a producción. En hosting tradicional
+    era como cocinar y servir directo al cliente sin probar. Acá probás
+    cada decisión antes de que llegue a la mesa.
+  </p>
+
+  <div class="callout success">
+    <div class="callout-title">Esto es lo que engancha a los equipos</div>
+    <p style="margin:0">
+      Los preview deployments son EL feature que enamora a los equipos y
+      los hace no irse más. Diseñadores revisan sin levantar nada, PMs
+      validan flujos, clientes aprueban cambios por link. Una vez que un
+      equipo probó este workflow, no hay vuelta atrás.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Tenés claro cómo funcionan los preview deployments?</span>
+    <button class="mark-btn" data-mark-complete="m04-01">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="index.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">Módulo 04 · Índice</span>
+    </a>
+    <a href="02-production.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">02 · Preview → Production</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 04 · Flujo del deploy · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

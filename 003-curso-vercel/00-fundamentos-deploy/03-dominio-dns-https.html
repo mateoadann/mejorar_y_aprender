@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 00 · Dominio, DNS y HTTPS · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 00 · Fundamentos</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 00 · Página 03</span>
+  <h1>Dominio, DNS y HTTPS</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    La dirección pública de tu app. Sin esto, tu código puede estar corriendo
+    perfecto en un servidor y nadie lo va a encontrar. Acá desarmamos cómo funciona
+    realmente la guía telefónica de internet y por qué Vercel te regala todo esto
+    resuelto.
+  </p>
+
+  <h2>1. ¿Qué es un dominio?</h2>
+  <p>
+    Un dominio es la <strong>marca pública</strong> de tu negocio online. Es el
+    nombre legible que la gente escribe en el navegador para llegar a vos:
+    <code>google.com</code>, <code>tunegocio.com.ar</code>, <code>mercadolibre.com</code>.
+    Sin dominio tendrías que darle a tus clientes una IP como
+    <code>76.76.21.21</code> — imposible de recordar.
+  </p>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-icon">🏠</div>
+      <div class="analogy-title">La dirección IP</div>
+      <div class="analogy-desc">Calle Sucre 1234, piso 5, depto B. Exacto pero impronunciable.</div>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-side">
+      <div class="analogy-icon">🪧</div>
+      <div class="analogy-title">El dominio</div>
+      <div class="analogy-desc">El cartel del local. "Café Mateo". Eso es lo que la gente recuerda.</div>
+    </div>
+  </div>
+
+  <p>
+    El dominio es <em>tu cartel en la vereda</em>. Es lo que le das a los
+    clientes, lo que ponés en las tarjetas, lo que Google indexa. Detrás de ese
+    nombre hay una IP aburrida, pero eso es problema de las máquinas, no tuyo.
+  </p>
+
+  <h2>2. ¿Cómo se compra un dominio?</h2>
+  <p>
+    Los dominios los vende un <strong>registrar</strong>: una empresa autorizada
+    para registrar nombres en nombre tuyo. Los más conocidos son GoDaddy,
+    Namecheap, Cloudflare Registrar, Google Domains (ahora Squarespace) y para
+    <code>.com.ar</code> está NIC Argentina.
+  </p>
+
+  <div class="callout warn">
+    <div class="callout-title">Un dominio se alquila, no se compra</div>
+    <p style="margin:0">
+      Aunque todos dicen "compré el dominio", en realidad es un
+      <strong>alquiler anual</strong>. Pagás cada año para mantenerlo. Si te
+      olvidás de renovarlo, lo perdés y alguien más lo puede agarrar. Es uno de
+      los errores más caros que existe en internet.
+    </p>
+  </div>
+
+  <h2>3. TLDs — Top Level Domains</h2>
+  <p>
+    El <strong>TLD</strong> es la última parte del dominio, después del punto:
+    <code>.com</code>, <code>.ar</code>, <code>.io</code>. No es decorativo —
+    cada TLD cuesta diferente, tiene reglas distintas y transmite cosas distintas.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">GENÉRICO</div>
+      <div class="concept-card-term">.com</div>
+      <p class="concept-card-desc">El clásico universal. La primera opción para un negocio global. Caro y difícil de conseguir libre.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">PAÍS</div>
+      <div class="concept-card-term">.ar</div>
+      <p class="concept-card-desc">Dominio argentino moderno. Más corto que .com.ar. Bueno si tu negocio es local y nuevo.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">PAÍS · COMERCIAL</div>
+      <div class="concept-card-term">.com.ar</div>
+      <p class="concept-card-desc">Dominio argentino tradicional para empresas. Requiere CUIT. Confianza local alta.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">TECH</div>
+      <div class="concept-card-term">.io</div>
+      <p class="concept-card-desc">Muy usado por startups y proyectos tech. Caro. Transmite "producto de software".</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">TECH · AI</div>
+      <div class="concept-card-term">.ai</div>
+      <p class="concept-card-desc">El TLD del momento para productos de inteligencia artificial. Muy caro, muy deseado.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">APP</div>
+      <div class="concept-card-term">.app</div>
+      <p class="concept-card-desc">Google lo maneja. Obliga HTTPS. Bueno para aplicaciones móviles o SaaS.</p>
+    </div>
+  </div>
+
+  <p>
+    <strong>¿Cuál elegir?</strong> Si vendés a Argentina: <code>.com.ar</code> o
+    <code>.ar</code>. Si apuntás a clientes globales: <code>.com</code>. Si es un
+    proyecto técnico o herramienta: <code>.io</code>. Si es IA: <code>.ai</code>
+    (pero preparate a pagar). La plata importa, pero la confianza que transmite
+    el TLD también.
+  </p>
+
+  <h2>4. ¿Qué es el DNS?</h2>
+  <p>
+    El <strong>DNS</strong> (Domain Name System) es la <em>guía telefónica de
+    internet</em>. Cuando escribís <code>tunegocio.com</code> en el navegador,
+    alguien tiene que traducir ese nombre a una dirección IP real para poder
+    conectarse. Ese alguien es el DNS.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-icon">⌨️</div>
+      <div class="flow-step-title">Usuario escribe</div>
+      <div class="flow-step-desc">tunegocio.com</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">📖</div>
+      <div class="flow-step-title">DNS resuelve</div>
+      <div class="flow-step-desc">busca el nombre en la guía</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">🔢</div>
+      <div class="flow-step-title">Devuelve IP</div>
+      <div class="flow-step-desc">76.76.21.21</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">🖥️</div>
+      <div class="flow-step-title">Navegador conecta</div>
+      <div class="flow-step-desc">al servidor</div>
+    </div>
+  </div>
+
+  <p>
+    Esto pasa en <strong>milisegundos</strong>, antes de que tu página empiece a
+    cargar. Es invisible para el usuario, pero si el DNS falla, nada funciona.
+    Por eso la gente paga DNS premium (Cloudflare, Route53) para que sea rápido
+    y confiable.
+  </p>
+
+  <h2>5. Registros DNS (DNS records)</h2>
+  <p>
+    Un dominio no es una cosa sola — adentro tiene <strong>registros</strong>
+    que le dicen al DNS qué responder según qué le pregunten. Estos son los que
+    vas a ver siempre:
+  </p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Qué hace</th>
+        <th>Ejemplo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>A</code></td>
+        <td>Apunta un dominio a una IP IPv4</td>
+        <td>tunegocio.com → 76.76.21.21</td>
+      </tr>
+      <tr>
+        <td><code>AAAA</code></td>
+        <td>Apunta un dominio a una IP IPv6</td>
+        <td>tunegocio.com → 2606:4700::1</td>
+      </tr>
+      <tr>
+        <td><code>CNAME</code></td>
+        <td>Alias — apunta un dominio a otro dominio</td>
+        <td>www.tunegocio.com → tunegocio.com</td>
+      </tr>
+      <tr>
+        <td><code>MX</code></td>
+        <td>Servidores de email para ese dominio</td>
+        <td>@tunegocio.com → mail.google.com</td>
+      </tr>
+      <tr>
+        <td><code>TXT</code></td>
+        <td>Texto libre (verificaciones, SPF, claves)</td>
+        <td>"v=spf1 include:_spf.google.com"</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    En Vercel no vas a tocar casi nada de esto a mano — la plataforma te dice
+    exactamente qué <code>A</code> o <code>CNAME</code> configurar en tu registrar
+    y listo. Pero tenés que saber qué son, porque si alguien te pide "agregá un
+    TXT para verificar el email", tenés que entender de qué te están hablando.
+  </p>
+
+  <h2>6. HTTPS vs HTTP — el candado verde</h2>
+  <p>
+    HTTP es el protocolo original de la web: pide páginas, las recibe, muestra.
+    El problema: <strong>todo viaja en texto plano</strong>. Cualquiera en el
+    medio (tu red WiFi, el ISP, un atacante) puede leer lo que mandás.
+    <strong>HTTPS</strong> es HTTP + cifrado TLS. Lo mismo, pero dentro de un
+    túnel que nadie puede leer.
+  </p>
+
+  <div class="compare">
+    <div class="compare-side bad">
+      <div class="compare-side-label">HTTP</div>
+      <p style="margin:0 0 var(--space-3)">Conexión sin cifrar. El navegador te marca <strong>"No seguro"</strong>.</p>
+      <ul style="margin:0;padding-left:var(--space-5);color:var(--text-2);font-size:14px">
+        <li>Cualquiera puede espiar lo que mandás</li>
+        <li>Contraseñas y formularios expuestos</li>
+        <li>Google penaliza en SEO</li>
+        <li>Los usuarios desconfían al ver el aviso</li>
+      </ul>
+    </div>
+    <div class="compare-side good">
+      <div class="compare-side-label">HTTPS</div>
+      <p style="margin:0 0 var(--space-3)">Conexión cifrada con TLS. El navegador muestra el <strong>candado</strong>.</p>
+      <ul style="margin:0;padding-left:var(--space-5);color:var(--text-2);font-size:14px">
+        <li>Tráfico ilegible para terceros</li>
+        <li>Datos sensibles protegidos</li>
+        <li>Google lo premia en SEO</li>
+        <li>Requisito para HTTP/2, PWAs y muchas APIs</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>
+    Para que una conexión sea HTTPS necesitás un <strong>certificado SSL/TLS</strong>,
+    que es un archivo firmado por una autoridad confiable (una CA) que prueba
+    que el dominio es tuyo. Antes, ese certificado <em>se pagaba</em> — de 50 a
+    500 dólares al año según quién lo emitía.
+  </p>
+
+  <h2>7. Let's Encrypt — la revolución</h2>
+  <p>
+    En 2016 llegó <strong>Let's Encrypt</strong>: una autoridad certificadora
+    gratuita, automatizada y abierta. Rompió el negocio de venderte HTTPS. Hoy
+    más del 80% de la web corre sobre certificados Let's Encrypt, renovados
+    automáticamente cada 90 días.
+  </p>
+
+  <div class="callout success">
+    <div class="callout-title">Vercel te lo regala todo</div>
+    <p style="margin:0">
+      Cuando conectás un dominio a Vercel, la plataforma emite automáticamente
+      un certificado gratuito vía Let's Encrypt (u otras CAs compatibles), lo
+      instala, lo renueva solo antes que venza, y activa HTTPS. No tenés que
+      tocar ni un archivo. Eso que antes era un trámite de 2 horas y costaba
+      plata, ahora son <strong>cero clics</strong>.
+    </p>
+  </div>
+
+  <h2>Lo que importa en Vercel</h2>
+  <div class="callout ai">
+    <div class="callout-title">Vercel gestiona todo esto por vos</div>
+    <p style="margin:0 0 var(--space-3)">
+      Cuando deployás en Vercel, la plataforma te da:
+    </p>
+    <ul style="margin:0;padding-left:var(--space-5);color:var(--text-1)">
+      <li>Un dominio <code>*.vercel.app</code> gratis desde el minuto uno</li>
+      <li>Conexión de dominios custom (comprás en cualquier registrar y lo apuntás)</li>
+      <li>DNS propio si querés delegárselo (simplifica todo)</li>
+      <li>Certificados HTTPS automáticos, gratis y renovados solos</li>
+      <li>Redirección automática HTTP → HTTPS</li>
+    </ul>
+    <p style="margin:var(--space-3) 0 0">
+      <strong>Lo configurás una vez y te olvidás.</strong> Esa es la magia: lo
+      que era un dolor de cabeza con servidores tradicionales, acá es un campo
+      de texto y un botón.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Te quedó claro dominio, DNS y HTTPS?</span>
+    <button class="mark-btn" data-mark-complete="m00-03">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-build-runtime.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">02 · Build y runtime</span>
+    </a>
+    <a href="04-hosting-tipos.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">04 · Tipos de hosting</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 00 · Fundamentos del deploy · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

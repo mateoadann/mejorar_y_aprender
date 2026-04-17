@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 04 · Preview → Production · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 04 · Flujo del deploy</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 04 · Página 02</span>
+  <h1>Del preview a producción</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Ya viste cómo un push genera un preview. Ahora toca el paso grande — cuando
+    ese cambio se vuelve producción, el dominio real, los clientes reales
+    usándolo. Acá entra el concepto de ambientes y el famoso "merge a main".
+  </p>
+
+  <h2>Los 3 ambientes (environments)</h2>
+  <p>
+    Vercel separa el trabajo en tres mundos distintos. Entender qué vive en
+    cada uno te evita el 80% de los problemas de deploy. Este es el corazón
+    del modelo mental.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">AMBIENTE 1</div>
+      <div class="concept-card-term">Development</div>
+      <p class="concept-card-desc">Tu máquina local. Corre con <code>npm run dev</code> o con <code>vercel dev</code>. Lee variables de <code>.env.local</code>. Acá experimentás, rompés, arreglás — sin que nadie te vea.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">AMBIENTE 2</div>
+      <div class="concept-card-term">Preview</div>
+      <p class="concept-card-desc">Una URL por cada branch que pusheás. Es la "antesala" de producción. Lo ven vos, tu equipo, quien tenga el link. Usa variables del ambiente Preview.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">AMBIENTE 3</div>
+      <div class="concept-card-term">Production</div>
+      <p class="concept-card-desc">La branch principal (main o master). Tu dominio real apunta acá. Es lo que usan los clientes. Usa variables del ambiente Production.</p>
+    </div>
+  </div>
+
+  <p>
+    El código fluye en una dirección — de dev a preview a production. Acá
+    va el mapa de cómo se mueve un cambio tuyo desde tu máquina hasta el
+    cliente final:
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Tu máquina</div>
+      <div class="flow-step-title">Development</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Branch pusheada</div>
+      <div class="flow-step-title">Preview</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Merge a main</div>
+      <div class="flow-step-title">Production</div>
+    </div>
+  </div>
+
+  <h2>El merge a main</h2>
+  <p>
+    Acá está el momento de verdad. Cuando mergeás un Pull Request a main,
+    Vercel lo detecta — es otro push, técnicamente — y <strong>automáticamente
+    deploya a producción</strong>. Sin botón rojo, sin confirmación, sin
+    "¿estás seguro?".
+  </p>
+
+  <div class="compare">
+    <div class="compare-side good">
+      <h3>Lo que pasa</h3>
+      <ul>
+        <li>PR aprobado y mergeado a main</li>
+        <li>Webhook dispara el pipeline completo</li>
+        <li>Build optimizado al máximo</li>
+        <li>Upload al CDN global</li>
+        <li>Tu dominio apunta al nuevo deploy</li>
+        <li>Todo tu tráfico lo ve — instantáneamente</li>
+      </ul>
+    </div>
+    <div class="compare-side bad">
+      <h3>Lo que NO pasa</h3>
+      <ul>
+        <li>No hay botón "deploy to prod" manual por default</li>
+        <li>No te pregunta "¿seguro?"</li>
+        <li>No hay staging intermedio obligatorio</li>
+        <li>No hay aprobación de un segundo humano (salvo que la configures)</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>
+    Esto intimida al principio. <strong>"¿Merge es igual a prod? ¿Y si me
+    equivoqué?"</strong>. Pero es exactamente el workflow moderno: el PR
+    review ES la aprobación, el preview ES el staging, y si algo falla en
+    prod tenés rollback instantáneo (lo ves en la próxima página).
+  </p>
+
+  <div class="callout warn">
+    <div class="callout-title">La regla de oro</div>
+    <p style="margin:0">
+      Merge a main = producción. Pensá dos veces antes de mergear viernes
+      a las 6 PM. Muchos equipos tienen "no deploys los viernes" como
+      convención — porque si explota, te pasás el finde apagando incendios
+      en vez de con tu familia.
+    </p>
+  </div>
+
+  <h2>Qué es una production deployment</h2>
+  <p>
+    Una deploy de producción no es lo mismo que un preview. Técnicamente el
+    pipeline es el mismo, pero hay diferencias clave en el resultado final:
+  </p>
+
+  <div class="stack">
+    <div class="stack-layer highlight">
+      <strong>Build optimizado al máximo.</strong> Minificación agresiva, tree shaking, code splitting óptimo, assets comprimidos. El objetivo es el bundle más chico y rápido posible.
+    </div>
+    <div class="stack-layer">
+      <strong>Tu dominio custom apunta acá.</strong> Si tenés tunegocio.com, ese dominio resuelve al deploy de producción. Los previews usan URLs vercel.app.
+    </div>
+    <div class="stack-layer">
+      <strong>Servido via CDN global.</strong> Los archivos se replican en edge locations de todo el mundo. Un usuario en Buenos Aires recibe los assets desde la edge de Buenos Aires, no de Oregon.
+    </div>
+    <div class="stack-layer">
+      <strong>Variables de entorno de Production.</strong> Apunta a tu DB real, tu API key de Stripe real (no la test), tu OpenAI de producción. Zero cruces con dev o preview.
+    </div>
+  </div>
+
+  <h2>Protected deployments (opcional)</h2>
+  <p>
+    Un feature que ignoras hasta que lo necesitás. Podés configurar que los
+    previews <strong>requieran password o SSO</strong> para verlos. Útil en
+    varios escenarios reales:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">USO 1</div>
+      <div class="concept-card-term">Apps internas</div>
+      <p class="concept-card-desc">Un dashboard de gestión interna no debería ser Googleable. Protección con SSO del Google Workspace de la empresa y listo.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">USO 2</div>
+      <div class="concept-card-term">Trabajo con cliente</div>
+      <p class="concept-card-desc">Le mandás el preview a un cliente con password. Nadie más que él lo puede ver. Ideal para mockups que todavía no se pueden mostrar.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">USO 3</div>
+      <div class="concept-card-term">Features en beta</div>
+      <p class="concept-card-desc">Querés que un grupo reducido pruebe una feature nueva antes de sacarla. Protección por password, mandás el link a los beta testers.</p>
+    </div>
+  </div>
+
+  <h2>Rolling Releases (planes superiores)</h2>
+  <p>
+    Para cuando tu app tiene tráfico serio y no querés arriesgar todo de
+    golpe. En vez de pasar 100% del tráfico al nuevo deploy al instante,
+    Vercel hace un <strong>shift gradual</strong>:
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Arranque</div>
+      <div class="flow-step-title">10% nuevo</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Primera ventana OK</div>
+      <div class="flow-step-title">50% nuevo</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Todo verde</div>
+      <div class="flow-step-title">100% nuevo</div>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="stack-layer">
+      <strong>Canary metrics.</strong> Durante el shift, Vercel compara métricas (errores, latencia, status codes) entre el deploy nuevo y el anterior. Si el nuevo está peor, suena la alarma.
+    </div>
+    <div class="stack-layer">
+      <strong>Rollback automático.</strong> Si los números del canary están muy por debajo del viejo, Vercel puede revertir solo — sin intervención humana. Esto salva producciones reales.
+    </div>
+    <div class="stack-layer">
+      <strong>Menos riesgo por deploy.</strong> Un bug afecta al 10% del tráfico durante unos minutos, no al 100% de golpe. Para apps con usuarios pagos, esto es oro.
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">Cuándo vale la pena</div>
+    <p style="margin:0">
+      Rolling Releases tiene sentido cuando tu app recibe cientos o miles
+      de requests por minuto. Si tenés 10 usuarios por día, no necesitás
+      esto — con previews alcanza de sobra. Es una herramienta para escala.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Tenés claro el flujo preview → production?</span>
+    <button class="mark-btn" data-mark-complete="m04-02">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-git-preview.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">01 · Git push → Preview</span>
+    </a>
+    <a href="03-rollbacks-dominios.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">03 · Rollbacks, dominios y env vars</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 04 · Flujo del deploy · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

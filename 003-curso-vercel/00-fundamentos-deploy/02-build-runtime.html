@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 00 · Build y runtime · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 00 · Fundamentos</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 00 · Página 02</span>
+  <h1>Build y runtime</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    De código fuente a app ejecutándose. Tu código no corre tal cual lo escribís:
+    pasa por un proceso de "cocción" que lo deja listo para producción. Acá
+    desarmamos qué es el build, qué es el runtime, y por qué son dos momentos
+    distintos.
+  </p>
+
+  <h2>Qué es el "build"</h2>
+  <p>
+    Pensalo como una cocina profesional. Vos no le servís al cliente los
+    ingredientes crudos — los preparás, los cocinás, los emplatás. El build es
+    exactamente eso: agarrás tu código fuente (crudo) y lo transformás en algo
+    listo para servir al navegador.
+  </p>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-icon">🥩</div>
+      <div class="analogy-title">Ingredientes crudos</div>
+      <div class="analogy-desc">Tu código fuente: archivos <code>.ts</code>, <code>.jsx</code>, imports, comentarios, nombres largos, todo sin optimizar.</div>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-side">
+      <div class="analogy-icon">🔥</div>
+      <div class="analogy-title">Cocción (build)</div>
+      <div class="analogy-desc">El compilador/bundler toma todo, lo transpila, lo junta, lo achica, lo optimiza.</div>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-side">
+      <div class="analogy-icon">🍽️</div>
+      <div class="analogy-title">Plato listo para servir</div>
+      <div class="analogy-desc">El <em>bundle</em> de producción: HTML, JS y CSS optimizados, listos para el navegador.</div>
+    </div>
+  </div>
+
+  <h2>¿Por qué no corrés el código fuente directo?</h2>
+  <p>
+    Porque el navegador no entiende la mitad de lo que escribís. Mirá por qué
+    hace falta el build:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">01</div>
+      <div class="concept-card-term">TypeScript → JavaScript</div>
+      <p class="concept-card-desc">El navegador no ejecuta <code>.ts</code>. Hay que compilar a JS puro. Lo mismo con JSX de React.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">02</div>
+      <div class="concept-card-term">Imports a bundle</div>
+      <p class="concept-card-desc">Tu app tiene 200 archivos que se importan entre sí. El bundler los junta en pocos archivos finales.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">03</div>
+      <div class="concept-card-term">Minificación</div>
+      <p class="concept-card-desc">Saca espacios, renombra variables a una letra, achica el archivo para que cargue rápido.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">04</div>
+      <div class="concept-card-term">Tree-shaking</div>
+      <p class="concept-card-desc">Detecta código que nunca usás y lo tira a la basura. Si importás una función de una librería, no se lleva la librería entera.</p>
+    </div>
+  </div>
+
+  <h2>Qué sale del horno</h2>
+  <p>
+    Cuando corre el build, se genera una carpeta (normalmente <code>dist/</code>,
+    <code>build/</code> o <code>.next/</code>) con los artefactos listos para
+    producción. Algo así:
+  </p>
+
+  <pre class="code-block"><span class="comment"># Lo que escribís vos</span>
+src/
+├── pages/
+│   ├── index.tsx
+│   └── about.tsx
+├── components/
+│   └── Button.tsx
+└── styles/
+    └── globals.css
+
+         <span class="keyword">build</span>
+           ↓
+
+<span class="comment"># Lo que sale al servidor</span>
+dist/
+├── index.html              <span class="comment"># HTML pre-renderizado</span>
+├── about.html              <span class="comment"># HTML pre-renderizado</span>
+├── assets/
+│   ├── app.a7f3c2.js       <span class="comment"># JS minificado + hash</span>
+│   ├── vendor.b1e8d4.js    <span class="comment"># Librerías separadas</span>
+│   └── styles.c9a2f1.css   <span class="comment"># CSS optimizado</span>
+└── images/
+    └── hero.webp           <span class="comment"># Imágenes comprimidas</span></pre>
+
+  <p>
+    Fijate el detalle del hash en los nombres de archivo
+    (<code>app.a7f3c2.js</code>). Eso permite cachear agresivo: si cambia el
+    código, cambia el hash, y el navegador descarga el nuevo. Si no cambia, usa
+    el que tiene guardado. Magia gratis gracias al build.
+  </p>
+
+  <h2>Qué es el runtime</h2>
+  <p>
+    El <strong>runtime</strong> es el entorno donde corre tu código una vez que
+    ya está buildeado. Es el "motor" que ejecuta las instrucciones. Distintos
+    tipos de código viven en distintos runtimes.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">01</div>
+      <div class="concept-card-term">Navegador</div>
+      <p class="concept-card-desc">Chrome, Firefox, Safari. Corre el JS/HTML/CSS del lado del cliente. Runtime de facto del frontend.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">02</div>
+      <div class="concept-card-term">Node.js</div>
+      <p class="concept-card-desc">El runtime de JavaScript del lado del servidor. El más usado. La mayoría de apps Vercel corren acá.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">03</div>
+      <div class="concept-card-term">Deno / Bun</div>
+      <p class="concept-card-desc">Runtimes alternativos a Node.js, más modernos. Menos comunes pero ganando terreno.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">04</div>
+      <div class="concept-card-term">Edge runtime</div>
+      <p class="concept-card-desc">Un runtime ultraliviano que corre en servidores distribuidos por el mundo. Vercel lo usa mucho.</p>
+    </div>
+  </div>
+
+  <h2>Build time vs runtime — dos momentos distintos</h2>
+  <p>
+    Esta es la distinción más importante de la página. Build time y runtime son
+    <strong>dos momentos distintos en el tiempo</strong>. Pasan cosas diferentes
+    en cada uno.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-icon">🔨</div>
+      <div class="flow-step-title">BUILD TIME</div>
+      <div class="flow-step-desc">Pasa una vez. Antes de desplegar. Se compila TS, se empaqueta todo, se generan los artefactos estáticos.</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">📦</div>
+      <div class="flow-step-title">DEPLOY</div>
+      <div class="flow-step-desc">Los artefactos del build se suben al servidor. Quedan ahí esperando visitantes.</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">⚡</div>
+      <div class="flow-step-title">RUNTIME</div>
+      <div class="flow-step-desc">Pasa cada vez que un usuario visita tu app. Se ejecuta el JS, se renderiza, se responden requests.</div>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-side good">
+      <div class="compare-side-label">Build time</div>
+      <ul style="margin:0; padding-left:1.2rem;">
+        <li>Pasa una sola vez por deploy</li>
+        <li>Corre en la máquina de Vercel (o tu CI)</li>
+        <li>Tenés acceso al filesystem, a variables de entorno de build</li>
+        <li>Podés pegarle a APIs para traer datos y congelarlos en HTML</li>
+        <li>Si falla, no se despliega nada</li>
+      </ul>
+    </div>
+    <div class="compare-side good">
+      <div class="compare-side-label">Runtime</div>
+      <ul style="margin:0; padding-left:1.2rem;">
+        <li>Pasa cada vez que llega una request</li>
+        <li>Corre en el navegador del user o en un servidor en vivo</li>
+        <li>Tenés acceso a datos dinámicos, sesión, cookies</li>
+        <li>Podés hacer cosas interactivas, cambiar UI, llamar APIs</li>
+        <li>Si falla, el user ve un error</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>SSG, SSR, CSR, ISR — los cuatro sabores</h2>
+  <p>
+    Según cuándo se renderiza cada página (build time o runtime), las apps web
+    caen en uno de estos cuatro modos. Los ves nombrados por todos lados. Por
+    ahora solo mordelos para identificarlos — profundizamos en el Módulo 02.
+  </p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Modo</th>
+        <th>Nombre completo</th>
+        <th>¿Cuándo se renderiza?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>SSG</strong></td>
+        <td>Static Site Generation</td>
+        <td>Build time. El HTML queda congelado y se sirve igual a todos.</td>
+      </tr>
+      <tr>
+        <td><strong>SSR</strong></td>
+        <td>Server-Side Rendering</td>
+        <td>Runtime, en el servidor. Se genera el HTML en vivo por cada request.</td>
+      </tr>
+      <tr>
+        <td><strong>CSR</strong></td>
+        <td>Client-Side Rendering</td>
+        <td>Runtime, en el navegador. El servidor manda un HTML vacío y el JS arma todo.</td>
+      </tr>
+      <tr>
+        <td><strong>ISR</strong></td>
+        <td>Incremental Static Regeneration</td>
+        <td>Mezcla: build time + regeneración periódica en runtime. Lo mejor de los dos mundos.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout ai">
+    <div class="callout-title">Lo vemos en profundidad después</div>
+    <p style="margin:0">
+      Cada uno tiene sus casos de uso, sus ventajas y sus cagadas. En el
+      <strong>Módulo 02</strong> los desarmamos uno por uno con ejemplos reales.
+      Por ahora alcanza con saber que existen y que se distinguen por
+      <em>cuándo</em> se renderiza la página.
+    </p>
+  </div>
+
+  <div class="callout success">
+    <div class="callout-title">En Vercel el build es automático</div>
+    <p style="margin:0">
+      Cada vez que hacés <code>git push</code> a tu repo, Vercel detecta el
+      cambio, dispara el build en sus servidores, y si sale bien, publica los
+      artefactos en producción. No tenés que correr nada a mano. Deploy por
+      push: así de fácil.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Te quedó claro el build y el runtime?</span>
+    <button class="mark-btn" data-mark-complete="m00-02">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-servidor-cliente.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">01 · Servidor y cliente</span>
+    </a>
+    <a href="03-dominio-dns-https.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">03 · Dominio, DNS y HTTPS</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 00 · Fundamentos del deploy · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

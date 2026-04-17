@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 03 · AI Gateway · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 03 · Vercel + AI</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge ai">MÓDULO 03 · Página 02</span>
+  <h1><span class="ai-gradient-text">AI Gateway</span> — una sola API para todos los modelos</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    El AI SDK te abstrae la librería cliente. El AI Gateway te abstrae la
+    cuenta, el billing y la observability. Son dos abstracciones distintas
+    sobre el mismo problema: quiero construir con IA sin atarme a un solo
+    proveedor.
+  </p>
+
+  <h2>El problema — la pesadilla del multi-proveedor</h2>
+  <p>
+    Si armás una app con IA de verdad, vas a querer probar varios modelos.
+    GPT-5 para razonamiento complejo, Claude 4.7 para escritura larga,
+    Gemini 2.5 para cosas multimodales, Groq para velocidad extrema en
+    tareas simples. Son distintos y cada uno gana en lo suyo.
+  </p>
+
+  <p>
+    El problema arranca ahí. Cada proveedor te obliga a:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">CUENTAS</div>
+      <div class="concept-card-term">N dashboards</div>
+      <p class="concept-card-desc">Una cuenta separada en cada proveedor, con su proceso de signup, verificación y KYC.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">API KEYS</div>
+      <div class="concept-card-term">N secretos</div>
+      <p class="concept-card-desc">Una API key por proveedor, que hay que rotar, proteger y gestionar por separado.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">BILLING</div>
+      <div class="concept-card-term">N facturas</div>
+      <p class="concept-card-desc">Cargar tarjeta en cada uno, conciliar costos desde lugares distintos, vigilar límites.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">OBSERVABILITY</div>
+      <div class="concept-card-term">N dashboards más</div>
+      <p class="concept-card-desc">Logs de tokens, requests y errores repartidos entre varias UIs. Imposible tener vista global.</p>
+    </div>
+  </div>
+
+  <h2>La solución — un proxy unificado</h2>
+  <p>
+    El AI Gateway es exactamente eso: un <strong>proxy entre tu app y los
+    proveedores</strong>. Tu código le habla a una sola dirección, con una
+    sola API key. El Gateway se encarga de rutear al modelo que le pediste,
+    trackear lo que gastás, y devolverte la respuesta.
+  </p>
+
+  <div class="analogy">
+    <strong>Analogía — el concentrador de cables.</strong> En vez de tener
+    cinco cables distintos entrando a tu compu, metés uno solo a un hub y
+    el hub se encarga del resto. El AI Gateway es el hub, pero para APIs de
+    LLM.
+  </p>
+
+  <h2>El flujo visto desde arriba</h2>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Tu app</div>
+      <div class="flow-step-title">1 API key</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Proxy único</div>
+      <div class="flow-step-title">AI Gateway</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">100+ proveedores</div>
+      <div class="flow-step-title">OpenAI · Anthropic · Google · Groq · …</div>
+    </div>
+  </div>
+
+  <h2>Qué te da — las cinco features clave</h2>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">FEATURE 01</div>
+      <div class="concept-card-term">Unified API key</div>
+      <p class="concept-card-desc">Una sola credencial para todos los proveedores. Cero rotación cruzada, cero lío para dar acceso a tu equipo.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">FEATURE 02</div>
+      <div class="concept-card-term">Routing entre modelos</div>
+      <p class="concept-card-desc">Cambiás de proveedor cambiando una config — "usá Claude en vez de GPT" — sin tocar código de la app.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">FEATURE 03</div>
+      <div class="concept-card-term">Observability central</div>
+      <p class="concept-card-desc">Todo el tráfico AI de todos los modelos en un mismo dashboard. Ves tokens, latencia y errores por request.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">FEATURE 04</div>
+      <div class="concept-card-term">Fallbacks automáticos</div>
+      <p class="concept-card-desc">Si OpenAI se cae, el Gateway puede routear el request a Anthropic sin que tu app se entere. Alta disponibilidad.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">FEATURE 05</div>
+      <div class="concept-card-term">Caching</div>
+      <p class="concept-card-desc">Responses repetidas se cachean y te ahorran plata y latencia. Especialmente útil en prompts que se repiten mucho.</p>
+    </div>
+  </div>
+
+  <h2>Compatibilidad</h2>
+  <p>
+    El Gateway no te obliga a usar AI SDK — es compatible con los SDKs
+    oficiales también. Le podés hablar con:
+  </p>
+
+  <div class="stack">
+    <div class="stack-layer highlight">
+      <strong>AI SDK (Vercel)</strong> — La combinación más natural
+    </div>
+    <div class="stack-layer">
+      <strong>OpenAI SDK</strong> — Si ya tenés código escrito así, reapuntás la URL y listo
+    </div>
+    <div class="stack-layer">
+      <strong>Anthropic SDK</strong> — Misma idea, compatible con la interfaz oficial
+    </div>
+  </div>
+
+  <p>
+    En la práctica esto significa que podés adoptar el Gateway <strong>sin
+    reescribir</strong> tu app: cambiás el endpoint y la API key, y seguís
+    adelante.
+  </p>
+
+  <h2>Cuánto te cuesta</h2>
+  <div class="callout ai">
+    <div class="callout-title">No cobra markup — pagás lo del modelo</div>
+    <p style="margin:0">
+      Esto es importante. El Gateway no es un intermediario que se queda con
+      una parte. Pagás exactamente lo que pagarías yendo directo al proveedor
+      — Vercel recupera el costo porque vos ya estás en su plataforma. Es
+      una ventaja real, sobre todo porque te ahorra el desorden de billing
+      sin sumar costo adicional.
+    </p>
+  </div>
+
+  <h2>Cuándo lo necesitás y cuándo no</h2>
+
+  <div class="compare">
+    <div class="compare-side good">
+      <h3>Te conviene si…</h3>
+      <ul>
+        <li>Tenés o vas a tener 2+ modelos en juego</li>
+        <li>Querés flexibilidad futura sin reescribir código</li>
+        <li>Estás en producción y te importan los SLAs (fallbacks)</li>
+        <li>Tu equipo necesita visibilidad central de costos AI</li>
+        <li>Algunos prompts se repiten mucho (caching)</li>
+      </ul>
+    </div>
+    <div class="compare-side bad">
+      <h3>Probablemente no lo necesitás si…</h3>
+      <ul>
+        <li>Estás empezando con un solo modelo, solo prototipo</li>
+        <li>Tu app hace 10 requests al día, no hay volumen</li>
+        <li>Ya tenés infra de observability AI propia</li>
+        <li>No te molesta gestionar una sola API key de un solo proveedor</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">Por qué esto baja la barrera para construir</div>
+    <p style="margin:0">
+      Antes, construir una app multi-modelo era un proyecto de infra aparte.
+      Con el Gateway, se vuelve una decisión de configuración. Eso cambia lo
+      que un dev solo o un equipo chico puede proponerle a un cliente —
+      vender una solución "usamos el mejor modelo para cada tarea" deja de
+      ser humo y se vuelve realista.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Te cerró para qué sirve el AI Gateway?</span>
+    <button class="mark-btn" data-mark-complete="m03-02">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-ai-sdk.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">01 · AI SDK</span>
+    </a>
+    <a href="03-v0.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">03 · v0 — UI con IA</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 03 · Vercel + AI · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

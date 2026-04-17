@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 02 · Extras y DX · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 02 · Servicios</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 02 · Página 04</span>
+  <h1>Extras y developer experience</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Acá juntamos un puñado de features que por separado parecen pequeños
+    detalles, pero juntos son <strong>la razón real por la que Vercel
+    enamora a los developers</strong>: Preview Deployments, Analytics, Cron,
+    Environment Variables y Edge Middleware.
+  </p>
+
+  <p>
+    La diferencia entre usar Vercel y armar tu propia infra rara vez está en
+    las features grandes — cualquier plataforma sabia hacer CI/CD y servir
+    HTML. La diferencia está en estas <em>cien cosas chicas</em> que te
+    resuelven el día a día y que, cuando ya te acostumbraste, no hay vuelta
+    atrás.
+  </p>
+
+  <h2>Preview Deployments — la feature que cambia reviews</h2>
+  <p>
+    Cada <code>git push</code> a una branch que <em>no sea</em> main te
+    genera una <strong>URL única y pública</strong> con esa versión de la
+    app corriendo. Así de simple. Pero cambia todo: los reviews dejan de ser
+    "leete el diff del PR" y pasan a ser "abrí este link y probalo".
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-icon">1</div>
+      <div class="flow-step-title">git push feature/x</div>
+      <p class="flow-step-desc">Subís cambios a una branch que no es main.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">2</div>
+      <div class="flow-step-title">Vercel detecta</div>
+      <p class="flow-step-desc">Arranca un deploy aislado de esa branch específica.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">3</div>
+      <div class="flow-step-title">URL única</div>
+      <p class="flow-step-desc">Tipo proyecto-git-feature-x-org.vercel.app con esa versión viva.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">4</div>
+      <div class="flow-step-title">Review en vivo</div>
+      <p class="flow-step-desc">Mandás el link al equipo o al cliente. Prueban el cambio antes de mergear.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">El momento donde se ve el valor</div>
+    <p style="margin:0">
+      Estás trabajando con un cliente y le mandás <em>tres</em> opciones
+      visuales de la landing, cada una en su branch. El cliente abre tres
+      URLs distintas, compara en tiempo real, decide. Sin llamadas, sin
+      screenshots, sin "te comparto mi pantalla". Ese flujo es imbatible.
+    </p>
+  </div>
+
+  <h2>Analytics &amp; Speed Insights</h2>
+  <p>
+    Vercel te da dos productos de métricas que vienen integrados al
+    dashboard, sin que tengas que pegar scripts de terceros ni pedir
+    consentimiento de cookies para la mayoría de los casos. Uno mide
+    <strong>cuántos</strong> te visitan, el otro mide <strong>qué tan
+    rápido</strong> lo hacen.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Analytics</div>
+      <div class="concept-card-term">Privacy-friendly, sin cookies</div>
+      <p class="concept-card-desc">
+        Pageviews, visitantes únicos, referrers, paths más visitados. Sin
+        identificar individuos, sin banners de cookies invasivos.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Speed Insights</div>
+      <div class="concept-card-term">Core Web Vitals reales</div>
+      <p class="concept-card-desc">
+        Mide en el navegador de usuarios reales las métricas que Google
+        considera clave: <strong>LCP</strong> (carga), <strong>CLS</strong>
+        (estabilidad visual), <strong>INP</strong> (respuesta a input),
+        <strong>TTFB</strong> (tiempo al primer byte).
+      </p>
+    </div>
+  </div>
+
+  <div class="data-table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Métrica</th>
+          <th>Qué mide</th>
+          <th>Umbral bueno</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>LCP</strong> (Largest Contentful Paint)</td>
+          <td>Cuánto tarda el elemento más grande en aparecer</td>
+          <td>Menos de 2,5 s</td>
+        </tr>
+        <tr>
+          <td><strong>CLS</strong> (Cumulative Layout Shift)</td>
+          <td>Cuánto se mueven las cosas mientras carga</td>
+          <td>Menos de 0,1</td>
+        </tr>
+        <tr>
+          <td><strong>INP</strong> (Interaction to Next Paint)</td>
+          <td>Cuánto tarda la UI en responder a un click</td>
+          <td>Menos de 200 ms</td>
+        </tr>
+        <tr>
+          <td><strong>TTFB</strong> (Time To First Byte)</td>
+          <td>Cuánto tarda el server en mandar el primer byte</td>
+          <td>Menos de 800 ms</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Cron Jobs — tareas programadas sin infra aparte</h2>
+  <p>
+    Cron Jobs son <strong>funciones serverless que se ejecutan en un
+    horario</strong>. Le decís a Vercel "corré esta función todos los días a
+    las 3 AM" o "cada 15 minutos" y listo. No hace falta armar una EC2, ni
+    usar un proveedor aparte, ni configurar un scheduler externo.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Caso 01</div>
+      <div class="concept-card-term">Reportes diarios</div>
+      <p class="concept-card-desc">
+        Generar el PDF de ventas del día y mandarlo por mail al cliente a
+        las 8 AM.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Caso 02</div>
+      <div class="concept-card-term">Sincronización con APIs</div>
+      <p class="concept-card-desc">
+        Cada hora, bajar datos de una API externa (stock, tipo de cambio,
+        leads de un CRM) y guardarlos en tu DB.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Caso 03</div>
+      <div class="concept-card-term">Limpieza y mantenimiento</div>
+      <p class="concept-card-desc">
+        Borrar tokens expirados, archivar registros viejos, reenviar emails
+        que fallaron. Todo automático, a la noche.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Caso 04</div>
+      <div class="concept-card-term">Notificaciones programadas</div>
+      <p class="concept-card-desc">
+        Recordatorios a usuarios que no terminaron un flujo, resúmenes
+        semanales por mail, alertas.
+      </p>
+    </div>
+  </div>
+
+  <h2>Environment Variables — secretos por environment</h2>
+  <p>
+    Las <strong>environment variables</strong> son el lugar donde viven las
+    credenciales de tu app: API keys, connection strings, tokens de
+    terceros. Vercel te las gestiona con un detalle clave: las organizás
+    <strong>por environment</strong>, que son tres:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Env 01</div>
+      <div class="concept-card-term">Development</div>
+      <p class="concept-card-desc">
+        Variables que se inyectan cuando corrés localmente con
+        <code>vercel dev</code>. Típicamente, apuntan a servicios de prueba.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Env 02</div>
+      <div class="concept-card-term">Preview</div>
+      <p class="concept-card-desc">
+        Las que usa cada Preview Deployment. Ideal para tener una DB de
+        staging, una API key de sandbox, etc.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Env 03</div>
+      <div class="concept-card-term">Production</div>
+      <p class="concept-card-desc">
+        Las reales, solo se inyectan en el deploy de main. DB de verdad,
+        API keys pagas, todo serio.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout success">
+    <div class="callout-title">Se acabó el ".env olvidado en el repo"</div>
+    <p style="margin:0">
+      Los secrets viven en el dashboard de Vercel (encriptados), se inyectan
+      en build y runtime, y nunca terminan commiteados por error. Además,
+      separás ambientes sin esfuerzo: no mezclás la DB de producción con la
+      de preview, y cada branch puede apuntar a servicios de staging sin
+      tocar una línea de código.
+    </p>
+  </div>
+
+  <h2>Edge Middleware — código antes del server</h2>
+  <p>
+    Middleware es <strong>código que corre ANTES de llegar a tu función o
+    página</strong>, directamente en los nodos edge. Cada request pasa por
+    él primero, y ahí podés decidir: redirigir, reescribir la URL,
+    autenticar, hacer A/B testing, bloquear por país, lo que se te ocurra.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-icon">1</div>
+      <div class="flow-step-title">Request del usuario</div>
+      <p class="flow-step-desc">Llega al nodo edge más cercano.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">2</div>
+      <div class="flow-step-title">Middleware corre</div>
+      <p class="flow-step-desc">Tu código en el edge decide qué hacer: redirigir, reescribir, validar.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">3</div>
+      <div class="flow-step-title">Pasa a la app</div>
+      <p class="flow-step-desc">Si el middleware lo permite, el request sigue a tu función o página.</p>
+    </div>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Uso 01</div>
+      <div class="concept-card-term">Autenticación</div>
+      <p class="concept-card-desc">
+        Verificás el token antes de servir una ruta protegida. Si no hay
+        sesión, redirigís a login sin invocar la función.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Uso 02</div>
+      <div class="concept-card-term">Redirects</div>
+      <p class="concept-card-desc">
+        Movés URLs viejas a nuevas, redirigís por país o idioma, gestionás
+        rutas legacy — todo sin tocar tu app.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Uso 03</div>
+      <div class="concept-card-term">A/B testing</div>
+      <p class="concept-card-desc">
+        Dividís usuarios en grupos en el edge y cada uno ve una variante
+        distinta. Sin flash de contenido, sin scripts del cliente.
+      </p>
+    </div>
+  </div>
+
+  <h2>Todo junto: la capa invisible de DX</h2>
+  <p>
+    Ninguno de estos cinco productos es "la feature estrella" de Vercel.
+    Pero <strong>juntos forman la capa que hace que los devs no quieran
+    irse</strong>. Son las cosas que, cuando no las tenés, extrañás todos los
+    días sin darte cuenta de qué exactamente.
+  </p>
+
+  <div class="stack">
+    <div class="stack-layer">
+      <strong>Preview Deployments</strong> — review en vivo, URL por branch
+    </div>
+    <div class="stack-layer">
+      <strong>Analytics &amp; Speed Insights</strong> — métricas sin setup
+    </div>
+    <div class="stack-layer">
+      <strong>Cron Jobs</strong> — tareas programadas sin infra extra
+    </div>
+    <div class="stack-layer">
+      <strong>Environment Variables</strong> — secrets por ambiente
+    </div>
+    <div class="stack-layer highlight">
+      <strong>Edge Middleware</strong> — código antes del server, en el edge
+    </div>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">La conclusión del módulo</div>
+    <p style="margin:0">
+      Todo esto es <strong>developer experience</strong> — es por lo que
+      devs la eligen y por lo que después cuesta soltarla. Cuando cotizás
+      proyectos en tu negocio, estos detalles son los que te ahorran días de
+      infra por cliente. Días que podés cobrar como valor, no como tiempo
+      perdido en YAML.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Terminaste el módulo de servicios?</span>
+    <button class="mark-btn" data-mark-complete="m02-04">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-security.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">03 · Security</span>
+    </a>
+    <a href="../03-vercel-ai/index.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">Módulo 03 · Vercel + AI</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 02 · Servicios · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

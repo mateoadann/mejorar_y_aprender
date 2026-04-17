@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 04 · Flujo del deploy · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 04 · Flujo del deploy</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 04 · Flujo del deploy</span>
+  <h1>El flujo del deploy, paso a paso</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Qué pasa EXACTAMENTE desde que hacés git push hasta que tu app está viva
+    en producción. Sin escribir código — solo entender el pipeline.
+  </p>
+
+  <h2>El pipeline en una imagen</h2>
+  <p>
+    Este es el camino que recorre cada cambio tuyo hasta llegar al usuario.
+    Son siete estaciones encadenadas. Mirá el mapa completo antes de entrar
+    a los detalles.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Vos</div>
+      <div class="flow-step-title">git push</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Webhook</div>
+      <div class="flow-step-title">Vercel detecta</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Dependencias</div>
+      <div class="flow-step-title">Install</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Compilación</div>
+      <div class="flow-step-title">Build</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Artefactos</div>
+      <div class="flow-step-title">Upload al CDN</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Asignación</div>
+      <div class="flow-step-title">Deploy</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Listo</div>
+      <div class="flow-step-title">URL viva</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">Importante — esto pasa automáticamente</div>
+    <p style="margin:0">
+      Todo esto que te voy a mostrar pasa AUTOMÁTICAMENTE — vos solo hacés
+      push. Pero tenés que saber qué está pasando para poder debuggear
+      cuando algo falla. Si no entendés el pipeline, cuando algo se rompe
+      te quedás mirando la pantalla sin saber por dónde arrancar.
+    </p>
+  </div>
+
+  <h2>Las tres páginas del módulo</h2>
+
+  <div class="card-grid">
+    <a href="01-git-preview.html" class="card-module" data-page-id="m04-01">
+      <span class="module-num">01 · Git push → Preview</span>
+      <h3 class="module-title">La magia de los preview deployments</h3>
+      <p class="module-desc">Cada branch tiene su URL propia y única. Compartís el link con clientes o diseñadores, ven el cambio antes de mergear. Es el feature que enamora a los equipos.</p>
+    </a>
+
+    <a href="02-production.html" class="card-module" data-page-id="m04-02">
+      <span class="module-num">02 · Preview → Production</span>
+      <h3 class="module-title">Merge a main, environments, rolling releases</h3>
+      <p class="module-desc">Los tres ambientes (dev, preview, production), qué pasa cuando mergeás a main, cómo trabajar con protected deployments y shift gradual de tráfico.</p>
+    </a>
+
+    <a href="03-rollbacks-dominios.html" class="card-module" data-page-id="m04-03">
+      <span class="module-num">03 · Rollbacks, dominios y env vars</span>
+      <h3 class="module-title">La vida después del deploy</h3>
+      <p class="module-desc">Instant Rollback cuando algo se rompe, dominios custom con HTTPS automático, subdominios para multi-tenant y variables de entorno por ambiente.</p>
+    </a>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Tenés el mapa general del pipeline?</span>
+    <button class="mark-btn" data-mark-complete="m04">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="../03-vercel-ai/04-agent-sandbox.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">04 · Agent + Sandbox</span>
+    </a>
+    <a href="01-git-preview.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">01 · Git push → Preview</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 04 · Flujo del deploy · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

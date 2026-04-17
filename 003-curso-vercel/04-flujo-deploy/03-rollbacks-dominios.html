@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 04 · Rollbacks, dominios y variables · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 04 · Flujo del deploy</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 04 · Página 03</span>
+  <h1>Rollbacks, dominios y variables</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    La vida después del deploy. Qué hacer cuando algo se rompe, cómo
+    conectar tu dominio custom con HTTPS automático, cómo usar subdominios
+    para separar productos y cómo manejar variables de entorno sin filtrar
+    secretos.
+  </p>
+
+  <h2>Instant Rollback — el paracaídas</h2>
+  <p>
+    Algo explotó en producción. Respirá. Tenés un feature que te salva:
+    <strong>Instant Rollback</strong>. Con un click, volvés al deploy
+    anterior — sin rebuild, sin esperar pipeline, sin llamar a nadie.
+    Segundos, no minutos.
+  </p>
+
+  <div class="stack">
+    <div class="stack-layer highlight">
+      <strong>Cómo funciona por dentro.</strong> Vercel conserva todos los deploys anteriores. Cada uno vive en el CDN con su propia URL estable. "Rollback" no es reconstruir nada — es solo reasignar el dominio a un deploy que ya existía.
+    </div>
+    <div class="stack-layer">
+      <strong>Sin rebuild.</strong> No corre install, no corre build, no sube nada nuevo. Por eso es instantáneo — literalmente segundos.
+    </div>
+    <div class="stack-layer">
+      <strong>Pantalla de emergencia.</strong> Cuando viste el error en prod y el adrenalinazo te subió, esto es tu amigo. Un click, estabilizaste, después averiguás qué pasó con calma.
+    </div>
+    <div class="stack-layer">
+      <strong>Reversible.</strong> Si el rollback fue un error, volvés a adelante igual de rápido. No es destructivo.
+    </div>
+  </div>
+
+  <p>Mirá el flujo en una escena típica de producción rota:</p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Martes 11 AM</div>
+      <div class="flow-step-title">Deploy A (ok)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Martes 11:15</div>
+      <div class="flow-step-title">Deploy B (roto)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Click "Rollback"</div>
+      <div class="flow-step-title">Deploy A (live)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Con calma</div>
+      <div class="flow-step-title">Arreglás B</div>
+    </div>
+  </div>
+
+  <div class="callout success">
+    <div class="callout-title">Por qué esto cambia el juego</div>
+    <p style="margin:0">
+      En hosting tradicional, un rollback significaba re-deployar la versión
+      anterior — otra vez install, build, upload. Minutos de downtime con
+      usuarios viendo errores. Acá es instantáneo. Por eso los equipos
+      pueden deployar a producción 50 veces por día sin miedo.
+    </p>
+  </div>
+
+  <h2>Custom domains</h2>
+  <p>
+    Tu proyecto arranca con una URL <code>tuproyecto.vercel.app</code>, que es
+    gratis y funciona perfecto. Pero en algún momento vas a querer
+    <strong>tunegocio.com</strong>. Vercel maneja toda la parte de DNS y
+    certificados — vos solo decís qué dominio querés.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">OPCIÓN 1</div>
+      <div class="concept-card-term">vercel.app gratis</div>
+      <p class="concept-card-desc">La URL por default. HTTPS incluido, CDN global. Perfecta para MVPs, demos o proyectos internos que no necesitan branding.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">OPCIÓN 2</div>
+      <div class="concept-card-term">Tu propio dominio</div>
+      <p class="concept-card-desc">Comprás tunegocio.com en cualquier registrar. En el dashboard de Vercel apuntás el proyecto a ese dominio.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">DNS</div>
+      <div class="concept-card-term">Dos caminos</div>
+      <p class="concept-card-desc">Vercel te da instrucciones concretas: o cambiás los nameservers a los de Vercel, o agregás records A/CNAME al DNS que ya tenés.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">HTTPS</div>
+      <div class="concept-card-term">Automático</div>
+      <p class="concept-card-desc">Vercel emite un certificado con Let's Encrypt y lo renueva solo. Cero configuración. Cero "oh no, se venció el SSL".</p>
+    </div>
+  </div>
+
+  <p>
+    Podés también tener <strong>múltiples dominios apuntando al mismo
+    proyecto</strong>. Ejemplo: tunegocio.com y tunegocio.ar los dos sirven
+    la misma app, con HTTPS en los dos. Útil para marcas con varios TLDs
+    o para redirigir dominios viejos al actual.
+  </p>
+
+  <h2>Wildcards y subdominios</h2>
+  <p>
+    Acá empieza lo potente para tu negocio, Mateo. Cuando armás soluciones
+    para empresas con varios productos, o apps multi-tenant, los
+    subdominios son tu amigo. Cada uno puede apuntar a un proyecto
+    distinto, todos bajo la misma marca.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">APP PRINCIPAL</div>
+      <div class="concept-card-term">app.tunegocio.com</div>
+      <p class="concept-card-desc">La aplicación principal que usan los clientes. Proyecto separado con su propio pipeline.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">API</div>
+      <div class="concept-card-term">api.tunegocio.com</div>
+      <p class="concept-card-desc">Backend/API separado del front. Otro proyecto, otro deploy, otra escala si hace falta.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">DOCS</div>
+      <div class="concept-card-term">docs.tunegocio.com</div>
+      <p class="concept-card-desc">Documentación pública, blog, changelog. Proyecto aparte, stack distinto si querés (Nextra, Docusaurus, lo que sea).</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">MULTI-TENANT</div>
+      <div class="concept-card-term">*.tunegocio.com</div>
+      <p class="concept-card-desc">Wildcard: cliente1.tunegocio.com, cliente2.tunegocio.com, cada uno con su data. Un solo proyecto que detecta el subdominio.</p>
+    </div>
+  </div>
+
+  <div class="analogy">
+    <strong>Analogía — el edificio de oficinas.</strong> El dominio
+    tunegocio.com es el edificio. Cada subdominio es una oficina distinta
+    — una empresa de marketing en el piso 3, una consultora en el piso 5.
+    Comparten la dirección pero son negocios independientes. Vercel te
+    maneja la portería, las llaves y el correo de cada uno.
+  </p>
+
+  <h2>Environment Variables</h2>
+  <p>
+    Las env vars son donde guardás todo lo que <strong>no puede vivir en el
+    código</strong>: API keys, connection strings a DB, secretos de JWT.
+    Vercel las maneja separadas por ambiente, encriptadas, con una UI
+    clara.
+  </p>
+
+  <div class="stack">
+    <div class="stack-layer">
+      <strong>Se configuran en el dashboard.</strong> Settings → Environment Variables. Una UI donde ponés nombre, valor y en qué environments vale (uno, dos o los tres).
+    </div>
+    <div class="stack-layer">
+      <strong>Separadas por environment.</strong> La misma variable STRIPE_KEY puede tener un valor en Production (key real) y otro en Preview (key de test). Vercel inyecta el que corresponde.
+    </div>
+    <div class="stack-layer">
+      <strong>Encriptadas.</strong> Una vez que guardás el valor, Vercel no te lo muestra más — ni siquiera a vos. Solo lo inyecta como <code>process.env.*</code> en runtime.
+    </div>
+    <div class="stack-layer">
+      <strong>Ejemplos típicos.</strong> OPENAI_API_KEY, STRIPE_SECRET_KEY, DATABASE_URL, CLERK_SECRET_KEY, NEXTAUTH_SECRET. Lo que no podés poner en GitHub.
+    </div>
+  </div>
+
+  <p>Así se ve en la tabla de configuración:</p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Valor</th>
+        <th>Environments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>OPENAI_API_KEY</code></td>
+        <td>sk-proj-*** (encriptado)</td>
+        <td>Production, Preview</td>
+      </tr>
+      <tr>
+        <td><code>STRIPE_SECRET_KEY</code></td>
+        <td>sk_live_*** (encriptado)</td>
+        <td>Production</td>
+      </tr>
+      <tr>
+        <td><code>STRIPE_SECRET_KEY</code></td>
+        <td>sk_test_*** (encriptado)</td>
+        <td>Preview, Development</td>
+      </tr>
+      <tr>
+        <td><code>DATABASE_URL</code></td>
+        <td>postgres://*** (encriptado)</td>
+        <td>Production</td>
+      </tr>
+      <tr>
+        <td><code>DATABASE_URL</code></td>
+        <td>postgres://*** (encriptado)</td>
+        <td>Preview, Development</td>
+      </tr>
+      <tr>
+        <td><code>NEXT_PUBLIC_APP_URL</code></td>
+        <td>https://tunegocio.com</td>
+        <td>Production</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Secrets vs plain env vars</h2>
+  <p>
+    Todas las env vars se encriptan en reposo. Pero dentro de eso, hay una
+    distinción importante sobre cómo se comportan en logs y en el UI:
+  </p>
+
+  <div class="compare">
+    <div class="compare-side good">
+      <h3>Sensitive (secrets)</h3>
+      <ul>
+        <li>No se muestran en logs del build</li>
+        <li>No aparecen en la UI después de guardarlas</li>
+        <li>Protegidas contra exposición accidental</li>
+        <li>Ideales para API keys, passwords, tokens</li>
+      </ul>
+    </div>
+    <div class="compare-side bad">
+      <h3>Plain</h3>
+      <ul>
+        <li>Pueden aparecer en logs si tu código las loguea</li>
+        <li>Visibles en la UI para el equipo</li>
+        <li>Menos protección contra leaks</li>
+        <li>Para cosas no secretas: URLs públicas, flags, feature toggles</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">Regla simple</div>
+    <p style="margin:0">
+      Si la variable empieza con <code>NEXT_PUBLIC_</code>, <code>VITE_</code> o
+      cualquier prefijo "public", va a terminar en el bundle del cliente — NUNCA
+      pongas secretos ahí. El resto, marcalas como sensitive y listo.
+    </p>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">El cierre del módulo</div>
+    <p style="margin:0">
+      Toda la gestión de dominios + SSL + env vars que antes costaba horas
+      de devops configurar, acá son clicks en un dashboard. Esta es la
+      tesis de Vercel en una oración: sacarte de encima las tareas
+      repetitivas del deploy para que vos te dediques a lo que le importa
+      a tu cliente. Pasás de "administrador de servidores" a "resolvedor
+      de problemas del negocio".
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Te quedó claro rollbacks, dominios y variables?</span>
+    <button class="mark-btn" data-mark-complete="m04-03">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-production.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">02 · Preview → Production</span>
+    </a>
+    <a href="../05-por-que-vercel/index.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">Módulo 05 · Por qué Vercel</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 04 · Flujo del deploy · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 03 · AI SDK · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 03 · Vercel + AI</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge ai">MÓDULO 03 · Página 01</span>
+  <h1><span class="ai-gradient-text">AI SDK</span> — el toolkit TypeScript para IA</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Si tenés que quedarte con una sola pieza del ecosistema AI de Vercel,
+    es esta. El AI SDK es la librería open source que te da funciones
+    listas para hablar con cualquier LLM desde TypeScript. Todo lo demás
+    se construye encima.
+  </p>
+
+  <h2>Qué es, en una frase</h2>
+  <p>
+    El AI SDK es una <strong>librería open source de TypeScript</strong> que
+    te da funciones para hablar con cualquier modelo de lenguaje. La hace
+    Vercel, pero <strong>no es exclusiva de Vercel</strong> — la podés usar
+    en cualquier proyecto, en cualquier hosting, sin depender de la
+    plataforma. Es free. Se distribuye como paquete npm.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">SITIO</div>
+      <div class="concept-card-term">sdk.vercel.ai</div>
+      <p class="concept-card-desc">Documentación oficial, ejemplos, playground. La doc tiene miles de snippets listos para copiar.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">VERSIÓN</div>
+      <div class="concept-card-term">5.0.0 estable</div>
+      <p class="concept-card-desc">La 4.3.x sigue viva como rama anterior. La 6.0.0 ya está en beta. Versionado serio.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">INTEGRACIÓN</div>
+      <div class="concept-card-term">React · Next · Svelte · Vue</div>
+      <p class="concept-card-desc">Tiene hooks y helpers específicos para los frameworks más usados.</p>
+    </div>
+  </div>
+
+  <h2>El problema que resuelve</h2>
+  <p>
+    Cada proveedor de LLM tiene su propio SDK con su propia forma de llamarlo.
+    OpenAI te da uno, Anthropic otro, Google otro, Groq otro. Si mañana
+    querés probar un modelo distinto porque es más barato o más rápido,
+    tenés que <strong>reescribir partes del código</strong>. Es una fricción
+    real que te frena.
+  </p>
+
+  <div class="analogy">
+    <strong>Analogía — los drivers de impresora.</strong> Antes, para cada
+    impresora tenías que instalar un driver específico y aprenderte sus
+    particularidades. Hoy mandás a imprimir y listo, no te importa la marca.
+    El AI SDK hace lo mismo con los modelos: una sola interfaz, cualquier
+    proveedor abajo.
+  </p>
+
+  <h2>Cómo funciona — la idea base</h2>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Tu app</div>
+      <div class="flow-step-title">Usuario</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Interfaz común</div>
+      <div class="flow-step-title">AI SDK</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Proveedor elegido</div>
+      <div class="flow-step-title">OpenAI / Anthropic / Google / Groq</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Respuesta</div>
+      <div class="flow-step-title">Texto · JSON · Stream</div>
+    </div>
+  </div>
+
+  <p>
+    El SDK te expone unas pocas funciones que son las mismas sin importar el
+    proveedor. Vos cambiás una línea — "en vez de Claude, usá GPT-5" — y el
+    resto del código sigue intacto.
+  </p>
+
+  <h2>Las cuatro funciones core que tenés que conocer</h2>
+  <p>
+    No hace falta memorizar toda la API. Con estas cuatro primitivas ya
+    podés construir la gran mayoría de apps con IA:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">BÁSICO</div>
+      <div class="concept-card-term">generateText</div>
+      <p class="concept-card-desc">Le mandás un prompt al LLM, te devuelve el texto completo cuando termina. Es la función más simple — útil para tareas cortas y procesos batch.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">STREAMING</div>
+      <div class="concept-card-term">streamText</div>
+      <p class="concept-card-desc">Misma idea, pero el texto llega letra por letra. Es lo que hace que un chat se sienta vivo — el usuario ve la respuesta mientras se genera, sin esperar al final.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">ESTRUCTURADO</div>
+      <div class="concept-card-term">generateObject</div>
+      <p class="concept-card-desc">Le decís al LLM "devolveme un JSON que cumpla este schema" y te lo valida automáticamente. Ideal cuando el output tiene que ser estructurado para tu app.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">TOOLS</div>
+      <div class="concept-card-term">Tool calling</div>
+      <p class="concept-card-desc">Vos definís funciones ("buscar clientes", "enviar email") y el LLM decide cuándo llamarlas. Es la base para que un agente pueda hacer cosas en el mundo real, no solo conversar.</p>
+    </div>
+  </div>
+
+  <h2>Agents — el paso siguiente</h2>
+  <p>
+    Arriba de esas cuatro primitivas, el SDK tiene soporte para
+    <strong>agentes multi-step</strong>. Un agente no es una sola llamada al
+    LLM — es un loop: el LLM piensa, llama herramientas, ve los resultados,
+    vuelve a pensar, y sigue hasta que termina la tarea.
+  </p>
+
+  <div class="stack">
+    <div class="stack-layer highlight">
+      <strong>Agente</strong> — Loop de razonamiento + tools + memoria
+    </div>
+    <div class="stack-layer">
+      <strong>Tool calling</strong> — Funciones que el LLM puede invocar
+    </div>
+    <div class="stack-layer">
+      <strong>streamText / generateObject</strong> — Primitivas de generación
+    </div>
+    <div class="stack-layer">
+      <strong>Proveedores</strong> — OpenAI, Anthropic, Google, Groq
+    </div>
+  </div>
+
+  <p>
+    El SDK te abstrae el loop: te da la estructura para definir un agente,
+    registrar sus tools, darle un prompt de sistema, y que corra hasta
+    terminar. Sin el SDK, tenés que armar ese loop vos a mano.
+  </p>
+
+  <h2>Lo que no te da el AI SDK</h2>
+  <p>
+    Ojo con las expectativas. El AI SDK es una <strong>librería cliente</strong>,
+    no una plataforma. No resuelve:
+  </p>
+
+  <div class="compare">
+    <div class="compare-side good">
+      <h3>Sí te da</h3>
+      <ul>
+        <li>Interfaz común entre proveedores</li>
+        <li>Streaming listo para React/Next</li>
+        <li>Structured outputs con validación</li>
+        <li>Tool calling uniforme</li>
+        <li>Helpers para agentes multi-step</li>
+      </ul>
+    </div>
+    <div class="compare-side bad">
+      <h3>No te da</h3>
+      <ul>
+        <li>Una API key unificada (eso lo hace el Gateway)</li>
+        <li>Observability de costos centralizada</li>
+        <li>Runtime gestionado de agentes (eso es Vercel Agent)</li>
+        <li>Ejecución aislada de código (eso es Sandbox)</li>
+        <li>Memoria persistente entre sesiones</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">El AI SDK es la piedra angular</div>
+    <p style="margin:0">
+      Todo lo demás del módulo — AI Gateway, Vercel Agent — se construye
+      encima del AI SDK o lo complementa. Si entendés cómo piensa el SDK
+      (funciones unificadas, streaming, tools), después todo lo demás te
+      cierra mucho más rápido. Empezá siempre por acá.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Tenés clara la idea del AI SDK?</span>
+    <button class="mark-btn" data-mark-complete="m03-01">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="index.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">Módulo 03 · Índice</span>
+    </a>
+    <a href="02-ai-gateway.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">02 · AI Gateway</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 03 · Vercel + AI · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

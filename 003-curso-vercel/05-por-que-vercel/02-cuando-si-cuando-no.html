@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 05 · Cuándo SÍ y cuándo NO · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 05 · Por qué Vercel</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 05 · Página 02</span>
+  <h1>Cuándo SÍ y cuándo NO</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    No todo proyecto necesita Vercel. Acá va la lista honesta — los
+    casos donde Vercel brilla y los casos donde conviene otra cosa.
+    Sin marketing, sin fanatismo.
+  </p>
+
+  <h2>La lista honesta, lado a lado</h2>
+  <p>
+    Mirá las dos columnas enteras antes de decidir. A veces un proyecto
+    toca items de los dos lados — en ese caso, el que pese más define.
+  </p>
+
+  <div class="compare">
+    <div class="compare-side good">
+      <div class="compare-side-label">Cuándo SÍ</div>
+      <ul style="margin:0;padding-left:var(--space-5);">
+        <li style="margin-bottom:var(--space-2);"><strong>App Next.js</strong> — ni lo discutas, es la casa del framework.</li>
+        <li style="margin-bottom:var(--space-2);"><strong>App con IA</strong> — streaming, LLMs, Fluid Compute te salva plata por el CPU activo.</li>
+        <li style="margin-bottom:var(--space-2);"><strong>Sitio con picos de tráfico</strong> — la escala automática absorbe spikes sin reconfigurar nada.</li>
+        <li style="margin-bottom:var(--space-2);"><strong>Equipo pequeño sin DevOps</strong> — la DX y la simplicidad te ahorran un puesto full-time.</li>
+        <li style="margin-bottom:var(--space-2);"><strong>Clientes / stakeholders no técnicos</strong> — los preview URLs por branch son imbatibles para mostrar avances.</li>
+        <li style="margin-bottom:var(--space-2);"><strong>MVP rápido</strong> — time to market mínimo, pasás de git push a producción en minutos.</li>
+        <li style="margin-bottom:0;"><strong>Tu primera app en prod</strong> — la curva de aprendizaje es la más baja de las plataformas serias.</li>
+      </ul>
+    </div>
+    <div class="compare-side bad">
+      <div class="compare-side-label">Cuándo NO</div>
+      <ul style="margin:0;padding-left:var(--space-5);">
+        <li style="margin-bottom:var(--space-2);"><strong>Backend stateful pesado</strong> — DB heavy, colas persistentes, workers que corren horas.</li>
+        <li style="margin-bottom:var(--space-2);"><strong>Monolito legacy</strong> — código que no encaja en el modelo serverless, mejor un VPS o container dedicado.</li>
+        <li style="margin-bottom:var(--space-2);"><strong>Presupuesto ajustado con tráfico estable</strong> — si sabés qué vas a consumir y es predecible, un VPS te sale más barato.</li>
+        <li style="margin-bottom:var(--space-2);"><strong>Multi-region compute sin Enterprise</strong> — si necesitás cómputo en varias regiones, el Pro no alcanza.</li>
+        <li style="margin-bottom:var(--space-2);"><strong>ML training</strong> — Vercel no es para entrenar modelos, es para servirlos.</li>
+        <li style="margin-bottom:0;"><strong>WebSockets persistentes</strong> — hay alternativas mejores como Fly.io o plataformas con soporte nativo para conexiones largas.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Los 3 riesgos que tenés que conocer</h2>
+  <p>
+    Ningún servicio es gratis de tradeoffs. Estos son los tres puntos
+    donde Vercel te puede doler — no para asustarte, para que los
+    tengas presentes cuando tomes la decisión.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Riesgo 1</div>
+      <div class="concept-card-term">Vendor lock-in</div>
+      <p class="concept-card-desc">Muchas features son Vercel-specific (Fluid Compute, Edge Config, preview URLs, Analytics). Migrar después a otra plataforma requiere trabajo — no es imposible, pero no es copy-paste.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Riesgo 2</div>
+      <div class="concept-card-term">Pricing puede escalar</div>
+      <p class="concept-card-desc">Si pegás viral sin cache, la factura duele. Los spend limits te protegen, pero si querés servir el tráfico, hay que pagarlo. Arquitectar con cache desde el día uno.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Riesgo 3</div>
+      <div class="concept-card-term">Limitaciones serverless</div>
+      <p class="concept-card-desc">Timeout máximo, memoria máxima, cold starts ocasionales. Para la mayoría de apps web no es problema — para workloads largos o stateful, es bloqueante.</p>
+    </div>
+  </div>
+
+  <h2>La pregunta honesta que te tenés que hacer</h2>
+  <p>
+    Antes de elegir Vercel para un proyecto, respondé esta sola
+    pregunta con honestidad. La respuesta te dice si estás en el
+    camino correcto o si te conviene mirar otro lado.
+  </p>
+
+  <div class="compare">
+    <div class="compare-side good">
+      <div class="compare-side-label">Pregunta A</div>
+      <p style="margin:0 0 var(--space-3);"><strong>¿Mi app es web (frontend + API + backend ligero) con tráfico spiky?</strong></p>
+      <p style="margin:0;font-size:13px;color:var(--text-2);">
+        Respuesta: Vercel es óptimo. El modelo serverless + CDN global +
+        Fluid Compute está diseñado exactamente para este perfil.
+        Dashboards, landings, SaaS chicos, apps con IA — todo entra.
+      </p>
+    </div>
+    <div class="compare-side bad">
+      <div class="compare-side-label">Pregunta B</div>
+      <p style="margin:0 0 var(--space-3);"><strong>¿Mi app es infra pesada con workloads largos?</strong></p>
+      <p style="margin:0;font-size:13px;color:var(--text-2);">
+        Respuesta: Mirá AWS, Railway, Render o Fly.io. Si tu app
+        necesita procesos que corren horas, WebSockets persistentes
+        o state pesado, Vercel no es la herramienta.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">Para un negocio de automatizaciones y software a medida</div>
+    <p style="margin:0">
+      Si tenés un negocio tipo el de Mateo — clientes que piden
+      dashboards, apps internas, MVPs, portales, integraciones con IA —
+      Vercel es un <strong>fit casi perfecto</strong>. Tus proyectos
+      típicos viven cómodos en Vercel, y la propuesta comercial cierra
+      con números razonables. Casi todo lo que construís entra en la
+      columna de "Cuándo SÍ".
+    </p>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">La regla mental corta</div>
+    <p style="margin:0">
+      Si la app sirve páginas web, corre APIs cortas y escala con
+      tráfico variable, <strong>Vercel</strong>. Si la app es un
+      worker backend que corre horas, procesa colas o mantiene estado
+      persistente, <strong>otro lado</strong>. Así de simple.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Ya tenés el criterio para decidir SÍ o NO?</span>
+    <button class="mark-btn" data-mark-complete="m05-02">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-pricing.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">01 · Pricing real 2026</span>
+    </a>
+    <a href="03-casos-de-uso.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">03 · Casos de uso para tu negocio</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 05 · Por qué Vercel · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 05 · Pricing real 2026 · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 05 · Por qué Vercel</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 05 · Página 01</span>
+  <h1>Pricing real — sin humo</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Qué te cobran, cuándo te cobran, y cuándo se puede disparar la cuenta.
+    Sin el filtro de marketing — los números oficiales 2026 y cómo se
+    comportan en la vida real.
+  </p>
+
+  <h2>Los 3 planes</h2>
+  <p>
+    Vercel tiene tres planes base. La diferencia no es solo el precio,
+    es el <strong>modelo de negocio</strong> que te habilita. Hobby es
+    para aprender, Pro es para facturar con una sola persona o un
+    equipo chico, Enterprise es para empresas con requisitos legales y
+    de SLA.
+  </p>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Plan</th>
+          <th>Precio</th>
+          <th>Incluye</th>
+          <th>Ideal para</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Hobby</strong></td>
+          <td>$0 / mes</td>
+          <td>100GB bandwidth · 1M Edge Requests · 4 horas Active CPU · 1M function invocations</td>
+          <td>Proyectos personales y de aprendizaje. <strong>No comercial.</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Pro</strong></td>
+          <td>$20 / mes por seat</td>
+          <td>$20 de usage credit incluidos · pricing por uso más allá · Viewer seats ilimitados gratis</td>
+          <td>Equipos chicos o medianos con uno o más proyectos en producción.</td>
+        </tr>
+        <tr>
+          <td><strong>Enterprise</strong></td>
+          <td>Custom</td>
+          <td>SLA 99.99% · multi-region compute · dedicated support · contratos y compliance</td>
+          <td>Empresas grandes con requisitos legales, SLA o multi-region.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-title">Ojo con Hobby</div>
+    <p style="margin:0">
+      El plan Hobby dice explícitamente <strong>non-commercial only</strong>.
+      Si vas a cobrar por la app, o si es para un cliente, tenés que estar
+      en Pro. No es una sugerencia, es una condición de los términos de uso.
+    </p>
+  </div>
+
+  <h2>Cómo funciona el modelo Pro</h2>
+  <p>
+    El plan Pro se arma con cuatro piezas que conviene entender por
+    separado. Muchos se confunden pensando que pagan $20 y ya está —
+    en realidad es una base fija más un consumo variable, con
+    protecciones.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Pieza 1</div>
+      <div class="concept-card-term">$20 por dev seat</div>
+      <p class="concept-card-desc">Pagás $20/mes por cada persona que puede hacer deploys. Si sos vos solo, son $20. Si sumás un socio dev, $40.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Pieza 2</div>
+      <div class="concept-card-term">$20 de créditos incluidos</div>
+      <p class="concept-card-desc">Con cada seat vienen $20 de usage credit. Si no superás ese consumo, no pagás nada extra.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Pieza 3</div>
+      <div class="concept-card-term">Usage-based beyond</div>
+      <p class="concept-card-desc">Si superás los créditos, pagás por recurso real consumido (bandwidth, CPU, invocations, etc).</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Pieza 4</div>
+      <div class="concept-card-term">Viewer seats gratis</div>
+      <p class="concept-card-desc">Los Viewer seats (gente que solo mira, no deploya) son GRATIS e ilimitados. Podés dar acceso a clientes sin pagar más.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">El detalle que cambia el juego</div>
+    <p style="margin:0">
+      Los <strong>Viewer seats ilimitados y gratis</strong> son oro
+      para tu operación. Un cliente puede ver logs, métricas, deploys,
+      previews, todo — sin costo extra para vos. En otras plataformas
+      cada usuario es una licencia paga.
+    </p>
+  </div>
+
+  <h2>Active CPU — el concepto clave</h2>
+  <p>
+    Este es el concepto que hace a Vercel financieramente viable para
+    apps con IA. Tenés que entenderlo. Es la diferencia entre pagar un
+    servicio razonable o una factura impagable.
+  </p>
+
+  <div class="callout ai">
+    <div class="callout-title">Vercel cobra solo el CPU ACTIVO</div>
+    <p style="margin:0">
+      Si tu función llama a OpenAI y espera 3 segundos la respuesta,
+      esos 3 segundos <strong>NO los pagás</strong>. Solo pagás los
+      milisegundos de CPU real que corrió tu código antes y después
+      del fetch. Esto es enorme para apps que llaman LLMs, bases
+      de datos o APIs externas — que es básicamente todo lo moderno.
+    </p>
+  </div>
+
+  <div class="compare">
+    <div class="compare-side bad">
+      <div class="compare-side-label">Serverless clásico</div>
+      <p style="margin:0 0 var(--space-2);"><strong>Pagás todo el tiempo que la función está viva.</strong></p>
+      <p style="margin:0;font-size:13px;color:var(--text-2);">
+        Tu función corre 50ms de CPU real + espera 3000ms a OpenAI.
+        Te cobran los 3050ms completos. La factura escala lineal con
+        la latencia de APIs externas que no controlás.
+      </p>
+    </div>
+    <div class="compare-side good">
+      <div class="compare-side-label">Vercel Fluid Compute</div>
+      <p style="margin:0 0 var(--space-2);"><strong>Pagás solo el CPU activo.</strong></p>
+      <p style="margin:0;font-size:13px;color:var(--text-2);">
+        Tu función corre 50ms de CPU real + espera 3000ms a OpenAI.
+        Te cobran solo los 50ms. La espera es gratis. Apps AI
+        totalmente viables económicamente.
+      </p>
+    </div>
+  </div>
+
+  <h2>Protecciones contra sorpresa</h2>
+  <p>
+    El miedo clásico con cualquier pricing usage-based es abrir la
+    factura y encontrarse con un número absurdo. Vercel tiene tres
+    mecanismos para que eso no te pase.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Protección 1</div>
+      <div class="concept-card-term">Spend limits</div>
+      <p class="concept-card-desc">Configurás un tope mensual de gasto. Si la factura toca ese número, Vercel deja de cobrarte y pausa recursos.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Protección 2</div>
+      <div class="concept-card-term">Alertas automáticas</div>
+      <p class="concept-card-desc">Te avisa por email cuando llegás al 50%, 75%, 90% del límite. No te enterás a fin de mes, te enterás en el momento.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Protección 3</div>
+      <div class="concept-card-term">Pausar proyectos</div>
+      <p class="concept-card-desc">Si un proyecto se descontrola, lo pausás manualmente desde el dashboard. Deja de consumir hasta que lo revises.</p>
+    </div>
+  </div>
+
+  <h2>Recursos que más se pagan</h2>
+  <p>
+    Cuando superás los créditos incluidos, estos son los cinco
+    recursos que empujan la factura. Saber esto te deja arquitecturar
+    con cabeza y cachear lo que haga falta.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Recurso 1</div>
+      <div class="concept-card-term">Bandwidth</div>
+      <p class="concept-card-desc">Tráfico total servido a usuarios. Cada GB que sale del CDN suma. Cachear assets estáticos es clave.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Recurso 2</div>
+      <div class="concept-card-term">Edge Requests</div>
+      <p class="concept-card-desc">Cantidad de hits al CDN. Cada request cuenta — incluso los que responden desde cache.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Recurso 3</div>
+      <div class="concept-card-term">Function Invocations</div>
+      <p class="concept-card-desc">Cada llamada a una función serverless o a una API route. Pasás por una función, pagás una invocation.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Recurso 4</div>
+      <div class="concept-card-term">Active CPU</div>
+      <p class="concept-card-desc">Tiempo real de CPU dentro de las funciones. Como vimos, solo el activo — no el tiempo esperando APIs.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Recurso 5</div>
+      <div class="concept-card-term">Image Optimization</div>
+      <p class="concept-card-desc">Cada imagen optimizada on-demand. Se cachea — el costo real es el first hit de cada tamaño / formato.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-title">El riesgo real a tener en la cabeza</div>
+    <p style="margin:0">
+      Si tu app tiene mucho tráfico viral <strong>sin cache</strong>,
+      la factura puede escalar. Hay que monitorear con el dashboard
+      de observability y usar cache agresivamente — tanto del CDN
+      (headers) como de datos (Redis/KV). El cache bien puesto
+      corta la factura a la mitad o menos.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Tenés claro qué te van a cobrar y cuándo?</span>
+    <button class="mark-btn" data-mark-complete="m05-01">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="index.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">Módulo 05 · Índice</span>
+    </a>
+    <a href="02-cuando-si-cuando-no.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">02 · Cuándo SÍ y cuándo NO</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 05 · Por qué Vercel · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

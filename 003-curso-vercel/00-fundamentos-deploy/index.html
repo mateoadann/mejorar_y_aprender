@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 00 · Fundamentos del deploy</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 00 · Fundamentos</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 00 · Fundamentos</span>
+  <h1>¿Qué carajo es un deploy?</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Antes de hablar de Vercel, necesitás tener claro qué significa hacer un deploy.
+    No porque lo vayas a hacer acá, sino porque sin estos conceptos Vercel es magia
+    negra y no vas a entender NADA de lo que viene.
+  </p>
+
+  <h2>La analogía del negocio físico</h2>
+  <p>
+    Imaginate que abriste una cafetería. Tu código es la <em>receta</em>, el
+    <em>menú</em>, la <em>decoración</em>. Todo eso vive en tu computadora.
+    Perfecto. Pero si querés que la gente <strong>compre tu café</strong>, no
+    alcanza con tener la receta guardada en un cuaderno en tu casa. Necesitás:
+  </p>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-icon">📓</div>
+      <div class="analogy-title">Tu receta en un cuaderno</div>
+      <div class="analogy-desc">El código en tu computadora. Nadie más lo puede usar.</div>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-side">
+      <div class="analogy-icon">🏪</div>
+      <div class="analogy-title">Un local abierto al público</div>
+      <div class="analogy-desc">La app corriendo en un servidor, accesible desde cualquier navegador.</div>
+    </div>
+  </div>
+
+  <p>
+    <strong>Hacer un deploy es montar el local.</strong> Es agarrar tu código y
+    ponerlo en una máquina que esté prendida 24/7 conectada a internet, con una
+    dirección que cualquiera pueda escribir en el navegador. Así de simple.
+  </p>
+
+  <div class="callout">
+    <div class="callout-title">Definición corta</div>
+    <p style="margin:0">
+      <strong>Deploy</strong> (o "deployment", o "despliegue" en español) es el
+      proceso de tomar tu código y hacerlo accesible públicamente en internet
+      a través de una URL.
+    </p>
+  </div>
+
+  <h2>Los 5 ingredientes de un deploy</h2>
+  <p>
+    Para que cualquier app viva online hacen falta, como mínimo, estas cinco piezas.
+    Después Vercel te las resuelve casi todas automáticamente — pero vos tenés
+    que saber que existen.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">01</div>
+      <div class="concept-card-term">Código</div>
+      <p class="concept-card-desc">Los archivos de tu app: HTML, CSS, JS, imágenes, lógica de backend si la hay.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">02</div>
+      <div class="concept-card-term">Servidor</div>
+      <p class="concept-card-desc">Una computadora prendida todo el día conectada a internet que corre tu código.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">03</div>
+      <div class="concept-card-term">Runtime</div>
+      <p class="concept-card-desc">El "motor" que ejecuta tu código — Node.js, Python, lo que sea que tu app necesite.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">04</div>
+      <div class="concept-card-term">Dominio</div>
+      <p class="concept-card-desc">La dirección escribible: <code>tunegocio.com</code>. Alquilás el nombre, no la máquina.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">05</div>
+      <div class="concept-card-term">DNS</div>
+      <p class="concept-card-desc">La guía telefónica que conecta el dominio con la IP del servidor. Magia invisible.</p>
+    </div>
+  </div>
+
+  <h2>¿Qué vas a encontrar en este módulo?</h2>
+  <p>Cuatro páginas cortas, cada una con un concepto fundamental:</p>
+
+  <div class="card-grid">
+    <a href="01-servidor-cliente.html" class="card-module" data-page-id="m00-01">
+      <span class="module-num">01 · Servidor y cliente</span>
+      <h3 class="module-title">Quién le habla a quién</h3>
+      <p class="module-desc">Tu navegador, el servidor, las requests y las responses. El modelo cliente-servidor explicado con analogías.</p>
+    </a>
+
+    <a href="02-build-runtime.html" class="card-module" data-page-id="m00-02">
+      <span class="module-num">02 · Build y runtime</span>
+      <h3 class="module-title">De código a app ejecutándose</h3>
+      <p class="module-desc">Por qué tu código pasa por un "build" antes de correr en producción. Qué es el runtime y por qué importa.</p>
+    </a>
+
+    <a href="03-dominio-dns-https.html" class="card-module" data-page-id="m00-03">
+      <span class="module-num">03 · Dominio, DNS y HTTPS</span>
+      <h3 class="module-title">La dirección pública de tu app</h3>
+      <p class="module-desc">Cómo se resuelve <code>tunegocio.com</code>, qué hace el candado verde del navegador, y por qué Vercel te lo regala.</p>
+    </a>
+
+    <a href="04-hosting-tipos.html" class="card-module" data-page-id="m00-04">
+      <span class="module-num">04 · Tipos de hosting</span>
+      <h3 class="module-title">Dónde vive tu app</h3>
+      <p class="module-desc">Servidor dedicado, VPS, serverless, edge, PaaS. El panorama completo de dónde podés poner tu código.</p>
+    </a>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Terminaste esta introducción al módulo?</span>
+    <button class="mark-btn" data-mark-complete="m00">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="../index.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">Inicio del curso</span>
+    </a>
+    <a href="01-servidor-cliente.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">01 · Servidor y cliente</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 00 · Fundamentos del deploy · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

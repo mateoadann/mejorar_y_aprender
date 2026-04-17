@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 02 · Servicios de Vercel · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 02 · Servicios</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 02 · Servicios de Vercel</span>
+  <h1>Los servicios de Vercel</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Lo que Vercel te ofrece hoy es mucho más que hosting. Acá vemos los 4
+    grandes grupos de servicios y cuándo usás cada uno.
+  </p>
+
+  <p>
+    Cuando alguien te dice "usá Vercel" está mezclando cosas muy distintas en
+    una misma palabra. Hay una <strong>plataforma core</strong> (lo que hace
+    correr tu app), hay <strong>storage</strong> (dónde guardás datos), hay
+    <strong>security</strong> (qué te protege) y hay una <strong>suite AI</strong>
+    (lo que te permite construir con modelos). Entender el mapa te da superpoderes
+    a la hora de decidir qué parte usás y qué parte no.
+  </p>
+
+  <h2>Los 4 grupos de servicios</h2>
+  <p>
+    Vercel acomoda su catálogo en cuatro áreas bien diferenciadas. Conocelas
+    por nombre, porque cada vez que leas documentación oficial te vas a chocar
+    con ellas:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Grupo 01</div>
+      <div class="concept-card-term">Core Platform</div>
+      <p class="concept-card-desc">
+        Lo que hace que tu app exista y responda: <strong>CI/CD</strong>,
+        <strong>CDN</strong>, <strong>Fluid Compute</strong> y
+        <strong>Observability</strong>. Es el motor.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Grupo 02</div>
+      <div class="concept-card-term">Storage</div>
+      <p class="concept-card-desc">
+        Dónde guardás cosas: <strong>Vercel Blob</strong> para archivos,
+        <strong>Edge Config</strong> para config global, y el
+        <strong>Marketplace</strong> para DBs de terceros.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Grupo 03</div>
+      <div class="concept-card-term">Security</div>
+      <p class="concept-card-desc">
+        Protección por defecto: <strong>WAF</strong>,
+        <strong>Bot Management</strong> y el nuevo <strong>BotID</strong> contra
+        bots sofisticados.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Grupo 04</div>
+      <div class="concept-card-term">AI &amp; Agents</div>
+      <p class="concept-card-desc">
+        Todo el stack AI: <strong>v0</strong>, <strong>AI SDK</strong>,
+        <strong>AI Gateway</strong>, <strong>Vercel Agent</strong> y
+        <strong>Sandbox</strong>. Este grupo tiene módulo propio (el 03).
+      </p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">Cómo vas a ver este módulo</div>
+    <p style="margin:0">
+      Las primeras tres páginas cubren Core Platform, Storage y Security. La
+      cuarta es un cajón de extras muy poderosos para developer experience
+      (Preview Deployments, Cron, Analytics…). El grupo AI lo tratamos en
+      profundidad en el <strong>Módulo 03</strong> porque se lo merece.
+    </p>
+  </div>
+
+  <h2>Las cuatro páginas del módulo</h2>
+
+  <div class="card-grid">
+    <a href="01-core-platform.html" class="card-module" data-page-id="m02-01">
+      <span class="module-num">01 · Core Platform</span>
+      <h3 class="module-title">El corazón de Vercel</h3>
+      <p class="module-desc">CI/CD para deploys automáticos, CDN para latencia baja global, Fluid Compute (la clave que no cobra tiempo de espera a APIs externas) y Observability para entender qué pasa con tu app.</p>
+    </a>
+
+    <a href="02-storage.html" class="card-module" data-page-id="m02-02">
+      <span class="module-num">02 · Storage</span>
+      <h3 class="module-title">Dónde guardás datos</h3>
+      <p class="module-desc">Vercel Blob para archivos grandes, Edge Config para configuración global low-latency, y el Marketplace para conectar DBs de terceros como Neon, Supabase o Upstash con credenciales autoinyectadas.</p>
+    </a>
+
+    <a href="03-security.html" class="card-module" data-page-id="m02-03">
+      <span class="module-num">03 · Security</span>
+      <h3 class="module-title">Defensa por defecto</h3>
+      <p class="module-desc">Platform Security como baseline (HTTPS, DDoS), WAF para filtrar tráfico malicioso, Bot Management clásico y BotID — el producto nuevo para bots sofisticados que se disfrazan bien.</p>
+    </a>
+
+    <a href="04-extras-dx.html" class="card-module" data-page-id="m02-04">
+      <span class="module-num">04 · Extras y DX</span>
+      <h3 class="module-title">Lo que hace que devs no quieran irse</h3>
+      <p class="module-desc">Preview Deployments con URL única por branch, Analytics privacy-friendly, Cron Jobs, Environment Variables gestionadas y Edge Middleware. Developer experience de otro nivel.</p>
+    </a>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">Por qué esta vista de 4 grupos te conviene</div>
+    <p style="margin:0">
+      Cuando cotizás un proyecto a un cliente, mirás este mapa y sabés qué
+      servicios vas a usar de arriba a abajo. "Voy a usar Core Platform para
+      el deploy, Storage con Blob para los PDFs del cliente, Security con
+      WAF porque es un e-commerce, y AI para el chatbot." Boom — cotización
+      clara, sin ambigüedades.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Tenés clara la vista general de servicios?</span>
+    <button class="mark-btn" data-mark-complete="m02">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="../01-que-es-vercel/03-vs-competencia.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">03 · Vercel vs el mundo</span>
+    </a>
+    <a href="01-core-platform.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">01 · Core Platform</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 02 · Servicios · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 00 · Servidor y cliente · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 00 · Fundamentos</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 00 · Página 01</span>
+  <h1>Servidor y cliente — Quién le habla a quién</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Toda la web funciona con dos actores que se pasan mensajes: el cliente pide,
+    el servidor responde. Si entendés bien esta conversación, entendés el 80%
+    de lo que hace Vercel por detrás. Vamos despacio.
+  </p>
+
+  <h2>La analogía del restaurante</h2>
+  <p>
+    Imaginate que entrás a un restaurante. Vos sos <strong>el cliente</strong>.
+    El mozo te trae el menú, vos pedís, y desde la cocina te llega el plato.
+    En la web pasa exactamente lo mismo: tu navegador es el cliente, la
+    computadora que tiene la app es el servidor (sí, se llama "servidor"
+    porque <em>sirve</em>, igual que el mozo).
+  </p>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-icon">🙋</div>
+      <div class="analogy-title">Cliente</div>
+      <div class="analogy-desc">Tu navegador (Chrome, Safari, Firefox). Pide cosas: páginas, imágenes, datos.</div>
+    </div>
+    <div class="analogy-arrow">↔</div>
+    <div class="analogy-side">
+      <div class="analogy-icon">🍽️</div>
+      <div class="analogy-title">Servidor</div>
+      <div class="analogy-desc">Una computadora prendida 24/7 con tu app. Responde a los pedidos que le llegan.</div>
+    </div>
+  </div>
+
+  <p>
+    El cliente nunca "entra" al servidor, igual que vos no entrás a la cocina.
+    Le pedís algo al mozo, y el mozo vuelve con la respuesta. En internet, ese
+    ida y vuelta tiene nombre y apellido: <strong>request</strong> y
+    <strong>response</strong>.
+  </p>
+
+  <h2>Request y response — el pedido y la respuesta</h2>
+  <p>
+    Cada vez que escribís una URL en el navegador, o apretás un botón que
+    carga datos, se dispara una <em>request</em>. El servidor la procesa y
+    devuelve una <em>response</em>. Nada más, nada menos.
+  </p>
+
+  <div class="diagram">
+    <div class="diagram-title">El flujo de una request</div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-step-icon">🌐</div>
+        <div class="flow-step-title">1. Cliente</div>
+        <div class="flow-step-desc">Escribís <code>tunegocio.com</code> en el navegador.</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">📨</div>
+        <div class="flow-step-title">2. Request</div>
+        <div class="flow-step-desc">El navegador manda un mensaje: "dame la home".</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🖥️</div>
+        <div class="flow-step-title">3. Servidor</div>
+        <div class="flow-step-desc">Recibe el pedido, busca qué devolver.</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">📦</div>
+        <div class="flow-step-title">4. Response</div>
+        <div class="flow-step-desc">Arma un paquete con HTML, CSS, JS, y lo manda de vuelta.</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🖼️</div>
+        <div class="flow-step-title">5. Render</div>
+        <div class="flow-step-desc">El navegador dibuja la página en pantalla.</div>
+      </div>
+    </div>
+  </div>
+
+  <p>
+    Lo importante: <strong>toda interacción con internet es este ciclo</strong>.
+    Cargar una página, mandar un formulario, ver una foto, pedirle algo a una
+    API. Siempre es request y response, una y otra vez.
+  </p>
+
+  <h2>HTTP — la lengua que hablan cliente y servidor</h2>
+  <p>
+    Para que el mozo te entienda, los dos tienen que hablar el mismo idioma.
+    En la web ese idioma se llama <strong>HTTP</strong> (HyperText Transfer
+    Protocol). Es un protocolo, o sea, un conjunto de reglas acordadas sobre
+    cómo se arma un pedido y cómo se arma una respuesta.
+  </p>
+
+  <div class="callout">
+    <div class="callout-title">¿Y HTTPS?</div>
+    <p style="margin:0">
+      Es lo mismo que HTTP pero <strong>cifrado</strong>. La "S" es de
+      <em>Secure</em>. Nadie en el medio puede espiar qué estás pidiendo ni
+      qué te responden. Hoy todo el mundo usa HTTPS — Vercel te lo da gratis
+      y lo vemos en la página 03.
+    </p>
+  </div>
+
+  <p>
+    Una request HTTP tiene, como mínimo, tres cosas: un <strong>método</strong>
+    (qué querés hacer), una <strong>URL</strong> (a qué recurso), y
+    <strong>headers</strong> (metadatos del pedido). La response tiene un
+    <strong>status code</strong> (el famoso 200, 404, 500) y un cuerpo con los
+    datos.
+  </p>
+
+  <h2>IP y puerto — la dirección exacta del servidor</h2>
+  <p>
+    Para que el pedido llegue al servidor correcto, necesitás una dirección.
+    Esa dirección tiene dos partes: la <strong>IP</strong> y el
+    <strong>puerto</strong>.
+  </p>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-icon">🏢</div>
+      <div class="analogy-title">IP = el edificio</div>
+      <div class="analogy-desc">Una serie de números (ej: <code>76.76.21.21</code>) que identifica una máquina en internet. Como la dirección de calle.</div>
+    </div>
+    <div class="analogy-arrow">+</div>
+    <div class="analogy-side">
+      <div class="analogy-icon">🚪</div>
+      <div class="analogy-title">Puerto = el departamento</div>
+      <div class="analogy-desc">Un número (ej: <code>443</code> para HTTPS, <code>80</code> para HTTP) que indica a qué servicio de esa máquina le hablás.</div>
+    </div>
+  </div>
+
+  <p>
+    Una misma máquina puede tener muchos servicios corriendo al mismo tiempo:
+    un servidor web, una base de datos, un servicio de mail. Cada uno escucha
+    en un puerto distinto. La IP te lleva al edificio, el puerto te lleva a la
+    puerta correcta.
+  </p>
+
+  <div class="callout">
+    <div class="callout-title">Puertos que seguro ya viste</div>
+    <p style="margin:0">
+      <code>80</code> es HTTP, <code>443</code> es HTTPS, <code>3000</code> y
+      <code>5173</code> son típicos de desarrollo local (Node y Vite). Cuando
+      corrés <code>npm run dev</code> y te dice "open localhost:3000", esa es
+      la combinación IP local + puerto.
+    </p>
+  </div>
+
+  <h2>Los 4 métodos HTTP que tenés que conocer</h2>
+  <p>
+    El método de la request es la <em>intención</em>: qué querés que pase con
+    el recurso. Hay muchos métodos, pero el 95% del tiempo vas a trabajar con
+    estos cuatro. Seguimos con el restaurante:
+  </p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Método</th>
+        <th>Intención</th>
+        <th>Analogía del restaurante</th>
+        <th>Ejemplo web</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>GET</strong></td>
+        <td>Leer / obtener datos</td>
+        <td>Mirar el menú. No cambia nada, solo mirás.</td>
+        <td>Cargar la home, ver un producto.</td>
+      </tr>
+      <tr>
+        <td><strong>POST</strong></td>
+        <td>Crear algo nuevo</td>
+        <td>Hacer un pedido. Se genera una comanda nueva.</td>
+        <td>Registrarte, mandar un formulario, subir una foto.</td>
+      </tr>
+      <tr>
+        <td><strong>PUT</strong></td>
+        <td>Modificar algo existente</td>
+        <td>Pedir que te cambien las papas por ensalada.</td>
+        <td>Editar tu perfil, actualizar un producto.</td>
+      </tr>
+      <tr>
+        <td><strong>DELETE</strong></td>
+        <td>Borrar algo</td>
+        <td>Cancelar el pedido antes de que salga.</td>
+        <td>Eliminar una cuenta, borrar un post.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    Hay más métodos (PATCH, OPTIONS, HEAD), pero con estos cuatro entendés el
+    CRUD completo: <strong>C</strong>reate (POST), <strong>R</strong>ead (GET),
+    <strong>U</strong>pdate (PUT), <strong>D</strong>elete (DELETE). Si mañana
+    diseñás una API, esta es la base.
+  </p>
+
+  <h2>¿Cómo se ve una request de verdad?</h2>
+  <p>
+    No hace falta que te la aprendas, pero es bueno que la hayas visto una
+    vez. Esto es lo que manda tu navegador cuando pedís una página:
+  </p>
+
+  <pre class="code-block">GET /productos/cafe HTTP/1.1
+Host: tunegocio.com
+User-Agent: Mozilla/5.0 (Macintosh)
+Accept: text/html
+Cookie: session=abc123</pre>
+
+  <p>Y la response que te vuelve:</p>
+
+  <pre class="code-block">HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 4582
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;...&lt;/html&gt;</pre>
+
+  <p>
+    Arriba van los headers (metadatos), abajo va el cuerpo (el contenido).
+    El <code>200</code> es el status code: "todo OK". Si fuera
+    <code>404</code> sería "no encontré ese recurso", y <code>500</code>
+    sería "algo explotó en el servidor".
+  </p>
+
+  <h2>Resumen visual</h2>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">CLIENTE</div>
+      <div class="concept-card-term">El que pide</div>
+      <p class="concept-card-desc">Tu navegador, una app mobile, otro servidor. Cualquier cosa que inicie una request.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">SERVIDOR</div>
+      <div class="concept-card-term">El que responde</div>
+      <p class="concept-card-desc">Una máquina conectada a internet que escucha requests en una IP y un puerto.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">HTTP</div>
+      <div class="concept-card-term">El idioma</div>
+      <p class="concept-card-desc">El protocolo que define cómo se arman los mensajes entre cliente y servidor.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">MÉTODOS</div>
+      <div class="concept-card-term">La intención</div>
+      <p class="concept-card-desc">GET lee, POST crea, PUT modifica, DELETE borra. El CRUD de toda la web.</p>
+    </div>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">Vercel te abstrae todo esto — pero tenés que saber qué pasa abajo</div>
+    <p style="margin:0 0 var(--space-2)">
+      Cuando hagas deploy en Vercel no vas a tocar IPs, puertos, ni configurar
+      HTTPS a mano. Vercel te lo resuelve. Pero cuando algo falle — y va a
+      fallar — el error te va a hablar de <code>status 500</code>, de
+      <code>CORS</code>, de <code>port already in use</code>, de
+      <code>404 Not Found</code>.
+    </p>
+    <p style="margin:0">
+      Si no entendés el modelo cliente-servidor, esos mensajes son chino. Si
+      lo entendés, son pistas clarísimas. Por eso arrancamos acá.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Entendiste el modelo cliente-servidor?</span>
+    <button class="mark-btn" data-mark-complete="m00-01">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="index.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">Módulo 00 · Índice</span>
+    </a>
+    <a href="02-build-runtime.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">02 · Build y runtime</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 00 · Fundamentos del deploy · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

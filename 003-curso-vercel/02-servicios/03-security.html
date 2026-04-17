@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 02 · Security · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 02 · Servicios</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 02 · Página 03</span>
+  <h1>Security — defensa por defecto</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Security en Vercel son <strong>cuatro capas</strong> que laburan en
+    conjunto: el baseline de plataforma, el WAF para tráfico malicioso, el
+    Bot Management clásico y el nuevo <strong>BotID</strong> para bots
+    sofisticados. Vienen encendidas en distintos grados — cuanto más subís
+    de plan, más fina se vuelve la defensa.
+  </p>
+
+  <p>
+    Cuando deployás en Vercel, no empezás de cero en seguridad. Hay un piso
+    que viene puesto: HTTPS, aislamiento de funciones, mitigación de
+    ataques de red. Sobre ese piso, agregás capas específicas según lo que
+    tu app necesite. Vamos de abajo para arriba.
+  </p>
+
+  <h2>Platform Security — el baseline</h2>
+  <p>
+    Es lo que te da Vercel <em>sin que pidas nada</em>. No lo activás, no lo
+    configurás, ya está. Son las defensas básicas que toda app moderna
+    necesita pero que, si tuvieras que armarlas vos, te llevarían días.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Capa 01</div>
+      <div class="concept-card-term">HTTPS obligatorio</div>
+      <p class="concept-card-desc">
+        Todo tráfico a tu dominio pasa por TLS. Los certificados se emiten y
+        renuevan automáticamente. Ningún request viaja en claro.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Capa 02</div>
+      <div class="concept-card-term">DDoS mitigation</div>
+      <p class="concept-card-desc">
+        A nivel de red, Vercel absorbe picos masivos de tráfico malicioso
+        antes de que lleguen a tu función. No te enterás.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Capa 03</div>
+      <div class="concept-card-term">Aislamiento de funciones</div>
+      <p class="concept-card-desc">
+        Cada invocación corre en un entorno aislado. Una función rota no
+        contamina a otra, un cliente no ve datos de otro cliente.
+      </p>
+    </div>
+  </div>
+
+  <h2>WAF — Web Application Firewall</h2>
+  <p>
+    El WAF es la capa que filtra <strong>tráfico malicioso a nivel
+    aplicación</strong>: inyección SQL, cross-site scripting (XSS),
+    patrones de ataque conocidos, abuso de endpoints. Mientras la mitigación
+    DDoS trabaja a nivel red, el WAF lee el <em>contenido</em> de los
+    requests y decide si pasan o no.
+  </p>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-icon">XX</div>
+      <div class="analogy-title">Sin WAF</div>
+      <p class="analogy-desc">Cualquier request llega a tu código. Si un atacante manda un payload raro, tu app tiene que defenderse sola — y si tiene un bug, adiós.</p>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-side">
+      <div class="analogy-icon">OK</div>
+      <div class="analogy-title">Con WAF</div>
+      <p class="analogy-desc">El portero del boliche filtra en la puerta: inyecciones SQL conocidas, XSS patterns, abuso de rate. Tu código solo ve lo que pasó el filtro.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">La metáfora del portero</div>
+    <p style="margin:0">
+      Pensá el WAF como <strong>el portero del boliche que conoce a todos
+      los revoltosos del barrio</strong>. Los que vienen a romper los para
+      en la puerta. Los que vienen a tomar algo pasan. Vos, adentro,
+      atendés a clientes de verdad en lugar de esquivar piedras.
+    </p>
+  </div>
+
+  <h2>Bot Management — bots automatizados clásicos</h2>
+  <p>
+    Una parte enorme del tráfico de internet hoy son <strong>bots</strong>:
+    scrapers que copian tu contenido, spammers que llenan formularios,
+    crawlers que devoran tus APIs, scripts que intentan miles de
+    contraseñas por minuto. Bot Management los identifica por sus patrones
+    (user agents conocidos, ritmo inhumano, falta de cookies, IPs
+    sospechosas) y los bloquea antes de que hagan daño.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Tipo 01</div>
+      <div class="concept-card-term">Scrapers</div>
+      <p class="concept-card-desc">
+        Copian tu contenido entero para republicarlo o entrenarlo. Te
+        roban SEO y te comen ancho de banda.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Tipo 02</div>
+      <div class="concept-card-term">Spammers</div>
+      <p class="concept-card-desc">
+        Llenan tus formularios de contacto, comentarios y registros con
+        basura. Te ensucian la base de datos y te agotan el equipo.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Tipo 03</div>
+      <div class="concept-card-term">Credential stuffing</div>
+      <p class="concept-card-desc">
+        Prueban listas de usuarios y contraseñas filtradas. Si un
+        porcentaje entra, les abre cuentas ajenas.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Tipo 04</div>
+      <div class="concept-card-term">Crawlers abusivos</div>
+      <p class="concept-card-desc">
+        Atacan tus APIs gratuitas sin respetar límites. Te disparan el
+        costo de compute y te rompen la experiencia de usuarios reales.
+      </p>
+    </div>
+  </div>
+
+  <h2>BotID — el producto nuevo contra bots sofisticados</h2>
+  <p>
+    Bot Management clásico se basa en patrones conocidos. Pero los bots
+    modernos son cada vez más sofisticados: rotan IPs, imitan comportamiento
+    humano, pasan captchas, se disfrazan de navegadores reales. Para ese
+    nivel de adversario, Vercel tiene <strong>BotID</strong> — un producto
+    más específico que combina señales del navegador, fingerprinting y
+    modelos de detección para distinguir <em>el humano real del bot bien
+    disfrazado</em>.
+  </p>
+
+  <div class="compare">
+    <div class="compare-side bad">
+      <div class="compare-side-label">Bot clásico vs Bot Management</div>
+      <ul>
+        <li>User agent "curl" o similar</li>
+        <li>Sin cookies ni JavaScript</li>
+        <li>Ritmo de requests inhumano</li>
+        <li>IP en listas negras conocidas</li>
+        <li>Fácil de detectar con reglas</li>
+      </ul>
+    </div>
+    <div class="compare-side good">
+      <div class="compare-side-label">Bot sofisticado vs BotID</div>
+      <ul>
+        <li>User agent de Chrome real</li>
+        <li>Ejecuta JS, maneja cookies</li>
+        <li>Ritmo similar al humano</li>
+        <li>Rota IPs residenciales</li>
+        <li>Necesita fingerprinting y modelos</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">Dónde importa BotID de verdad</div>
+    <p style="margin:0">
+      Cualquier endpoint con <strong>valor monetario o acceso sensible</strong>:
+      login (prevenir toma de cuentas), registro (evitar cuentas falsas
+      masivas), pagos (bloquear carding), formularios de alto valor (leads
+      comerciales), checkouts, APIs pagas. Si tu app tiene algo que un bot
+      querría abusar, BotID es la capa que te hace falta.
+    </p>
+  </div>
+
+  <h2>Las cuatro capas, apiladas</h2>
+  <p>
+    Cada capa intercepta algo distinto. Cuando llega un request a tu app,
+    pasa primero por el baseline, después por el WAF, después por Bot
+    Management, y finalmente por BotID (si lo activaste). Lo que sobrevive
+    a las cuatro es tráfico real y seguro.
+  </p>
+
+  <div class="stack">
+    <div class="stack-layer">
+      <strong>Platform Security</strong> — HTTPS, DDoS, aislamiento (baseline, siempre ON)
+    </div>
+    <div class="stack-layer">
+      <strong>WAF</strong> — filtra inyecciones y patrones de ataque conocidos
+    </div>
+    <div class="stack-layer">
+      <strong>Bot Management</strong> — bloquea bots automatizados clásicos
+    </div>
+    <div class="stack-layer highlight">
+      <strong>BotID</strong> — detecta bots sofisticados que se disfrazan bien
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-title">Por qué esto importa cada vez más en la era de agentes AI</div>
+    <p style="margin:0">
+      Los <strong>agentes AI</strong> son, técnicamente, bots. Muy
+      sofisticados. Pueden navegar un sitio, llenar formularios, ejecutar JS,
+      resolver captchas y comportarse casi como un humano. Algunos son
+      legítimos (asistentes personales del usuario), otros son abusivos
+      (scrapers agresivos disfrazados de "investigación"). La línea entre
+      "bot bueno" y "bot malo" se va a difuminar, y el valor de herramientas
+      como BotID solo va a subir.
+    </p>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">Para tu negocio de automatizaciones</div>
+    <p style="margin:0">
+      Cuando vendés una app a un cliente — especialmente e-commerce, SaaS o
+      cualquier cosa con login — sumá BotID desde el primer día. Es una
+      feature que el cliente <em>no sabía que necesitaba</em> hasta que tiene
+      su primer ataque de credential stuffing. Ahí se acuerda de vos. Mejor
+      todavía: cotizale "incluye capa de bot protection" y justificás valor
+      sin tener que armarlo a mano.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Ves las capas de seguridad de Vercel?</span>
+    <button class="mark-btn" data-mark-complete="m02-03">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-storage.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">02 · Storage</span>
+    </a>
+    <a href="04-extras-dx.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">04 · Extras y DX</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 02 · Servicios · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

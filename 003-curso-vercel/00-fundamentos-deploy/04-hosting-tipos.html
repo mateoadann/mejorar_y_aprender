@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 00 · Tipos de hosting · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 00 · Fundamentos</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 00 · Página 04</span>
+  <h1>Tipos de hosting: dónde vive tu app</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Ya entendiste qué es un servidor, qué es un build y cómo tu dominio apunta
+    a una IP. Ahora la pregunta clave: <strong>¿qué tipo de servidor elegís?</strong>
+    Porque "hosting" no es una sola cosa — hay un abanico enorme, desde comprar
+    una máquina hasta no ver servidores en absoluto.
+  </p>
+
+  <h2>De administrar todo a no administrar nada</h2>
+  <p>
+    Hace veinte años, si querías tener una app online, <strong>comprabas un
+    servidor físico</strong>, lo llevabas a un datacenter y lo administrabas
+    vos. Sistema operativo, seguridad, backups, red, actualizaciones — todo
+    tuyo. Era una tortura.
+  </p>
+  <p>
+    Con el tiempo aparecieron <strong>capas de abstracción</strong>. Cada nueva
+    capa te saca un problema de encima, pero te cobra un poco más y te da un
+    poco menos de control. Entender este espectro es <em>fundamental</em>
+    porque te deja ver dónde encaja Vercel y por qué es tan cómodo.
+  </p>
+
+  <div class="callout">
+    <div class="callout-title">La regla de oro</div>
+    <p style="margin:0">
+      Cuanta <strong>más abstracción</strong>, menos control tenés pero menos
+      cosas tenés que manejar. Cuanto <strong>menos abstracción</strong>, más
+      poder tenés pero más dolores de cabeza también. No hay bueno o malo —
+      hay lo que tu proyecto necesita.
+    </p>
+  </div>
+
+  <h2>Los 6 niveles de hosting</h2>
+  <p>
+    Ordenados de <strong>menos abstracción</strong> (vos hacés todo) a
+    <strong>más abstracción</strong> (la plataforma hace todo por vos):
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">01 · Mínima abstracción</div>
+      <div class="concept-card-term">Servidor físico dedicado</div>
+      <p class="concept-card-desc">
+        Comprás una máquina real y la ponés en un datacenter (o en tu casa, si
+        sos valiente). Máximo control total: hardware, SO, red, seguridad.
+        Máximo dolor de cabeza también. Hoy casi nadie empieza acá.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-card-label">02</div>
+      <div class="concept-card-term">VPS · Virtual Private Server</div>
+      <p class="concept-card-desc">
+        Una "rebanada" virtual de un servidor físico. Tenés tu propio Linux,
+        tu usuario root, vos administrás todo lo que pasa adentro.
+        Ejemplos: DigitalOcean, Linode, Hetzner. Flexible y relativamente barato.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-card-label">03</div>
+      <div class="concept-card-term">Hosting compartido</div>
+      <p class="concept-card-desc">
+        El clásico cPanel, el hosting de WordPress. Compartís una máquina con
+        otros cientos de sitios. Muy barato, muy simple, muy limitado.
+        Pensado para sitios chicos y estáticos.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-card-label">04</div>
+      <div class="concept-card-term">IaaS · Infrastructure as a Service</div>
+      <p class="concept-card-desc">
+        AWS EC2, Google Cloud Compute, Azure VM. Es un VPS con esteroides:
+        podés armar redes, balanceadores, discos, regiones. Potentísimo pero
+        con complejidad industrial. Casi siempre necesitás un DevOps.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-card-label">05</div>
+      <div class="concept-card-term">PaaS · Platform as a Service</div>
+      <p class="concept-card-desc">
+        Heroku, Railway, Render. Te dan la plataforma lista: subís el código
+        y listo. Vos no tocás el sistema operativo ni configurás nada de red.
+        Más caro por recurso que un VPS, pero muchísimo más simple.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-card-label">06 · Máxima abstracción</div>
+      <div class="concept-card-term">Serverless / Edge</div>
+      <p class="concept-card-desc">
+        Vercel, Netlify, Cloudflare Workers. No hay "servidor visible" para
+        vos. Tu código corre por demanda, escala automático y pagás por uso.
+        El deploy es <code>git push</code>. La simplicidad definitiva para apps modernas.
+      </p>
+    </div>
+  </div>
+
+  <h2>El stack de abstracción, visual</h2>
+  <p>
+    De abajo hacia arriba: cada nivel se apoya en el anterior y te oculta
+    complejidad. Vercel está en la cima: usa IaaS por debajo, pero vos nunca
+    lo ves.
+  </p>
+
+  <div class="stack">
+    <div class="stack-layer highlight">
+      <span class="stack-layer-name">Serverless / Edge</span>
+      <span class="stack-layer-desc">Vercel, Netlify, Cloudflare</span>
+    </div>
+    <div class="stack-layer">
+      <span class="stack-layer-name">PaaS</span>
+      <span class="stack-layer-desc">Heroku, Railway, Render</span>
+    </div>
+    <div class="stack-layer">
+      <span class="stack-layer-name">IaaS</span>
+      <span class="stack-layer-desc">AWS, Google Cloud, Azure</span>
+    </div>
+    <div class="stack-layer">
+      <span class="stack-layer-name">VPS</span>
+      <span class="stack-layer-desc">DigitalOcean, Linode, Hetzner</span>
+    </div>
+    <div class="stack-layer">
+      <span class="stack-layer-name">Hosting compartido</span>
+      <span class="stack-layer-desc">cPanel, hostings de WordPress</span>
+    </div>
+    <div class="stack-layer">
+      <span class="stack-layer-name">Servidor físico dedicado</span>
+      <span class="stack-layer-desc">Hardware propio en datacenter</span>
+    </div>
+  </div>
+
+  <h2>Analogía: alquilar un espacio para tu negocio</h2>
+  <p>
+    Pensá que tu app es un <strong>negocio</strong> y estás buscando dónde
+    instalarlo. Tenés seis opciones, con el mismo espectro de control vs. comodidad:
+  </p>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-title">Comprar un local</div>
+      <div class="analogy-desc">Servidor dedicado. Es tuyo para siempre, pero vos te bancás impuestos, mantenimiento, todo.</div>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-side">
+      <div class="analogy-title">Alquilar una oficina</div>
+      <div class="analogy-desc">VPS. Tenés tu llave y tu espacio privado, pero vos ponés muebles, limpieza, internet.</div>
+    </div>
+  </div>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-title">Coworking básico</div>
+      <div class="analogy-desc">Hosting compartido. Escritorio al lado de otros, reglas estrictas. Barato pero limitado.</div>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-side">
+      <div class="analogy-title">AirBnB empresarial</div>
+      <div class="analogy-desc">IaaS. Un edificio entero configurable a medida. Potente, pero necesitás un administrador dedicado.</div>
+    </div>
+  </div>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-title">Oficina con servicios incluidos</div>
+      <div class="analogy-desc">PaaS. Llegás con tu notebook y trabajás. Luz, café, wifi, limpieza: todo ya está.</div>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-side">
+      <div class="analogy-title">Franquicia llave en mano</div>
+      <div class="analogy-desc">Serverless / Edge. Te instalan el negocio listo para vender, se escala solo, pagás por cliente que entra.</div>
+    </div>
+  </div>
+
+  <h2>Tabla comparativa</h2>
+  <p>
+    Cuatro ejes que importan de verdad al elegir hosting: <strong>control</strong>
+    sobre la infra, <strong>simplicidad</strong> de uso, <strong>costo</strong>
+    base, y <strong>escalabilidad</strong> automática cuando te pega un pico
+    de tráfico.
+  </p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Control</th>
+        <th>Simplicidad</th>
+        <th>Costo</th>
+        <th>Escala</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Servidor dedicado</strong></td>
+        <td>Total</td>
+        <td>Muy baja</td>
+        <td>Alto fijo</td>
+        <td>Manual</td>
+      </tr>
+      <tr>
+        <td><strong>VPS</strong></td>
+        <td>Alto</td>
+        <td>Baja</td>
+        <td>Bajo fijo</td>
+        <td>Manual</td>
+      </tr>
+      <tr>
+        <td><strong>Hosting compartido</strong></td>
+        <td>Muy bajo</td>
+        <td>Media</td>
+        <td>Muy bajo</td>
+        <td>No escala</td>
+      </tr>
+      <tr>
+        <td><strong>IaaS</strong></td>
+        <td>Muy alto</td>
+        <td>Muy baja</td>
+        <td>Variable</td>
+        <td>Configurable</td>
+      </tr>
+      <tr>
+        <td><strong>PaaS</strong></td>
+        <td>Medio</td>
+        <td>Alta</td>
+        <td>Medio</td>
+        <td>Semi-automática</td>
+      </tr>
+      <tr>
+        <td><strong>Serverless / Edge</strong></td>
+        <td>Bajo</td>
+        <td>Muy alta</td>
+        <td>Por uso</td>
+        <td>Automática</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>¿Dónde encaja Vercel?</h2>
+  <p>
+    Vercel no entra prolijito en una sola categoría — combina tres modelos en
+    una sola experiencia:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Parte 1</div>
+      <div class="concept-card-term">PaaS</div>
+      <p class="concept-card-desc">
+        Subís el código y la plataforma se encarga del build, del runtime y
+        del deploy. Vos no configurás servidores.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Parte 2</div>
+      <div class="concept-card-term">Serverless</div>
+      <p class="concept-card-desc">
+        Tus funciones backend corren por demanda, sin servidores prendidos
+        gastando plata cuando nadie usa tu app.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Parte 3</div>
+      <div class="concept-card-term">Edge Network</div>
+      <p class="concept-card-desc">
+        Tus archivos estáticos viven en una red global. El usuario recibe el
+        contenido desde el nodo más cercano a su ubicación.
+      </p>
+    </div>
+  </div>
+
+  <p>
+    Por eso Vercel se siente distinto: está <strong>pensado desde cero para
+    frontend y apps modernas</strong>. No es un VPS disfrazado, no es un
+    Heroku. Es una plataforma construida específicamente para el flujo
+    <em>git push → app online en segundos</em>.
+  </p>
+
+  <div class="callout success">
+    <div class="callout-title">Para alguien que NUNCA desplegó antes</div>
+    <p style="margin:0">
+      Vercel es <strong>el punto de entrada con menos fricción posible</strong>.
+      No tenés que aprender Linux, no tenés que configurar Nginx, no tenés que
+      pelearte con certificados SSL, no tenés que pensar en escalar. Conectás
+      tu repo de Git y en minutos tu app está online con HTTPS, dominio y
+      CDN global. Así de fácil.
+    </p>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">El cierre del módulo 00</div>
+    <p style="margin:0">
+      Con esto ya tenés los fundamentos: qué es un deploy, cómo se hablan
+      cliente y servidor, qué es un build y un runtime, cómo funcionan dominio
+      y DNS, y dónde vive tu app. Todo lo que viene a partir de ahora es
+      Vercel específicamente — y vas a entender el PORQUÉ de cada decisión
+      que tomaron.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Entendiste los tipos de hosting?</span>
+    <button class="mark-btn" data-mark-complete="m00-04">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-dominio-dns-https.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">03 · Dominio, DNS y HTTPS</span>
+    </a>
+    <a href="../01-que-es-vercel/index.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">Módulo 01 · Qué es Vercel</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 00 · Fundamentos del deploy · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

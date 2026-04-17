@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 03 · Vercel + AI · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 03 · Vercel + AI</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge ai">MÓDULO 03 · Vercel + AI</span>
+  <h1>Vercel se volvió la <span class="ai-gradient-text">AI Cloud</span></h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Este módulo es el corazón del curso para vos. Vercel armó un stack
+    completo para apps de IA — desde generar UIs con un prompt hasta correr
+    agentes con estado y memoria. Si tu negocio es vender automatizaciones,
+    acá está la caja de herramientas.
+  </p>
+
+  <div class="ai-panel">
+    <h2 style="margin-top:0">Por qué este módulo te importa</h2>
+    <p>
+      Las apps con IA tienen necesidades que una app web normal no tiene:
+      <strong>streaming</strong> letra por letra, <strong>múltiples proveedores</strong>
+      de LLM (OpenAI, Anthropic, Google), <strong>tiempos de respuesta muy variables</strong>
+      (a veces 200ms, a veces 30 segundos), y <strong>observability de tokens</strong>
+      para no fundirte en costos.
+    </p>
+    <p style="margin:0">
+      Vercel detectó todos esos problemas y se posicionó como
+      <strong>el lugar donde ya están resueltos</strong>. No es que inventaron
+      la IA — armaron la infra específica para construir apps de IA en
+      producción. Esa es la tesis del módulo.
+    </p>
+  </div>
+
+  <h2>El ecosistema AI de Vercel en un vistazo</h2>
+  <p>
+    Son cinco piezas que se combinan. Abajo va el mapa — cada una resuelve
+    una parte del problema, y todas corren sobre la misma foundation (Fluid
+    Compute, que no te cobra el tiempo que el LLM se toma para pensar).
+  </p>
+
+  <div class="ecosystem">
+    <div class="eco-node vercel">
+      <div class="eco-node-label">TOOLKIT</div>
+      <div class="eco-node-name">AI SDK</div>
+      <div class="eco-node-desc">Librería TypeScript para hablar con cualquier LLM. Unifica providers.</div>
+    </div>
+    <div class="eco-node vercel">
+      <div class="eco-node-label">PROXY</div>
+      <div class="eco-node-name">AI Gateway</div>
+      <div class="eco-node-desc">Una sola API key, routing entre modelos, fallbacks y caching.</div>
+    </div>
+    <div class="eco-node vercel">
+      <div class="eco-node-label">UI</div>
+      <div class="eco-node-name">v0</div>
+      <div class="eco-node-desc">Generador de componentes React con prompt. Tailwind + Shadcn listo.</div>
+    </div>
+    <div class="eco-node vercel">
+      <div class="eco-node-label">RUNTIME</div>
+      <div class="eco-node-name">Vercel Agent</div>
+      <div class="eco-node-desc">Producto gestionado para correr agentes con estado y memoria.</div>
+    </div>
+    <div class="eco-node vercel">
+      <div class="eco-node-label">EXECUCIÓN</div>
+      <div class="eco-node-name">Sandbox</div>
+      <div class="eco-node-desc">Entorno aislado para ejecutar código que generó un LLM.</div>
+    </div>
+    <div class="eco-node">
+      <div class="eco-node-label">FOUNDATION</div>
+      <div class="eco-node-name">Fluid Compute</div>
+      <div class="eco-node-desc">La base que hace todo esto viable en serverless — no cobra tiempo de espera a LLMs.</div>
+    </div>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">Mateo — conexión directa con tu negocio</div>
+    <p style="margin:0">
+      Vos ya conocés los Managed Agents de Anthropic del otro curso. Este
+      módulo es el equivalente del lado de Vercel: más orientado al stack
+      web, más integrado con Next.js y React. Entender las dos ofertas te da
+      criterio para decidir qué le proponés a cada cliente.
+    </p>
+  </div>
+
+  <h2>Las cuatro páginas del módulo</h2>
+
+  <div class="card-grid">
+    <a href="01-ai-sdk.html" class="card-module" data-page-id="m03-01">
+      <span class="module-num">01 · AI SDK</span>
+      <h3 class="module-title">El toolkit TypeScript</h3>
+      <p class="module-desc">Librería open source para hablar con cualquier LLM — OpenAI, Anthropic, Google, Groq — detrás de una sola API. La base sobre la que se construye todo lo demás del ecosistema.</p>
+    </a>
+
+    <a href="02-ai-gateway.html" class="card-module" data-page-id="m03-02">
+      <span class="module-num">02 · AI Gateway</span>
+      <h3 class="module-title">La API unificada</h3>
+      <p class="module-desc">Un proxy con una sola API key para 100+ proveedores. Routing entre modelos, fallbacks automáticos, observability central y caching. Cambiás de modelo por configuración, sin tocar código.</p>
+    </a>
+
+    <a href="03-v0.html" class="card-module" data-page-id="m03-03">
+      <span class="module-num">03 · v0 — UI con IA</span>
+      <h3 class="module-title">Componentes generados con prompt</h3>
+      <p class="module-desc">Escribís lo que querés en lenguaje natural y v0 te devuelve componentes React con Tailwind y Shadcn UI. Ideal para prototipos, landings y explorar ideas rápido.</p>
+    </a>
+
+    <a href="04-agent-sandbox.html" class="card-module" data-page-id="m03-04">
+      <span class="module-num">04 · Agent + Sandbox</span>
+      <h3 class="module-title">Agentes gestionados y ejecución segura</h3>
+      <p class="module-desc">Vercel Agent para correr agentes con memoria de larga duración, Sandbox para ejecutar código generado por IA de forma aislada. Las dos piezas nuevas que cierran el loop del stack.</p>
+    </a>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Te quedó clara la vista general del stack AI?</span>
+    <button class="mark-btn" data-mark-complete="m03">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="../02-servicios/04-extras-dx.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">04 · Extras y DX</span>
+    </a>
+    <a href="01-ai-sdk.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">01 · AI SDK</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 03 · Vercel + AI · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

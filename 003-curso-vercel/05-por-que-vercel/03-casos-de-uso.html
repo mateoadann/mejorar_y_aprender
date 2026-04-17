@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 05 · Casos de uso para tu negocio · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 05 · Por qué Vercel</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 05 · Página 03</span>
+  <h1>Casos de uso reales para tu negocio</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Si tenés un negocio de automatizaciones y software a medida, acá
+    hay seis ofertas concretas que podés vender apoyándote en Vercel.
+    Cada una con su arquitectura mínima.
+  </p>
+
+  <h2>Caso 1 — Landing pages + formularios</h2>
+  <p>
+    Cliente pide "una landing rápida con form de contacto que mande a
+    su email o CRM". Vercel + Next.js + la integración favorita del
+    cliente (Resend, HubSpot, Pipedrive, Airtable). Dura 2 horas armar
+    y queda production-grade con SSL, CDN global y formulario
+    anti-spam.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Frontend</div>
+      <div class="flow-step-title">Next.js</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">API route</div>
+      <div class="flow-step-title">Function serverless</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">CRM / Email</div>
+      <div class="flow-step-title">Integración cliente</div>
+    </div>
+  </div>
+
+  <h2>Caso 2 — Dashboards internos con auth</h2>
+  <p>
+    Empleados de una empresa necesitan ver métricas, reportes o
+    herramientas internas. Vercel + Next.js + Clerk o NextAuth para
+    autenticación + una DB del Marketplace (Neon, Supabase o similar).
+    Quedás con un dashboard con SSO, permisos por rol y data real.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">UI</div>
+      <div class="flow-step-title">Next.js</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Auth</div>
+      <div class="flow-step-title">Clerk / NextAuth</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Datos</div>
+      <div class="flow-step-title">DB del Marketplace</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Observabilidad</div>
+      <div class="flow-step-title">Vercel Analytics</div>
+    </div>
+  </div>
+
+  <h2>Caso 3 — Apps con IA para empresas</h2>
+  <p>
+    Chatbot que responde sobre documentos internos (RAG), agente que
+    procesa emails, asistente tipo Claude custom para un proceso
+    específico. Vercel AI SDK + AI Gateway + Agent + Sandbox. El
+    modelo de Active CPU hace que esto sea económicamente viable —
+    pagás solo CPU real, no la espera a los LLMs.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">UI chat</div>
+      <div class="flow-step-title">AI SDK · streaming</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Orquestación</div>
+      <div class="flow-step-title">AI Gateway</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Lógica</div>
+      <div class="flow-step-title">Agent + Sandbox</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Cómputo</div>
+      <div class="flow-step-title">Fluid Compute</div>
+    </div>
+  </div>
+
+  <h2>Caso 4 — MVPs de SaaS</h2>
+  <p>
+    Cliente tiene idea, querés validar rápido o es tu propio producto.
+    Vercel + Next.js + Stripe para pagos + auth. En 1-2 semanas tenés
+    un SaaS con login, billing y producto real corriendo. Si el
+    producto pega, ya está en la infra correcta para escalar.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">App</div>
+      <div class="flow-step-title">Next.js</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Auth</div>
+      <div class="flow-step-title">Clerk / NextAuth</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Billing</div>
+      <div class="flow-step-title">Stripe</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">DB</div>
+      <div class="flow-step-title">Neon / Supabase</div>
+    </div>
+  </div>
+
+  <h2>Caso 5 — Herramientas internas de automatización</h2>
+  <p>
+    Scripts cron que corren a la noche, workflows disparados por
+    webhooks, automatizaciones que reemplazan el "le doy click manual
+    todos los días" del cliente. Vercel Cron Jobs + Edge Middleware +
+    funciones serverless. Barato, confiable, y visible en el dashboard.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Trigger</div>
+      <div class="flow-step-title">Cron Job / Webhook</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Ejecución</div>
+      <div class="flow-step-title">Function serverless</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Acción</div>
+      <div class="flow-step-title">API cliente / DB</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Log</div>
+      <div class="flow-step-title">Observability</div>
+    </div>
+  </div>
+
+  <h2>Caso 6 — Portales de cliente / documentación</h2>
+  <p>
+    Cada cliente de tu empresa tiene su portal privado — con su marca,
+    su data, su subdominio. Multi-tenant con subdomain por cliente,
+    configurado dinámicamente. Vercel con Edge Config + wildcards en
+    dominios + Middleware para routing por subdominio.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Request</div>
+      <div class="flow-step-title">cliente.tumarca.com</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Routing</div>
+      <div class="flow-step-title">Edge Middleware</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Config</div>
+      <div class="flow-step-title">Edge Config (tenant data)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Render</div>
+      <div class="flow-step-title">Next.js con brand dinámico</div>
+    </div>
+  </div>
+
+  <h2>El playbook de Mateo</h2>
+  <p>
+    Cuatro pasos prácticos para mover cualquiera de estos casos de
+    "idea" a "cliente facturado con app corriendo". Es el flujo
+    operativo, no la parte técnica — la parte técnica ya la sabés.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Paso 1</div>
+      <div class="concept-card-term">Plan Pro $20/mes</div>
+      <p class="concept-card-desc">Arrancá acá, no pierdas tiempo con Hobby para trabajos comerciales. Son $20 — lo recuperás con el primer cliente.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Paso 2</div>
+      <div class="concept-card-term">Importá el repo cliente</div>
+      <p class="concept-card-desc">Desde GitHub/GitLab. Deploy inicial en minutos. El cliente ve una URL funcionando el mismo día que firmaste.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Paso 3</div>
+      <div class="concept-card-term">Custom domain del cliente</div>
+      <p class="concept-card-desc">O un subdominio bajo tu marca. Vercel te da HTTPS automático con Let's Encrypt — cero config manual.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Paso 4</div>
+      <div class="concept-card-term">Listo</div>
+      <p class="concept-card-desc">Vos ganás horas de setup que no facturás. El cliente tiene infra production-grade. Todos ganan.</p>
+    </div>
+  </div>
+
+  <h2>Propuesta de valor — tu lado al cliente</h2>
+  <p>
+    Esto es lo que le vendés al cliente sin tener que hablar de
+    tecnología. Son beneficios concretos que se convierten en
+    argumentos comerciales.
+  </p>
+
+  <div class="stack">
+    <div class="concept-card">
+      <div class="concept-card-label">Para vos</div>
+      <div class="concept-card-term">Usás infra probada</div>
+      <p class="concept-card-desc">No reinventás la rueda cada proyecto. El tiempo que te ahorra es directamente margen.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Para el cliente</div>
+      <div class="concept-card-term">App con SSL, CDN, uptime y seguridad baseline</div>
+      <p class="concept-card-desc">Cosas que en un VPS casero no conseguís fácil. El cliente recibe un producto con estándares de nivel empresarial.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">El margen</div>
+      <div class="concept-card-term">El cliente paga por la solución, no por la infra</div>
+      <p class="concept-card-desc">Podés absorber el costo Vercel en el precio del proyecto o pasarlo aparte. Cualquiera de las dos funciona.</p>
+    </div>
+  </div>
+
+  <div class="callout success">
+    <div class="callout-title">El cierre del curso</div>
+    <p style="margin:0">
+      Usar Vercel no es una decisión técnica solamente — es una
+      decisión de <strong>NEGOCIO</strong>. Te ahorra tiempo, da
+      mejor producto, escala con vos. Para un negocio de
+      automatizaciones y software a medida, es una de las piezas de
+      infra que más retorno te da por cada peso invertido.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Ya sabés cómo vender Vercel como parte de tu oferta?</span>
+    <button class="mark-btn" data-mark-complete="m05-03">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-cuando-si-cuando-no.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">02 · Cuándo SÍ y cuándo NO</span>
+    </a>
+    <a href="../06-cheatsheet/index.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">Módulo 06 · Cheatsheet</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 05 · Por qué Vercel · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

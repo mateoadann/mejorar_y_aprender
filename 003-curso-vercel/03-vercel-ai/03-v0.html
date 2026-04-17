@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 03 · v0 — UI con IA · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 03 · Vercel + AI</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge ai">MÓDULO 03 · Página 03</span>
+  <h1><span class="ai-gradient-text">v0</span> — UIs generadas con IA</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Hasta acá vimos las piezas para construir apps de IA. Ahora damos
+    vuelta el mapa: v0 es IA que construye apps. Un producto donde escribís
+    qué querés y te devuelve componentes React listos para usar.
+  </p>
+
+  <h2>Qué es v0</h2>
+  <p>
+    v0 es un producto de Vercel disponible en <strong>v0.app</strong>. La idea
+    es simple: <strong>escribís un prompt describiendo la UI</strong> que
+    necesitás, y te genera el código. No te da pseudo-código ni bocetos —
+    te da <strong>componentes React reales</strong>, con
+    <strong>Tailwind</strong> para estilos y <strong>Shadcn UI</strong> para
+    la base de componentes. Listo para copiar, deployar o iterar.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">ACCESO</div>
+      <div class="concept-card-term">v0.app</div>
+      <p class="concept-card-desc">Se usa directo desde el browser. Interfaz tipo chat — escribís, ves preview, iterás.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">SALIDA</div>
+      <div class="concept-card-term">React + Tailwind + Shadcn</div>
+      <p class="concept-card-desc">Stack moderno y ampliamente adoptado. No te ata a nada raro — es código estándar.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">DEPLOY</div>
+      <div class="concept-card-term">1 click</div>
+      <p class="concept-card-desc">Al estar integrado con Vercel, podés pasar de prompt a URL pública sin salir de la herramienta.</p>
+    </div>
+  </div>
+
+  <h2>Cómo funciona — el loop visual</h2>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Paso 01</div>
+      <div class="flow-step-title">Escribís prompt</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Paso 02</div>
+      <div class="flow-step-title">v0 genera código + preview</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Paso 03</div>
+      <div class="flow-step-title">Iterás por chat</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Paso 04</div>
+      <div class="flow-step-title">Exportás o deployás</div>
+    </div>
+  </div>
+
+  <p>
+    La iteración es la clave. No intentes salir en un prompt — v0 está
+    diseñado para conversar: "hacelo más oscuro", "movelo a la derecha",
+    "cambiá el CTA por uno más grande". Cada pedido actualiza el componente
+    en vivo. Se parece más a dirigir a un dev junior que a usar un
+    generador estático.
+  </p>
+
+  <h2>Para qué SÍ sirve</h2>
+
+  <div class="compare">
+    <div class="compare-side good">
+      <h3>Casos donde v0 brilla</h3>
+      <ul>
+        <li><strong>Prototipos rápidos</strong> para validar una idea con un cliente</li>
+        <li><strong>Landing pages</strong> y sitios marketing de una sola vista</li>
+        <li><strong>Páginas institucionales</strong> con estructura previsible</li>
+        <li><strong>Componentes aislados</strong> — un form, una table, un hero</li>
+        <li><strong>Explorar ideas de diseño</strong> sin abrir Figma</li>
+        <li><strong>Demos internas</strong> para mostrar una propuesta</li>
+      </ul>
+    </div>
+    <div class="compare-side bad">
+      <h3>Casos donde NO sirve</h3>
+      <ul>
+        <li><strong>Apps complejas full-stack</strong> con lógica de negocio fuerte</li>
+        <li><strong>Código con reglas de dominio</strong> muy específicas</li>
+        <li><strong>UIs con accesibilidad crítica</strong> que requiera auditoría fina</li>
+        <li><strong>Performance extrema</strong> que demande optimización manual</li>
+        <li><strong>Producción enterprise</strong> sin revisión de un dev senior</li>
+        <li><strong>Sistemas de diseño propios</strong> muy distintos al default</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>vs la competencia — el mapa rápido</h2>
+  <p>
+    v0 no está solo en este espacio. Es útil conocer los otros players
+    porque cada uno tiene un foco distinto y te puede servir más según el
+    caso:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">COMPETIDOR</div>
+      <div class="concept-card-term">Bolt.new</div>
+      <p class="concept-card-desc">Apunta a apps full-stack completas con preview en navegador. Más ambicioso en alcance, menos pulido para UI aislada.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">COMPETIDOR</div>
+      <div class="concept-card-term">Lovable</div>
+      <p class="concept-card-desc">Otro enfoque full-app, fuerte en apps CRUD end-to-end. Foco más en product people que en devs frontend.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">COMPETIDOR</div>
+      <div class="concept-card-term">Claude Artifacts</div>
+      <p class="concept-card-desc">Generación dentro del chat de Claude. Rápido para componentes sueltos, pero no tiene deploy integrado ni iteración visual tan afinada.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">VS TODOS</div>
+      <div class="concept-card-term">v0</div>
+      <p class="concept-card-desc">Fortaleza: componentes React pulidos con Shadcn, integración directa con Vercel. Ideal para devs frontend que quieren arrancar un módulo rápido.</p>
+    </div>
+  </div>
+
+  <h2>Cómo encaja en tu flujo de trabajo</h2>
+
+  <div class="stack">
+    <div class="stack-layer highlight">
+      <strong>v0</strong> — Arrancás la UI con un prompt
+    </div>
+    <div class="stack-layer">
+      <strong>Editor local</strong> — Bajás el código y lo ajustás a tu gusto
+    </div>
+    <div class="stack-layer">
+      <strong>Sistema de diseño propio</strong> — Reemplazás tokens, adaptás tipografía
+    </div>
+    <div class="stack-layer">
+      <strong>Producción</strong> — Integrás con tu app real y deployás
+    </div>
+  </div>
+
+  <p>
+    El error común es pensar que v0 te da el producto final. No. Te da un
+    <strong>arranque muy decente</strong> que después vas a terminar con
+    tus propias manos. Pensalo como el primer 60% del camino: el que
+    normalmente te cuesta más porque es empezar de cero.
+  </p>
+
+  <div class="callout ai">
+    <div class="callout-title">v0 es una herramienta más del toolbox</div>
+    <p style="margin:0">
+      No reemplaza al diseñador ni al frontend dev — acelera el arranque.
+      Si vos vendés automatizaciones y software a medida, v0 te sirve para
+      entregar mockups funcionales en horas en vez de días, y para que el
+      cliente vea algo tangible mucho antes. Ese es el valor real: velocidad
+      en la fase temprana, no reemplazo del trabajo de fondo.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Te quedó claro qué es v0 y cuándo usarlo?</span>
+    <button class="mark-btn" data-mark-complete="m03-03">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-ai-gateway.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">02 · AI Gateway</span>
+    </a>
+    <a href="04-agent-sandbox.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">04 · Agent + Sandbox</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 03 · Vercel + AI · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

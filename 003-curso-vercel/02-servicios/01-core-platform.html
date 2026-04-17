@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 02 · Core Platform · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 02 · Servicios</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 02 · Página 01</span>
+  <h1>Core Platform — el corazón de Vercel</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Estos cuatro servicios son el motor: sin ellos no hay app corriendo.
+    <strong>CI/CD</strong> automatiza tu deploy, la <strong>CDN</strong> hace
+    que cargue rápido en cualquier parte del mundo, <strong>Fluid Compute</strong>
+    ejecuta tu código con un modelo de costos pensado para la era AI, y
+    <strong>Observability</strong> te cuenta qué está pasando por dentro.
+  </p>
+
+  <h2>CI/CD — Continuous Integration / Deployment</h2>
+  <p>
+    CI/CD es el servicio que convierte un <code>git push</code> en una app
+    corriendo en producción, sin que toques nada. Vercel presume que ayuda a
+    equipos a <em>"ship 6× faster"</em>, y no es marketing vacío: cuando lo
+    comparás con armar un pipeline tradicional (GitHub Actions + scripts +
+    servidor + handoff manual), la diferencia de velocidad es real.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-icon">1</div>
+      <div class="flow-step-title">git push</div>
+      <p class="flow-step-desc">Mandás un cambio a tu branch en GitHub, GitLab o Bitbucket.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">2</div>
+      <div class="flow-step-title">Build</div>
+      <p class="flow-step-desc">Vercel detecta el framework, instala dependencias y compila el proyecto.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">3</div>
+      <div class="flow-step-title">Test / Checks</div>
+      <p class="flow-step-desc">Corre linters, tests y verifica que el build esté limpio.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">4</div>
+      <div class="flow-step-title">Deploy</div>
+      <p class="flow-step-desc">Sube los artefactos a la red global, invalida cache y la URL queda viva.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">La magia del CI/CD en Vercel</div>
+    <p style="margin:0">
+      Cada push a <code>main</code> va a producción. Cada push a otra branch
+      genera una <strong>preview URL única</strong> (lo vemos en profundidad
+      en la página 04). No tenés que configurar nada: si conectás el repo, el
+      pipeline ya está armado.
+    </p>
+  </div>
+
+  <h2>Content Delivery Network (CDN)</h2>
+  <p>
+    Imaginate que tu servidor está en <strong>Virginia (EE.UU.)</strong> y un
+    usuario te consulta desde <strong>Buenos Aires</strong>. Cada request
+    tiene que cruzar 8.500 km ida y vuelta, pasar por varios saltos, y la
+    latencia se dispara. Un CDN resuelve eso: pone <em>copias</em> de tus
+    assets en nodos distribuidos por todo el planeta, y cuando el usuario
+    pide algo, lo sirve desde el nodo más cercano.
+  </p>
+
+  <div class="analogy">
+    <div class="analogy-side">
+      <div class="analogy-icon">SIN CDN</div>
+      <div class="analogy-title">Usuario BA → Servidor VA</div>
+      <p class="analogy-desc">Cada request viaja 8.500 km. Latencia alta, la imagen tarda, el sitio se siente pesado.</p>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-side">
+      <div class="analogy-icon">CON CDN</div>
+      <div class="analogy-title">Usuario BA → Nodo Sao Paulo</div>
+      <p class="analogy-desc">Copia cacheada a 2.400 km. Respuesta en milisegundos, el sitio se siente instantáneo.</p>
+    </div>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-icon">BA</div>
+      <div class="flow-step-title">Usuario en Buenos Aires</div>
+      <p class="flow-step-desc">Pide la página desde el navegador.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">SP</div>
+      <div class="flow-step-title">Nodo Sao Paulo</div>
+      <p class="flow-step-desc">Tiene la copia cacheada. La sirve directo, sin ir al origen.</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-icon">OK</div>
+      <div class="flow-step-title">Respuesta rápida</div>
+      <p class="flow-step-desc">El usuario ve el sitio cargado en milisegundos.</p>
+    </div>
+  </div>
+
+  <h2>Fluid Compute — "servers in serverless form"</h2>
+  <p>
+    Acá está <strong>la clave diferenciadora de Vercel hoy</strong>. Fluid
+    Compute es el modelo de ejecución propio de Vercel para funciones
+    serverless, y resuelve un problema enorme: el serverless tradicional
+    cobra por <em>tiempo total de ejecución</em>, incluyendo el rato que tu
+    función se queda esperando a una API externa, una DB o un modelo de IA.
+  </p>
+  <p>
+    Fluid Compute, en cambio, cobra <strong>solo CPU activo</strong>. Si tu
+    función llama a OpenAI y espera 8 segundos la respuesta, esos 8 segundos
+    <em>no se facturan</em> — la CPU está inactiva. Esto no es un detalle,
+    es una revolución para apps con IA.
+  </p>
+
+  <div class="callout">
+    <div class="callout-title">La definición oficial, textual</div>
+    <p style="margin:0">
+      <em>"Active CPU pricing excludes time spent waiting on external services
+      like databases, APIs, or AI model responses."</em> Traducido: no pagás
+      por esperar. Pagás por <strong>calcular</strong>.
+    </p>
+  </div>
+
+  <div class="compare">
+    <div class="compare-side bad">
+      <div class="compare-side-label">Serverless tradicional</div>
+      <ul>
+        <li>Cobra tiempo total de ejecución</li>
+        <li>Llamás a OpenAI y esperás 8s → pagás 8s</li>
+        <li>El 80% del costo es tiempo muerto</li>
+        <li>Apps AI resultan carísimas</li>
+        <li>Tenés que trabajar contra el modelo de pricing</li>
+      </ul>
+    </div>
+    <div class="compare-side good">
+      <div class="compare-side-label">Fluid Compute</div>
+      <ul>
+        <li>Cobra solo CPU activo</li>
+        <li>Llamás a OpenAI y esperás 8s → no se cobra la espera</li>
+        <li>Pagás por cálculo real</li>
+        <li>Apps AI tienen costo alineado a valor</li>
+        <li>El pricing está a favor tuyo</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>
+    La frase <em>"servers in serverless form"</em> que usa Vercel apunta a
+    esto: mantenés la simpleza del serverless (no administrás servidores, no
+    te preocupás por escalado), pero con un modelo de costos que se parece más
+    a un servidor que a una función clásica — solo pagás por trabajo real.
+  </p>
+
+  <h2>Observability — la cámara de seguridad de tu app</h2>
+  <p>
+    Una vez que tu app está corriendo, necesitás <strong>saber qué pasa por
+    dentro</strong>. Qué función falló, cuánto tardó, qué request la disparó,
+    qué error tiró. Observability es el servicio que te da esa visibilidad.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Logs</div>
+      <div class="concept-card-term">Qué pasó</div>
+      <p class="concept-card-desc">
+        Mensajes que escribe tu código (console.log, errores). Es el registro
+        textual, útil para entender el flujo y debuggear.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Métricas</div>
+      <div class="concept-card-term">Cuánto y cuándo</div>
+      <p class="concept-card-desc">
+        Números agregados: requests por minuto, latencia promedio, tasa de
+        errores, uso de CPU. Te dicen la salud general del sistema.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Traces</div>
+      <div class="concept-card-term">El recorrido completo</div>
+      <p class="concept-card-desc">
+        La trayectoria de un request puntual: pasó por la función X, llamó a
+        la DB Y, esperó Z ms en la API externa. Crucial para encontrar cuellos
+        de botella.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">La analogía de la cámara de seguridad</div>
+    <p style="margin:0">
+      Sin observability, cuando algo falla estás ciego — el cliente te dice
+      "no funciona" y vos mirás el techo. Con observability, rebobinás la
+      cinta: ves qué request explotó, qué dato llegó mal, dónde se tardó. Es
+      la diferencia entre <strong>adivinar</strong> y <strong>saber</strong>.
+    </p>
+  </div>
+
+  <h2>Los cuatro juntos, en contexto</h2>
+  <p>
+    Core Platform no es una lista de features sueltas: es un combo que
+    trabaja junto. El CI/CD deja tu código listo, la CDN lo acerca al usuario,
+    Fluid Compute lo ejecuta eficientemente, y Observability te deja ver qué
+    está pasando. Sacá uno y el combo se rompe.
+  </p>
+
+  <div class="stack">
+    <div class="stack-layer">
+      <strong>CI/CD</strong> — tu código llega a producción sin fricción
+    </div>
+    <div class="stack-layer">
+      <strong>CDN</strong> — tus assets viajan poco, el usuario espera menos
+    </div>
+    <div class="stack-layer highlight">
+      <strong>Fluid Compute</strong> — tu código corre con costos alineados al mundo AI
+    </div>
+    <div class="stack-layer">
+      <strong>Observability</strong> — vos ves todo lo que pasa, siempre
+    </div>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">Por qué Fluid Compute cambia el juego para apps AI</div>
+    <p style="margin:0">
+      Si tu automatización llama a un modelo que tarda 10 segundos en
+      responder, en una plataforma tradicional pagás los 10 segundos completos
+      por cada request. Multiplicá por miles de usuarios y la factura te
+      asfixia. Con Fluid Compute, esos 10 segundos de espera no se cobran —
+      solo el puñado de milisegundos donde hay cálculo real. Para un
+      emprendedor vendiendo automatizaciones AI, esto es la diferencia entre
+      un modelo de negocio rentable y uno que no cierra.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Entendiste el combo Core Platform?</span>
+    <button class="mark-btn" data-mark-complete="m02-01">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="index.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">Módulo 02 · Índice</span>
+    </a>
+    <a href="02-storage.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">02 · Storage</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 02 · Servicios · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

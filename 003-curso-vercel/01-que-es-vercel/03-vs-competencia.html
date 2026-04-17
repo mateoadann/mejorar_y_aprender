@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 01 · Vercel vs la competencia · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="site-title">Curso Vercel</a>
+      <p class="site-subtitle">Módulo 01 · Qué es Vercel</p>
+    </div>
+  </header>
+
+  <main class="page-narrow">
+    <span class="badge">MÓDULO 01 · Página 03</span>
+    <h1>Vercel vs la competencia</h1>
+    <p class="hero-subtitle">
+      Todas las plataformas son buenas para algo. Todas son malas para otra cosa. No existe silver bullet, existe el caso de uso correcto.
+    </p>
+
+    <section>
+      <h2>Antes de comparar: el mindset correcto</h2>
+      <p>
+        Cuando elegís una plataforma no estás eligiendo "la mejor del mercado", estás eligiendo "la mejor para lo que vos estás construyendo, con el equipo que tenés, con el presupuesto que manejás". Un emprendedor solo que quiere lanzar una landing con IA no necesita lo mismo que una corporación con diez microservicios stateful.
+      </p>
+      <p>
+        Por eso en esta página vamos a ser honestos: Vercel no gana en todo. Gana en lo que gana, y en el resto hay opciones mejores.
+      </p>
+    </section>
+
+    <section>
+      <h2>Tabla comparativa: el panorama completo</h2>
+      <p>
+        Una mirada rápida de los jugadores principales. Leela de corrido para tener el mapa mental antes de entrar al detalle.
+      </p>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Plataforma</th>
+              <th>Foco principal</th>
+              <th>Fortaleza</th>
+              <th>Debilidad</th>
+              <th>Mejor para</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Vercel</strong></td>
+              <td>Frontend cloud + AI Cloud</td>
+              <td>DX para Next.js, previews por PR, AI SDK</td>
+              <td>Precio sube rápido en tráfico alto, backend stateful limitado</td>
+              <td>Apps Next.js, features de IA, productos con muchos despliegues</td>
+            </tr>
+            <tr>
+              <td><strong>AWS</strong></td>
+              <td>IaaS completo</td>
+              <td>Máxima flexibilidad y control, todos los servicios posibles</td>
+              <td>Complejidad alta, requiere DevOps dedicado</td>
+              <td>Equipos con DevOps, arquitecturas custom, grandes escalas</td>
+            </tr>
+            <tr>
+              <td><strong>Netlify</strong></td>
+              <td>Jamstack y sitios estáticos</td>
+              <td>Deploys simples, buen ecosistema de plugins</td>
+              <td>Más débil en features de IA y backend dinámico</td>
+              <td>Sitios estáticos, blogs, marketing pages Jamstack</td>
+            </tr>
+            <tr>
+              <td><strong>Cloudflare Pages / Workers</strong></td>
+              <td>Edge computing global</td>
+              <td>Red global enorme, precios agresivos, latencia baja</td>
+              <td>Runtime Workers, no Node.js completo (limitaciones de libs)</td>
+              <td>APIs edge, apps que encajan en el modelo Workers</td>
+            </tr>
+            <tr>
+              <td><strong>Railway</strong></td>
+              <td>PaaS full-stack simple</td>
+              <td>Simpleza, pricing predecible, bueno para backends</td>
+              <td>No es edge-focused, menos features para frontend avanzado</td>
+              <td>Backends, apps full-stack con DB, proyectos indie</td>
+            </tr>
+            <tr>
+              <td><strong>Render</strong></td>
+              <td>PaaS clásico</td>
+              <td>Deploys simples, soporte bueno para DB tradicional</td>
+              <td>Ecosistema más chico, menos innovación</td>
+              <td>Apps con DB relacional, workers en background</td>
+            </tr>
+            <tr>
+              <td><strong>Heroku</strong></td>
+              <td>PaaS de la vieja escuela</td>
+              <td>Madurez, muchos buildpacks históricos</td>
+              <td>Subió precios fuerte desde Salesforce, perdió relevancia</td>
+              <td>Proyectos legacy que ya estaban ahí</td>
+            </tr>
+            <tr>
+              <td><strong>Fly.io</strong></td>
+              <td>Multi-región, apps cerca del usuario</td>
+              <td>Despliegue geo-distribuido simple, bueno para apps globales</td>
+              <td>Curva de aprendizaje mayor que Railway</td>
+              <td>Apps con usuarios en varios continentes, latencia crítica</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <strong>Dato que no todos conocen.</strong> Vercel en realidad corre encima de AWS para la mayoría de sus workloads. Lo que pagás no es "infraestructura mágica", es la capa de DX, previews, edge network y herramientas construidas sobre la nube de Amazon.
+      </div>
+    </section>
+
+    <section>
+      <h2>Matriz de posicionamiento: los tradeoffs reales</h2>
+      <p>
+        Cada plataforma se para en un punto distinto de estos ejes. Elegir bien es entender dónde querés estar parado vos.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>Simplicidad vs Control</h3>
+          <p>
+            <strong>Más simple:</strong> Vercel, Railway, Render. Apretás deploy y listo.<br />
+            <strong>Más control:</strong> AWS, Cloudflare (al bajar a Workers crudos). Configurás cada pieza.
+          </p>
+          <p>
+            El tradeoff es claro: simpleza te acelera, control te da techo. Si sos un solo dev o un equipo chico, simpleza gana casi siempre.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h3>Precio predecible vs Escala automática</h3>
+          <p>
+            <strong>Predecible:</strong> Railway, Render. Pagás por la instancia, sabés cuánto te va a venir la factura.<br />
+            <strong>Escala automática:</strong> Vercel, AWS Lambda, Cloudflare. Pagás por uso, podés ser barato con poco tráfico o caro con mucho.
+          </p>
+          <p>
+            Si tu tráfico es estable elegí predecible. Si tenés picos grandes o querés escalar a cero cuando no hay tráfico, elegí usage-based.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h3>Edge vs Región</h3>
+          <p>
+            <strong>Edge-first:</strong> Cloudflare, Vercel Edge Functions. Tu código corre cerca del usuario en cientos de puntos.<br />
+            <strong>Región:</strong> Railway, Render, AWS tradicional. Tu app vive en una (o pocas) regiones.
+          </p>
+          <p>
+            Edge es ideal para latencia baja global. Región es más simple para backends stateful con DB cerca.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h3>Frontend vs Backend vs Full-stack</h3>
+          <p>
+            <strong>Frontend-first:</strong> Vercel, Netlify, Cloudflare Pages.<br />
+            <strong>Backend-friendly:</strong> Railway, Render, Fly.io, AWS.<br />
+            <strong>Full-stack balanceado:</strong> Vercel (si usás Next.js), Railway.
+          </p>
+          <p>
+            El error común es forzar un backend pesado y stateful en una plataforma frontend. No pelees contra la herramienta, elegí la que encaja.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>¿Por qué Vercel gana en ciertos contextos?</h2>
+      <p>
+        Ahora sí, seamos justos con Vercel. Hay escenarios donde es claramente la mejor opción, y vale la pena entender por qué.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>Next.js con experiencia premium</h3>
+          <p>
+            Vercel hizo Next.js. Todas las features del framework están optimizadas para correr en Vercel primero. Si elegiste Next.js, cualquier otra plataforma va a ser "usable pero no ideal".
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h3>Preview deployments por PR</h3>
+          <p>
+            Cada pull request genera una URL única con tu cambio corriendo en producción simulada. Para equipos que iteran rápido y necesitan revisar antes de mergear, esto es imbatible. Otros lo tienen, Vercel lo hace mejor.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h3>AI SDK + AI Gateway</h3>
+          <p>
+            El bundle de herramientas para construir productos con IA (AI SDK, AI Gateway con múltiples modelos, streaming nativo, v0) es hoy el más completo entre las PaaS. Para features de IA, Vercel te ahorra semanas de plumbing.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h3>Red global + Edge runtime</h3>
+          <p>
+            Tu app se sirve desde muchos puntos del planeta sin que vos hagas nada. Para productos con usuarios distribuidos globalmente, la latencia baja viene de fábrica.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>¿Cuándo NO elegir Vercel?</h2>
+      <p>
+        Ser honesto también significa decir cuándo otra opción es mejor. Acá van los casos donde Vercel no es la respuesta.
+      </p>
+
+      <div class="compare">
+        <div class="compare-side good">
+          <h3>Cuándo SÍ tiene sentido Vercel</h3>
+          <ul>
+            <li>Estás usando Next.js o querés usarlo.</li>
+            <li>Querés previews por PR automáticos sin configurar nada.</li>
+            <li>Vas a construir features de IA y querés el bundle más completo.</li>
+            <li>Tu app es mayormente frontend con algo de API y funciones serverless.</li>
+            <li>Tu equipo valora DX por sobre ahorro de infraestructura.</li>
+          </ul>
+        </div>
+
+        <div class="compare-side bad">
+          <h3>Cuándo elegir otra cosa</h3>
+          <ul>
+            <li><strong>Backend stateful pesado:</strong> workers largos, procesos en background, websockets persistentes. Mejor Railway, Render o Fly.io.</li>
+            <li><strong>Presupuesto ajustado con tráfico impredecible:</strong> Cloudflare Pages puede salir mucho más barato en edge puro.</li>
+            <li><strong>Equipos profundamente en AWS:</strong> si ya tenés DevOps y todo tu stack vive en AWS, sumar Vercel es fricción y costo duplicado.</li>
+            <li><strong>Apps con DB relacional central:</strong> Render o Railway son más naturales para el patrón "app + Postgres tradicional".</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>El resumen honesto</h2>
+      <div class="callout ai">
+        <strong>Elegí por CASO DE USO, no por marca.</strong> Vercel no es "el más barato", es "el más simple y completo para ciertas cosas" (Next.js, IA, previews, frontend global). Si tu caso encaja, es una elección fantástica. Si tu caso es otro, hay opciones que te van a servir mejor y te van a costar menos.
+      </div>
+      <div class="callout warn">
+        <strong>Red flag.</strong> Si alguien te vende una plataforma sin preguntarte qué estás construyendo, con qué equipo y con qué presupuesto, no te está ayudando. La respuesta correcta siempre es "depende", y después hay que desarmar el depende con preguntas concretas.
+      </div>
+    </section>
+
+    <div class="mark-complete-bar" data-mark-complete="m01-03"></div>
+
+    <nav class="page-nav">
+      <a href="02-pivot-ai-cloud.html" class="page-nav-prev">
+        <span class="page-nav-label">Anterior</span>
+        <span class="page-nav-title">← 02 · Del frontend cloud al AI Cloud</span>
+      </a>
+      <a href="../02-servicios/index.html" class="page-nav-next">
+        <span class="page-nav-label">Siguiente</span>
+        <span class="page-nav-title">Módulo 02 · Servicios de Vercel →</span>
+      </a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <p>Curso Vercel · Mejorar y Aprender</p>
+  </footer>
+
+  <script src="../assets/js/course.js"></script>
+</body>
+</html>

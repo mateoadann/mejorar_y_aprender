@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 01 · Del frontend cloud al AI Cloud · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 01 · Qué es Vercel</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge">MÓDULO 01 · Página 02</span>
+  <h1>Del <span class="ai-gradient-text">frontend cloud</span> al <span class="ai-gradient-text">AI Cloud</span></h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Vercel nació como <strong>la plataforma para desplegar frontends modernos</strong>
+    — Next.js, sitios estáticos, funciones serverless para APIs. Así fue hasta
+    hace muy poco. Hoy, si entrás a la documentación oficial, lo primero que
+    leés es otra cosa: <em>"the AI Cloud"</em>. ¿Qué pasó en el medio?
+  </p>
+
+  <h2>La auto-definición cambió</h2>
+  <p>
+    La documentación oficial de Vercel hoy se abre con esta frase textual:
+    <em>"the AI Cloud, a unified platform for building, deploying, and scaling
+    AI-powered applications and agentic workloads, as well as modern web
+    applications"</em>. Leelo de nuevo despacio — no dice "frontend cloud" con
+    una feature de IA pegada al costado. Dice <strong>AI Cloud</strong>, y las
+    apps web modernas aparecen después, como un "también".
+  </p>
+  <p>
+    Eso es un <strong>reposicionamiento estratégico</strong> de manual: la
+    empresa se redefine a sí misma alrededor de una categoría nueva. No cambia
+    solo el marketing — cambia qué construyen, qué priorizan y qué precio te
+    cobran.
+  </p>
+
+  <div class="callout">
+    <div class="callout-title">Frontend cloud vs AI Cloud, en una línea</div>
+    <p style="margin:0">
+      <strong>Frontend cloud</strong> = optimizado para servir HTML, JS y CSS rápido.
+      <strong>AI Cloud</strong> = optimizado para servir HTML, JS, CSS <em>y además</em>
+      workloads con LLMs: streaming, timeouts largos, llamadas a modelos
+      externos, costos por token.
+    </p>
+  </div>
+
+  <h2>Por qué cambió el viento</h2>
+  <p>
+    Este pivot no es caprichoso. Responde a tres cambios reales del mercado
+    que ocurrieron en un plazo cortísimo:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Cambio 01</div>
+      <div class="concept-card-term">Boom de apps con LLMs</div>
+      <p class="concept-card-desc">
+        ChatGPT explotó a fines de 2022. En menos de dos años, "app con IA"
+        pasó de ser una rareza a ser lo que todo el mundo quiere construir —
+        desde una startup hasta el equipo interno de una PyME.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Cambio 02</div>
+      <div class="concept-card-term">Necesidades técnicas distintas</div>
+      <p class="concept-card-desc">
+        Una app con IA no se comporta como un sitio tradicional: necesita
+        <strong>streaming</strong> (el texto aparece de a poco), <strong>timeouts
+        largos</strong> (el modelo puede tardar), llamadas a <strong>APIs externas</strong>
+        (OpenAI, Anthropic) y pricing por token, no por request.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Cambio 03</div>
+      <div class="concept-card-term">La infra vieja no cuadra</div>
+      <p class="concept-card-desc">
+        Las plataformas tradicionales cobran por tiempo total de ejecución.
+        Si tu función espera 8 segundos a que OpenAI responda, pagás los 8
+        segundos aunque tu CPU esté quieta. Para apps AI, eso es un modelo
+        de costos roto.
+      </p>
+    </div>
+  </div>
+
+  <h2>Antes y ahora, lado a lado</h2>
+  <p>
+    La forma más clara de ver el pivot es comparar qué te ofrecía Vercel hace
+    unos años contra qué te ofrece hoy:
+  </p>
+
+  <div class="compare">
+    <div class="compare-side">
+      <div class="compare-side-label">Antes · Frontend Cloud</div>
+      <ul>
+        <li>Deploy de sitios estáticos</li>
+        <li>Next.js como producto estrella</li>
+        <li>Funciones serverless simples para APIs</li>
+        <li>SSR y SSG optimizados</li>
+        <li>Edge Network para contenido global</li>
+        <li>Pricing por tiempo total de ejecución de la función</li>
+      </ul>
+    </div>
+    <div class="compare-side">
+      <div class="compare-side-label">Ahora · AI Cloud</div>
+      <ul>
+        <li>Todo lo anterior sigue existiendo</li>
+        <li><strong>AI SDK</strong> — toolkit TypeScript para LLMs</li>
+        <li><strong>AI Gateway</strong> — API unificada para varios modelos</li>
+        <li><strong>Vercel Agent</strong> — agente gestionado</li>
+        <li><strong>Sandbox</strong> — ejecución aislada</li>
+        <li><strong>Fluid Compute</strong> — no cobra el tiempo esperando APIs</li>
+        <li>Streaming nativo de LLMs y <strong>botID</strong> contra bots</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>El ecosistema AI de Vercel hoy</h2>
+  <p>
+    Alrededor del core de Vercel (el hosting, la red edge, los deploys de
+    siempre) aparecieron <strong>cinco productos nuevos</strong>, todos
+    orientados a construir apps con IA. Cada uno resuelve una pieza distinta
+    del rompecabezas:
+  </p>
+
+  <div class="ecosystem">
+    <div class="eco-node vercel">
+      <div class="eco-node-name">Vercel Core</div>
+      <div class="eco-node-role">Hosting, deploys, edge network</div>
+    </div>
+    <div class="eco-node">
+      <div class="eco-node-name">v0</div>
+      <div class="eco-node-role">Generador de UI con IA</div>
+    </div>
+    <div class="eco-node">
+      <div class="eco-node-name">AI SDK</div>
+      <div class="eco-node-role">Toolkit TypeScript para LLMs</div>
+    </div>
+    <div class="eco-node">
+      <div class="eco-node-name">AI Gateway</div>
+      <div class="eco-node-role">API unificada multi-modelo</div>
+    </div>
+    <div class="eco-node">
+      <div class="eco-node-name">Vercel Agent</div>
+      <div class="eco-node-role">Agente gestionado</div>
+    </div>
+    <div class="eco-node">
+      <div class="eco-node-name">Sandbox</div>
+      <div class="eco-node-role">Ejecución aislada</div>
+    </div>
+  </div>
+
+  <div class="ai-panel">
+    <p style="margin:0">
+      <strong>Fluid Compute</strong> merece un párrafo aparte. Es un modelo
+      nuevo de compute pensado específicamente para cargas AI: cuando tu
+      función está <em>esperando</em> una respuesta de OpenAI o Anthropic,
+      Vercel <strong>no te cobra ese tiempo muerto</strong>. En una app con
+      IA, donde el 80% del tiempo de ejecución es esperar al modelo, esto
+      cambia la economía completa del proyecto.
+    </p>
+  </div>
+
+  <h2>¿Qué significa esto para un emprendedor?</h2>
+  <p>
+    Si vos construís automatizaciones o software a medida para empresas, y
+    estás metiendo IA en lo que vendés, este pivot te afecta directamente.
+    Tres cosas concretas:
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Beneficio 01</div>
+      <div class="concept-card-term">Todo el stack en una plataforma</div>
+      <p class="concept-card-desc">
+        En lugar de pegar cinco servicios distintos (hosting en A, cola de
+        jobs en B, gateway de modelos en C, observabilidad en D…), tenés un
+        único proveedor con todo integrado. Menos facturas, menos auth, menos
+        puntos de falla.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Beneficio 02</div>
+      <div class="concept-card-term">Pricing alineado al mundo AI</div>
+      <p class="concept-card-desc">
+        No pagás el tiempo que tu función pasa esperando al LLM. Para apps
+        conversacionales, agentes y pipelines AI, es una diferencia enorme
+        en la factura mensual — y vos podés vender mejor margen al cliente.
+      </p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Beneficio 03</div>
+      <div class="concept-card-term">Velocidad de prototipado</div>
+      <p class="concept-card-desc">
+        Con v0 armás la UI, con AI SDK conectás el modelo, con AI Gateway
+        cambiás de proveedor sin reescribir código, y deployás con
+        <code>git push</code>. Un MVP de cliente en días, no semanas.
+      </p>
+    </div>
+  </div>
+
+  <h2>¿Es un pivot real o solo marketing?</h2>
+  <p>
+    La pregunta es legítima — muchas empresas se ponen "AI" en la página
+    principal sin cambiar nada por detrás. En el caso de Vercel, los
+    <strong>productos concretos</strong> (AI SDK, AI Gateway, Agent, Sandbox,
+    Fluid Compute) son lanzamientos reales con documentación propia, no
+    features cosméticas. Y el modelo de compute nuevo, Fluid, implica
+    cambios en la infraestructura de base.
+  </p>
+
+  <div class="callout ai">
+    <div class="callout-title">La lectura estratégica</div>
+    <p style="margin:0">
+      No es un pivot cosmético — es un <strong>reposicionamiento estratégico
+      basado en cambios reales del mercado</strong>. Vercel está apostando a
+      que la próxima década de software va a estar dominada por apps con IA,
+      y que quien ofrezca la plataforma más cómoda para construirlas se queda
+      con la torta. Si vos construís con IA, tenerlos en el radar no es
+      opcional.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Entendiste el pivot hacia AI Cloud?</span>
+    <button class="mark-btn" data-mark-complete="m01-02">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-empresa-historia.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">01 · La empresa y su historia</span>
+    </a>
+    <a href="03-vs-competencia.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">03 · Vercel vs el mundo</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 01 · Qué es Vercel · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

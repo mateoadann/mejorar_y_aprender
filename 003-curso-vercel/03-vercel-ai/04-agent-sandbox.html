@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 03 · Vercel Agent + Sandbox · Curso Vercel</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      </span>
+      <span class="brand-title">Curso Vercel</span>
+      <span class="brand-subtitle">Módulo 03 · Vercel + AI</span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <a href="../06-cheatsheet/index.html" class="nav-link">Cheatsheet</a>
+      <span class="progress-pill" data-progress-pill></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page-narrow">
+
+  <span class="badge ai">MÓDULO 03 · Página 04</span>
+  <span class="badge new" style="margin-left:var(--space-2);">NUEVOS 2026</span>
+  <h1><span class="ai-gradient-text">Vercel Agent</span> + Sandbox</h1>
+  <p class="hero-subtitle" style="max-width:none;margin:0 0 var(--space-8);">
+    Las dos piezas más nuevas del ecosistema — ambas en beta durante 2026.
+    Son las que cierran el loop para correr agentes de IA en producción:
+    uno da el runtime con estado, el otro da el entorno aislado para que el
+    agente ejecute código sin comprometer tu sistema.
+  </p>
+
+  <h2>Vercel Agent — el runtime gestionado para agentes</h2>
+  <p>
+    Vercel Agent es un <strong>producto gestionado</strong> para correr
+    agentes AI con estado. La diferencia con una app web normal es que un
+    agente puede tener <strong>sesiones de larga duración</strong>: una
+    conversación que dura días, memoria que sobrevive entre llamadas,
+    orquestación de múltiples pasos. Todo eso es un problema de infra que
+    Vercel se ofrece a resolver por vos.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">QUÉ ABSTRAE 01</div>
+      <div class="concept-card-term">Session management</div>
+      <p class="concept-card-desc">Las sesiones del agente pueden durar horas o días. Vercel Agent se encarga de mantener ese estado vivo sin que vos pagues por tiempo muerto.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">QUÉ ABSTRAE 02</div>
+      <div class="concept-card-term">Memory</div>
+      <p class="concept-card-desc">El agente "recuerda" lo que conversaste ayer, las preferencias del usuario, el contexto del caso. Sin escribirte la capa de persistencia a mano.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">QUÉ ABSTRAE 03</div>
+      <div class="concept-card-term">Orchestration</div>
+      <p class="concept-card-desc">El loop de razonamiento, tools, decisiones y reintentos corre en infra gestionada. Vos te concentrás en el comportamiento, no en el runtime.</p>
+    </div>
+  </div>
+
+  <p>
+    Conceptualmente, Vercel Agent es el <strong>hermano del lado de Vercel</strong>
+    de los <strong>Managed Agents de Anthropic</strong> y los
+    <strong>Assistants de OpenAI</strong>. Misma idea general — agentes como
+    ciudadanos de primera en la plataforma — distinto ángulo de ejecución.
+  </p>
+
+  <h2>Vercel Sandbox — ejecución aislada para código de IA</h2>
+  <p>
+    El Sandbox resuelve un problema específico que aparece apenas empezás a
+    poner agentes en producción: <strong>¿qué hacés cuando el LLM genera
+    código que tiene que ejecutarse?</strong> Porque sin precauciones, darle
+    permiso de ejecutar código arbitrario a un modelo de lenguaje es un
+    <strong>agujero de seguridad de manual</strong>.
+  </p>
+
+  <div class="analogy">
+    <strong>Analogía — el guardia con traje antibombas.</strong> Si llegara
+    un paquete sospechoso a un edificio, no lo abre cualquiera en la
+    recepción: lo llevan a una sala blindada y lo revisan ahí. El Sandbox es
+    esa sala blindada. El LLM puede escribir lo que quiera — Python, SQL,
+    scripts — y el Sandbox lo corre aislado, sin acceso a tu sistema.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">USO 01</div>
+      <div class="concept-card-term">Code interpreter</div>
+      <p class="concept-card-desc">"IA, analizá este CSV y dame las ventas por mes." El agente escribe el script, el Sandbox lo ejecuta, devuelve el resultado al LLM.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">USO 02</div>
+      <div class="concept-card-term">Generación + test</div>
+      <p class="concept-card-desc">Un agente que escribe código podría ejecutarlo dentro del Sandbox para validarlo antes de devolverlo al usuario final.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">USO 03</div>
+      <div class="concept-card-term">Tasks dinámicos</div>
+      <p class="concept-card-desc">Cualquier caso donde el agente necesita ejecutar algo que no estaba predefinido en tus tools. El Sandbox le da esa capacidad con seguridad.</p>
+    </div>
+  </div>
+
+  <h2>Cómo se combinan — Agent + Sandbox juntos</h2>
+  <p>
+    La combinación real es esta: un <strong>agente</strong> (Vercel Agent)
+    que puede usar el <strong>Sandbox</strong> como una de sus herramientas.
+    El agente razona, decide que necesita ejecutar código, lo manda al
+    Sandbox, recibe el output, y sigue pensando con esa información nueva.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">LLM piensa</div>
+      <div class="flow-step-title">Vercel Agent</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Genera código</div>
+      <div class="flow-step-title">Python / SQL / etc</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Ejecución aislada</div>
+      <div class="flow-step-title">Vercel Sandbox</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Output vuelve</div>
+      <div class="flow-step-title">Agent sigue razonando</div>
+    </div>
+  </div>
+
+  <h2>La conexión con tu negocio</h2>
+  <div class="ai-panel">
+    <p>
+      Vos vendés automatizaciones. Muchas de las soluciones que ofrecés son,
+      en el fondo, <strong>agentes</strong>: un asistente que procesa mails
+      y los clasifica, un bot que consulta la base de datos de un cliente y
+      responde preguntas, un flujo que ejecuta acciones en múltiples sistemas.
+    </p>
+    <p>
+      Antes, entregar eso significaba armar toda la infra de cero — cola de
+      jobs, persistencia de estado, sandboxing de ejecución, observability.
+      Semanas de trabajo que no tienen nada que ver con la lógica del
+      cliente. Con Vercel Agent + Sandbox, esa infra se vuelve un producto
+      que contratás. Te queda enfocarte en <strong>lo que diferencia tu
+      propuesta</strong>: el dominio del cliente, los prompts, las reglas de
+      negocio, la integración con sus sistemas.
+    </p>
+    <p style="margin:0">
+      Mirado como oferta comercial: podés vender "agente que procesa emails
+      + consulta DB + ejecuta acciones" con tiempos de entrega reales de
+      semanas, no meses. Esa es la diferencia que abre esta capa.
+    </p>
+  </div>
+
+  <h2>Vercel Agent vs Anthropic Managed Agents</h2>
+  <p>
+    Vos ya conocés Managed Agents de Anthropic del Módulo 01 de tu otro
+    curso. Comparémoslos rápido para que tengas criterio al proponer cada
+    uno:
+  </p>
+
+  <div class="compare">
+    <div class="compare-side good">
+      <h3>Anthropic Managed Agents</h3>
+      <ul>
+        <li><strong>Fuerte:</strong> control fino del modelo Claude</li>
+        <li><strong>Audiencia:</strong> developers que piensan en Claude primero</li>
+        <li><strong>Ventaja:</strong> features profundas del stack Anthropic (caching avanzado, extended thinking)</li>
+        <li><strong>Ideal para:</strong> apps donde Claude es el centro y querés todo lo que Claude ofrece</li>
+      </ul>
+    </div>
+    <div class="compare-side good">
+      <h3>Vercel Agent</h3>
+      <ul>
+        <li><strong>Fuerte:</strong> integración con el stack web (Next.js, React)</li>
+        <li><strong>Audiencia:</strong> devs que arman apps completas y quieren agente como una pieza más</li>
+        <li><strong>Ventaja:</strong> combina con AI Gateway, Sandbox, Fluid Compute, deploy en 1 click</li>
+        <li><strong>Ideal para:</strong> apps donde el agente es parte de un producto web más grande</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout ai">
+    <div class="callout-title">No es uno o el otro — es cuál te conviene por caso</div>
+    <p style="margin:0">
+      Si el cliente necesita un agente embebido en su SaaS React, Vercel
+      Agent gana por integración. Si el cliente quiere el agente más
+      poderoso posible con Claude sin importar la plataforma, Anthropic
+      gana por profundidad. Las dos opciones van a convivir varios años —
+      entender las dos te da criterio de arquitecto, no de vendedor de una
+      sola marca.
+    </p>
+  </div>
+
+  <div class="mark-complete-bar">
+    <span class="mark-complete-label">¿Te cerró la idea de Agent + Sandbox y su conexión con tu negocio?</span>
+    <button class="mark-btn" data-mark-complete="m03-04">Marcar como visto</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-v0.html" class="page-nav-link">
+      <span class="page-nav-label">← Anterior</span>
+      <span class="page-nav-title">03 · v0 — UI con IA</span>
+    </a>
+    <a href="../04-flujo-deploy/index.html" class="page-nav-link next">
+      <span class="page-nav-label">Siguiente →</span>
+      <span class="page-nav-title">Módulo 04 · Flujo del deploy</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Módulo 03 · Vercel + AI · <a href="../index.html">Volver al inicio</a></p>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>
