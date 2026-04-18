@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Query planning y join ordering · Agent Infrastructure 2026</title>
+  <meta name="description" content="Un query SPARQL o Cypher es un set de patterns simultaneos. El orden en que el motor los resuelve puede hacer 50ms vs 50 minutos. Cardinality estimation, characteristic sets, y Leapfrog Triejoin — el join worst-case-optimal que cambio el juego." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M05 · Knowledge Graphs</span>
+    <h1>Query planning y join ordering</h1>
+    <p class="page-intro">
+      Un query SPARQL o Cypher es un set de restricciones <em>simultaneas</em>:
+      "matchea pattern A Y pattern B Y pattern C". El motor las resuelve en
+      un orden. Ese orden es la diferencia entre 50 milisegundos y 50 minutos.
+      Vemos por que, como se estiman cardinalidades, y el algoritmo
+      worst-case-optimal que cambio el estado del arte: Leapfrog Triejoin.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Un query es muchos patterns a la vez</h2>
+      <p>
+        Recordá el query del M05-00: "persona que conoce a otra persona que
+        trabaja en una institucion partner de una empresa que produce comida".
+        En SPARQL eso es algo asi (pseudo):
+      </p>
+
+      <pre><code data-lang="python"># Pseudocodigo estilo SPARQL, conceptual
+{
+  ?a  KNOWS        ?b     # pattern 1
+  ?b  WORKS_AT     ?inst  # pattern 2
+  ?inst PARTNER_OF ?emp   # pattern 3
+  ?emp PRODUCES    ?prod  # pattern 4
+  ?prod category   "Food" # pattern 5  (el unico filled)
+}</code></pre>
+
+      <p>
+        Son 5 patterns que deben ser verdaderos <em>simultaneamente</em>. El
+        motor tiene que decidir <strong>en que orden los evalua y junta los
+        resultados</strong>. A esa decision se la llama <em>query plan</em>.
+      </p>
+    </section>
+
+    <section>
+      <h2>El espacio de planes explota</h2>
+      <p>
+        Si tenés N patterns, hay <strong>N! (factorial)</strong> ordenes de
+        evaluacion posibles:
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">4 patterns</div>
+          <div class="concept-card-term">4! = 24 planes</div>
+          <p class="concept-card-desc">
+            Aun buscable exhaustivamente.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">7 patterns</div>
+          <div class="concept-card-term">7! = 5.040 planes</div>
+          <p class="concept-card-desc">
+            El planner empieza a usar heuristicas.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">10 patterns</div>
+          <div class="concept-card-term">10! = 3.628.800 planes</div>
+          <p class="concept-card-desc">
+            Explorar todo es absurdo. Heuristicas obligatorias.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Regla de oro: patterns mas selectivos primero</h2>
+      <p>
+        Hay una heuristica que gana casi siempre:
+        <strong>evaluar primero lo que menos matchea</strong>. Si pattern A
+        devuelve 12 filas y pattern B devuelve 2 millones, arrancar por A
+        hace que despues B se filtre contra un set chico.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">Mal plan</span>                        <span class="ascii-accent-alt">Buen plan</span>
+  ─────────                        ─────────
+  1. Pattern B (2M matches)        1. Pattern A (12 matches)
+  2. Join con A  ─┐                2. Join con B  ─┐
+       ↓          │ 2M × 12 =           ↓          │ 12 × 2M =
+       intermedio │ 24M rows            intermedio │ 24M rows
+       gigante    │ PERO               chico      │ PERO
+                  │ despues             filter B  │ filter con
+                  │ filtrar 2M          con 12    │ 12 subjects
+                  │ es caro             subjects  │ baja a ms
+      </pre>
+
+      <p>
+        Los dos planes tienen el mismo producto cartesiano teorico (24M). La
+        diferencia es que el buen plan <strong>nunca materializa</strong> ese
+        intermedio gigante. Con los 12 subjects fijos, el lookup sobre B se
+        hace 12 veces con prefix match en el index, no una vez sobre 2M.
+      </p>
+    </section>
+
+    <section>
+      <h2>Cardinality estimation: como se <em>sabe</em> cuanto matchea</h2>
+      <p>
+        Para aplicar la regla anterior, el planner necesita predecir
+        <em>antes de correrlo</em> cuantos matches devuelve cada pattern.
+        A esto se le llama <strong>cardinality estimation</strong>. Hay tres
+        tecnicas canonicas:
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">Tecnica 1</div>
+          <div class="timeline-title">Predicate statistics precomputadas</div>
+          <p class="timeline-desc">
+            Antes de aceptar queries, el motor cuenta cuantos triples hay
+            por cada (P, O) pair. "<code>BORN_IN Ulm</code>" = 47 triples.
+            "<code>KNOWS *</code>" = 840.000 triples. Lookup O(1), muy
+            preciso para patterns con P y/u O fijos.
+          </p>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">Tecnica 2</div>
+          <div class="timeline-title">Characteristic sets</div>
+          <p class="timeline-desc">
+            Agrupa entities por el <em>conjunto de predicates</em> que
+            comparten. Los cientificos tienen {BORN_IN, WORKED_AT, AUTHORED,
+            DEGREE_FROM}. Las ciudades tienen {LOCATED_IN, POPULATION,
+            COUNTRY_OF}. Permite estimar correlaciones — "si tiene AUTHORED,
+            probablemente tenga WORKED_AT".
+          </p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">Tecnica 3</div>
+          <div class="timeline-title">Sampling</div>
+          <p class="timeline-desc">
+            Correr el query sobre el 1% del grafo, multiplicar por 100.
+            Rapido, bastante preciso en distribuciones uniformes. Se rompe
+            feo en grafos <em>skewed</em> (donde un par de super-nodos
+            tienen millones de vecinos y el resto tiene 3).
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">El drama del skew</div>
+        <p>
+          Los KG reales son <strong>muy skewed</strong>. En Wikidata, un
+          puñado de entities tiene grado > 100.000 mientras la media es ~10.
+          Las estimaciones que asumen uniformidad se equivocan por ordenes
+          de magnitud. Characteristic sets ayudan pero no eliminan el problema.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Leapfrog Triejoin — el join worst-case-optimal</h2>
+      <p>
+        Hasta ~2012, la sabiduria convencional decia que los joins clasicos
+        (hash, merge) eran lo mejor posible. Entonces llegaron los
+        <em>worst-case-optimal joins</em>. El mas famoso: <strong>Leapfrog
+        Triejoin</strong>, propuesto por Todd Veldhuizen en LogicBlox (2014).
+      </p>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Que significa "worst-case-optimal"</div>
+        <p>
+          Existe una cota teorica inferior para cuantas operaciones mínimas
+          necesita <em>cualquier</em> algoritmo para resolver un join. Los
+          joins clasicos pueden quedar exponencialmente peores que esa cota
+          en ciertos queries (caso tipico: triangle counting). Worst-case-optimal
+          = nunca peor que esa cota. Veldhuizen probo que Leapfrog lo logra.
+        </p>
+      </div>
+
+      <p>
+        La intuicion del algoritmo: cada "iterator" (que representa un
+        pattern) esta posicionado sobre un valor ordenado y puede
+        <strong>hacer seek</strong> al siguiente valor ≥ target. El algoritmo
+        baila entre los iterators haciendo que el mas atrasado salte al valor
+        del mas adelantado. Si todos coinciden → match. Si no, el que se
+        quedo atras salta mas.
+      </p>
+
+      <pre><code data-lang="python"># Leapfrog Triejoin conceptual (estructural, no ejecutable)
+def leapfrog_join(iterators, variable_order):
+    # iterators = lista de iterators sobre los patterns
+    # cada uno esta posicionado en el primer valor de su variable
+
+    def solve(var_idx):
+        if var_idx == len(variable_order):
+            emit_tuple()             # todas las vars coinciden
+            return
+
+        iters = iterators_for_var(variable_order[var_idx])
+
+        # posicionar todos al menor valor
+        for it in iters:
+            it.seek_start()
+
+        while True:
+            min_val = min(it.key() for it in iters)
+            max_val = max(it.key() for it in iters)
+
+            if min_val == max_val:
+                # todos coinciden en este valor → recurse
+                solve(var_idx + 1)
+                # avanzar el primero y volver a intentar
+                iters[0].next()
+            else:
+                # el mas atrasado salta al mas adelantado
+                lagging = iter_with_key(iters, min_val)
+                lagging.seek(max_val)
+
+            if any_iter_exhausted(iters):
+                break</code></pre>
+
+      <p>
+        El truco de fondo: cada <em>seek</em> sobre un trie ordenado
+        (equivalente a un index SPO) cuesta O(log n), y el algoritmo
+        <strong>skipea directamente sobre valores que no pueden participar
+        en ningun join result</strong>. Nunca genera intermedios grandes
+        que despues haya que filtrar.
+      </p>
+    </section>
+
+    <section>
+      <h2>Leapfrog visualizado</h2>
+      <p>
+        Supongamos tres iterators posicionados en tres columnas ordenadas.
+        El algoritmo los mueve en sincronia hasta que coinciden:
+      </p>
+
+      <pre class="ascii-diagram">
+  Iter A:  [ 1, 3, 7, 9, <span class="ascii-accent">12</span>, 15, ... ]   pos = 5
+  Iter B:  [ 2, 5, <span class="ascii-accent">12</span>, 14, 18, ... ]    pos = 3
+  Iter C:  [ 4, 8, <span class="ascii-accent">12</span>, 13, 21, ... ]    pos = 3
+
+  Estado:  min=12, max=12   <span class="ascii-accent">◀─── match!</span>
+           → emit tuple, avanzar
+           → proxima iteracion:
+
+  Iter A:  [ ..., 12, <span class="ascii-accent">15</span>, ... ]          pos = 6
+  Iter B:  [ ..., 12, <span class="ascii-accent">14</span>, 18, ... ]      pos = 4
+  Iter C:  [ ..., 12, <span class="ascii-accent">13</span>, 21, ... ]      pos = 4
+
+  Estado:  min=13, max=15
+           lagging = Iter C (13) → seek(15)
+           → Iter C salta a 21 (primer valor ≥ 15)
+
+  Iter A:  [ ..., <span class="ascii-accent">15</span>, ... ]              pos = 6
+  Iter B:  [ ..., <span class="ascii-accent">14</span>, 18, ... ]          pos = 4
+  Iter C:  [ ..., <span class="ascii-accent">21</span>, ... ]              pos = 4
+
+  Estado:  min=14, max=21
+           lagging = Iter B (14) → seek(21)
+           → Iter B salta a 21 (o al primero ≥ 21, digamos 25)
+  ...
+      </pre>
+
+      <p>
+        Fijate como <strong>saltan sobre valores que no tienen match posible</strong>.
+        En un join clasico, materializas todos los pares y despues filtras.
+        Leapfrog nunca los mira. Por eso es worst-case-optimal.
+      </p>
+    </section>
+
+    <section>
+      <h2>Resumen mental del query planner</h2>
+
+      <div class="layer-stack">
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">1 · Parsear</div>
+            <div class="layer-stack-desc">
+              Convertir el SPARQL/Cypher en un set de patterns (triples parcialmente instanciados).
+            </div>
+          </div>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">2 · Estimar cardinalidades</div>
+            <div class="layer-stack-desc">
+              Para cada pattern, cuantos matches se esperan. Predicate stats + characteristic sets + sampling.
+            </div>
+          </div>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">3 · Elegir orden</div>
+            <div class="layer-stack-desc">
+              Patterns mas selectivos primero. Muchos motores usan dynamic programming para grafos hasta ~12 patterns; heuristicas greedy mas alla.
+            </div>
+          </div>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">4 · Elegir algoritmo de join</div>
+            <div class="layer-stack-desc">
+              Hash join, merge join, o — para queries complejos con muchos patterns compartiendo variables — Leapfrog Triejoin.
+            </div>
+          </div>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">5 · Ejecutar</div>
+            <div class="layer-stack-desc">
+              Pipeline los resultados. Streaming si es posible, materializar si la query lo requiere.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-success">
+        <div class="callout-title">Take-away</div>
+        <p>
+          El planner es el <strong>cerebro</strong> del motor. Indexes y
+          algoritmos de traversal son las manos. Un motor con indexes
+          perfectos y mal planner pierde contra un motor con indexes
+          decentes y buen planner. Por eso empresas como Neo4j, Virtuoso,
+          GraphDB gastan años pulir el planner.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Traversal</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Embeddings, Bloom filters, caching y aprox</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M05-03", "M05");
+    }
+  });
+</script>
+</body>
+</html>

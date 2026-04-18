@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Working memory: estado vivo · Agent Infrastructure 2026</title>
+  <meta name="description" content="La capa volatil de la memoria. Cambia cada minuto, vive el tiempo que dura la tarea, y existe para que el agente pueda resumir exactamente donde dejo cuando el context window se resetea." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M03 · Memoria 4 capas</span>
+    <h1>Working memory: el estado vivo</h1>
+    <p class="page-intro">
+      La working memory es la capa volatil. Cambia cada pocos minutos, vive el
+      tiempo que dura la tarea, y se vuelve inutil en el momento en que la
+      terminas. Su unico proposito es que manana puedas retomar exactamente
+      donde dejaste.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>El error de tratar la memoria como una pila unica</h2>
+      <p>
+        El error mas grande al armar un setup de agentes es tratar la memoria como
+        <strong>una sola pila indiferenciada</strong>: todo va al mismo lado, todo
+        retiene igual, todo se consulta con la misma query. Ese diseno
+        <em>funciona</em> unas 6 semanas. Despues se rompe.
+      </p>
+      <p>
+        Se rompe porque distintos tipos de memoria necesitan politicas distintas
+        de retencion (cuanto vive), de retrieval (como se consulta) y de update
+        (cuando se escribe). Mezclarlas es como guardar la lista del supermercado,
+        las escrituras de tu casa y el manual de tu auto en la misma caja de
+        zapatos.
+      </p>
+      <p>
+        Por eso la memoria bien disenada se separa en capas. La primera — la que
+        arrancamos hoy — es la <strong>working memory</strong>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Que es working memory</h2>
+      <p>
+        Working memory es el <strong>scratchpad vivo</strong> del agente durante
+        una tarea. Pensala como el pizarron del arquitecto mientras esta en obra:
+        esta lleno de flechas, numeros de pieza, mediciones, garabatos. No sirve
+        para otra obra. Solo sirve <em>para esta</em>.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Volatilidad</div>
+          <div class="concept-card-term">Minutos</div>
+          <p class="concept-card-desc">
+            Cambia a cada paso del agente. Cada edicion, cada decision, cada
+            hipotesis nueva la actualiza.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Ciclo de vida</div>
+          <div class="concept-card-term">La tarea</div>
+          <p class="concept-card-desc">
+            Nace cuando arranca la task y muere cuando la task termina. No sobrevive
+            a la siguiente.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Proposito</div>
+          <div class="concept-card-term">Resumption</div>
+          <p class="concept-card-desc">
+            Que manana (o cuando el context window se resetea) podas retomar
+            exactamente donde dejaste.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>El archivo canonico: WORKSPACE.md</h2>
+      <p>
+        En un setup serio, la working memory vive en un archivo fijo y localizable:
+      </p>
+
+      <pre class="ascii-diagram">
+<span class="ascii-dim">memory/</span>
+<span class="ascii-dim">├── </span><span class="ascii-accent">working/</span>
+<span class="ascii-dim">│   └── </span><span class="ascii-accent">WORKSPACE.md</span>  <span class="ascii-dim">  ← el pizarron de la tarea actual</span>
+<span class="ascii-dim">├── episodic/</span>
+<span class="ascii-dim">├── semantic/</span>
+<span class="ascii-dim">└── personal/</span>
+      </pre>
+
+      <p>
+        Un solo archivo. Path predecible. El agente lo encuentra siempre sin
+        buscar. Cuando arranca una sesion nueva, lo primero que hace es leer
+        <code>WORKSPACE.md</code> y reconstruir el estado mental.
+      </p>
+    </section>
+
+    <section>
+      <h2>Estructura tipica de un WORKSPACE.md</h2>
+      <p>
+        El archivo es markdown plano, pero tiene cuatro bloques fijos. Esa rigidez
+        es deliberada: facilita que el agente lo parse rapido y lo actualice sin
+        pensarlo.
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header">memory/working/WORKSPACE.md</div>
+        <pre><code data-lang="bash"># Current task
+Agregar rate limiting al endpoint POST /login
+Estimado: ~2h restantes
+
+# Open files
+- src/auth/login.ts        (lineas 42-78)
+- src/middleware/rate.ts   (lineas 1-35, nuevo)
+- tests/auth.test.ts       (lineas 104-130)
+
+# Active hypotheses
+- H1: el limite por IP no alcanza — hay que agregarlo por user_id
+- H2: Redis devuelve null cuando la key no existe, no 0 (verificar)
+
+# Checkpoints
+[x] Leer el RFC interno de rate limiting
+[x] Decidir backend: Redis sobre in-memory (ver DECISIONS.md)
+[ ] Implementar middleware
+[ ] Tests de unidad
+[ ] Tests de integracion con Redis real
+[ ] Actualizar CHANGELOG
+</code></pre>
+      </div>
+
+      <p>
+        Current task te dice <em>que</em>. Open files te dice <em>donde</em>.
+        Active hypotheses te dice <em>que estas probando</em>. Checkpoints te
+        dice <em>cuanto falta</em>. Con esos cuatro bloques, cualquier agente
+        (incluido uno nuevo despues de un reset) retoma la tarea en segundos.
+      </p>
+    </section>
+
+    <section>
+      <h2>Lifecycle: crear, actualizar, archivar</h2>
+      <p>
+        El ciclo de vida del WORKSPACE tiene tres momentos. Respetalos y no vas
+        a tener problemas; saltealos y el agente se te queda colgado en tareas
+        fantasma.
+      </p>
+
+      <pre class="ascii-diagram">
+<span class="ascii-accent">1) CREATE</span>               <span class="ascii-accent">2) UPDATE (cada paso)</span>          <span class="ascii-accent-alt">3) ARCHIVE</span>
+┌────────────────┐       ┌──────────────────────┐     ┌──────────────────────┐
+│ task nueva     │  ──►  │  editar WORKSPACE    │ ──► │  task terminada      │
+│ crea archivo   │       │  - new hypothesis    │     │  mover a episodic    │
+│ con bloques    │       │  - check checkpoint  │     │  memory/snapshots/   │
+│ vacios         │       │  - agregar open file │     │  y vaciar WORKSPACE  │
+└────────────────┘       └──────────────────────┘     └──────────────────────┘
+        │                         │                             │
+        ▼                         ▼                             ▼
+   <span class="ascii-dim">minuto 0</span>               <span class="ascii-dim">cada 1-5 min</span>                   <span class="ascii-dim">al cerrar</span>
+      </pre>
+
+      <p>
+        El paso 2 es el que mas se descuida. La regla simple: <strong>cada vez
+        que tu agente toma una decision o descubre algo, tiene que tocar el
+        WORKSPACE</strong>. No es documentacion, es el hilo que lo mantiene
+        orientado.
+      </p>
+      <p>
+        El paso 3 es el que salva la cordura. Cuando la tarea termina, el
+        WORKSPACE no se borra: se <em>archiva</em> como episodio (lo vemos en
+        la proxima pagina) y se reemplaza por un archivo vacio, listo para
+        la proxima task.
+      </p>
+    </section>
+
+    <section>
+      <h2>Por que importa tanto el archivado</h2>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">Stale workspace: el bug mas costoso</div>
+        <p>
+          Si no limpias el WORKSPACE al terminar una tarea, el agente despierta
+          al otro dia convencido de que <em>sigue</em> en la tarea vieja. Edita
+          files que ya no corresponden, marca checkpoints que ya estaban hechos,
+          revive hipotesis descartadas. El sintoma es raro porque parece que el
+          agente "alucina" — en realidad esta siguiendo al pie de la letra un
+          pizarron que nadie le borro.
+        </p>
+      </div>
+
+      <p>
+        Por eso el contrato ideal tiene dos hooks automaticos:
+      </p>
+      <ul>
+        <li>
+          <strong>on_task_start</strong>: verifica que WORKSPACE este vacio. Si
+          no lo esta, archiva lo que haya y arranca limpio.
+        </li>
+        <li>
+          <strong>on_task_complete</strong>: archiva el WORKSPACE como episodio,
+          vacia el archivo.
+        </li>
+      </ul>
+      <p>
+        Sin esos hooks vas a depender de que el agente (o vos) se acuerden de
+        limpiar. Y la memoria humana tambien falla.
+      </p>
+    </section>
+
+    <section>
+      <h2>Working memory vs. context window</h2>
+      <p>
+        Cuidado con confundir estos dos conceptos. El <strong>context window</strong>
+        es el pedazo de tokens que el modelo ve en una llamada: es un limite
+        fisico del LLM. La <strong>working memory</strong> es un archivo en disco
+        que sobrevive mas alla de una sola llamada, incluso mas alla de una sola
+        sesion.
+      </p>
+
+      <div class="grid grid-2">
+        <div class="concept-card">
+          <div class="concept-card-label">Context window</div>
+          <div class="concept-card-term">Tokens en RAM</div>
+          <p class="concept-card-desc">
+            Vive durante una invocacion. Se pierde al compactar o reiniciar.
+            Limite tipico: 200K–1M tokens segun modelo.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Working memory</div>
+          <div class="concept-card-term">Archivo en disco</div>
+          <p class="concept-card-desc">
+            Vive mientras dure la tarea. Sobrevive a resets del context window.
+            Se lee al arrancar cada sesion nueva.
+          </p>
+        </div>
+      </div>
+
+      <p>
+        Cuando el context window se resetea (compaction, timeout, cambio de
+        modelo), el WORKSPACE es el <em>puente</em> que permite retomar. Sin el,
+        cada reset es empezar de cero.
+      </p>
+    </section>
+
+    <section>
+      <h2>Regla de oro</h2>
+      <div class="callout callout-info">
+        <div class="callout-title">Actualiza siempre, archiva al cerrar</div>
+        <p>
+          Si dudas entre actualizar o no, actualiza. El costo de escribir 3
+          lineas de mas en WORKSPACE es trivial. El costo de que un agente
+          despierte desorientado es horas de trabajo perdido. Y cuando la tarea
+          termina, archivala sin piedad — lo que pasaste ayer no pertenece a la
+          tarea de hoy.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Mini-resumen</h2>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Que es</div>
+          <div class="concept-card-term">Scratchpad de la tarea</div>
+          <p class="concept-card-desc">
+            Un archivo fijo, <code>memory/working/WORKSPACE.md</code>, con el
+            estado vivo del agente.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Que tiene</div>
+          <div class="concept-card-term">Task, files, hipotesis, checkpoints</div>
+          <p class="concept-card-desc">
+            Cuatro bloques fijos. Markdown plano. Cualquiera puede leerlo —
+            incluido un agente nuevo.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Para que</div>
+          <div class="concept-card-term">Resumption</div>
+          <p class="concept-card-desc">
+            Sobrevive a resets del context window. Es el puente entre sesiones
+            cuando todo lo demas se perdio.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Anterior</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Episodic memory</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M03-00", "M03");
+    }
+  });
+</script>
+</body>
+</html>

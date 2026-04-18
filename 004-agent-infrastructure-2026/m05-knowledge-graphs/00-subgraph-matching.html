@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El problema: subgraph matching · Agent Infrastructure 2026</title>
+  <meta name="description" content="Toda query sobre un knowledge graph es un problema de subgraph matching. Sin optimizacion, un query de 4 hops explora 6.25M paths. Con 6 hops, 15.6 billion. Entendamos por que." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M05 · Knowledge Graphs</span>
+    <h1>El problema: subgraph matching</h1>
+    <p class="page-intro">
+      Cada vez que le hacés una pregunta a un knowledge graph, estás describiendo
+      un <strong>patron</strong>: un sub-grafo chico con algunos nodos completos
+      y otros desconocidos, y le pedís al motor "encontrame todos los matches
+      en el grafo grande". Eso se llama <em>subgraph matching</em>, y sin
+      optimizacion explota en la cara. Acá vemos por que.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Un query es un pattern</h2>
+      <p>
+        No pensemos todavia en SPARQL, Cypher ni en ningun motor especifico.
+        Pensemos como humanos. Querés responder esto:
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Query en lenguaje natural</div>
+        <p>
+          "Encontrame todas las personas que conocen a otra persona que trabaja
+          en una institucion que es partner de una empresa que produce un
+          producto de categoria <em>Food</em>."
+        </p>
+      </div>
+
+      <p>
+        Leelo de nuevo. Fijate que estás encadenando <strong>relaciones</strong>.
+        No estás buscando un dato puntual ("¿cuando nacio Einstein?"). Estás
+        pidiendo un <strong>camino</strong> de 4 saltos entre 5 tipos de nodos.
+        Eso es subgraph matching: describis una forma, pedis todos los sitios
+        donde esa forma aparece.
+      </p>
+    </section>
+
+    <section>
+      <h2>Anatomia del pattern</h2>
+      <p>
+        Ese query en lenguaje natural se traduce a un mini-grafo. Algunos nodos
+        estan <em>filled</em> (sabés quienes son) y otros son <em>unknown</em>
+        (los tiene que encontrar el motor). Las aristas son los tipos de
+        relacion obligatorios.
+      </p>
+
+      <pre class="ascii-diagram">
+  Pattern que pedis (4 hops, 5 node types, 4 edge types):
+
+    <span class="ascii-accent">?persona_A</span> ─[KNOWS]──▶ <span class="ascii-accent">?persona_B</span>
+                              │
+                              │ [WORKS_AT]
+                              ▼
+                        <span class="ascii-accent">?institucion</span>
+                              │
+                              │ [PARTNER_OF]
+                              ▼
+                          <span class="ascii-accent">?empresa</span>
+                              │
+                              │ [PRODUCES]
+                              ▼
+                          <span class="ascii-accent">?producto</span>
+                              │
+                              │ [category]
+                              ▼
+                        <span class="ascii-accent-alt">"Food"</span>   ◀── unico nodo filled
+      </pre>
+
+      <p>
+        El motor tiene que devolverte todas las tuplas
+        <code>(persona_A, persona_B, institucion, empresa, producto)</code>
+        que hacen match con ese pattern en tu grafo real. Sonas tranquilo.
+        Ahora viene la parte fea.
+      </p>
+    </section>
+
+    <section>
+      <h2>La matematica del blow-up</h2>
+      <p>
+        Supongamos un grafo real modesto: cada nodo tiene en promedio
+        <strong>50 vecinos</strong> (grado medio 50). No es exagerado — Wikidata,
+        un KG biomedico o un KG corporativo andan por ahi o mas.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">2 hops</div>
+          <div class="concept-card-term">50² = 2.500</div>
+          <p class="concept-card-desc">
+            Todavia manejable por brute force.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">4 hops</div>
+          <div class="concept-card-term">50⁴ = 6.250.000</div>
+          <p class="concept-card-desc">
+            6.25M paths candidatos. Ya se siente.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">6 hops</div>
+          <div class="concept-card-term">50⁶ = 15.625.000.000</div>
+          <p class="concept-card-desc">
+            15.6 <strong>billion</strong>. Game over para brute force.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">8 hops</div>
+          <div class="concept-card-term">50⁸ ≈ 39 trillion</div>
+          <p class="concept-card-desc">
+            Ni hablemos. Ningun hardware actual lo banca.
+          </p>
+        </div>
+      </div>
+
+      <p>
+        Esto se llama <strong>exponential branching factor</strong>. Cada hop
+        multiplica tu espacio de busqueda por el grado medio del grafo. La
+        mayoria de esas combinaciones <em>no van a matchear</em> — pero igual
+        tenés que chequearlas si no usás nada inteligente.
+      </p>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Insight central</div>
+        <p>
+          Esto no es un <em>data problem</em>. El grafo puede tener 10M nodos
+          y estar perfectamente en RAM. Es un <strong>query problem</strong>.
+          El tamaño del resultado puede ser chico (digamos 12 matches reales),
+          pero el esfuerzo para encontrarlo escala exponencial si no optimizás.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Explosion visual del branching</h2>
+      <p>
+        Imaginate un arbol saliendo desde tu nodo raiz. Cada nivel se abre en
+        50 ramas. En 4 niveles ya no cabe en la pantalla. En 6 niveles no cabe
+        en el universo observable.
+      </p>
+
+      <pre class="ascii-diagram">
+  Nivel 0:             <span class="ascii-accent">●</span>                    ← 1 nodo
+                      /|\
+                    /  |  \  ... (50 ramas)
+  Nivel 1:       <span class="ascii-accent">●</span> <span class="ascii-accent">●</span> <span class="ascii-accent">●</span>  ...  <span class="ascii-accent">●</span>     ← 50 nodos
+                /|\  ...
+              /  |  \
+  Nivel 2:  <span class="ascii-accent">●</span> <span class="ascii-accent">●</span> <span class="ascii-accent">●</span>          ...      ← 2.500 nodos
+             ...
+  Nivel 3:                       ...     ← 125.000 nodos
+             ...
+  Nivel 4:                       ...     ← 6.250.000 nodos <span class="ascii-dim">◀ tu query</span>
+             ...
+  Nivel 6:                       ...     ← 15.625.000.000 nodos
+      </pre>
+
+      <p>
+        Ahora pensá que la respuesta real puede ser <em>"encontre 8 matches"</em>.
+        Hiciste 6 billion de operaciones para encontrar 8 cositas. Esta es la
+        razon por la que existe todo este modulo.
+      </p>
+    </section>
+
+    <section>
+      <h2>Los 5 frentes de optimizacion</h2>
+      <p>
+        No hay una bala de plata. La forma de evitar el blow-up es atacar el
+        problema en <strong>varias capas al mismo tiempo</strong>. Este modulo
+        las recorre una por una:
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">Optim 1</div>
+          <div class="timeline-title">Indexing (M05-01)</div>
+          <p class="timeline-desc">
+            Estructuras que te llevan directo a los triples relevantes sin
+            escanear todo. 6 permutaciones SPO, bitmap indexes, adjacency
+            lists comprimidas.
+          </p>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">Optim 2</div>
+          <div class="timeline-title">Traversal algorithms (M05-02)</div>
+          <p class="timeline-desc">
+            Como caminar el grafo una vez que estás adentro. BFS, DFS,
+            Dijkstra, A*, y el mega-truco: bidirectional search.
+          </p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">Optim 3</div>
+          <div class="timeline-title">Query planning (M05-03)</div>
+          <p class="timeline-desc">
+            El orden de evaluacion importa muchisimo. Cardinality estimation,
+            characteristic sets, y el rey: Leapfrog Triejoin.
+          </p>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">Optim 4</div>
+          <div class="timeline-title">Caching & materialization (M05-04)</div>
+          <p class="timeline-desc">
+            Guarda trabajo ya hecho. Subgraph caching, materialized views,
+            transitive closure precomputado.
+          </p>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-label">Optim 5</div>
+          <div class="timeline-title">Approximate & distributed (M05-04)</div>
+          <p class="timeline-desc">
+            A veces una respuesta "casi correcta" en 50ms vale mas que una
+            exacta en 20 minutos. Embeddings, Bloom filters, sampling,
+            particionado.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Mental model que te llevás</h2>
+      <p>
+        Antes de entrar en cada tecnica, fijá esto:
+      </p>
+      <ul>
+        <li>
+          <strong>Un KG query = describir un subgrafo y buscar todos los matches</strong>.
+          Esa definicion gobierna todo.
+        </li>
+        <li>
+          <strong>El enemigo es el branching factor exponencial</strong>.
+          Cada hop multiplica. Pequeños cambios de estrategia = ordenes de
+          magnitud de diferencia.
+        </li>
+        <li>
+          <strong>No es un problema de mas hardware</strong>. Es un problema
+          de estructura. Indexes correctos + algoritmos correctos + planner
+          inteligente = milagros.
+        </li>
+        <li>
+          <strong>Todas las capas se combinan</strong>. Un buen index sin
+          query planner no sirve de mucho. Un planner sin cache tampoco.
+          La gracia es el stack entero.
+        </li>
+      </ul>
+
+      <div class="callout callout-success">
+        <div class="callout-title">Proxima pagina</div>
+        <p>
+          Arrancamos por la base: ¿como se guardan los triples (S, P, O) para
+          que cualquier lookup sea barato? La respuesta canonica de motores
+          como Apache Jena TDB y Virtuoso son las <strong>6 permutaciones
+          SPO</strong>. Vamos.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">M05 Knowledge Graphs</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Indexing: 6 permutaciones SPO</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M05-00", "M05");
+    }
+  });
+</script>
+</body>
+</html>

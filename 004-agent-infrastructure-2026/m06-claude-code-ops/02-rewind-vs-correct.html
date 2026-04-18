@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rewind vs corregir: el habito senal · Agent Infrastructure 2026</title>
+  <meta name="description" content="Si tenes que elegir un solo habito que indique buen context management, elegi rewind. Aca desarmamos por que, con comparativa concreta contra corregir, y las diferencias finas entre /compact y /clear." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M06 · Claude Code Ops</span>
+    <h1>Rewind vs corregir: el habito senal</h1>
+    <p class="page-intro">
+      Si te digo que elijas un solo habito que te senale buen context
+      management en Claude Code, lo tengo claro: <strong>rewind</strong>.
+      Porque significa que pensas el contexto como algo que hay que
+      mantener limpio, no como un registro historico que se acumula.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>El escenario tipico</h2>
+      <p>
+        Imaginate esto, porque te pasa todas las semanas si usas Claude Code:
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">La situacion</div>
+        <p>
+          Le pedis a Claude implementar algo. El modelo lee 5 archivos para
+          entender el codebase. Prueba un approach (llamemosle A). Ejecuta
+          tests. <strong>No funciona.</strong> Ahora vos tenes que responder.
+        </p>
+      </div>
+
+      <p>
+        La mayoria de los usuarios escribe algo asi:
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-dim">"eso no funciono, el problema es que el modulo foo no expone</span>
+  <span class="ascii-dim">ese metodo. Probá approach B, usando bar directamente."</span>
+      </pre>
+
+      <p>
+        Natural. Humano. Y sin embargo, <strong>no es lo que conviene</strong>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Dos timelines, dos contexts</h2>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent-alt">INSTINCT MALO: continue con correccion</span>
+  ─────────────────────────────────────────
+  msg 1: "implementa X"
+  msg 2: (lee 5 files, prueba approach A, falla)
+  msg 3: "eso no funciono, proba B usando bar"
+  msg 4: (lee 2 files mas, prueba B, <span class="ascii-accent">funciona</span>)
+
+  context final =
+    5 files + intento fallido A + explicacion del fallo
+    + tu correccion + intento exitoso B
+
+  <span class="ascii-dim">→ el modelo ahora carga memoria de A-que-no-va, y eso</span>
+  <span class="ascii-dim">  puede sesgar generaciones siguientes ("¿sera parecido</span>
+  <span class="ascii-dim">  a ese caso del bar?")</span>
+
+
+  <span class="ascii-accent">MOVE MEJOR: rewind + re-prompt</span>
+  ─────────────────────────────────────────
+  msg 1: "implementa X"
+  msg 2: (lee 5 files, prueba approach A, falla)
+                                     │
+                              <span class="ascii-accent">rewind a msg 2</span>
+                              <span class="ascii-dim">justo despues de los reads</span>
+                                     │
+                                     ▼
+  msg 3 (nuevo): "implementa X. Importante: el modulo foo no
+                 expone ese metodo, andá directo por bar."
+  msg 4: (prueba B, funciona)
+
+  context final =
+    5 files + intento exitoso B
+
+  <span class="ascii-dim">→ sin basura del fallo, sin ruido de correcciones,</span>
+  <span class="ascii-dim">  sin sesgo hacia errores anteriores</span>
+      </pre>
+
+      <p>
+        El truco esta en <strong>donde hacer el rewind</strong>: no al
+        principio (perderias los file reads, tendrias que re-leerlos). Te
+        parar justo <em>despues</em> de las lecturas y <em>antes</em> del
+        intento fallido. Re-prompteas con lo aprendido del fallo inyectado
+        como instruccion nueva.
+      </p>
+    </section>
+
+    <section>
+      <h2>La tesis: rewind es el habito senal</h2>
+      <blockquote>
+        Si tengo que elegir el habito que indique que alguien maneja bien
+        el context, elijo rewind. Porque significa que tratas el contexto
+        como algo que hay que mantener limpio, no como un log.
+      </blockquote>
+
+      <p>
+        La gente que solo hace continue/correccion trata el contexto como
+        un archivo historico — "todo lo que paso queda, y Claude se va a
+        acordar". La gente que hace rewind trata el contexto como una
+        <strong>herramienta de trabajo viva</strong>: si hay basura adentro,
+        la saco. Si una correccion la puedo incorporar al prompt original,
+        la incorporo, porque el resultado es un contexto mas limpio.
+      </p>
+    </section>
+
+    <section>
+      <h2>Summarize from here: el feature que facilita todo</h2>
+      <p>
+        Claude Code tiene un feature llamado <strong>"summarize from
+        here"</strong>. Como se usa: antes de tirar el fin de una sesion
+        (o antes de un rewind grande), le decis a Claude que sintetice los
+        learnings en un mensaje handoff. El modelo te devuelve un parrafo
+        denso con lo aprendido. Vos lo pegas en el prompt nuevo.
+      </p>
+
+      <p>
+        Es como una <em>nota del futuro al pasado de si mismo</em>. Justo
+        despues de entender bien algo, sintetiza ese entendimiento para que
+        se lo puedas pasar a la version "antes de saberlo" sin que tenga que
+        reconstruirlo.
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Patron combinado</div>
+        <p>
+          <strong>1.</strong> Claude termina una exploracion, aprendio X e Y.
+          <br />
+          <strong>2.</strong> Le decis "summarize from here, focus en lo que
+          tiene que saber el proximo turno".
+          <br />
+          <strong>3.</strong> Guardas ese summary.
+          <br />
+          <strong>4.</strong> Rewind al punto anterior a la exploracion.
+          <br />
+          <strong>5.</strong> Re-promptear con "aca tenes lo que sabemos:
+          [summary]. Ahora implementa Z."
+          <br /><br />
+          Resultado: context limpio + conocimiento destilado.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>/compact vs /clear: parecidos, distintos</h2>
+      <p>
+        Ambos resetean el context, pero de formas muy diferentes. Confundirlos
+        te lleva a usar el equivocado en el momento equivocado.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side">
+          <div class="comparison-side-label">/compact</div>
+          <p style="margin: 0;"><strong>Claude decide que se preserva.</strong></p>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px; line-height: 1.55;">
+            El modelo sintetiza toda la sesion y reemplaza el historial con
+            ese summary. Sigues trabajando "sobre" la sintesis.
+            <br /><br />
+            <strong>Ventaja:</strong> no te hace escribir nada. Rapido.
+            <br />
+            <strong>Desventaja:</strong> lossy. Confias en Claude para decidir
+            que importo. Si adivina mal, perdes info.
+            <br /><br />
+            Podes <em>steerearlo</em>: <code>/compact focus on the auth
+            refactor, drop the test debugging</code>.
+          </p>
+        </div>
+        <div class="comparison-side">
+          <div class="comparison-side-label">/clear</div>
+          <p style="margin: 0;"><strong>Vos decides que se preserva.</strong></p>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px; line-height: 1.55;">
+            Sesion nueva, en blanco. Vos escribis el brief: "estamos
+            refactorizando auth, constraint es X, archivos relevantes son
+            A y B, approach Y ya lo descartamos por Z".
+            <br /><br />
+            <strong>Ventaja:</strong> el contexto resultante es exactamente
+            lo que vos marcaste como relevante. Zero ruido.
+            <br />
+            <strong>Desventaja:</strong> mas trabajo manual. Requiere que
+            hayas entendido vos que importa.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>El bad compact: cuando /compact sale mal</h2>
+      <p>
+        El auto-compact dispara cuando el context se acerca al limite. El
+        problema es que el modelo que decide que preservar esta en su peor
+        momento cognitivo (viste eso en la pagina anterior). Ademas, no
+        puede <strong>predecir hacia donde va tu laburo</strong>.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent-alt">caso real: autocompact que salio mal</span>
+  ─────────────────────────────────────────
+
+  Sesion larga de 900k tokens:
+    - 500k: debuggeando un problema en foo.ts
+    - 400k: investigando warnings varios (incluido uno
+             en bar.ts que parecio menor)
+
+  ALCANZA EL LIMITE → auto-compact dispara
+  summary resultante:
+    "Resolvimos el bug en foo.ts. Warnings menores revisados."
+    <span class="ascii-dim">↑ dropeo los detalles del warning de bar.ts — parecio menor</span>
+
+  TU PROXIMO MENSAJE:
+    "ahora arregla ese otro warning de bar.ts que habiamos visto"
+
+  CLAUDE:
+    "¿que warning de bar.ts?" <span class="ascii-dim">(ya no lo tiene en context)</span>
+
+  <span class="ascii-accent">→ perdiste info que ibas a necesitar, porque el modelo no</span>
+  <span class="ascii-accent">  sabia que la ibas a necesitar</span>
+      </pre>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">Se agrava con context rot</div>
+        <p>
+          Lo que hace peor el bad compact: el modelo que decide que preservar
+          esta operando con <em>context rot maximo</em> porque justo estas
+          cerca del limite. Su capacidad de razonar "¿que es importante para
+          lo que sigue?" esta degradada.
+        </p>
+      </div>
+
+      <p>
+        Como se evita: no dejes que el auto-compact decida solo. Con 1M de
+        ventana tenes margen para hacer <code>/compact</code>
+        <strong>proactivo</strong> mucho antes del limite, y ademas con
+        instrucciones explicitas:
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-dim">en la zona amarilla (~400-500k tokens):</span>
+
+  /compact focus on:
+    - the auth refactor we're doing
+    - keep mention of the warning in bar.ts (to revisit)
+    - drop the stripe integration research (not using it)
+      </pre>
+    </section>
+
+    <section>
+      <h2>Cuando rewind no es la correcta</h2>
+      <p>
+        Rewind es excelente para errores en el approach. No es la herramienta
+        para todo. Casos donde <em>continue</em> o <em>clear</em> son mejores:
+      </p>
+
+      <ul>
+        <li>
+          <strong>El fallo te ensena algo que afecta futuros turnos:</strong>
+          si el error te revelo una caracteristica del codebase que vas a
+          necesitar recordar varias veces, mejor que quede en el contexto
+          (o que lo guardes en la memoria del proyecto).
+        </li>
+        <li>
+          <strong>Pasaron muchos turnos despues del fallo:</strong> si ya
+          estas 5 turnos adelante y ahora queres corregir el primero, el
+          rewind te hace perder laburo util.
+        </li>
+        <li>
+          <strong>La sesion entera cambio de direccion:</strong> si la
+          task ya no es la misma, <code>/clear</code> le gana a rewind.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Cierre: tratá el contexto como el codigo</h2>
+      <p>
+        Un buen developer no deja codigo muerto en el repo — lo borra cuando
+        deja de aplicar. Un buen usuario de Claude Code no deja intentos
+        fallidos en el contexto — los remueve con rewind. El contexto es un
+        recurso escaso, y cuanto mas limpio, mejor piensa el modelo.
+      </p>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Regla de oro</div>
+        <p>
+          <strong>Cuando algo no funciona: primer instinto, rewind.</strong>
+          Segundo instinto, corregir. Revertilo: la mayoria hace corregir
+          primero y rewind nunca. Dale vuelta esa proporcion y el context
+          se te va a mantener limpio solo.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Branching point</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Subagents strategy</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M06-02", "M06");
+    }
+  });
+</script>
+</body>
+</html>

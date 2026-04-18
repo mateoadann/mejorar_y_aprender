@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Por que KBL &gt; RAG · Agent Infrastructure 2026</title>
+  <meta name="description" content="La evolucion de 2020 a 2026: RAG, Agentic RAG, Context Engineering y KBL. Por que compilar el conocimiento una vez gana al buscarlo en tiempo de query, con datos de Karpathy y Graphify." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M01 · Knowledge Layer</span>
+    <h1>Por que KBL &gt; RAG</h1>
+    <p class="page-intro">
+      El debate "¿RAG o no RAG?" ya esta resuelto. La pregunta real en 2026
+      es cuando te conviene <em>compilar conocimiento</em> vs cuando conviene
+      <em>buscarlo al vuelo</em>. Spoiler: KBL gana en la mayoria de los casos
+      que importan para un negocio.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>La evolucion en 3 fases</h2>
+      <p>
+        Para entender por que KBL aparece ahora, hay que ver el recorrido
+        historico. Cada fase resolvio el dolor de la anterior.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">2020-2023</span>            <span class="ascii-accent">2023-2024</span>              <span class="ascii-accent">2025+</span>                 <span class="ascii-accent-alt">2026 ►</span>
+  ─────────             ─────────               ─────                    ────
+    <span class="ascii-dim">RAG</span>               <span class="ascii-dim">Agentic RAG</span>        <span class="ascii-dim">Context Eng</span>              <span class="ascii-accent-alt">KBL</span>
+     │                     │                     │                        │
+     │                     │                     │                        │
+  chunks +            multi-hop,             agente arma               compilado
+  embeddings          tools, queries         su context                una vez,
+  en vector DB        reformuladas           de N fuentes              cross-ref,
+                                                                        curado
+     │                     │                     │                        │
+  busca en            busca iterativo        orquesta busquedas,       pre-derivado,
+  query time          con reasoning          resumenes, filtros         pre-linkeado
+
+                    costo por query crece ──────────────────►       costo por query
+                                                                    MUY BAJO
+      </pre>
+    </section>
+
+    <section>
+      <h2>Fase 1 · RAG clasico (2020-2023)</h2>
+      <p>
+        El patron original: agarras documentos, los partis en chunks, los
+        embebes en un vector store. En query time, embebes la pregunta, buscas
+        top-K chunks similares, los mandas al LLM como contexto.
+      </p>
+
+      <h3>Fortalezas</h3>
+      <ul>
+        <li>Facil de implementar.</li>
+        <li>Escala a corpus grandes.</li>
+        <li>No hay que "entrenar" nada.</li>
+      </ul>
+
+      <h3>Dolores</h3>
+      <ul>
+        <li>
+          <strong>Cada query re-deriva la respuesta.</strong> Si preguntas lo
+          mismo 100 veces, pagas 100 veces.
+        </li>
+        <li>
+          <strong>Los chunks pierden contexto.</strong> Un chunk de 512 tokens
+          no sabe de que hablaba el capitulo 3 del libro.
+        </li>
+        <li>
+          <strong>Similitud vectorial ≠ relevancia.</strong> Lo semanticamente
+          parecido no siempre es lo que responde la pregunta.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Fase 2 · Agentic RAG (2023-2024)</h2>
+      <p>
+        Se agrega razonamiento. El agente reformula queries, hace multi-hop
+        (busca, lee, re-pregunta con lo aprendido), combina fuentes. Herramientas
+        como ReAct, LangChain agents, query decomposition.
+      </p>
+
+      <h3>Avance</h3>
+      <p>
+        Mejora significativamente la calidad sobre queries complejas. Puede
+        juntar evidencia de varios documentos, validarla, descartarla.
+      </p>
+
+      <h3>Dolor nuevo</h3>
+      <p>
+        <strong>Explosion de costo.</strong> Una sola query se convierte en
+        5-10 llamadas al LLM con tokens gigantes. La latencia se va a 10-30
+        segundos. No es viable economicamente a escala.
+      </p>
+    </section>
+
+    <section>
+      <h2>Fase 3 · Context engineering (2025+)</h2>
+      <p>
+        La idea: el agente <em>construye activamente</em> su contexto a partir
+        de multiples fuentes — RAG, memoria, tools, metadata. Hay reasoning
+        sobre que meter en el prompt y que no. Aparece "progressive disclosure":
+        cargar solo lo que se necesita.
+      </p>
+
+      <p>
+        Es mejor que agentic RAG pero sigue siendo <em>en tiempo de query</em>.
+        Cada vez que vos preguntas, el agente re-arma el contexto desde cero.
+        La informacion vive en fuentes crudas y el agente la junta. No hay
+        "estado compilado".
+      </p>
+    </section>
+
+    <section>
+      <h2>Fase 4 · KBL (2026+)</h2>
+      <p>
+        Karpathy planteo la idea: los humanos no re-derivamos todo cada vez
+        que pensamos. Tenemos <em>notas</em>, <em>libros</em>, <em>wikis
+        personales</em>. Compilamos el conocimiento una vez, lo linkeamos,
+        lo refinamos. Despues consultamos.
+      </p>
+      <p>
+        El KBL lleva eso al agente. En vez de buscar en raw chunks cada query,
+        el agente <strong>compila una vez</strong>: crea paginas estructuradas,
+        cross-linkeadas, con TLDRs en el master index. En query time, navega
+        por links, no por similitud vectorial.
+      </p>
+
+      <div class="callout callout-success">
+        <div class="callout-title">La diferencia cognitiva</div>
+        <p>
+          RAG es como Google-ear todas las veces la misma pregunta. KBL es como
+          tener un cuaderno donde ya escribiste lo que aprendiste, con indice.
+          Google te lleva a las fuentes; tu cuaderno te da la respuesta.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Comparativa RAG vs KBL</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>RAG clasico</th>
+              <th>KBL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Unidad de conocimiento</strong></td>
+              <td>Chunks de texto</td>
+              <td>Paginas cross-linkeadas</td>
+            </tr>
+            <tr>
+              <td><strong>Cuando se procesa</strong></td>
+              <td>En tiempo de query</td>
+              <td>Una vez, al ingestar</td>
+            </tr>
+            <tr>
+              <td><strong>Forma de busqueda</strong></td>
+              <td>Similitud vectorial</td>
+              <td>Navegacion de links + TLDRs</td>
+            </tr>
+            <tr>
+              <td><strong>Costo por query</strong></td>
+              <td>Alto (re-deriva cada vez)</td>
+              <td>Muy bajo (lee pagina compilada)</td>
+            </tr>
+            <tr>
+              <td><strong>Mejora con el uso</strong></td>
+              <td>No</td>
+              <td>Si (cross-refs acumulan, syntheses aparecen)</td>
+            </tr>
+            <tr>
+              <td><strong>Contexto entre items</strong></td>
+              <td>Se pierde (chunks aislados)</td>
+              <td>Se preserva (links explicitos)</td>
+            </tr>
+            <tr>
+              <td><strong>Counter-args / bias check</strong></td>
+              <td>No hay</td>
+              <td>Obligatorio por pagina</td>
+            </tr>
+            <tr>
+              <td><strong>Auditabilidad</strong></td>
+              <td>Baja (embeddings opacos)</td>
+              <td>Alta (log.md con cambios)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Los numeros duros</h2>
+      <p>
+        Hay dos datos publicos que cuantifican la ventaja:
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Karpathy</div>
+          <div class="concept-card-term">~100 articulos</div>
+          <p class="concept-card-desc">
+            Punto donde KBL compilado supera a RAG para Q&A. Con menos corpus,
+            RAG alcanza; con mas, la compilacion explicita gana de forma
+            consistente.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Graphify</div>
+          <div class="concept-card-term">71.5x menos tokens</div>
+          <p class="concept-card-desc">
+            Menos tokens por query comparado contra searching raw files con
+            vector store. El KBL lee paginas compiladas, no re-procesa
+            corpus completo.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Por que los numeros no mienten</div>
+        <p>
+          La ventaja de KBL no es una mejora marginal. Es un cambio de orden de
+          magnitud. Eso pasa porque RAG paga compute en cada query mientras
+          que KBL lo paga <em>una vez</em>, cuando ingesta. Amortizado en 1000
+          queries, la diferencia es enorme.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cuando RAG sigue ganando</h2>
+      <p>
+        KBL no es silver bullet. Hay casos donde RAG (o context engineering
+        sobre RAG) sigue siendo la mejor eleccion:
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side good">
+          <div class="comparison-side-label">Usa KBL cuando</div>
+          <h4>Corpus estable, uso recurrente</h4>
+          <ul>
+            <li>Knowledge base de tu negocio</li>
+            <li>Documentacion interna que consulta un equipo</li>
+            <li>Research notes personales</li>
+            <li>Corpus &gt; 100 documentos</li>
+            <li>Necesitas auditabilidad</li>
+          </ul>
+        </div>
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Usa RAG cuando</div>
+          <h4>Corpus dinamico, uso efimero</h4>
+          <ul>
+            <li>Buscador sobre millones de docs</li>
+            <li>Documentos que cambian a cada hora</li>
+            <li>Corpus one-shot (no vas a preguntar 1000 veces)</li>
+            <li>El costo de compilar no amortiza</li>
+            <li>Queries muy diversas y no predecibles</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Lo que hay que llevarse</h2>
+      <ul>
+        <li>
+          RAG resolvio el problema de "como darle contexto al LLM", pero paga
+          un costo alto <em>por query</em>.
+        </li>
+        <li>
+          KBL invierte el modelo: paga <em>una vez</em> al ingestar, gana en
+          cada query futura.
+        </li>
+        <li>
+          A partir de ~100 articulos, KBL supera a RAG en Q&A. A gran escala,
+          usa ~71x menos tokens.
+        </li>
+        <li>
+          La ventaja real de KBL es la <strong>auditabilidad</strong> y la
+          <strong>mejora acumulativa</strong>: cada pagina nueva hace todas
+          las existentes mas conectadas y utiles.
+        </li>
+      </ul>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">El cierre del modulo</div>
+        <p>
+          Con esto cerras M01. Tenes el mapa: KBL + BF separados, estructura
+          de carpetas explicita, pipeline de ingest con quality gates, y la
+          ventaja conceptual vs RAG. En M02 entra el agent stack: como vive el
+          agente sobre esta knowledge layer.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">El pipeline de ingest</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">M02 · Agent Stack</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M01-03", "M01");
+    }
+  });
+</script>
+</body>
+</html>

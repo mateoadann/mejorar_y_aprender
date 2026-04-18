@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cheatsheet: referencia rapida · Agent Infrastructure 2026</title>
+  <meta name="description" content="Las tablas, formulas y reglas mas usadas del curso, en una sola pagina para consulta rapida. Memoria 4 capas, hooks, Claude Code, traversal, permissions, anti-patterns." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M07 · Integrador</span>
+    <h1>Cheatsheet: referencia rapida</h1>
+    <p class="page-intro">
+      Esta pagina es la referencia de consulta. Todo lo importante del curso
+      condensado en tablas scaneables. Abrila cuando estes armando el stack
+      y necesites el dato rapido sin releer el modulo entero.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>1. Memoria: las 4 capas</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Capa</th>
+              <th>Archivo</th>
+              <th>Volatilidad</th>
+              <th>Update freq</th>
+              <th>Proposito</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Working</strong></td>
+              <td><code>WORKSPACE.md</code></td>
+              <td>Alta</td>
+              <td>Cada pocos minutos</td>
+              <td>Resumption entre sesiones</td>
+            </tr>
+            <tr>
+              <td><strong>Episodic</strong></td>
+              <td><code>AGENT_LEARNINGS.jsonl</code></td>
+              <td>Append-only</td>
+              <td>Cada accion</td>
+              <td>Precedentes (que paso, donde, cuando)</td>
+            </tr>
+            <tr>
+              <td><strong>Semantic</strong></td>
+              <td><code>LESSONS.md</code>, <code>DECISIONS.md</code>, <code>KNOWLEDGE.md</code></td>
+              <td>Baja</td>
+              <td>Dream cycle (nocturno)</td>
+              <td>Abstracciones, reglas, decisiones</td>
+            </tr>
+            <tr>
+              <td><strong>Personal</strong></td>
+              <td><code>PREFERENCES.md</code></td>
+              <td>Muy baja</td>
+              <td>Humano</td>
+              <td>Tu contexto estable (stack, style)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Hooks: el lifecycle del agente</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Hook</th>
+              <th>Cuando dispara</th>
+              <th>Rol</th>
+              <th>Defaults utiles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>pre_tool_call</code></td>
+              <td>Antes de cada tool</td>
+              <td>Validar permisos, constraints, schemas</td>
+              <td>Bloquear si tool no esta en permissions.md</td>
+            </tr>
+            <tr>
+              <td><code>post_execution</code></td>
+              <td>Despues de cada accion</td>
+              <td>Logear a episodic, calcular scores</td>
+              <td>Siempre append, nunca mutar historia</td>
+            </tr>
+            <tr>
+              <td><code>on_failure</code></td>
+              <td>En fallos</td>
+              <td>Promote a LESSONS si recurrente</td>
+              <td>pain=8 default, threshold 3 en 14 dias</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Wiki: los 4 comandos (M01)</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Comando</th>
+              <th>Que hace</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/wiki-ingest</code></td>
+              <td>Procesa <code>raw/</code> → wiki pages con cites</td>
+            </tr>
+            <tr>
+              <td><code>/wiki-query</code></td>
+              <td>Pregunta, recibis answer con citations</td>
+            </tr>
+            <tr>
+              <td><code>/wiki-explore</code></td>
+              <td>Browse y validate contenido existente</td>
+            </tr>
+            <tr>
+              <td><code>/wiki-lint</code></td>
+              <td>Catch contradictions, stale info</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. Claude Code: las 5 opciones por turno (M06)</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Opcion</th>
+              <th>Keystroke</th>
+              <th>Cuando usar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Continue</strong></td>
+              <td>Default</td>
+              <td>Seguis la misma task, context util para lo que viene</td>
+            </tr>
+            <tr>
+              <td><strong>/rewind</strong></td>
+              <td><code>esc esc</code></td>
+              <td>Algo no funciono → limpiar el intento del context</td>
+            </tr>
+            <tr>
+              <td><strong>/clear</strong></td>
+              <td><code>/clear</code></td>
+              <td>Task nueva o no relacionada → fresh start con brief tuyo</td>
+            </tr>
+            <tr>
+              <td><strong>/compact</strong></td>
+              <td><code>/compact [hint]</code></td>
+              <td>Context lleno pero task sigue → summary + seguir</td>
+            </tr>
+            <tr>
+              <td><strong>Subagent</strong></td>
+              <td>Tool <code>Agent</code></td>
+              <td>Chunk grande con outputs intermedios que no necesitas</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. Traversal algorithms (M05)</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Algoritmo</th>
+              <th>Cuando usar</th>
+              <th>Nota</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>BFS</strong></td>
+              <td>Unweighted shortest path, N hops</td>
+              <td>Muy usada en queries tipo "amigos de amigos"</td>
+            </tr>
+            <tr>
+              <td><strong>DFS</strong></td>
+              <td>Low memory, bounded depth</td>
+              <td>Cuando no necesitas shortest path</td>
+            </tr>
+            <tr>
+              <td><strong>Dijkstra</strong></td>
+              <td>Weighted, no heuristic</td>
+              <td>Shortest con pesos reales en aristas</td>
+            </tr>
+            <tr>
+              <td><strong>A*</strong></td>
+              <td>Weighted + heuristic available</td>
+              <td>Cuando sabes estimar distancia al target</td>
+            </tr>
+            <tr>
+              <td><strong>Bidirectional</strong></td>
+              <td>Target conocido, path largo</td>
+              <td>Corta exponencialmente el search space</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>6. Formula de salience (memoria)</h2>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">salience</span> = (10 - age_days * 0.3)
+           × (pain / 10)
+           × (importance / 10)
+           × min(recurrence, 3)
+
+  <span class="ascii-dim">factores:</span>
+    age_days      dias desde la entry
+    pain          0-10 (dolor asociado, mas alto = mas pesa)
+    importance    0-10 (declarado por el skill/hook)
+    recurrence    cuantas veces paso (cap en 3 para que no explote)
+
+  <span class="ascii-dim">uso tipico:</span>
+    top-k por salience → lo que se carga en context
+    salience &lt; 1 → candidato a decay en dream cycle
+      </pre>
+    </section>
+
+    <section>
+      <h2>7. Permissions: los 4 buckets (M04)</h2>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Bucket 1</div>
+          <div class="concept-card-term">Always allowed</div>
+          <p class="concept-card-desc">
+            Lecturas, greps, tests en sandbox. No requiere confirmacion.
+            Todo lo que no hace cambios permanentes.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Bucket 2</div>
+          <div class="concept-card-term">Requires approval</div>
+          <p class="concept-card-desc">
+            Writes, commits, deploys. El agente propone, vos aprobas.
+            Ventana de aprobacion pequena (segundos o minutos).
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Bucket 3</div>
+          <div class="concept-card-term">Never allowed</div>
+          <p class="concept-card-desc">
+            <code>rm -rf</code>, <code>force push</code> a main,
+            borrar DB en prod. Nunca, bajo ningun prompt.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Bucket 4</div>
+          <div class="concept-card-term">Approved domains</div>
+          <p class="concept-card-desc">
+            URLs permitidas para <code>curl</code>/web_fetch. Whitelist
+            explicita. Nada fuera de esa lista sin aprobacion.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>8. Context management rules (M06)</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Situacion</th>
+              <th>Regla</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Arranca una task nueva</td>
+              <td>Por default, nueva sesion (<code>/clear</code>)</td>
+            </tr>
+            <tr>
+              <td>Algo no funciono, queres corregir</td>
+              <td>Preferi <code>rewind</code> sobre continuar con correccion</td>
+            </tr>
+            <tr>
+              <td>Necesitas output intermedio que no vas a re-usar</td>
+              <td>Delegar a subagent</td>
+            </tr>
+            <tr>
+              <td>Context se llena (500k+)</td>
+              <td><code>/compact</code> proactivo con hint explicito</td>
+            </tr>
+            <tr>
+              <td>Claude va a compactar solo (auto)</td>
+              <td>Mala idea — compacta en su peor momento cognitivo</td>
+            </tr>
+            <tr>
+              <td>Task facil, context util disponible</td>
+              <td>Continue esta bien (rename, docs, formateo)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>9. Anti-patterns (resumen)</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Anti-pattern</th>
+              <th>Solucion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Driving directions en skills</td>
+              <td>Destinations &amp; fences, no rutas paso-a-paso</td>
+            </tr>
+            <tr>
+              <td>Preferencias personales en skills</td>
+              <td>Va en personal memory, no en skill</td>
+            </tr>
+            <tr>
+              <td>Permissions agregadas week 6</td>
+              <td>Agregarlas day 1 (non-negotiable)</td>
+            </tr>
+            <tr>
+              <td>Memoria como flat folder</td>
+              <td>4 capas (working, episodic, semantic, personal)</td>
+            </tr>
+            <tr>
+              <td>90K tokens cargados pre-thinking</td>
+              <td>Progressive disclosure + top-k por salience</td>
+            </tr>
+            <tr>
+              <td>Stale skills (API cambio)</td>
+              <td>Version+date manifest + review 60+ dias</td>
+            </tr>
+            <tr>
+              <td>Unsafe composition (2 safe → destructivo)</td>
+              <td>Constraints en pre_tool_call, no en skills</td>
+            </tr>
+            <tr>
+              <td>Error amplification loops</td>
+              <td>Decay + self-rewrite conservative + review manual</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>10. Audit question (por linea de skill)</h2>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">La pregunta que cierra M04</div>
+        <p>
+          Mira cada linea de tu skill y preguntate:
+        </p>
+        <p style="margin-top: 12px;">
+          <strong>"¿Esta linea dice COMO hacer algo, o dice QUE GOOD LOOKS
+          LIKE?"</strong>
+        </p>
+        <p>
+          Si dice <strong>como</strong>, probablemente no hace falta — borrala
+          y confia en que el agente lo resuelve solo. Si dice <strong>que
+          good looks like</strong>, esa se queda.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Fuentes del curso</h2>
+      <p>
+        Los cuatro articulos que sirven de base para todo el contenido:
+      </p>
+
+      <div class="source-grid">
+        <div class="source-card">
+          <div class="source-card-title">1 · Knowledge Base Library</div>
+          <div class="source-card-author">KBL + Brand Foundation</div>
+          <p class="source-card-desc">
+            Fuente del Modulo 01. Como construir la capa de conocimiento
+            compartido (wiki con cites, ingest, query, lint).
+          </p>
+        </div>
+        <div class="source-card">
+          <div class="source-card-title">2 · Agent Stack 2026</div>
+          <div class="source-card-author">Los 4 modulos del stack</div>
+          <p class="source-card-desc">
+            Fuente de M02, M03, M04. Memoria en 4 capas, skills con
+            self-rewrite, protocols, hooks. El nucleo del curso.
+          </p>
+        </div>
+        <div class="source-card">
+          <div class="source-card-title">3 · Knowledge Graphs in Depth</div>
+          <div class="source-card-author">Indexing, traversal, embeddings</div>
+          <p class="source-card-desc">
+            Fuente del Modulo 05. Subgraph matching, los 5 algoritmos de
+            traversal, cuando un grafo le gana a embeddings vectoriales.
+          </p>
+        </div>
+        <div class="source-card">
+          <div class="source-card-title">4 · Using Claude Code</div>
+          <div class="source-card-author">Session Management &amp; 1M Context</div>
+          <p class="source-card-desc">
+            Fuente del Modulo 06. Context rot, las 5 opciones por turno,
+            rewind como habito senal, subagents como delegation strategy.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Final: el principio que une todo</h2>
+      <div class="callout callout-info">
+        <div class="callout-title">Mental model compartido</div>
+        <p>
+          Si tuvieras que resumir el curso en una linea seria esta:
+          <strong>"cargalo solo si lo necesitas, y nunca cargues el laburo
+          intermedio."</strong>
+        </p>
+        <p>
+          Eso es progressive disclosure en skills (M02), top-k en episodic
+          (M03), subagents en Claude Code (M06), y por que la memoria esta
+          en 4 capas en vez de una sola. El principio se repite porque es
+          el que hace posible escalar.
+        </p>
+      </div>
+
+      <p style="text-align: center; margin-top: 32px; color: var(--text-dim);">
+        <em>Fin del curso. Ahora vas vos.</em>
+      </p>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Armá tu propio stack</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Inicio</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M07-02", "M07");
+    }
+  });
+</script>
+</body>
+</html>

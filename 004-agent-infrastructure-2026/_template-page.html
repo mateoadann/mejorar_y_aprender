@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--
+    =========================================================
+    TEMPLATE DE PAGINA INTERNA — Agent Infrastructure 2026
+    =========================================================
+    Copiar este archivo a la carpeta del modulo correspondiente:
+      m0X-slug-del-modulo/<archivo>.html
+
+    Reemplazar los marcadores:
+      {{PAGE_TITLE}}    titulo visible en el tab del navegador
+      {{MODULE_NUM}}    ej "M00", "M03"
+      {{PAGE_H1}}       titulo principal del articulo
+      {{PAGE_INTRO}}    parrafo de introduccion (1-3 oraciones)
+      {{PAGE_ID}}       id unico de la pagina: "M00-01", "M03-02"
+      {{MODULE_ID}}     id del modulo: "M00", "M03"
+
+    La nav prev/next se resuelve automaticamente desde el catalogo
+    definido en CourseUtils.MODULES — no hace falta setear hrefs
+    manualmente. Para paginas que NO estan en el catalogo, sobre-
+    escribir las propiedades href a mano.
+    =========================================================
+  -->
+  <title>{{PAGE_TITLE}} · Agent Infrastructure 2026</title>
+  <meta name="description" content="{{PAGE_INTRO}}" />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<!-- ============================================
+     HEADER STICKY (global)
+     ============================================ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================
+     BREADCRUMB (se llena automaticamente por initPage)
+     ============================================ -->
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<!-- ============================================
+     MAIN
+     ============================================ -->
+<main>
+
+  <!-- Page header -->
+  <section class="page-header">
+    <span class="page-header-eyebrow">{{MODULE_NUM}}</span>
+    <h1>{{PAGE_H1}}</h1>
+    <p class="page-intro">{{PAGE_INTRO}}</p>
+  </section>
+
+  <!-- ============================================
+       CONTENIDO DE LA PAGINA
+       El agente que escriba la pagina va a trabajar aca adentro.
+       Estructura recomendada:
+         - Intro (1-2 parrafos)
+         - Diagrama o analogia visual
+         - Bloques de concepto (grid, cards, callouts)
+         - Do/Don't o cuando usar / cuando no
+         - Mini-resumen final
+       ============================================ -->
+  <article>
+
+    <!-- TODO: reemplazar esta seccion por el contenido real -->
+    <section>
+      <h2>Seccion inicial</h2>
+      <p>Texto del articulo...</p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Nota clave</div>
+        <p>Marca un concepto importante acá.</p>
+      </div>
+    </section>
+
+  </article>
+
+  <!-- ============================================
+       NAV PREV / NEXT (auto-resuelto)
+       ============================================ -->
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">{{PREV}}</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">{{NEXT}}</span>
+    </a>
+  </nav>
+
+</main>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  // Init de pagina: marca como vista, renderiza breadcrumb y prev/next,
+  // actualiza pill de progreso del header.
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("{{PAGE_ID}}", "{{MODULE_ID}}");
+    }
+  });
+</script>
+</body>
+</html>

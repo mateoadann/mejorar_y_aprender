@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El pipeline de ingest · Agent Infrastructure 2026</title>
+  <meta name="description" content="De clipping a pagina wiki cross-referenciada: deteccion de tipo, fetch de contenido, descarga de assets, clasificacion, build con cross-refs, update de index. Y los 4 comandos del CLAUDE.md." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M01 · Knowledge Layer</span>
+    <h1>El pipeline de ingest</h1>
+    <p class="page-intro">
+      El pipeline es lo que convierte material crudo en conocimiento util.
+      No es magia: son etapas bien definidas, con comandos, y con quality
+      controls en cada punto. Si entendes este flujo, entendes como se mantiene
+      vivo un KBL.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>El flujo end-to-end</h2>
+      <p>
+        Un articulo que te interesa atraviesa seis etapas para convertirse en
+        una pagina util del wiki. Cada etapa es automatizable pero tiene un
+        punto de control explicito.
+      </p>
+
+      <pre class="ascii-diagram">
+   <span class="ascii-accent">1 · CLIP</span>         <span class="ascii-accent">2 · LAND</span>          <span class="ascii-accent">3 · DETECT</span>        <span class="ascii-accent">4 · FETCH</span>
+   Web Clipper    raw/clippings/      tweet | article |    full content
+   en Obsidian         ↓              PDF | video          + images
+                       │                   │                   │
+                       └───────────────────┴───────────────────┘
+                                           │
+                                           ▼
+                                  ┌──────────────────┐
+                                  │   <span class="ascii-accent-alt">5 · CLASSIFY</span>   │
+                                  │  concept/entity/ │
+                                  │  source/synth    │
+                                  └────────┬─────────┘
+                                           │
+                                           ▼
+                                  ┌──────────────────┐
+                                  │    <span class="ascii-accent-alt">6 · BUILD</span>     │
+                                  │  pagina + cross- │
+                                  │  refs + assets   │
+                                  └────────┬─────────┘
+                                           │
+                                           ▼
+                                  ┌──────────────────┐
+                                  │  <span class="ascii-accent-alt">7 · UPDATE IDX</span>  │
+                                  │  index.md + log  │
+                                  │  explored:false  │
+                                  └────────┬─────────┘
+                                           │
+                                           ▼
+                                   <span class="ascii-dim">gate humano</span>
+                                  <span class="ascii-dim">explored:true</span>
+      </pre>
+    </section>
+
+    <section>
+      <h2>Las etapas en detalle</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">1 · Clip</div>
+          <div class="timeline-title">Capturar con Obsidian Web Clipper</div>
+          <p class="timeline-desc">
+            Navegas un articulo, apretas el shortcut del clipper, se guarda en
+            <code>raw/clippings/YYYY-MM-DD-titulo.md</code>. Incluye metadata:
+            url, fecha de clip, autor si lo detecta.
+          </p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">2 · Land</div>
+          <div class="timeline-title">Aterriza en el raw inbox</div>
+          <p class="timeline-desc">
+            El clipper no hace juicio. Solo guarda. El raw/ es la "bandeja de
+            entrada" que el agente procesara cuando vos lo dispares.
+          </p>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">3 · Detect</div>
+          <div class="timeline-title">Detectar tipo de contenido</div>
+          <p class="timeline-desc">
+            El agente mira el clipping y decide: ¿es un tweet (URL a x.com)?
+            ¿un articulo largo? ¿un PDF linkeado? ¿un video con transcript?
+            Cada tipo dispara un sub-pipeline distinto.
+          </p>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">4 · Fetch</div>
+          <div class="timeline-title">Traer el contenido completo</div>
+          <p class="timeline-desc">
+            El clipper tal vez guardo solo un snippet. El agente completa:
+            descarga el articulo full, el PDF, el thread completo, las imagenes
+            linkeadas a <code>raw/assets/images/</code>.
+          </p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">5 · Classify</div>
+          <div class="timeline-title">¿Que tipo de pagina sera?</div>
+          <p class="timeline-desc">
+            ¿Va a <code>sources/</code> como articulo procesado? ¿Nos conviene
+            crear un <code>concept/</code> nuevo? ¿Es una persona que no tenemos
+            aun en <code>entities/</code>? El agente propone y ejecuta.
+          </p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">6 · Build</div>
+          <div class="timeline-title">Construir la pagina con cross-refs</div>
+          <p class="timeline-desc">
+            Aplica el template del tipo, escribe TLDR, extrae ideas clave,
+            busca paginas existentes para linkear. Si nombra "Karpathy" y existe
+            <code>entities/karpathy.md</code>, linkea automaticamente.
+          </p>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-label">7 · Update index</div>
+          <div class="timeline-title">Actualizar master index y log</div>
+          <p class="timeline-desc">
+            Agrega una linea al <code>index.md</code> con el TLDR de la pagina
+            nueva. Agrega una entrada al <code>log.md</code> con fecha y resumen.
+            Marca la pagina con <code>explored: false</code> en frontmatter,
+            esperando tu revision.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Los 4 comandos del CLAUDE.md</h2>
+      <p>
+        El CLAUDE.md define cuatro slash-commands que operan el wiki. No son
+        funciones magicas: son prompts estructurados que el agente ejecuta.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">/wiki-ingest</div>
+          <div class="concept-card-term">Procesar el raw inbox</div>
+          <p class="concept-card-desc">
+            Corre las 7 etapas sobre todo lo que haya en <code>raw/</code>
+            (o sobre un archivo especifico). Output: paginas nuevas en wiki/
+            con <code>explored: false</code>.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">/wiki-query</div>
+          <div class="concept-card-term">Preguntar algo al KBL</div>
+          <p class="concept-card-desc">
+            "¿Qué sabemos sobre X?". El agente lee <code>index.md</code>, navega
+            cross-refs, arma respuesta con citaciones. No re-deriva nada, usa
+            lo ya compilado.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">/wiki-explore</div>
+          <div class="concept-card-term">Revision humana</div>
+          <p class="concept-card-desc">
+            Lista paginas con <code>explored: false</code>. Vos las revisas,
+            marcas como <code>explored: true</code> o devolves con correcciones.
+            Es el validation gate.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">/wiki-lint</div>
+          <div class="concept-card-term">Control de calidad</div>
+          <p class="concept-card-desc">
+            Busca paginas sin counter-arguments, cross-refs rotas, TLDRs
+            faltantes, confidence no declarado. Reporta issues para que
+            el agente los resuelva.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Los quality controls</h2>
+      <p>
+        Ingestar material crudo tiene un riesgo obvio: meter sesgos, errores,
+        copy-paste de opinion confundiendola con hecho. El pipeline incluye
+        tres controles explicitos para evitarlo.
+      </p>
+
+      <h3>1 · Bias checks (counter-arguments obligatorios)</h3>
+      <p>
+        Cada pagina en <code>concepts/</code> y <code>syntheses/</code> debe
+        incluir una seccion <em>counter-arguments</em>: "¿que dirian quienes
+        no estan de acuerdo con esto?". No es cosmetica. Obliga al agente a
+        buscar activamente la otra cara, lo que reduce eco-chamber.
+      </p>
+
+      <h3>2 · Validation gate (explored: false)</h3>
+      <p>
+        Toda pagina nueva nace con <code>explored: false</code> en el frontmatter.
+        El agente la crea, pero no la considera "verdad establecida" hasta que
+        vos revisas y flippeas a <code>explored: true</code>. El
+        <code>/wiki-query</code> puede mostrar paginas unexplored con una advertencia.
+      </p>
+
+      <h3>3 · Confidence levels</h3>
+      <p>
+        Cada afirmacion sustancial lleva un nivel:
+      </p>
+      <ul>
+        <li><strong>high</strong> — multiple fuentes concordantes, bien atestiguado</li>
+        <li><strong>medium</strong> — una fuente solida, o varias debiles</li>
+        <li><strong>low</strong> — inferencia del agente, sin fuente directa</li>
+        <li><strong>uncertain</strong> — hay controversia o contradiccion en fuentes</li>
+      </ul>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">Por que confidence importa</div>
+        <p>
+          Sin niveles de confianza, el agente trata todo como verdad equivalente
+          y propaga errores con la misma autoridad que hechos solidos. Con
+          confidence explicito, cuando luego un skill <em>cite</em> estas
+          paginas, puede descartar las de baja confianza.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>El papel de la revision humana</h2>
+      <p>
+        El pipeline es mayormente automatico, pero hay UN lugar donde el humano
+        es irreemplazable: entre la creacion (paso 7) y el <em>explored: true</em>.
+        Ese es el gate que evita que basura se convierta en fundamento de todo
+        lo que sigue.
+      </p>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Reality check</div>
+        <p>
+          Si nunca corres <code>/wiki-explore</code>, tu KBL se llena de paginas
+          auto-generadas sin revisar. Eso no es conocimiento; es ruido estructurado.
+          El ritual semanal de revision es lo que hace que el sistema funcione.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Estructura del wiki</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">KBL vs RAG</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M01-02", "M01");
+    }
+  });
+</script>
+</body>
+</html>

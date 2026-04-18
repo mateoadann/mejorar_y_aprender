@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subagents: delegation strategy · Agent Infrastructure 2026</title>
+  <meta name="description" content="Un subagent no es otra conversacion — es una forma de context management. Le das un chunk de laburo con mucho tool output intermedio, y te trae solo el resultado. El mental test: ¿voy a necesitar los outputs de nuevo, o solo la conclusion?" />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M06 · Claude Code Ops</span>
+    <h1>Subagents: delegation strategy</h1>
+    <p class="page-intro">
+      Los subagents no son un feature de paralelismo — son una forma de
+      <strong>context management</strong>. Cuando sabes de antemano que un
+      chunk de laburo va a generar mucho output intermedio que no vas a
+      necesitar despues, delegas. Vuelve solo la conclusion, sin la basura.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Que es un subagent, de verdad</h2>
+      <p>
+        Cuando Claude Code lanza un subagent (via la tool <em>Agent</em>), ese
+        subagent recibe su <strong>propio context window</strong>, en blanco.
+        Hace el laburo que le delegaste, ve todos los tool outputs, toma sus
+        decisiones, y cuando termina sintetiza el resultado y devuelve solo
+        <strong>ese final report</strong> al parent.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">main context (parent)</span>
+  ┌──────────────────────────────────────────────────┐
+  │  sistema prompt                                  │
+  │  conversacion tuya + claude                      │
+  │  files leidos hasta aca                          │
+  │                                                  │
+  │  tu mensaje: "spawn subagent para verificar      │
+  │               que la implementacion cumple       │
+  │               el spec en docs/auth-spec.md"      │
+  │                                                  │
+  │           │                                      │
+  │           ▼                                      │
+  │  ┌─────────────────────────────────────────┐     │
+  │  │ <span class="ascii-accent-alt">subagent context (FRESH)</span>                │     │
+  │  │  - sistema prompt minimo                │     │
+  │  │  - instruccion concreta: verificar spec │     │
+  │  │  - lee docs/auth-spec.md                │     │
+  │  │  - lee src/auth/*.ts                    │     │
+  │  │  - corre tests, ve output               │     │
+  │  │  - mas lecturas, mas outputs            │     │
+  │  │  - sintetiza: "cumple 7/8, falla en X"  │     │
+  │  └────────────────┬────────────────────────┘     │
+  │                   │                              │
+  │                   ▼ (solo el report)             │
+  │  ← result: "cumple 7/8, falla en X"              │
+  │                                                  │
+  │  <span class="ascii-dim">(todos los tool outputs intermedios quedaron</span>        │
+  │   <span class="ascii-dim">adentro del subagent, nunca llegaron al main)</span>       │
+  └──────────────────────────────────────────────────┘
+      </pre>
+
+      <p>
+        Fijate lo importante: los <strong>tool outputs</strong> (contenido de
+        archivos, output de tests, greps, etc.) jamas cruzan la frontera.
+        Solo viene la sintesis final. Eso es lo que hace a un subagent una
+        herramienta de context management, no de paralelismo.
+      </p>
+    </section>
+
+    <section>
+      <h2>El mental test: ¿voy a necesitar esto de nuevo?</h2>
+      <p>
+        La pregunta que usas para decidir si delegar o no es una sola, y es
+        fundamental:
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">La pregunta</div>
+        <p>
+          <strong>¿Voy a necesitar el tool output DE NUEVO en turnos
+          siguientes, o solo me interesa la conclusion?</strong>
+        </p>
+      </div>
+
+      <div class="comparison-table">
+        <div class="comparison-side good">
+          <div class="comparison-side-label">"De nuevo" → main context</div>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55; margin: 0;">
+            Si voy a seguir trabajando con esos archivos, a referenciar ese
+            output, a razonar cruzando esa info — mejor que Claude lo lea en
+            main context, asi lo tiene disponible.
+            <br /><br />
+            <em>Ejemplo:</em> "lee los 3 archivos del modulo de carrito que
+            vamos a refactorear". Los vas a tocar. Que queden.
+          </p>
+        </div>
+        <div class="comparison-side good">
+          <div class="comparison-side-label">"Solo la conclusion" → subagent</div>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55; margin: 0;">
+            Si solo me interesa el resultado (pasa/no pasa, cumple/no cumple,
+            X archivos encontrados), todo el proceso intermedio es ruido para
+            el main context. Delegalo.
+            <br /><br />
+            <em>Ejemplo:</em> "confirma que ningun archivo del codebase
+            importa la lib deprecated foo". Solo queres el si/no final.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Casos de uso clasicos</h2>
+      <p>
+        Claude Code puede decidir spawnear subagents automaticamente cuando
+        detecta tareas que encajan. Pero podes (y conviene) pedirlos
+        explicitamente cuando vos los ves venir.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Caso 1</div>
+          <div class="concept-card-term">Verify vs spec</div>
+          <p class="concept-card-desc">
+            "Spin up a subagent to verify the implementation matches the spec
+            in <code>docs/feature-x-spec.md</code>". El subagent lee ambos,
+            los compara, devuelve el diff. Vos solo recibis el report.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Caso 2</div>
+          <div class="concept-card-term">Study other codebase</div>
+          <p class="concept-card-desc">
+            "Subagent: lee ese otro codebase en <code>../old-project</code>
+            y summariza como implementaron auth. Despues implementamos algo
+            parecido aca." El viejo codebase no queda en tu context.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Caso 3</div>
+          <div class="concept-card-term">Docs desde diffs</div>
+          <p class="concept-card-desc">
+            "Subagent para escribir docs de los cambios que acabamos de hacer,
+            basado en el git diff". El subagent lee el diff, genera docs,
+            vuelve con el markdown final.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Caso 4</div>
+          <div class="concept-card-term">Bulk search</div>
+          <p class="concept-card-desc">
+            "Subagent: buscame todos los lugares del codebase donde se usa la
+            lib foo, y devuelve una lista de archivos + la lineas exactas." Tu
+            main context no carga con 40 tool outputs de grep.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Caso 5</div>
+          <div class="concept-card-term">Research</div>
+          <p class="concept-card-desc">
+            "Subagent: investiga como hace X la libreria Y. Mira sus docs,
+            su source, y devolveme un resumen del patron que usa." Investigacion
+            con muchos reads, en context aparte.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Caso 6</div>
+          <div class="concept-card-term">Analysis</div>
+          <p class="concept-card-desc">
+            "Subagent: correr este script y analizar su output (que suele ser
+            largo). Devolveme un summary de que fallo y donde." Output largo
+            se queda en el subagent.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cuando delegar vs cuando mantener</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Situacion</th>
+              <th>Mantener en main</th>
+              <th>Delegar a subagent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Leer archivos que voy a editar</td>
+              <td>Si — los vas a necesitar</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <td>Validar que algo cumple un spec</td>
+              <td>No</td>
+              <td>Si — solo queres el pasa/no pasa</td>
+            </tr>
+            <tr>
+              <td>Debug iterativo de un bug</td>
+              <td>Si — vas a querer ver outputs</td>
+              <td>No (perdes visibilidad)</td>
+            </tr>
+            <tr>
+              <td>Buscar "donde se usa X"</td>
+              <td>No</td>
+              <td>Si — lista final basta</td>
+            </tr>
+            <tr>
+              <td>Investigar otra codebase</td>
+              <td>No</td>
+              <td>Si — no contamines main</td>
+            </tr>
+            <tr>
+              <td>Leer docs de la lib que vamos a usar</td>
+              <td>Depende — si es corta, mantener; si es larga, delegar</td>
+              <td>Delegar si son docs gordas</td>
+            </tr>
+            <tr>
+              <td>Correr test suite para ver que falla</td>
+              <td>No (los logs llenan context)</td>
+              <td>Si — devuelve "falla X por Y"</td>
+            </tr>
+            <tr>
+              <td>Refactor activo, varios archivos abiertos</td>
+              <td>Si — necesitas los archivos vivos</td>
+              <td>No</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Conexion con progressive disclosure (M04)</h2>
+      <p>
+        Esto que vimos en subagents es <strong>exactamente el mismo patron</strong>
+        que vimos en M04 con skills y progressive disclosure. Distinto envase,
+        misma idea.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">progressive disclosure en skills</span>
+  ──────────────────────────────────
+  AGENTS.md carga: _index.md (resumen corto)
+                   ──────────────────────────
+                   "hay un skill para X, esta en /skills/X/SKILL.md
+                    cargalo cuando lo necesites"
+
+  <span class="ascii-dim">SKILL.md completo se carga solo cuando aplica</span>
+
+
+  <span class="ascii-accent">subagents en Claude Code</span>
+  ──────────────────────────────────
+  main context carga: el RESULT del subagent
+                      ─────────────────────
+                      "verifique X, cumple 7/8, falla en Y"
+
+  <span class="ascii-dim">tool outputs intermedios se quedan en el subagent</span>
+
+
+  <span class="ascii-accent-alt">principio comun: el parent NO carga el detalle.</span>
+  <span class="ascii-accent-alt">carga solo el header / la conclusion / el puntero.</span>
+      </pre>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Patron compartido</div>
+        <p>
+          <strong>"cargalo solo si lo necesitas, y nunca cargues el laburo
+          intermedio"</strong>. Esa regla esta en progressive disclosure, en
+          subagents, y la vas a ver tambien en como se carga episodic memory
+          (top-k relevantes, no el historico completo). Es el principio
+          central del context management.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Anti-patrones con subagents</h2>
+      <p>
+        Igual que cualquier herramienta, se puede usar mal. Los mas comunes:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Delegar algo que necesitas iterar:</strong> si el resultado
+          del subagent lo vas a usar para un debug en el que vas a ir y
+          venir, mejor en main context. Si no, despues tenes que mandar otro
+          subagent y otro, perdiendo visibilidad.
+        </li>
+        <li>
+          <strong>Subagents anidados sin fin:</strong> si un subagent spawnea
+          otro que spawnea otro, el result que vuelve puede ser tan abstracto
+          que pierde lo util. Mantenelo un nivel.
+        </li>
+        <li>
+          <strong>Delegar para "ahorrar context" cuando el main esta vacio:</strong>
+          si recien arrancas la sesion y tenes 20k tokens usados, no hace falta
+          delegar nada. Mantener simple primero, optimizar context despues.
+        </li>
+        <li>
+          <strong>Subagent sin instruccion clara de que devolver:</strong> si
+          no le decis que forma queres en el final report, te puede traer
+          cualquier cosa. "Devolveme una lista de files + lineas" es mejor
+          que "fijate si esta usado".
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Cierre: subagent = delegacion con frontera de context</h2>
+      <p>
+        Pensalo asi: cuando contratas a alguien para una task en tu empresa,
+        no le pedis que te cuente cada decision intermedia que tomo — solo
+        te interesa el resultado. Si sos micromanager, contaminas tu propio
+        tiempo con detalles que no aportan. Si sabes delegar bien, recibis
+        conclusiones accionables.
+      </p>
+
+      <p>
+        Los subagents son eso. Delegas bien cuando:
+      </p>
+
+      <ul>
+        <li>Especificas claro el resultado que queres.</li>
+        <li>El proceso intermedio no te interesa.</li>
+        <li>Confias en que la sintesis final va a ser util.</li>
+      </ul>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Cierre de modulo M06</div>
+        <p>
+          Con esto cerramos M06. Tenes ahora el kit completo para manejar
+          context en Claude Code: entendes que es context rot, sabes que cada
+          turno es un branching point, tenes el habito de rewind como default
+          cuando algo no funciona, y sabes cuando delegar a subagents. En el
+          modulo siguiente (M07) integramos todo lo que viste en el curso:
+          los 6 feedback loops, checklist para armar tu propio stack, y
+          cheatsheet de referencia.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Rewind vs corregir</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Los 6 loops</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M06-03", "M06");
+    }
+  });
+</script>
+</body>
+</html>

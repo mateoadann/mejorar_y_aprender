@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cada turno es un branching point · Agent Infrastructure 2026</title>
+  <meta name="description" content="Cuando Claude termina una vuelta tenes 5 opciones, no 1. Continue, rewind, clear, compact o subagent: cada una es una herramienta distinta para una situacion distinta. El default (continue) casi nunca es lo optimo." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M06 · Claude Code Ops</span>
+    <h1>Cada turno es un branching point</h1>
+    <p class="page-intro">
+      Cuando Claude termina una respuesta, la mayoria de los usuarios hace
+      una sola cosa: escriben el mensaje siguiente. Pero ahi hay
+      <strong>5 opciones</strong>, y elegir la correcta es la diferencia
+      entre un context limpio y un context que se pudre. Aca desarmamos las
+      5 y cuando usar cada una.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Las 5 opciones al final de cada vuelta</h2>
+      <p>
+        Cada vez que el modelo termina de responder, vos tenes la decision.
+        La mayoria elige "continue" por default. Esta bien cuando es la
+        accion correcta; el problema es que muchas veces no lo es.
+      </p>
+
+      <pre class="ascii-diagram">
+                    <span class="ascii-accent">Claude termino su vuelta</span>
+                           │
+       ┌───────────────────┼───────────────────┬───────────────────┐
+       ▼                   ▼                   ▼                   ▼
+  ┌─────────┐         ┌─────────┐         ┌─────────┐         ┌─────────┐
+  │continue │         │ /rewind │         │ /clear  │         │/compact │
+  └────┬────┘         └────┬────┘         └────┬────┘         └────┬────┘
+       │                   │                   │                   │
+  seguir en la        jump back a        nueva sesion          summary del
+  misma sesion        un msg previo       con brief             historial,
+  (natural pero       y retry desde       destilado             seguir sobre
+  no siempre                                                    el summary
+  optimo)             se droopean los
+                      msgs posteriores
+
+                           ▼
+                  ┌───────────────────┐
+                  │     subagent      │
+                  │                   │
+                  │  delegas un chunk │
+                  │  a un agent con   │
+                  │  context limpio,  │
+                  │  solo traes el    │
+                  │  resultado final  │
+                  └───────────────────┘
+      </pre>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">1 · Continue</div>
+          <div class="concept-card-term">El default</div>
+          <p class="concept-card-desc">
+            Mandas otro mensaje en la misma sesion. El context crece. Es lo
+            correcto si la task actual sigue exactamente en la misma linea
+            y lo anterior va a seguir siendo util.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">2 · /rewind</div>
+          <div class="concept-card-term">esc esc</div>
+          <p class="concept-card-desc">
+            Jump back a un mensaje previo. Los mensajes posteriores (incluida
+            la vuelta del modelo) se dropean. Retry desde ese punto con otro
+            prompt. El context queda limpio.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">3 · /clear</div>
+          <div class="concept-card-term">Reset total</div>
+          <p class="concept-card-desc">
+            Nueva sesion, con un brief destilado de lo aprendido. Vos escribis
+            que importa llevarse. El context resultante es lo que VOS decidiste
+            relevante.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">4 · /compact</div>
+          <div class="concept-card-term">Summary</div>
+          <p class="concept-card-desc">
+            Claude resume la session y reemplaza el historial con ese summary.
+            Seguis trabajando "sobre" la sintesis. Lossy (confias en Claude
+            para decidir que importo) pero no te hace escribir nada.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">5 · Subagent</div>
+          <div class="concept-card-term">Delegar</div>
+          <p class="concept-card-desc">
+            Spawneas un agente con context limpio para hacer un chunk
+            (verificar algo, leer otro codebase, escribir docs). Vuelve
+            solo con el resultado final, sin todos los tool outputs
+            intermedios.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Decision tree: cual eligo</h2>
+      <p>
+        La pregunta que manda es simple:
+        <strong>¿que quiero hacer con el context que hay ahora?</strong>
+      </p>
+
+      <pre class="ascii-diagram">
+                        <span class="ascii-accent">¿que pasa ahora?</span>
+                              │
+     ┌────────────────────────┼────────────────────────┐
+     ▼                        ▼                        ▼
+  <span class="ascii-accent-alt">sigue bien,</span>              <span class="ascii-accent-alt">probe algo que</span>            <span class="ascii-accent-alt">task nueva o</span>
+  <span class="ascii-accent-alt">quiero seguir</span>            <span class="ascii-accent-alt">no funciono</span>              <span class="ascii-accent-alt">no relacionada</span>
+     │                        │                        │
+     ▼                        ▼                        ▼
+  continue                  rewind                   /clear
+  (mismo hilo)           (limpia el intento       (empezas fresh)
+                          fallido del context)
+
+                        <span class="ascii-accent">¿task grande con</span>
+                        <span class="ascii-accent">outputs intermedios?</span>
+                              │
+                ┌─────────────┴─────────────┐
+                ▼                           ▼
+         <span class="ascii-accent-alt">voy a necesitar</span>            <span class="ascii-accent-alt">solo me importa</span>
+         <span class="ascii-accent-alt">los outputs</span>                <span class="ascii-accent-alt">la conclusion</span>
+                │                           │
+                ▼                           ▼
+         mantener en main              subagent
+         context                       (context aparte)
+
+                        <span class="ascii-accent">¿context casi lleno</span>
+                        <span class="ascii-accent">pero la task sigue?</span>
+                              │
+                              ▼
+                          /compact
+                      (summary + seguir)
+      </pre>
+    </section>
+
+    <section>
+      <h2>La regla general: nueva task, nueva sesion</h2>
+      <p>
+        Tener 1M tokens de ventana no significa que debas usarla toda. La
+        regla default que conviene adoptar es <strong>"nueva task, nueva
+        sesion"</strong>. Cada task arranca con context limpio, y eso te
+        ahorra mas problemas de los que crea.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Sesion monstruo (mal)</div>
+          <p style="margin: 0;"><strong>Una sola sesion de 6 horas:</strong></p>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px; line-height: 1.55;">
+            Implementar auth → debuggear tests → leer docs de Stripe →
+            refactorear carrito → escribir docs → arreglar bug en emails.
+            <br /><br />
+            Para la hora 3 el contexto esta saturado con archivos que ya no
+            importan, intentos fallidos, tool outputs de grep que pedis en
+            la hora 1. El modelo empieza a "mezclar" tasks.
+          </p>
+        </div>
+        <div class="comparison-side good">
+          <div class="comparison-side-label">Una sesion por task (bien)</div>
+          <p style="margin: 0;"><strong>6 sesiones cortas:</strong></p>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px; line-height: 1.55;">
+            Cada task en su sesion propia. Entre una y otra, <code>/clear</code>
+            con un brief corto de lo importante que sobrevive ("estamos
+            refactorizando carrito, el constraint es X, el approach descartado
+            es Y").
+            <br /><br />
+            Cada sesion arranca limpia. El modelo solo ve lo que aplica a lo
+            que estas haciendo ahora.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>La zona gris: cuando continue es lo correcto</h2>
+      <p>
+        No todo pide sesion nueva. Hay casos donde ya tenes en el context
+        cosas que re-leer seria caro, y donde la task que sigue no es
+        super-intelligence-sensitive.
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Ejemplo clasico</div>
+        <p>
+          Acabas de implementar un feature con Claude. Leyo 8 archivos, hizo
+          los cambios, los tests pasan. Ahora queres <strong>docs</strong>
+          para ese feature.
+        </p>
+        <p>
+          Podrias hacer <code>/clear</code> y arrancar fresh. Pero entonces
+          Claude tiene que re-leer los 8 archivos → mas tokens, mas plata,
+          mas tiempo. Y escribir docs no es tan intelligence-sensitive como
+          el debugging.
+        </p>
+        <p>
+          <strong>Conclusion:</strong> continue. Seguis en la misma sesion,
+          le pedis docs. El context usado no molesta para esa task, y te
+          ahorras la relectura.
+        </p>
+      </div>
+
+      <p>
+        La heuristica es: <strong>¿lo que sigue es cognitivamente dificil?</strong>
+      </p>
+
+      <ul>
+        <li>Dificil (debugging raro, razonar cross-file, arquitectura) → considera reset aunque cueste re-leer.</li>
+        <li>Facil (docs, rename, formateo, commit message) → continue, aprovecha el contexto que ya esta.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Mental model: cada turno es un savepoint</h2>
+      <p>
+        Si venis de jugar RPGs, pensa cada turno como un savepoint. El modelo
+        termino, vos decidis: ¿guardo en este slot (continue), cargo un
+        savepoint anterior (rewind), empiezo una partida nueva con solo mis
+        items (clear), sintetizo la partida y sigo (compact), o mando un
+        NPC que va al dungeon y me trae el loot (subagent)?
+      </p>
+
+      <pre class="ascii-diagram">
+  turno 1 → turno 2 → turno 3 → turno 4 → <span class="ascii-accent">AHORA (decision point)</span>
+                                              │
+                                              ├─► continue  (turno 5 en mismo hilo)
+                                              │
+                                              ├─► rewind a turno 2  (dropea 3, 4)
+                                              │   → retry con mejor prompt
+                                              │
+                                              ├─► /clear  (nuevo hilo, brief tuyo)
+                                              │
+                                              ├─► /compact  (summary de 1-4, seguir)
+                                              │
+                                              └─► subagent  (chunk con context propio,
+                                                             vuelve con resultado)
+      </pre>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Habito que conviene entrenar</div>
+        <p>
+          Antes de escribir tu proximo mensaje, tomate 2 segundos. Mira las
+          5 opciones. La mayoria de las veces <strong>continue</strong> va a
+          ser la correcta — y esta bien. Pero entrenar el habito de pensarlo
+          hace que el 20% de las veces que NO es continue, te des cuenta
+          y elijas lo correcto.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Lo que viene</h2>
+      <p>
+        En la siguiente pagina vemos con mas profundidad la decision mas
+        importante de las 5: <strong>corregir vs. rewind</strong>. Tiene un
+        impacto enorme en la calidad del context y muy poca gente lo usa
+        bien.
+      </p>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Context rot</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Rewind vs corregir</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M06-01", "M06");
+    }
+  });
+</script>
+</body>
+</html>

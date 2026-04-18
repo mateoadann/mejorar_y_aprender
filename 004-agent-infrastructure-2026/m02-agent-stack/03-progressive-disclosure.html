@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Progressive disclosure de skills · Agent Infrastructure 2026</title>
+  <meta name="description" content="Tres niveles de disclosure para skills: index siempre cargado, manifest machine-readable, SKILL.md solo si un trigger matchea. Escala de 50 a 500 skills sin quemar tokens." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M02 · Agent Stack</span>
+    <h1>Progressive disclosure de skills</h1>
+    <p class="page-intro">
+      Si cargas todos los skills en cada run, desperdicias tokens y el modelo
+      performa peor. Progressive disclosure resuelve esto con tres niveles:
+      un indice corto siempre cargado, un manifest machine-readable y el
+      SKILL.md completo solo cuando un trigger matchea.
+    </p>
+  </section>
+
+  <article>
+
+    <!-- ============================================
+         SECCION 1: El problema
+         ============================================ -->
+    <section>
+      <h2>El problema: no podes cargar todo</h2>
+      <p>
+        Supongamos que tenes 50 skills armados: git-proxy, memory-manager,
+        skillforge, debug-flow, review-pr, deploy-check, etc. Cada uno es un
+        archivo markdown de 2000-5000 tokens. Cargarlos a todos en cada
+        request son <strong>100k+ tokens quemados</strong> antes de empezar.
+      </p>
+      <p>
+        Peor: hay evidencia de que la informacion en el medio de contextos
+        muy largos se pierde (<em>lost in the middle</em>). Cargar skills
+        que no vas a usar no solo desperdicia budget —degrada las respuestas
+        de los skills que si usas.
+      </p>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">Anti-patron clasico</div>
+        <p>
+          "Meto todos los skills en el system prompt, asi el modelo decide
+          cual usar". Suena razonable, es desastroso. El modelo performa
+          mejor con 3 skills relevantes que con 50 skills de los cuales 47
+          son ruido.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 2: Los 3 niveles
+         ============================================ -->
+    <section>
+      <h2>Tres niveles de disclosure</h2>
+      <p>
+        La idea es <strong>revelar informacion progresivamente</strong>. El
+        modelo ve solo los nombres y descripciones cortas hasta que un
+        trigger justifica cargar el skill completo.
+      </p>
+
+      <div class="diagram">
+        <div class="diagram-title">ARBOL DE DISCLOSURE</div>
+        <pre class="diagram-ascii accent">
+  +---------------------------------------------------+
+  |  NIVEL 1 · _index.md        SIEMPRE CARGADO       |
+  |  tokens: ~500                                     |
+  |  nombre + descripcion corta + trigger phrases     |
+  |  "git-proxy: ops seguras de git con dry-run"      |
+  |  "memory-manager: guardar/buscar en episodic"     |
+  |  "skillforge: crear nuevos skills"                |
+  +---------------------------------------------------+
+                          |
+                          | harness lee triggers
+                          v
+  +---------------------------------------------------+
+  |  NIVEL 2 · _manifest.jsonl  MACHINE-READABLE      |
+  |  tokens: 0  (no va al modelo, es para el harness) |
+  |  name, triggers, tools, preconditions,            |
+  |  constraints, category                            |
+  +---------------------------------------------------+
+                          |
+                          | si un trigger matchea...
+                          v
+  +---------------------------------------------------+
+  |  NIVEL 3 · SKILL.md         CARGA COMPLETA        |
+  |  tokens: 2000-5000                                |
+  |  instrucciones detalladas, ejemplos, edge cases,  |
+  |  plantillas, checklists                           |
+  +---------------------------------------------------+
+        </pre>
+        <div class="diagram-caption">
+          El modelo ve Nivel 1 siempre. El harness lee Nivel 2 para decidir.
+          Nivel 3 entra solo si hubo match.
+        </div>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Nivel 1</div>
+          <div class="concept-card-term"><code>_index.md</code></div>
+          <p class="concept-card-desc">
+            Siempre cargado en el context. Corto. Nombres, descripciones de
+            una linea, trigger phrases. Es el "menu" que el modelo ve.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-card-label">Nivel 2</div>
+          <div class="concept-card-term"><code>_manifest.jsonl</code></div>
+          <p class="concept-card-desc">
+            Para el harness, no para el modelo. Machine-readable: triggers,
+            tools, preconditions, constraints, category. Un skill por linea.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-card-label">Nivel 3</div>
+          <div class="concept-card-term"><code>SKILL.md</code></div>
+          <p class="concept-card-desc">
+            El archivo completo. Se carga SOLO si un trigger del manifest
+            matcheo la request. 2000-5000 tokens entran a la caja solo
+            cuando hace falta.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 3: El _index.md real
+         ============================================ -->
+    <section>
+      <h2>Ejemplo: un <code>_index.md</code> real</h2>
+      <p>
+        El indice es el unico skill-asset que <strong>siempre</strong> entra
+        al context. Por eso debe ser ultra-corto: el modelo solo necesita
+        saber que skills existen, no como funcionan.
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span>.agent/skills/_index.md</span>
+          <span>siempre cargado · ~500 tokens</span>
+        </div>
+<pre><code># Skills disponibles
+
+## git-proxy
+Operaciones seguras de git con dry-run y validacion de paths.
+Triggers: "commit", "push", "rebase", "cambios pendientes".
+
+## memory-manager
+Guardar y buscar entradas en episodic/semantic memory.
+Triggers: "recorda que", "acordate de", "que aprendimos de".
+
+## skillforge
+Crear un skill nuevo siguiendo la convencion del repo.
+Triggers: "crear skill", "nuevo skill", "documentar patron".
+
+## debug-flow
+Investigacion metodica de bugs: repro, hipotesis, fix, regression test.
+Triggers: "bug", "error", "no funciona", "falla".
+
+## review-pr
+Review de pull requests: scope, coverage, seguridad, perfomance.
+Triggers: "review PR", "revisar cambios", "aprobar MR".
+</code></pre>
+      </div>
+
+      <p>
+        Es un menu, no una enciclopedia. El modelo lee "ah, hay un
+        debug-flow con triggers bug/error", y el harness se encarga de
+        cargar <code>SKILL.md</code> completo cuando matchee.
+      </p>
+    </section>
+
+    <!-- ============================================
+         SECCION 4: Los campos del manifest
+         ============================================ -->
+    <section>
+      <h2>Los campos del <code>_manifest.jsonl</code></h2>
+      <p>
+        El manifest es machine-readable, no va al modelo. Una linea JSON
+        por skill. Los 6 campos clave:
+      </p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Tipo</th>
+              <th>Que hace</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>name</code></td>
+              <td>string</td>
+              <td>Identifier unico del skill, matchea la carpeta</td>
+            </tr>
+            <tr>
+              <td><code>triggers</code></td>
+              <td>string[]</td>
+              <td>Palabras o frases que disparan el load. Case-insensitive</td>
+            </tr>
+            <tr>
+              <td><code>tools</code></td>
+              <td>string[]</td>
+              <td>Que tools puede usar el skill (bash, write_file, etc)</td>
+            </tr>
+            <tr>
+              <td><code>preconditions</code></td>
+              <td>string[]</td>
+              <td>Que debe existir en el workspace para correr el skill</td>
+            </tr>
+            <tr>
+              <td><code>constraints</code></td>
+              <td>string[]</td>
+              <td>Limites duros (ej: "no tocar archivos en prod/")</td>
+            </tr>
+            <tr>
+              <td><code>category</code></td>
+              <td>string</td>
+              <td>Para agrupar y filtrar (git, memory, testing, etc)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span>.agent/skills/_manifest.jsonl</span>
+          <span>una linea por skill</span>
+        </div>
+<pre><code data-lang="js">{"name":"git-proxy","triggers":["commit","push","rebase"],"tools":["bash"],"preconditions":["git repo"],"constraints":["dry-run first"],"category":"git"}
+{"name":"memory-manager","triggers":["recorda","acordate","que aprendimos"],"tools":["read_file","write_file"],"preconditions":[],"constraints":[],"category":"memory"}
+{"name":"debug-flow","triggers":["bug","error","no funciona","falla"],"tools":["bash","read_file","write_file"],"preconditions":[],"constraints":["repro first"],"category":"testing"}</code></pre>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 5: Escalamiento
+         ============================================ -->
+    <section>
+      <h2>Escalamiento: de 50 a 500 skills</h2>
+      <p>
+        Progressive disclosure con triggers por keyword funciona bien hasta
+        cierto tamano. Cuando el set de skills crece, conviene cambiar la
+        estrategia de matching.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side good">
+          <div class="comparison-side-label">~50 skills</div>
+          <h4>Keyword trigger matching</h4>
+          <ul>
+            <li>Simple y predecible</li>
+            <li>Cero dependencias adicionales</li>
+            <li>Debuggeable con la vista: leer <code>_index.md</code></li>
+            <li>Falsos positivos bajos si elegis bien las keywords</li>
+            <li>Funciona sin GPU/embeddings</li>
+          </ul>
+        </div>
+        <div class="comparison-side good">
+          <div class="comparison-side-label">~500 skills</div>
+          <h4>Semantic matching con embeddings</h4>
+          <ul>
+            <li>Embeddings de descripcion + trigger phrases</li>
+            <li>Vector search sobre la request</li>
+            <li>Tolera sinonimos y parafrasis</li>
+            <li>Requiere infra: index, refresh, eval</li>
+            <li>Top-K de matches + threshold de similarity</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Cuando saltar</div>
+        <p>
+          La transicion natural es cuando empezas a ver falsos negativos
+          (skills relevantes que no disparan) o cuando el <code>_index.md</code>
+          ya es demasiado largo para leer de un vistazo. Mientras tanto,
+          keywords alcanzan.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 6: Cierre
+         ============================================ -->
+    <section>
+      <h2>Para llevarte</h2>
+      <div class="callout callout-success">
+        <div class="callout-title">Cuatro ideas clave</div>
+        <ul>
+          <li>
+            Cargar todos los skills en cada run es <strong>desperdicio +
+            ruido</strong>. Siempre.
+          </li>
+          <li>
+            Tres niveles: <code>_index.md</code> (always, ~500 tok),
+            <code>_manifest.jsonl</code> (para el harness),
+            <code>SKILL.md</code> (solo si matchea).
+          </li>
+          <li>
+            El manifest tiene 6 campos: name, triggers, tools,
+            preconditions, constraints, category.
+          </li>
+          <li>
+            Keywords alcanzan hasta ~50 skills. Arriba de eso, pasar a
+            embeddings.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="02-context-budget.html" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Context budget: asignacion de tokens</span>
+    </a>
+    <a data-nav-next href="04-salience-scoring.html" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Salience scoring: que entrada surge primero</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M02-03", "M02");
+    }
+  });
+</script>
+</body>
+</html>

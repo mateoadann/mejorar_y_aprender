@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Que es infraestructura de agentes · Agent Infrastructure 2026</title>
+  <meta name="description" content="El modelo es commodity. Lo que acumula valor es la infraestructura alrededor: memoria, skills, protocolos y knowledge layer. La tesis central del curso." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M00 · Fundamentos</span>
+    <h1>Que es infraestructura de agentes</h1>
+    <p class="page-intro">
+      Los agentes dejaron de ser un LLM con un prompt gigante. Son sistemas, y
+      como todo sistema, tienen infraestructura. Entender esa infraestructura
+      es lo que diferencia a quien juega con agentes de quien los construye en serio.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>El problema: agentes stateless</h2>
+      <p>
+        Un LLM puro es una funcion pura: le metes texto, te devuelve texto. No
+        tiene memoria entre llamadas. Cada conversacion <strong>empieza de cero</strong>,
+        como un empleado con amnesia que olvida todo al salir de la oficina. Le
+        explicas tu negocio a las 9am, a las 11am ya no te conoce.
+      </p>
+      <p>
+        Eso funciona para un chat casual. No funciona para automatizar un flujo
+        real de trabajo donde el agente tiene que acordarse de tus clientes, de
+        las decisiones pasadas, de los errores que ya cometio, de la voz de tu
+        marca, del stack que usas, de los casos borde que descubriste la semana
+        pasada.
+      </p>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">La fragilidad oculta</div>
+        <p>
+          Sin infraestructura, cada conversacion con el agente es una apuesta: tal
+          vez funciona, tal vez no. Vos le das context en el prompt, el modelo
+          hace su mejor intento, y la proxima vez tenes que explicarle todo otra
+          vez. Eso no escala a 10 tareas, menos a 100.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>La tesis: no construyas el modelo, construi alrededor</h2>
+      <p>
+        El modelo es <strong>commodity</strong>. Claude, GPT, Gemini, Llama —
+        todos se van a parecer cada vez mas en capacidad raw. Migrar de uno a
+        otro es swappear un parametro. Lo que <em>no</em> se swappea facil es
+        todo lo que rodea al modelo.
+      </p>
+
+      <blockquote>
+        "Lo que acumula valor no es el modelo, son los skills, la memoria y los
+        protocolos." — Garry Tan, 13 de abril de 2026.
+      </blockquote>
+
+      <p>
+        Esa frase resume la tesis del curso. El valor real no vive en los
+        billones de parametros del transformer. Vive en el <strong>andamiaje</strong>
+        que le ponemos alrededor para que el agente tenga continuidad, contexto
+        y criterio a lo largo del tiempo.
+      </p>
+    </section>
+
+    <section>
+      <h2>La piramide invertida del valor</h2>
+      <p>
+        La intuicion mas util para agarrar esta idea es pensar el stack al reves.
+        El modelo abajo, chico y reemplazable. La infraestructura arriba,
+        ancha y especifica de tu negocio. Esa es la parte que compone.
+      </p>
+
+      <pre class="ascii-diagram">
+   <span class="ascii-accent">Skills + Memoria + Protocolos + Knowledge Layer</span>
+   ==================================================
+    \                                               /
+     \       Lo que acumula valor con el tiempo    /
+      \     (especifico de tu negocio, tuyo)      /
+       \                                         /
+        \                                       /
+         \_____________________________________/
+          \                                   /
+           \        Harness del agente       /
+            \      (MCP, hooks, skills)     /
+             \                             /
+              \___________________________/
+               \                         /
+                \      Modelo LLM       /
+                 \    (commodity)      /
+                  \___________________/
+                       <span class="ascii-dim">swappable</span>
+      </pre>
+
+      <p>
+        Fijate que la base <em>se achica</em> hacia abajo. El modelo importa,
+        obvio, pero su forma es reemplazable. Lo de arriba es lo que es tuyo, lo
+        que te da ventaja competitiva, lo que hace que tu agente funcione mejor
+        el mes 3 que el mes 1.
+      </p>
+    </section>
+
+    <section>
+      <h2>Las 4 piezas de la infraestructura</h2>
+      <p>
+        Todo el resto del curso es desarmar esas 4 piezas una por una. El teaser:
+      </p>
+
+      <div class="layer-stack">
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">1. Knowledge Layer (KBL + BF)</div>
+            <div class="layer-stack-desc">
+              Lo que el agente <strong>sabe</strong>. Articulos, notas, decisiones,
+              identidad de marca. Estructurado, versionado, curado.
+            </div>
+          </div>
+          <span class="badge badge-cyan">Articulo 1</span>
+        </div>
+
+        <div class="layer-stack-item violet">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">2. Memoria (4 capas)</div>
+            <div class="layer-stack-desc">
+              Lo que el agente <strong>recuerda</strong>. Working, episodic,
+              semantic y personal. Cada capa con frecuencia y proposito distintos.
+            </div>
+          </div>
+          <span class="badge badge-violet">Articulo 2</span>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">3. Skills</div>
+            <div class="layer-stack-desc">
+              Lo que el agente <strong>sabe hacer</strong>. Procedimientos
+              reusables, aprendidos, con self-rewrite cuando fallan.
+            </div>
+          </div>
+          <span class="badge badge-cyan">Articulo 3</span>
+        </div>
+
+        <div class="layer-stack-item violet">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">4. Protocolos</div>
+            <div class="layer-stack-desc">
+              Lo que el agente <strong>puede hacer</strong>. Permisos, schemas,
+              MCP servers, integraciones con el mundo exterior.
+            </div>
+          </div>
+          <span class="badge badge-violet">Articulo 4</span>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-title">La clave que va a aparecer siempre</div>
+        <p>
+          Estas 4 piezas no son silos. Se <strong>alimentan entre si</strong>.
+          La memoria genera skills, los skills generan protocolos, los protocolos
+          devuelven datos a la memoria. Ese sistema de feedback loops es lo que
+          hace que la cosa <em>componga</em>. El M07 integra los 6 loops que te
+          dan compounding real.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Por que ahora (abril 2026)</h2>
+      <p>
+        Esto no es futurologia. En los ultimos 6 meses se consolidaron tres cosas
+        que antes eran experimento:
+      </p>
+
+      <ul>
+        <li>
+          <strong>MCP se volvio standard.</strong> Anthropic, OpenAI, casi todos
+          los hosts grandes hablan MCP. Los protocolos dejaron de ser ad-hoc.
+        </li>
+        <li>
+          <strong>Managed Agents y primitives estables.</strong> Abril 2026, public
+          beta. Sessions, environments, agents como ciudadanos de primera clase.
+        </li>
+        <li>
+          <strong>Memoria persistente como producto.</strong> Cognee, Mem0, Zep,
+          Engram. Todos maduraron hasta ser drop-in.
+        </li>
+      </ul>
+
+      <p>
+        Lo que faltaba era <strong>el mapa mental que integra todo</strong>.
+        Eso es lo que armamos en este curso.
+      </p>
+    </section>
+
+    <section>
+      <h2>Mini-resumen</h2>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Problema</div>
+          <div class="concept-card-term">Agentes stateless</div>
+          <p class="concept-card-desc">
+            Sin memoria entre sesiones. Cada conversacion arranca de cero.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Tesis</div>
+          <div class="concept-card-term">Construi alrededor</div>
+          <p class="concept-card-desc">
+            El modelo es commodity. La infraestructura es el diferencial.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Piezas</div>
+          <div class="concept-card-term">Knowledge + Memoria + Skills + Protocolos</div>
+          <p class="concept-card-desc">
+            Cuatro capas que se refuerzan mutuamente y componen con el tiempo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Inicio</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Las 4 capas</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M00-00", "M00");
+    }
+  });
+</script>
+</body>
+</html>

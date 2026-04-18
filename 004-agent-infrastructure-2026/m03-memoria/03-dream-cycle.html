@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dream cycle: compresion nocturna · Agent Infrastructure 2026</title>
+  <meta name="description" content="Un cron que corre de madrugada y consolida el dia de logs crudos en lecciones destiladas. Deteccion de patterns, promocion a semantic y decay con archivado: el ciclo que hace que la memoria del agente componga en vez de pudrirse." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M03 · Memoria 4 capas</span>
+    <h1>Dream cycle: compresion nocturna</h1>
+    <p class="page-intro">
+      Se llama "dream cycle" porque corre mientras nadie mira (cron 3am) y
+      comprime el dia de logs crudos en lecciones destiladas — igual que el
+      sueno consolida lo que el cerebro vivio durante el dia. Sin este ciclo,
+      la memoria del agente se pudre en vez de componer.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>La metafora biologica no es decorativa</h2>
+      <p>
+        En humanos, el sueno REM consolida la memoria del dia: lo importante
+        pasa a memoria de largo plazo, lo irrelevante se descarta, los
+        patterns se abstraen. Si no dormis, tu aprendizaje del dia se evapora.
+      </p>
+      <p>
+        Los agentes tienen el mismo problema. Si episodic crece
+        indefinidamente <em>sin consolidacion</em>, termina siendo un
+        landfill: ruidoso, pesado y tan caro de consultar que no aporta. El
+        dream cycle hace tres operaciones cada noche para evitar ese destino.
+      </p>
+    </section>
+
+    <section>
+      <h2>Las tres operaciones del ciclo</h2>
+
+      <pre class="ascii-diagram">
+                  <span class="ascii-accent">DREAM CYCLE (3 am)</span>
+          ────────────────────────────────
+
+┌─────────────────────────────────────────────────────────┐
+│  1. DETECCION de patterns recurrentes                   │
+│     clusteriza entries por (skill, action)              │
+│     si aparece 2+ veces ─► boost salience               │
+│                           set recurrence_count          │
+├─────────────────────────────────────────────────────────┤
+│  2. PROMOCION a semantic                                │
+│     entries con salience &gt;= 7.0                         │
+│     ─► append a LESSONS.md                              │
+│     (nada de curado manual)                             │
+├─────────────────────────────────────────────────────────┤
+│  3. DECAY + archive                                     │
+│     entries de &gt; 90 dias con salience &lt; 2.0             │
+│     ─► movidas a episodic/snapshots/                    │
+│     ─► git commit                                       │
+│     (no se borran, se archivan)                         │
+└─────────────────────────────────────────────────────────┘
+      </pre>
+    </section>
+
+    <section>
+      <h2>Operacion 1 — Deteccion</h2>
+      <p>
+        El script recorre las entradas nuevas de las ultimas 24h y las
+        agrupa por <code>(skill, action)</code>. Si un par
+        <code>(skill, action)</code> aparece dos o mas veces, pasan dos cosas:
+      </p>
+      <ul>
+        <li>
+          Se incrementa un contador <code>recurrence_count</code> en todas las
+          entradas del cluster.
+        </li>
+        <li>
+          Se da un <em>boost</em> al <code>salience</code> de esas entradas.
+          Lo recurrente importa mas que lo aislado.
+        </li>
+      </ul>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Por que recurrencia = salience</div>
+        <p>
+          Un error que ocurre una vez puede ser mala suerte. El mismo error
+          tres veces es un <em>pattern</em>. Los patterns merecen salir
+          primero durante el retrieval porque tienen mas probabilidad de
+          volver a pasar.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Operacion 2 — Promocion</h2>
+      <p>
+        Este es el paso que convierte episodic en semantic. El script filtra
+        las entradas con <code>salience &gt;= 7.0</code> (umbral
+        configurable) y las escribe como lecciones en
+        <code>memory/semantic/LESSONS.md</code>.
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header">Pseudocodigo de la promocion</div>
+        <pre><code data-lang="python"># Ilustrativo. El auto_dream.py real hace esto y mas.
+for entry in recent_entries:
+    if entry.salience &gt;= PROMOTION_THRESHOLD:
+        lesson = distill(entry.reflection)
+        append_to("memory/semantic/LESSONS.md", lesson, area=entry.skill)
+        entry.promoted = True
+</code></pre>
+      </div>
+
+      <div class="callout callout-success">
+        <div class="callout-title">Lo clave: no tenes que curar a mano</div>
+        <p>
+          La promocion es automatica. El umbral y los pesos de salience son
+          configurables, pero una vez los ajustas, tu LESSONS.md crece solo.
+          Eso es lo que convierte al agente en un sistema que
+          <em>compone</em> con el tiempo en vez de resetearse cada semana.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Operacion 3 — Decay + archive (el circuit breaker)</h2>
+      <p>
+        La tercera operacion es la mas importante para la <em>salud</em> del
+        sistema a largo plazo, y la que mas gente olvida implementar. El
+        algoritmo:
+      </p>
+
+      <pre class="ascii-diagram">
+para cada entry en AGENT_LEARNINGS.jsonl:
+  si <span class="ascii-accent">age_days &gt; 90</span>  y  <span class="ascii-accent">salience &lt; 2.0</span>:
+      mover entry a episodic/snapshots/YYYY-MM/batch-N.jsonl
+      remover entry del archivo activo
+      git commit "archive: N entries from &lt;rango de fechas&gt;"
+      </pre>
+
+      <p>
+        Dos reglas que parecen obvias pero no lo son:
+      </p>
+      <ul>
+        <li>
+          <strong>Se archiva, no se borra.</strong> Todo lo que sale del
+          archivo activo va a <code>snapshots/</code> y se commitea a git.
+          Siempre podes ir a buscarlo.
+        </li>
+        <li>
+          <strong>Solo se toca lo viejo Y poco relevante.</strong> Una entrada
+          de hace 2 anos con salience 9 se queda. Una entrada de hace 1 mes
+          con salience 1 tambien (todavia es joven). El decay cortea solo el
+          ruido antiguo.
+        </li>
+      </ul>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">Por que el decay es un circuit breaker</div>
+        <p>
+          Sin decay, una <em>bad lesson</em> (una generalizacion equivocada)
+          se queda para siempre, y peor: alimenta skills que generan mas
+          episodios apoyados en esa leccion mala. El decay rompe ese loop de
+          amplificacion de errores. Es lo que te separa de un agente que se
+          convence de teorias conspirativas propias.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Tambien archiva WORKSPACE stale</h2>
+      <p>
+        Como bonus, el mismo cron chequea la working memory:
+      </p>
+      <ul>
+        <li>
+          Si <code>memory/working/WORKSPACE.md</code> no fue tocado en 2+
+          dias, lo archiva a <code>episodic/snapshots/</code> y lo deja
+          vacio.
+        </li>
+      </ul>
+      <p>
+        Esto cubre el caso clasico en que te olvidaste de cerrar una tarea y
+        el agente se despierta 3 dias despues creyendo que sigue en ella (el
+        bug del <em>stale workspace</em> que vimos en la pagina 00 del
+        modulo).
+      </p>
+    </section>
+
+    <section>
+      <h2>El cron real</h2>
+
+      <div class="code-block">
+        <div class="code-block-header">crontab — una linea</div>
+        <pre><code data-lang="bash">0 3 * * * cd /path/to/project &amp;&amp; python .agent/memory/auto_dream.py &gt;&gt; .agent/memory/dream.log 2&gt;&amp;1
+</code></pre>
+      </div>
+
+      <p>
+        Lectura: <em>a las 3:00 de cada dia, corre
+        <code>auto_dream.py</code> y appendea stdout + stderr al log</em>.
+        Nada exotico. Un cron simple y un script que hace las 3 operaciones.
+      </p>
+
+      <p>
+        Para chequear que el ciclo esta corriendo sano:
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header">Check rapido del log</div>
+        <pre><code data-lang="bash">tail -5 .agent/memory/dream.log
+# dream cycle 2026-04-14 03:00:02: promoted 2, decayed 7, kept 31
+# dream cycle 2026-04-15 03:00:01: promoted 1, decayed 4, kept 33
+# dream cycle 2026-04-16 03:00:03: promoted 3, decayed 12, kept 30
+# dream cycle 2026-04-17 03:00:02: promoted 0, decayed 5, kept 32
+</code></pre>
+      </div>
+
+      <p>
+        Tres numeros para interpretar: <strong>promoted</strong> = cuantas
+        lecciones subieron a semantic, <strong>decayed</strong> = cuantas
+        viejas se archivaron, <strong>kept</strong> = cuantas se quedan en
+        episodic activo. Si promoted es 0 dias seguidos, el umbral esta muy
+        alto; si decayed crece sin parar, estas generando mucho ruido.
+      </p>
+    </section>
+
+    <section>
+      <h2>git log de memory/ = autobiografia del agente</h2>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">El detalle que casi nadie usa</div>
+        <p>
+          Si committeas <code>memory/</code> al repo (cosa que deberias), el
+          <code>git log --oneline memory/</code> se convierte en la
+          <strong>autobiografia</strong> del agente: cuando aprendio que,
+          cuando revisitaste una decision, cuando archivaste ruido. Con un
+          git blame sabes <em>exactamente</em> de que episodio salio cada
+          leccion.
+        </p>
+      </div>
+
+      <pre class="ascii-diagram">
+$ git log --oneline memory/ | head
+<span class="ascii-accent">a3f9b1c</span> archive: 5 stale entries from 2026-01
+<span class="ascii-accent">7e2d4a8</span> promote: "Guardar code_verifier ANTES del redirect"
+<span class="ascii-accent">c11ab02</span> decision: session store -&gt; Redis (ver DECISIONS.md)
+<span class="ascii-accent">9fe0d57</span> archive: WORKSPACE.md (stale 3 dias) -&gt; snapshots/
+<span class="ascii-accent">2b6c3e1</span> promote: "Nunca force-push a branch compartido"
+      </pre>
+    </section>
+
+    <section>
+      <h2>El ciclo del dia, visto completo</h2>
+
+      <pre class="ascii-diagram">
+   <span class="ascii-accent">DIA</span>                                <span class="ascii-accent-alt">NOCHE (3am)</span>                     <span class="ascii-accent">MANANA</span>
+
+┌────────────────────┐               ┌─────────────────────┐           ┌───────────────────┐
+│ agente trabaja:    │               │ dream cycle corre:  │           │ agente retoma con:│
+│  - tool calls      │  ───────────► │  - detecta patterns │  ───────► │  - episodic mas   │
+│  - decisiones      │   logs crudos │  - promueve         │  consolid │    salience-scored│
+│  - fallos          │   acumulan    │  - decay + archive  │   ado     │  - LESSONS nuevas │
+│  - reflections     │               │  - git commit       │           │  - WORKSPACE limpio│
+└────────────────────┘               └─────────────────────┘           └───────────────────┘
+</pre>
+
+      <p>
+        De nuevo, la idea clave: la memoria no es un almacen, es un
+        <strong>proceso</strong>. Episodic captura crudo, dream cycle
+        consolida, semantic guarda las abstracciones, working mantiene el
+        estado vivo. Quitale el dream cycle y el sistema entero se pudre en
+        semanas.
+      </p>
+    </section>
+
+    <section>
+      <h2>Mini-resumen</h2>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Cuando corre</div>
+          <div class="concept-card-term">Cron 3am</div>
+          <p class="concept-card-desc">
+            Una vez por dia. Asincrono, no bloquea al agente en horas de
+            trabajo.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Que hace</div>
+          <div class="concept-card-term">Detect / promote / decay</div>
+          <p class="concept-card-desc">
+            Tres operaciones, en ese orden: detecta patterns, promueve a
+            semantic, archiva lo viejo e irrelevante.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Por que importa</div>
+          <div class="concept-card-term">Circuit breaker</div>
+          <p class="concept-card-desc">
+            El decay es lo que evita que lecciones malas se amplifiquen.
+            Sin eso, el agente se convence de sus propios errores.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Semantic memory</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Siguiente</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M03-03", "M03");
+    }
+  });
+</script>
+</body>
+</html>

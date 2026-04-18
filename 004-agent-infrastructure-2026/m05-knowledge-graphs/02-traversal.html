@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traversal: BFS, DFS, Dijkstra, A*, Bidirectional · Agent Infrastructure 2026</title>
+  <meta name="description" content="Una vez que el index te llevo cerca, hay que caminar el grafo. El algoritmo que elegis cambia el costo en ordenes de magnitud. Cinco algoritmos clasicos, cuando usar cada uno, y por que bidirectional search reduce 15.6B a 250K." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M05 · Knowledge Graphs</span>
+    <h1>Traversal: BFS, DFS, Dijkstra, A*, Bidirectional</h1>
+    <p class="page-intro">
+      El index te deposita en la puerta del grafo. Lo que sigue es caminarlo.
+      El algoritmo que elegis es la diferencia entre 50ms y 50 minutos. Vemos
+      los cinco clasicos, cuando usar cada uno, y el truco que reduce un query
+      de 6 hops de 15.6 billion a 250K operaciones.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Que significa "traversal"</h2>
+      <p>
+        Los indexes sirven para <em>empezar</em>. Si pregunto "¿donde nacio
+        Einstein?" el index resuelve eso de una. Pero si pregunto "dame todas
+        las personas a 3 saltos de Einstein via KNOWS que trabajan en una
+        empresa de tech", el index me da el primer salto y despues tengo que
+        <strong>caminar</strong> vecino por vecino, decidiendo a cada paso
+        para donde ir.
+      </p>
+      <p>
+        Esa decision — a que vecino visitar proximo, cual guardar para mas
+        tarde, cuando cortar — es lo que define el <em>algoritmo de traversal</em>.
+        Cambiar de algoritmo sin tocar los indexes puede bajar una query de
+        minutos a milisegundos.
+      </p>
+    </section>
+
+    <section>
+      <h2>BFS — Breadth-First Search</h2>
+      <p>
+        La forma mas simple: explorar en <strong>capas</strong>. Primero todos
+        los vecinos directos. Despues todos los vecinos-de-vecinos. Despues
+        los de esos. Se mantiene una <em>queue</em> (FIFO).
+      </p>
+
+      <pre><code data-lang="python"># Pseudocodigo conceptual (no ejecutable, estructural)
+def bfs(graph, start, max_depth):
+    visited = {start}
+    parent = {start: None}
+    queue = [(start, 0)]            # (node, depth)
+
+    while queue:
+        node, depth = queue.pop(0)  # FIFO
+        if depth == max_depth:
+            continue
+        for neighbor in graph.neighbors(node):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                parent[neighbor] = node
+                queue.append((neighbor, depth + 1))
+    return parent</code></pre>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Usalo cuando</div>
+        <p>
+          Querés el <strong>shortest path</strong> en un grafo sin pesos,
+          o explorar todo lo que esta a N hops exactos. El orden por capas
+          garantiza que el primer match encontrado es el mas cercano.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>DFS — Depth-First Search</h2>
+      <p>
+        El opuesto de BFS. <strong>Clavás profundo</strong> primero: elegis un
+        vecino, bajás, bajás, bajás, hasta que no podés mas o llegás al target.
+        Despues <em>backtrack</em>: volvés un paso y probás otra rama. Se usa
+        un <em>stack</em> (LIFO) en vez de queue.
+      </p>
+
+      <pre><code data-lang="python"># DFS conceptual con stack explicito
+def dfs(graph, start, target, max_depth):
+    stack = [(start, [start])]   # (node, path-so-far)
+
+    while stack:
+        node, path = stack.pop()  # LIFO
+        if node == target:
+            return path
+        if len(path) >= max_depth:
+            continue
+        for neighbor in graph.neighbors(node):
+            if neighbor not in path:
+                stack.append((neighbor, path + [neighbor]))
+    return None</code></pre>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">Cuidado con KG</div>
+        <p>
+          En un grafo denso, sin <code>max_depth</code>, DFS puede
+          <em>desaparecer</em> en cadenas larguisimas antes de probar
+          otra rama. Siempre poné un limite. La ventaja de DFS es la
+          memoria: solo guarda el camino actual (no el frontier entero como BFS).
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Dijkstra — shortest path con pesos</h2>
+      <p>
+        Cuando las aristas tienen <strong>pesos</strong> (mas fuerte / mas debil,
+        distancia, confianza), BFS no sirve: la ruta mas corta en numero de
+        hops puede no ser la mas barata en peso total. Dijkstra resuelve eso
+        con una <em>min-priority queue</em> ordenada por distancia acumulada.
+      </p>
+
+      <pre><code data-lang="python"># Dijkstra con heap (priority queue)
+def dijkstra(graph, start, target):
+    dist = {start: 0}
+    heap = [(0, start)]   # (cost, node)
+
+    while heap:
+        cost, node = pop_min(heap)   # extract cheapest
+        if node == target:
+            return cost
+        if cost > dist[node]:
+            continue                  # stale entry, skip
+        for neighbor, weight in graph.edges(node):
+            new_cost = cost + weight
+            if new_cost < dist.get(neighbor, INF):
+                dist[neighbor] = new_cost
+                push(heap, (new_cost, neighbor))
+    return INF</code></pre>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">El invariante clave</div>
+        <p>
+          En Dijkstra, el nodo mas barato conocido <strong>siempre se expande
+          primero</strong>. Esto garantiza que cuando extraes el target, ese
+          costo es optimo — ningun camino mas barato puede llegar despues,
+          porque todos los nodos abiertos cuestan mas. Con binary heap cada
+          pop/push es O(log V).
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>A* — Dijkstra guiado por heuristica</h2>
+      <p>
+        Dijkstra expande en todas las direcciones por igual. Si sabés aproximadamente
+        donde esta el target, podés <em>sesgar</em> la busqueda hacia alla.
+        A* hace eso sumando una <strong>heuristica</strong> al costo real:
+      </p>
+
+      <pre class="ascii-diagram">
+    Dijkstra:           priority = g(n)
+    A*:                 priority = g(n) + h(n)
+
+       g(n) = costo real desde start hasta n
+       h(n) = <span class="ascii-accent">estimacion</span> del costo de n hasta target
+      </pre>
+
+      <p>
+        Heuristicas comunes en KG:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Ontological distance</strong>: cuantos hops de clase-a-clase
+          hay entre la clase de n y la del target. Si ambas son subclass de
+          "Person", h = 0. Si una es "City" y la otra "Drug", h es alto.
+        </li>
+        <li>
+          <strong>Embedding distance</strong>: cada nodo tiene un vector (ver M05-04),
+          la distancia euclidea entre vectores estima disimilitud semantica.
+        </li>
+        <li>
+          <strong>Domain-specific</strong>: en grafos geograficos, distancia
+          euclidea de coordenadas. En bio, similitud de secuencias.
+        </li>
+      </ul>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">Admisibilidad</div>
+        <p>
+          A* devuelve el <em>optimal path</em> <strong>solo si</strong> la
+          heuristica es <em>admissible</em>: <code>h(n)</code> nunca sobrestima
+          el costo real. Si tu heuristica es optimista (siempre menor o igual
+          al real), A* es correcto. Si sobrestima, podés terminar con un path
+          sub-optimo. No es trivial diseñarla.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Bidirectional Search — el truco magico</h2>
+      <p>
+        Todo lo anterior expande desde el start hacia afuera. Si sabés cual es
+        el target, ¿por que no expandir desde <strong>los dos extremos al
+        mismo tiempo</strong>? Cuando los dos frontiers se cruzan, conectás
+        las rutas.
+      </p>
+
+      <pre class="ascii-diagram">
+  Unidireccional (depth d, branching k):
+       <span class="ascii-accent">●</span> ──▶ ○ ──▶ ○ ──▶ ○ ──▶ ○ ──▶ <span class="ascii-accent-alt">●</span>
+       |←──────── explora  k^d ────────────→|
+
+  Bidireccional (cada lado explora d/2):
+       <span class="ascii-accent">●</span> ──▶ ○ ──▶ ○  <span class="ascii-accent">◀──</span>  ○ ◀── ○ ◀── <span class="ascii-accent-alt">●</span>
+       |←── k^(d/2) ──→|  |←── k^(d/2) ──→|
+
+  Costo total: <span class="ascii-accent">2 × k^(d/2)</span>   en vez de k^d
+      </pre>
+
+      <p>
+        La magia esta en el exponente. Veamos los numeros para k=50 y d=6
+        (el query de 6 hops del M05-00):
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Unidireccional</div>
+          <div class="concept-card-term">50⁶ = 15.625M</div>
+          <p class="concept-card-desc">
+            15.625 <strong>billion</strong> de operaciones. Imposible.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Bidireccional</div>
+          <div class="concept-card-term">2 × 50³ = 250.000</div>
+          <p class="concept-card-desc">
+            250K operaciones. Manejable en milisegundos.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Reduccion</div>
+          <div class="concept-card-term">62.500x</div>
+          <p class="concept-card-desc">
+            Cuatro+ ordenes de magnitud. Solo por cambiar el algoritmo.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-success">
+        <div class="callout-title">Regla practica</div>
+        <p>
+          En cada iteracion, expandí <strong>el frontier mas chico</strong>.
+          Si la expansion desde el start tiene 200 nodos pendientes y la del
+          target tiene 50, expandí la del target. Mantener los dos frontiers
+          balanceados es lo que garantiza el speedup.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Los 5 algoritmos, en comparacion</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Algoritmo</th>
+              <th>Estructura</th>
+              <th>Usás cuando</th>
+              <th>NO usás cuando</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>BFS</strong></td>
+              <td>Queue (FIFO)</td>
+              <td>Shortest path sin pesos, explore N hops</td>
+              <td>Hay pesos en las aristas</td>
+            </tr>
+            <tr>
+              <td><strong>DFS</strong></td>
+              <td>Stack (LIFO)</td>
+              <td>Baja memoria, hay que encontrar <em>cualquier</em> path</td>
+              <td>Grafo denso sin max_depth, queres optimo</td>
+            </tr>
+            <tr>
+              <td><strong>Dijkstra</strong></td>
+              <td>Min-heap</td>
+              <td>Aristas con pesos, queres path mas barato</td>
+              <td>Tenés buena heuristica (usá A*)</td>
+            </tr>
+            <tr>
+              <td><strong>A*</strong></td>
+              <td>Min-heap + h(n)</td>
+              <td>Tenés heuristica admisible al target</td>
+              <td>No sabés el target o h() no es admisible</td>
+            </tr>
+            <tr>
+              <td><strong>Bidirectional</strong></td>
+              <td>Dos frontiers</td>
+              <td>Sabés start y target, grafo no super-irregular</td>
+              <td>Target es un set amplio, no un nodo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Los 5 side-by-side</h2>
+      <p>
+        Pensá que cada uno arranca en el mismo nodo S, busca el mismo target T,
+        y este es el patron de exploracion que dibujan:
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">BFS</span> (capas concentricas)       <span class="ascii-accent">DFS</span> (clava profundo)
+       ○ ○ ○                          S
+     ○ ○ S ○ ○                        │
+       ○ ○ ○                          ○
+                                      │
+                                      ○
+                                      │
+                                      T
+
+  <span class="ascii-accent-alt">Dijkstra</span> (circulo por costo)   <span class="ascii-accent-alt">A*</span> (elipse hacia T)
+       cost=2
+     cost=1 cost=3                    S ○○○○○○○○○
+     S  cost=2  T                         ○○○○○○○○○○
+     cost=1 cost=3                              ○○○○○ T
+       cost=2
+
+  <span class="ascii-accent">Bidirectional</span> (dos gotas convergentes)
+     S ○ ○ ○ ○                       ○ ○ ○ ○ T
+       ○ ○ ○ ○ ○ <span class="ascii-accent">◀──── meet ────▶</span> ○ ○ ○ ○ ○
+         ○ ○ ○                         ○ ○ ○
+      </pre>
+    </section>
+
+    <section>
+      <h2>Resumen mental</h2>
+      <ul>
+        <li>
+          <strong>Elegir algoritmo es gratis</strong>, no requiere cambiar
+          storage ni indexes.
+        </li>
+        <li>
+          <strong>Siempre ponele max_depth</strong> a tus traversal. KG denso
+          + sin limite = fuga de memoria segura.
+        </li>
+        <li>
+          <strong>Si tenés target, usá bidirectional</strong> antes que
+          cualquier otra cosa. El ahorro es obsceno.
+        </li>
+        <li>
+          <strong>Heuristica + A* = la cereza</strong> cuando ademas tenés
+          embeddings o senal ontologica.
+        </li>
+        <li>
+          <strong>Todo esto asume que el index ya te deposito cerca</strong>.
+          Sin indexes, cada paso del traversal es otro full scan.
+        </li>
+      </ul>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Indexing: 6 permutaciones SPO</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Query planning y join ordering</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M05-02", "M05");
+    }
+  });
+</script>
+</body>
+</html>

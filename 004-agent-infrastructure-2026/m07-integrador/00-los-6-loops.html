@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Los 6 feedback loops que hacen compounding · Agent Infrastructure 2026</title>
+  <meta name="description" content="Un agente con memoria, skills y protocols compone porque los 3 modulos se alimentan entre si a traves de 6 feedback loops. Ninguno requiere setup manual; todos pueden amplificar errores si no hay circuit breakers." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M07 · Integrador</span>
+    <h1>Los 6 feedback loops que hacen compounding</h1>
+    <p class="page-intro">
+      En M00 sembramos la idea: el agente mejora solo porque los 3 modulos
+      se <strong>alimentan entre si</strong>. Aca desarmamos los 6 loops
+      concretos que hacen que la cosa componga. Cada uno tiene una direccion,
+      un trigger, un efecto — y todos juntos forman el circuito self-reinforcing
+      del agente.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>La idea en una imagen</h2>
+      <p>
+        Memoria, skills, y protocols son tres modulos. Si fueran independientes,
+        el agente seria una suma lineal: memoria archiva, skills ejecutan,
+        protocols gobiernan. No compone. El compounding aparece cuando los
+        tres se escriben entre si.
+      </p>
+
+      <pre class="ascii-diagram">
+                    <span class="ascii-accent">el circuito self-reinforcing</span>
+
+                      ┌─────────────────┐
+                      │     MEMORY      │
+                      │  (4 capas)      │
+                      └───┬──────▲──────┘
+                          │      │
+                    loop 1│      │loop 2    loop 5│  │loop 6
+                          │      │                │  │
+                          ▼      │                │  │
+                      ┌─────────────────┐         │  │
+                      │     SKILLS      │         │  │
+                      │  (self-rewrite) │         │  │
+                      └───┬──────▲──────┘         │  │
+                          │      │                │  │
+                    loop 3│      │loop 4          ▼  │
+                          │      │                   │
+                          ▼      │              ┌────┴────────┐
+                      ┌─────────────────────────┤  PROTOCOLS  │
+                      │                         │  (hooks,    │
+                      │                         │   schemas,  │
+                      │                         │   permisos) │
+                      └─────────────────────────┴─────────────┘
+
+                  <span class="ascii-accent-alt">circuit breakers atravesando todo:</span>
+                  <span class="ascii-accent-alt">dream cycle decay + self-rewrite policy conservative</span>
+      </pre>
+
+      <p>
+        Seis flechas. Tres modulos. Y una caja alrededor que evita que los
+        loops amplifiquen errores. Vamos uno por uno.
+      </p>
+    </section>
+
+    <section>
+      <h2>Loop 1 · Memory → Skills creation</h2>
+      <p>
+        El primer loop es el que hace que el sistema <strong>crezca</strong>.
+        Cuando memory-manager detecta un pattern recurrente — la misma task
+        manejada de la misma forma 3 veces o mas — triggerea <em>skillforge</em>
+        para que cree un skill nuevo a partir de ese pattern.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">LOOP 1:  MEMORY  ───►  SKILLS</span>
+
+  trigger:    memory-manager detecta recurrence ≥ 3
+  efecto:     skillforge crea un skill nuevo con el patron
+  evidencia:  AGENT_LEARNINGS.jsonl muestra 3 entries similares
+              → nuevo archivo en /skills/NUEVO.md
+      </pre>
+    </section>
+
+    <section>
+      <h2>Loop 2 · Skills → Memory</h2>
+      <p>
+        Espejo del loop 1. Cada vez que un skill se ejecuta, el
+        <strong>post_execution</strong> hook lo logea a episodic memory con
+        un <em>pain_score</em> (o success_score). Exito o fracaso, el
+        resultado queda grabado.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">LOOP 2:  SKILLS  ───►  MEMORY</span>
+
+  trigger:    cada vez que un skill termina de ejecutar
+  efecto:     append a AGENT_LEARNINGS.jsonl con pain/success
+  evidencia:  {"skill": "api-endpoint-builder", "outcome": "ok",
+               "pain": 2, "tags": ["fastapi","routes"]}
+      </pre>
+    </section>
+
+    <section>
+      <h2>Loop 3 · Skills → Protocols</h2>
+      <p>
+        Cuando un skill necesita llamar a una tool externa (git, deploy, API),
+        pasa por el <strong>pre_tool_call</strong> hook. El skill dice
+        <em>"que hacer"</em>, el protocol gobierna <em>"como, y si esta
+        permitido"</em>. Esta separacion es lo que permite que los skills
+        sean reusables entre proyectos con reglas de seguridad distintas.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">LOOP 3:  SKILLS  ───►  PROTOCOLS</span>
+
+  trigger:    skill invoca una tool (write_file, run_cmd, api_call)
+  efecto:     pre_tool_call valida permisos/constraints del protocol
+  evidencia:  intento de `rm -rf` → bloqueado por permissions.md
+              intento de `git push --force` → requiere aprobacion
+      </pre>
+    </section>
+
+    <section>
+      <h2>Loop 4 · Protocols → Skills</h2>
+      <p>
+        La vuelta: cuando tenes <strong>typed tool schemas</strong> bien
+        escritos, es mucho mas facil escribir skills que los usen
+        correctamente. El schema dice exactly que args toma, que
+        preconditions, que constraints, que puede y no puede hacer.
+        Writing schemas primero, skills despues, &gt; writing skills primero
+        y descubriendo las reglas despues.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">LOOP 4:  PROTOCOLS  ───►  SKILLS</span>
+
+  trigger:    existe un typed schema para una tool
+  efecto:     skillforge usa ese schema para escribir skills
+              que llaman la tool correctamente
+  evidencia:  skill nuevo menciona args exactos + preconditions
+              del schema, sin adivinar
+      </pre>
+    </section>
+
+    <section>
+      <h2>Loop 5 · Memory → Protocol routing</h2>
+      <p>
+        Este es mas sutil. La episodic memory registra <strong>donde fallan
+        las cosas</strong>. Si un API endpoint especifico falla frecuentemente,
+        el agente puede <em>aprender</em> a preferir una ruta alternativa —
+        sin que vos tengas que cambiar el skill, sin que cambies el schema.
+        El routing del protocol se adapta a los patrones de fallo que la
+        memoria tiene grabados.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">LOOP 5:  MEMORY  ───►  PROTOCOLS</span>
+
+  trigger:    episodic muestra failure rate alto en API X
+  efecto:     protocol prefiere ruta alternativa Y en siguientes calls
+  evidencia:  policy.yaml o routing hint actualizado por self-rewrite
+              basado en entries de LESSONS.md
+      </pre>
+    </section>
+
+    <section>
+      <h2>Loop 6 · Protocols → Memory</h2>
+      <p>
+        Y el cierre del circuito. Tool outputs, approval events, error
+        payloads — <strong>todos</strong> vienen por el protocol layer y
+        todos quedan loggeados a episodic via post_execution. Sin los hooks
+        del protocol, la memoria no tendria evidencia para aprender. El
+        protocol layer es lo que <em>produce la evidencia</em> que la memoria
+        almacena.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">LOOP 6:  PROTOCOLS  ───►  MEMORY</span>
+
+  trigger:    cada tool call / error / approval event
+  efecto:     post_execution hace append a episodic con metadata
+  evidencia:  event log = fuente de todo learning posterior
+              sin esto, la memoria no sabria de que alimentarse
+      </pre>
+    </section>
+
+    <section>
+      <h2>Por que compone: reinforcement</h2>
+      <p>
+        Los 6 loops no son independientes — forman un ciclo. Cada uno alimenta
+        al siguiente, y el resultado es un sistema <strong>self-reinforcing</strong>:
+      </p>
+
+      <pre class="ascii-diagram">
+  better memory
+       │
+       ▼
+  better skill creation (loop 1)
+       │
+       ▼
+  richer execution traces (loop 2, loop 6)
+       │
+       ▼
+  better memory (de vuelta al principio)
+       │
+       ▼  <span class="ascii-accent">cada vuelta, el sistema es un poquito mejor</span>
+      </pre>
+
+      <p>
+        No requiere setup manual despues de la configuracion inicial. Una vez
+        que los hooks estan enchufados y los skills self-rewriteables ya
+        existen, el agente mejora solo con cada sesion. Eso es lo que da ese
+        salto de "tool que me ayuda" a "sistema que me conoce y mejora".
+      </p>
+    </section>
+
+    <section>
+      <h2>Por que puede salir mal: amplificacion</h2>
+      <p>
+        El mismo circuito que compone bien puede <strong>amplificar
+        errores</strong>. Si entra una bad lesson en semantic memory
+        (algo mal aprendido, una correccion equivocada), el sistema la
+        puede reforzar en vez de corregirla:
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent-alt">CIRCUITO DE AMPLIFICACION</span>
+
+  bad lesson en LESSONS.md
+       │
+       ▼
+  influye la creacion del proximo skill
+       │
+       ▼
+  skill ejecuta bajo esa leccion equivocada
+       │
+       ▼
+  genera mas entries episodicos confirmando la (mala) leccion
+       │
+       ▼
+  memory-manager refuerza la leccion (la ve mas)
+       │
+       ▼  <span class="ascii-dim">cada vuelta, el error se atrinchera</span>
+      </pre>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">Esto pasa en la realidad</div>
+        <p>
+          No es un escenario teorico. Si no hay circuit breakers, sucede:
+          una correccion mal dada un dia se convierte en lesson, que sesga
+          un skill, que genera entries consistentes con esa leccion, y a la
+          semana el agente esta haciendo algo mal de forma sistematica — con
+          documentacion interna que "confirma" que eso es lo correcto.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Los circuit breakers que previenen amplificacion</h2>
+      <p>
+        Dos componentes del stack estan especificamente para cortar la
+        amplificacion:
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Circuit breaker 1</div>
+          <div class="concept-card-term">Dream cycle decay</div>
+          <p class="concept-card-desc">
+            El dream cycle (M03) no solo consolida — tambien <strong>decae
+            entries viejas</strong> con salience baja. Lecciones que no se
+            refuerzan concretamente se van apagando. Si una bad lesson es
+            artificial, sin evidencia real, el decay la mata.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Circuit breaker 2</div>
+          <div class="concept-card-term">Self-rewrite conservative</div>
+          <p class="concept-card-desc">
+            Los hooks de self-rewrite (M04) son <strong>conservadores</strong>:
+            no modifican un skill con una sola lesson nueva, requieren
+            confirmacion en multiples ocurrencias. Eso impide que un incidente
+            aislado reescriba el skill.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Parte manual que no automatizes</div>
+        <p>
+          Ademas de los dos breakers automaticos, hay una tercera capa que
+          tiene que ser <strong>humana</strong>: revisar LESSONS.md cada
+          cierto tiempo (2-3 semanas), tirar las que no aplican mas, y usar
+          git revert si hace falta. Esa revision no se automatiza.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Resumen: que es lo que hace el compounding</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Loop</th>
+              <th>Direccion</th>
+              <th>Trigger</th>
+              <th>Efecto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1</strong></td>
+              <td>Memory → Skills</td>
+              <td>Pattern recurrente ≥ 3</td>
+              <td>Crea skill nuevo</td>
+            </tr>
+            <tr>
+              <td><strong>2</strong></td>
+              <td>Skills → Memory</td>
+              <td>Skill ejecuta</td>
+              <td>Append a episodic</td>
+            </tr>
+            <tr>
+              <td><strong>3</strong></td>
+              <td>Skills → Protocols</td>
+              <td>Skill invoca tool</td>
+              <td>Pre-hook valida</td>
+            </tr>
+            <tr>
+              <td><strong>4</strong></td>
+              <td>Protocols → Skills</td>
+              <td>Existe typed schema</td>
+              <td>Skills mejor escritos</td>
+            </tr>
+            <tr>
+              <td><strong>5</strong></td>
+              <td>Memory → Protocols</td>
+              <td>Failure rate alto en X</td>
+              <td>Routing adaptado</td>
+            </tr>
+            <tr>
+              <td><strong>6</strong></td>
+              <td>Protocols → Memory</td>
+              <td>Cada event / error</td>
+              <td>Evidencia logged</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Los 6 loops son el motor. Los circuit breakers son el freno. Los dos
+        juntos hacen que el agente aprenda sin volverse inestable. Si falta
+        cualquiera de los dos lados, tenes un sistema que o no aprende nada,
+        o aprende mal.
+      </p>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Subagents</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Armá tu propio stack</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M07-00", "M07");
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+/* ============================================
+   Agent Infrastructure 2026 — base.css
+   Entry point unico para las paginas del curso.
+   Importa: variables + reset + tipografia + layout
+   + componentes + diagramas.
+   Uso desde cualquier pagina:
+     <link rel="stylesheet" href="/assets/css/base.css">
+   (o la ruta relativa que corresponda segun profundidad)
+   ============================================ */
+
+@import url("./main.css");
+@import url("./components.css");
+@import url("./diagrams.css");
+
+/* ============================================
+   Complementos declarados en la spec base
+   (utilitarios que se esperan presentes en base.css
+   y que algunos templates pueden referenciar)
+   ============================================ */
+
+/* Container utilitario (alternativa a main) */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-4);
+  }
+}
+
+/* Grid utilitario generico */
+.grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* Tag (chip) */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+}
+
+.tag-cyan {
+  color: var(--accent-cyan);
+  background: var(--accent-cyan-soft);
+  border-color: var(--accent-cyan-border);
+}
+
+.tag-violet {
+  color: var(--accent-violet);
+  background: var(--accent-violet-soft);
+  border-color: var(--accent-violet-border);
+}
+
+.tag-success {
+  color: var(--success);
+  background: var(--success-soft);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.tag-warning {
+  color: var(--warning);
+  background: var(--warning-soft);
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+.tag-danger {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* ============================================
+   ASCII diagram block
+   Para diagramas hechos con text art (bordes
+   de caja, flechas, etc.)
+   ============================================ */
+
+.ascii-diagram {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  overflow-x: auto;
+  white-space: pre;
+  tab-size: 2;
+  margin: var(--space-6) 0;
+}
+
+.ascii-diagram .ascii-accent {
+  color: var(--accent-cyan);
+}
+
+.ascii-diagram .ascii-accent-alt {
+  color: var(--accent-violet);
+}
+
+.ascii-diagram .ascii-dim {
+  color: var(--text-dim);
+}
+
+/* ============================================
+   Sidebar de navegacion entre modulos
+   (opcional, para paginas internas)
+   ============================================ */
+
+.course-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+
+@media (min-width: 960px) {
+  .course-layout {
+    grid-template-columns: 240px 1fr;
+  }
+}
+
+.course-sidebar {
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-4));
+  align-self: start;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  font-size: 13px;
+  max-height: calc(100vh - var(--header-height) - var(--space-8));
+  overflow-y: auto;
+}
+
+.course-sidebar h4 {
+  margin: 0 0 var(--space-2);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.course-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-4);
+}
+
+.course-sidebar li {
+  margin: 0;
+}
+
+.course-sidebar a {
+  display: block;
+  padding: 6px 10px;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid transparent;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.course-sidebar a:hover {
+  color: var(--text-strong);
+  background: var(--bg-raised);
+}
+
+.course-sidebar a.active {
+  color: var(--accent-cyan);
+  background: var(--accent-cyan-soft);
+  border-left-color: var(--accent-cyan);
+}
+
+.course-sidebar a.visited::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* ============================================
+   SVG diagram helpers
+   Clases utilitarias para SVGs inline
+   ============================================ */
+
+.svg-diagram {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--space-6) auto;
+}
+
+.svg-diagram .svg-node-bg {
+  fill: var(--bg-elevated);
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+
+.svg-diagram .svg-node-bg-accent {
+  fill: var(--accent-cyan-soft);
+  stroke: var(--accent-cyan);
+  stroke-width: 1.5;
+}
+
+.svg-diagram .svg-node-bg-alt {
+  fill: var(--accent-violet-soft);
+  stroke: var(--accent-violet);
+  stroke-width: 1.5;
+}
+
+.svg-diagram .svg-label {
+  fill: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.svg-diagram .svg-label-dim {
+  fill: var(--text-dim);
+  font-size: 11px;
+  font-family: var(--font-mono);
+}
+
+.svg-diagram .svg-edge {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+}
+
+.svg-diagram .svg-edge-accent {
+  fill: none;
+  stroke: var(--accent-cyan);
+  stroke-width: 2;
+  stroke-dasharray: none;
+}
+
+.svg-diagram .svg-edge-alt {
+  fill: none;
+  stroke: var(--accent-violet);
+  stroke-width: 2;
+}
+
+.svg-diagram .svg-arrowhead {
+  fill: var(--border-strong);
+}
+
+.svg-diagram .svg-arrowhead-accent {
+  fill: var(--accent-cyan);
+}
+
+/* ============================================
+   Aliases de clases (compat con spec base)
+   ============================================ */
+
+/* Alias: .nav-prev-next -> estructura basica estilo .page-nav-footer */
+.nav-prev-next {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--border);
+}
+
+.nav-prev-next a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--space-4) var(--space-5);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+.nav-prev-next a:hover {
+  border-color: var(--accent-cyan-border);
+  background: var(--bg-raised);
+  color: var(--text-strong);
+  transform: translateY(-2px);
+}
+
+.nav-prev-next a.next {
+  text-align: right;
+  justify-self: end;
+}
+
+.nav-prev-next a.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.nav-prev-next .nav-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+}
+
+.nav-prev-next .nav-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .nav-prev-next {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-prev-next a.next {
+    text-align: left;
+    justify-self: stretch;
+  }
+}
+
+/* Alias: callout-warning -> misma semantica que callout-warn */
+.callout-warning {
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.35);
+  color: var(--text);
+}
+
+.callout-warning .callout-title {
+  color: var(--warning);
+}
+
+/* ============================================
+   Sintaxis simple (aplicada por CourseUtils.highlightCode)
+   ============================================ */
+
+.code-block .tok-keyword {
+  color: #f472b6;
+  font-weight: 600;
+}
+
+.code-block .tok-string {
+  color: #86efac;
+}
+
+.code-block .tok-comment {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.code-block .tok-number {
+  color: var(--warning);
+}
+
+.code-block .tok-function {
+  color: var(--accent-cyan);
+}
+
+.code-block .tok-builtin {
+  color: var(--accent-violet);
+}

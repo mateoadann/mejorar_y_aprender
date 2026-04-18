@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indexing: 6 permutaciones SPO · Agent Infrastructure 2026</title>
+  <meta name="description" content="Como guardar triples Subject-Predicate-Object para que cualquier lookup pattern sea O(log n). Seis B-trees ordenados, bitmap indexes y adjacency lists comprimidas. Cuesta 6x storage, te devuelve ordenes de magnitud de velocidad." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M05 · Knowledge Graphs</span>
+    <h1>Indexing: 6 permutaciones SPO</h1>
+    <p class="page-intro">
+      Si guardás tus triples como una lista plana, cada query es un full scan.
+      La solucion que usan Apache Jena TDB, Virtuoso y RDF-3X hace 20 años:
+      mantener <strong>seis</strong> B-trees ordenados, una por cada permutacion
+      de (Subject, Predicate, Object). Cuesta 6x storage, pero cualquier lookup
+      pattern se vuelve O(log n).
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Recordatorio: un KG son triples</h2>
+      <p>
+        En RDF (el modelo estandar) cada hecho del grafo es un triple:
+      </p>
+
+      <pre class="ascii-diagram">
+    <span class="ascii-accent">(Subject, Predicate, Object)</span>
+
+    ejemplos:
+      (Einstein,   BORN_IN,    Ulm)
+      (Einstein,   WORKED_AT,  PrincetonIAS)
+      (Ulm,        LOCATED_IN, Germany)
+      (Einstein,   KNOWS,      Godel)
+      (Godel,      BORN_IN,    Brunn)
+      ...
+      </pre>
+
+      <p>
+        Un KG con 10M hechos = 10M triples. Simple de modelar, rico para
+        consultar. Ahora, ¿como los guardás para que las queries sean rapidas?
+      </p>
+    </section>
+
+    <section>
+      <h2>Naive: una sola tabla</h2>
+      <p>
+        La primera idea: una tabla de 3 columnas con todos los triples.
+        Funciona para insertar. <strong>No escala</strong> para consultar.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side">
+          <div class="comparison-side-label">Lista plana</div>
+          <p>
+            Guardás los triples en un array. Para cualquier query hacés un
+            full scan: O(n) para cada pattern, sin importar que tan selectivo
+            sea el filtro. Con 10M triples, cada lookup son 10M comparaciones.
+          </p>
+        </div>
+        <div class="comparison-side">
+          <div class="comparison-side-label">Con 6 indexes SPO</div>
+          <p>
+            Mantenes 6 B-trees ordenados, uno por cada permutacion de (S, P, O).
+            Cualquier pattern de query se resuelve con una binary search en el
+            index mas adecuado. O(log n + k), donde k = resultados devueltos.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Las 6 permutaciones</h2>
+      <p>
+        Con 3 elementos (S, P, O) hay 3! = 6 permutaciones posibles:
+        <strong>SPO, SOP, PSO, POS, OSP, OPS</strong>. Cada una es un B-tree
+        ordenado por esa secuencia de columnas. Eso significa que para
+        cualquier pattern de query que fije algunas variables y deje otras
+        libres, hay un index que te sirve sin escanear nada.
+      </p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Index</th>
+              <th>Ordenado por</th>
+              <th>Sirve para patterns tipo</th>
+              <th>Ejemplo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>SPO</strong></td>
+              <td>S → P → O</td>
+              <td>(s, ?, ?) &nbsp;·&nbsp; (s, p, ?) &nbsp;·&nbsp; (s, p, o)</td>
+              <td>Todo lo que sabemos de Einstein</td>
+            </tr>
+            <tr>
+              <td><strong>SOP</strong></td>
+              <td>S → O → P</td>
+              <td>(s, ?, o) &nbsp;·&nbsp; (s, ?, ?)</td>
+              <td>Que relacion hay entre Einstein y Princeton</td>
+            </tr>
+            <tr>
+              <td><strong>PSO</strong></td>
+              <td>P → S → O</td>
+              <td>(?, p, ?) &nbsp;·&nbsp; (?, p, o) con skew en S</td>
+              <td>Todos los triples BORN_IN</td>
+            </tr>
+            <tr>
+              <td><strong>POS</strong></td>
+              <td>P → O → S</td>
+              <td>(?, p, o) &nbsp;·&nbsp; (?, p, ?)</td>
+              <td>Quienes nacieron en Ulm</td>
+            </tr>
+            <tr>
+              <td><strong>OSP</strong></td>
+              <td>O → S → P</td>
+              <td>(?, ?, o) con lookup de subjects</td>
+              <td>Todo lo que referencia a Ulm</td>
+            </tr>
+            <tr>
+              <td><strong>OPS</strong></td>
+              <td>O → P → S</td>
+              <td>(?, ?, o) &nbsp;·&nbsp; (?, p, o)</td>
+              <td>Todas las relaciones entrantes a Ulm</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ejemplo concreto: <code>(?x, BORN_IN, Ulm)</code></h2>
+      <p>
+        Querés saber: "¿quienes nacieron en Ulm?". El pattern fija P y O, deja
+        S libre. Miremos el algoritmo paso a paso:
+      </p>
+
+      <pre class="ascii-diagram">
+  Query: (?x, <span class="ascii-accent">BORN_IN</span>, <span class="ascii-accent">Ulm</span>)
+
+  Paso 1:  P = BORN_IN (fijo), O = Ulm (fijo), S = libre
+  Paso 2:  El planner elige el index <span class="ascii-accent-alt">POS</span>
+           (ordenado primero por P, despues por O)
+  Paso 3:  Binary search a la clave (BORN_IN, Ulm, *)
+           <span class="ascii-dim">log₂(10M) ≈ 23 comparaciones</span>
+  Paso 4:  Scan secuencial todos los S con esa clave
+  Paso 5:  Devolver {Einstein, HermannWeyl, ...}
+
+  Costo total: <span class="ascii-accent">O(log n + k)</span>  donde k = #resultados
+      </pre>
+
+      <p>
+        Compará: sin index eso era O(n) = 10M comparaciones. Con index son
+        23 + k. Si k = 12 resultados, son 35 operaciones vs 10M. Cuatro
+        ordenes de magnitud.
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Por que 6 y no menos</div>
+        <p>
+          Se podrian usar solo 3 indexes (SPO, POS, OSP) y cubrir todos los
+          patterns de RDF. Pero 6 permite <em>siempre</em> tener un prefix
+          match completo sobre las variables fijadas, lo que es mas rapido en
+          la practica para joins complejos. El costo (6x storage) se asume
+          conscientemente.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Bitmap indexes para predicate filtering</h2>
+      <p>
+        Los predicates (BORN_IN, KNOWS, WORKS_AT, CITY_OF...) suelen ser un
+        <strong>conjunto acotado</strong>. Un KG corporativo puede tener 50
+        predicates. Wikidata tiene ~1.500. Todos los motores tienen muchos menos
+        predicates que entities.
+      </p>
+      <p>
+        Entonces: para cada predicate, mantengo un <strong>bitmap</strong> donde
+        el bit i vale 1 si el nodo i participa en alguna relacion de ese tipo
+        (como subject o object). Con un bitmap por predicate:
+      </p>
+
+      <pre class="ascii-diagram">
+  Nodos:       0  1  2  3  4  5  6  7  8  9  ...
+               │  │  │  │  │  │  │  │  │  │
+  AUTHOR_OF: [ 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, ... ]
+  WORKS_AT:  [ 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, ... ]
+
+  Query: "nodos que son AUTHOR_OF Y WORKS_AT"
+
+  Paso:  AUTHOR_OF <span class="ascii-accent">AND</span> WORKS_AT
+         ─────────────────────────────────────
+         [ 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, ... ]
+                                ▲
+             bitwise AND en registros de 64 bits:
+             <span class="ascii-accent">una CPU moderna procesa 64 bits por ciclo.</span>
+             Con SIMD (AVX-512) son 512 bits por ciclo.
+      </pre>
+
+      <p>
+        Hacer un AND de dos bitmaps es una sola instruccion de maquina. Los
+        motores modernos con SIMD procesan centenares de bits en un solo
+        ciclo de CPU. Comparalo con un SQL JOIN clasico.
+      </p>
+    </section>
+
+    <section>
+      <h2>Adjacency lists comprimidas</h2>
+      <p>
+        Los indexes SPO son para lookups puntuales. Pero <strong>traversal</strong>
+        (caminar vecino a vecino) se beneficia de una estructura distinta: una
+        lista de adyacencia por cada nodo, agrupada por tipo de edge.
+      </p>
+
+      <pre class="ascii-diagram">
+  Nodo Einstein:
+    ├─ [KNOWS]       → [Godel, Bohr, Pauli, ...]         (1,847 vecinos)
+    ├─ [WORKED_AT]   → [ETH, Princeton, ...]             (4 vecinos)
+    ├─ [BORN_IN]     → [Ulm]                             (1 vecino)
+    └─ [AUTHORED]    → [paper_1, paper_2, ...]           (312 vecinos)
+      </pre>
+
+      <p>
+        Cruda, esa estructura ocupa mucho. Los motores modernos usan dos
+        trucos de compresion que mantienen el lookup barato:
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Delta encoding</div>
+          <div class="concept-card-term">Guardás diferencias</div>
+          <p class="concept-card-desc">
+            Si tus vecinos son [1043, 1045, 1052, 1078], guardás [1043, +2, +7, +26].
+            Los numeros son mas chicos, y eso habilita el siguiente truco.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Variable-length int</div>
+          <div class="concept-card-term">Bits segun magnitud</div>
+          <p class="concept-card-desc">
+            Un numero chico (10) se guarda en 1 byte. Uno grande (2M) usa 4 bytes.
+            Combinado con deltas, el 90% de los numeros usan 1-2 bytes.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Resultado</div>
+          <div class="concept-card-term">5-10x compression</div>
+          <p class="concept-card-desc">
+            RDF-3X y HDT (Header-Dictionary-Triples) logran esto manteniendo
+            tiempos de lookup casi identicos al no comprimido.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Resumen: el costo-beneficio</h2>
+
+      <div class="comparison-table">
+        <div class="comparison-side">
+          <div class="comparison-side-label">Cuesta</div>
+          <ul>
+            <li><strong>6x storage</strong> por las 6 permutaciones</li>
+            <li>Updates cuestan mas (hay que mantener 6 indexes sincronizados)</li>
+            <li>Mas memoria RAM si los indexes viven en memoria</li>
+            <li>Complejidad de implementacion no trivial</li>
+          </ul>
+        </div>
+        <div class="comparison-side">
+          <div class="comparison-side-label">Beneficio</div>
+          <ul>
+            <li><strong>Cualquier pattern</strong> resuelto por el index correcto</li>
+            <li>Lookup en <strong>O(log n + k)</strong> sin full scan</li>
+            <li>Bitmap AND/OR procesa 64-512 bits por ciclo</li>
+            <li>Adjacency lists comprimidas caben en RAM a escala billion-triple</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Mental model</div>
+        <p>
+          El index <em>no</em> resuelve tu query complejo de 4 hops. Lo que hace
+          es volver barato el primer paso: <strong>llegar a los triples
+          candidatos para cada pattern individual</strong>. Despues viene el
+          algoritmo de traversal (siguiente pagina) y el query planner
+          (M05-03) que deciden como combinar los resultados de cada index.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">El problema: subgraph matching</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Traversal: BFS, DFS, Dijkstra, A*, Bidirectional</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M05-01", "M05");
+    }
+  });
+</script>
+</body>
+</html>

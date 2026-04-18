@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Protocols: tool schemas + permissions · Agent Infrastructure 2026</title>
+  <meta name="description" content="La capa que casi nadie construye. Tool schemas convierten improvise en fill-in-the-blanks. Permissions.md es la regla del new hire: si no lo dejarias hacer unsupervised, el agente tampoco." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M04 · Skills &amp; Protocols</span>
+    <h1>Protocols: tool schemas + permissions</h1>
+    <p class="page-intro">
+      La capa que casi nadie construye — y la que determina si tu agente
+      queda como toy o como algo que podes dejar trabajando con real work.
+      Dos piezas: tool schemas (contratos) y permissions.md (limites).
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Por que protocols decide todo</h2>
+      <p>
+        Los protocols son los contratos que gobiernan <strong>como tu agente
+        habla con sistemas externos</strong>. Sin ellos, el modelo improvisa
+        formatos de mensaje, estructuras de argumentos, y chequeos de
+        permisos. Ahi nacen la mayoria de los failures de produccion.
+      </p>
+
+      <div class="callout callout-danger">
+        <div class="callout-title">Lo que pasa sin protocols</div>
+        <p>
+          El agente llama un tool con un argumento inventado. El tool
+          responde con un error poco claro. El agente reintenta con otro
+          argumento inventado. Cinco retries despues, hizo algo que no
+          queria. O peor: el retry fue exitoso y ahora hay un commit en
+          main que nadie autorizo.
+        </p>
+      </div>
+
+      <p>
+        Protocols = rigor. Tool schemas definen <em>la forma</em>, permissions
+        definen <em>los limites</em>, hooks (proxima pagina) hacen el
+        enforcement.
+      </p>
+    </section>
+
+    <section>
+      <h2>Tool schemas: de "guess how" a "fill in the blanks"</h2>
+      <p>
+        Un tool schema convierte la tarea del modelo de "adivina como se
+        llama este tool" a "completa estos campos". El modelo deja de
+        improvisar y empieza a ejecutar contra un contrato tipado.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-dim">// protocols/tools/github.json</span>
+  {
+    <span class="ascii-accent">"tool"</span>: "github",
+    <span class="ascii-accent">"operations"</span>: {
+      "create_pr": {
+        "required_args": {
+          "title":  { "type": "string", "max_length": 100 },
+          "body":   { "type": "string" },
+          "base":   { "type": "string", "enum": ["main", "dev"] }
+        },
+        "preconditions":     ["all_tests_pass", "branch_not_empty"],
+        "side_effects":      ["triggers_ci", "notifies_reviewers"],
+        "requires_approval": false
+      },
+      "merge_pr": {
+        "preconditions":     ["pr_approved", "ci_green"],
+        "side_effects":      ["modifies_main_branch"],
+        "requires_approval": <span class="ascii-accent-alt">true</span>
+      },
+      "force_push": {
+        "blocked_targets":   ["main", "prod", "staging"],
+        "requires_approval": <span class="ascii-accent-alt">true</span>
+      }
+    }
+  }
+      </pre>
+
+      <p>
+        Mira las piezas. No es solo "que argumentos acepto". Es:
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">required_args</div>
+          <div class="concept-card-term">La forma</div>
+          <p class="concept-card-desc">
+            Nombre, tipo, constraints (max_length, enum). El modelo no puede
+            pasar basura; el schema lo rechaza antes de llegar al tool.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">preconditions</div>
+          <div class="concept-card-term">Gates antes</div>
+          <p class="concept-card-desc">
+            "Tests tienen que pasar", "branch no puede estar vacia". Se
+            chequean en el hook antes de ejecutar.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">side_effects</div>
+          <div class="concept-card-term">Qué va a pasar</div>
+          <p class="concept-card-desc">
+            "Triggerea CI", "notifica reviewers". El agente (y el humano)
+            saben que operaciones colaterales dispara esta accion.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">requires_approval</div>
+          <div class="concept-card-term">Boolean clave</div>
+          <p class="concept-card-desc">
+            true = pausa y pedi confirmacion humana. El hook lo lee y
+            corta la ejecucion. Sin esto, no hay supervision.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">blocked_targets</div>
+          <div class="concept-card-term">Hard constraints</div>
+          <p class="concept-card-desc">
+            Array de cosas que <em>nunca</em> se pueden tocar. Enforced por
+            el harness. No hay flag de "yes, I'm sure" que lo salte.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Permissions.md: la regla del new hire</h2>
+      <blockquote>
+        Si no dejarias a un new hire hacerlo unsupervised en la primera
+        semana, el agente tampoco deberia hacerlo solo.
+      </blockquote>
+      <p>
+        Esa es la unica regla que importa para decidir que va en cada
+        seccion. Pensalo como onboarding: los new hires <em>leen</em> cosas
+        sin pedir permiso, <em>piden feedback</em> antes de hacer cambios
+        importantes, <em>nunca</em> tocan producción sin supervisión.
+      </p>
+
+      <p>
+        <code>permissions.md</code> tiene 4 secciones. Nada mas.
+      </p>
+
+      <div class="layer-stack">
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">Always allowed</div>
+            <div class="layer-stack-desc">
+              read files, run tests, create branches, write to memory/skills,
+              lint, format, query dbs read-only.
+            </div>
+          </div>
+          <span class="badge badge-success">Libre</span>
+        </div>
+        <div class="layer-stack-item violet">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">Requires approval</div>
+            <div class="layer-stack-desc">
+              merge PRs, deploy to staging, delete files, install
+              dependencies, modify CI config, send emails externos.
+            </div>
+          </div>
+          <span class="badge badge-warn">Gate</span>
+        </div>
+        <div class="layer-stack-item" style="border-left-color: var(--danger);">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">Never allowed</div>
+            <div class="layer-stack-desc">
+              force push to main/prod/staging, access secrets directamente,
+              modify permissions.md, disable hooks, drop tables en prod.
+            </div>
+          </div>
+          <span class="badge badge-danger">Block</span>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">Approved external domains</div>
+            <div class="layer-stack-desc">
+              Whitelist de dominios para network calls: github.com,
+              api.openai.com, internal company subdomains.
+            </div>
+          </div>
+          <span class="badge">Whitelist</span>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">El archivo mas importante del protocol layer</div>
+        <p>
+          <strong>permissions.md es la diferencia entre un agente que podes
+          dejar corriendo solo y uno que tenes que babysittear.</strong>
+          Invertir 30 minutos en escribirlo bien al principio te ahorra
+          semanas de problemas despues. Y aca viene el detalle que la gente
+          saltea: <em>el propio permissions.md tiene que estar en "Never
+          allowed modify"</em>. Si no, el agente puede reescribirlo y
+          ya no tiene sentido.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Flujo de una tool call (protocols en accion)</h2>
+      <p>
+        Cuando el modelo decide llamar un tool, la llamada no va directo.
+        Pasa por dos gates antes de ejecutar. Si falla cualquiera, la
+        llamada se bloquea y el modelo recibe el error como feedback.
+      </p>
+
+      <pre class="ascii-diagram">
+    <span class="ascii-accent">MODELO DECIDE LLAMAR: github.merge_pr(pr_id=42)</span>
+                     │
+                     ▼
+    ┌──────────────────────────────────────┐
+    │  <span class="ascii-accent">GATE 1 · SCHEMA VALIDATION</span>        │
+    │  ────────────────────────────────  │
+    │  - ¿args match el schema?          │
+    │  - ¿preconditions cumplen?         │
+    │  - ¿target en blocked_targets?     │
+    └──────────────┬───────────────────────┘
+                   │ pass
+                   ▼
+    ┌──────────────────────────────────────┐
+    │  <span class="ascii-accent-alt">GATE 2 · PERMISSIONS CHECK</span>         │
+    │  ────────────────────────────────  │
+    │  - ¿operacion en always_allowed?   │
+    │  - si no -> ¿requires_approval?    │
+    │  - si no -> ¿never_allowed? BLOCK  │
+    └──────────────┬───────────────────────┘
+                   │ pass o approval OK
+                   ▼
+    ┌──────────────────────────────────────┐
+    │  <span class="ascii-accent">EXECUTION</span>                          │
+    │  github.merge_pr ejecuta            │
+    └──────────────┬───────────────────────┘
+                   │
+                   ▼
+    ┌──────────────────────────────────────┐
+    │  <span class="ascii-dim">POST_EXECUTION HOOK</span>                │
+    │  log a episodic memory              │
+    │  (lo vemos en la siguiente pagina)  │
+    └──────────────────────────────────────┘
+
+    <span class="ascii-dim">- - - - - -  ruta alternativa  - - - - - -</span>
+
+    ┌──────────────────────────────────────┐
+    │  <span style="color: var(--danger);">BLOCKED</span>                           │
+    │  modelo recibe error estructurado   │
+    │  tool retorna {blocked: true,       │
+    │                reason: "..."}       │
+    └──────────────────────────────────────┘
+      </pre>
+    </section>
+
+    <section>
+      <h2>Ejemplos: que va en cada seccion (regla new hire)</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Accion</th>
+              <th>¿Lo dejarias a un new hire solo?</th>
+              <th>Donde va</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Leer un README</td>
+              <td>Si, obvio</td>
+              <td><span class="badge badge-success">Always allowed</span></td>
+            </tr>
+            <tr>
+              <td>Correr <code>pytest</code></td>
+              <td>Si, es leer-sólo el comportamiento</td>
+              <td><span class="badge badge-success">Always allowed</span></td>
+            </tr>
+            <tr>
+              <td>Crear una branch</td>
+              <td>Si, no afecta a nadie mas</td>
+              <td><span class="badge badge-success">Always allowed</span></td>
+            </tr>
+            <tr>
+              <td>Mergear un PR a <code>main</code></td>
+              <td>No — quiero ver el PR antes</td>
+              <td><span class="badge badge-warn">Requires approval</span></td>
+            </tr>
+            <tr>
+              <td>Instalar un paquete nuevo</td>
+              <td>No — supply chain risk</td>
+              <td><span class="badge badge-warn">Requires approval</span></td>
+            </tr>
+            <tr>
+              <td>Deploy a staging</td>
+              <td>No — afecta ambientes compartidos</td>
+              <td><span class="badge badge-warn">Requires approval</span></td>
+            </tr>
+            <tr>
+              <td><code>git push --force main</code></td>
+              <td>Nunca jamas</td>
+              <td><span class="badge badge-danger">Never allowed</span></td>
+            </tr>
+            <tr>
+              <td>Leer archivos <code>.env</code> directamente</td>
+              <td>Nunca — secrets exposure</td>
+              <td><span class="badge badge-danger">Never allowed</span></td>
+            </tr>
+            <tr>
+              <td>Modificar <code>permissions.md</code></td>
+              <td>NUNCA — subvertir al guardia</td>
+              <td><span class="badge badge-danger">Never allowed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cierre: protocols = el contrato con el mundo</h2>
+      <p>
+        Tool schemas convierten intencion en ejecucion tipada. Permissions
+        definen el jardin en el que el agente puede moverse. Los dos juntos
+        forman el protocol layer — la frontera entre el modelo y todo lo
+        demas.
+      </p>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Lo que te vas a llevar</div>
+        <p>
+          Si tu agente no tiene un <code>permissions.md</code> con las 4
+          secciones y tool schemas por operacion, <strong>no tenes un
+          agente, tenes un LLM con acceso a tu laptop</strong>. La
+          diferencia se ve el dia que hace algo destructivo.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Skillforge</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Hooks: el enforcement layer</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M04-02", "M04");
+    }
+  });
+</script>
+</body>
+</html>

@@ -65,6 +65,27 @@ mejorar_y_aprender/
   - Target de usuario: Mateo NUNCA hizo un deploy en la practica, tiene teoria — el curso es el puente teoria→practica
   - Los prompts del cheatsheet (M06) estan en INGLES (mismo patron que 002-ui-components-atlas)
 
+### 004-agent-infrastructure-2026
+- **Que es**: Curso integrador teorico-visual sobre infraestructura de agentes AI 2026. Sintetiza 4 articulos fuente (Knowledge Layer de Shann Holmberg, Agent Stack de Av1dlive, Knowledge Graphs optimization de techwith_ram, Claude Code session management de trq212). Cero codigo ejecutable, todo conceptual con diagramas ASCII, SVG inline y callouts.
+- **Stack**: HTML/CSS/JS vanilla, dark mode tech
+- **Estructura**: 8 modulos, 32 paginas HTML:
+  - M00 Fundamentos (3 pag) — las 4 capas de infra, compounding
+  - M01 Knowledge Layer (4 pag) — KBL + Brand Foundation, pipeline ingest, KBL vs RAG
+  - M02 Agent Stack (5 pag) — anatomia, harness thin <200 LOC, context budget, progressive disclosure, salience scoring
+  - M03 Memoria 4 capas (4 pag) — working, episodic, semantic, dream cycle
+  - M04 Skills & Protocols (4 pag) — skill anatomy, skillforge, protocols (tool schemas + permissions), hooks lifecycle
+  - M05 Knowledge Graphs (5 pag) — subgraph matching, SPO indexing, traversal (BFS/DFS/Dijkstra/A*/bidirectional), query planning, embeddings+bloom
+  - M06 Claude Code Ops (4 pag) — context rot, branching point, rewind vs correct, subagents strategy
+  - M07 Integrador (3 pag) — los 6 feedback loops, checklist mi propio stack, cheatsheet
+- **Paleta**: bg `#0a0e1a`, bg-elev `#111827`, bg-card `#1a2332`, border `#2d3748`, text `#e5e7eb`, accent primary `#00d4ff` (cyan tech), accent secondary `#b794f4` (violeta), success `#10b981`, warning `#fbbf24`
+- **API JS publica**: `window.CourseProgress` (localStorage key `curso_agent_infra_progreso_v1`, total 32 paginas), `window.CourseUtils.initPage(pageId, moduleId)` — el catalogo `MODULES` vive en `assets/js/utils.js` (breadcrumb y nav prev/next se resuelven automaticamente por pageId)
+- **Notas importantes**:
+  - CSS modular: `base.css` importa `main.css` + `components.css` + `diagrams.css`
+  - Clases clave de componentes: `.ascii-diagram` con spans `.ascii-accent` (cyan) / `.ascii-accent-alt` (violeta) / `.ascii-dim` para diagramas ASCII coloreados, `.concept-grid` + `.concept-card`, `.layer-stack`, `.timeline`, `.comparison-table` con sides `.good`/`.bad`, `.callout-info/warning/violet/success/danger`, `.data-table` con `.table-wrap`
+  - Patron de cada pagina: header sticky con breadcrumb auto + hero con eyebrow `MXX · Modulo` + 5-9 secciones con diagramas y callouts + mini-resumen de cierre en callout-violet + nav prev/next auto
+  - Gotcha evitado: el catalogo MODULES en utils.js debe matchear los filenames reales (no slugs teoricos) para que prev/next funcione — sincronizado en consolidacion final
+  - Fuentes principales: karpathy LLM wiki, Garry Tan 4-layer memory, Harrison Chase "Your Harness Your Memory", leapfrog triejoin (Veldhuizen 2014), TransE embeddings
+
 ## Reglas para crear nuevos proyectos
 
 1. Crear carpeta con el siguiente numero disponible: `NNN-slug-del-proyecto/`

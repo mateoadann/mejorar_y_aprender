@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Context budget: asignacion de tokens · Agent Infrastructure 2026</title>
+  <meta name="description" content="El context window es una caja de computacion. Cada pieza que entra es una decision explicita: targeted fragments son senal, lo demas es ruido." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M02 · Agent Stack</span>
+    <h1>Context budget: asignacion de tokens</h1>
+    <p class="page-intro">
+      El context window no es un chat-log infinito —es una caja de computacion
+      con presupuesto. Cada pieza adentro compite por lugar. Tu trabajo es
+      decidir, antes de cada llamada, que fragmentos entran y con que prioridad.
+    </p>
+  </section>
+
+  <article>
+
+    <!-- ============================================
+         SECCION 1: Context como caja de computacion
+         ============================================ -->
+    <section>
+      <h2>El context window es una caja, no un stream</h2>
+      <p>
+        La intuicion comun es pensar el contexto como una conversacion
+        continua: el modelo "recuerda" lo que dijiste. No es asi. En cada
+        llamada, el harness arma un paquete de tokens y se lo pasa al modelo.
+        <strong>Todo lo que esta afuera de ese paquete no existe</strong>
+        para el modelo en ese turno.
+      </p>
+      <p>
+        Esto cambia la pregunta. Ya no es "como hago para que el modelo
+        recuerde". Es: <em>que piezas necesita el modelo AHORA para
+        responder bien</em>.
+      </p>
+
+      <div class="diagram">
+        <div class="diagram-title">CAJA DE COMPUTACION</div>
+        <pre class="diagram-ascii accent">
+                   +---------------------------------+
+                   |   CONTEXT WINDOW (128k tokens)  |
+  build_context -> |                                 | -> modelo
+                   |   todo lo que entra ES visible  |
+                   |   todo lo que queda afuera NO   |
+                   +---------------------------------+
+                                   ^
+                                   |
+                      resto de la memoria, skills,
+                        historial, archivos, etc.
+                       (existen, pero no cuentan)
+        </pre>
+        <div class="diagram-caption">
+          Cada token dentro es presupuesto gastado. Fuera de la caja = no
+          existe para este turno.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 2: Signal vs noise
+         ============================================ -->
+    <section>
+      <h2>Targeted fragments = senal. Lo demas = ruido</h2>
+      <p>
+        Cada pieza que metes tiene que justificarse: "el modelo necesita esto
+        para esta decision". A esos los llamamos <strong>targeted
+        fragments</strong> —fragmentos dirigidos.
+      </p>
+      <p>
+        Lo que no se justifica es ruido. Y el ruido no es neutral: compite
+        por atencion con la senal, ocupa budget, y (peor) hay evidencia
+        fuerte de que <strong>la informacion en el medio de contextos largos
+        se pierde</strong>. Mas no es mejor.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side good">
+          <div class="comparison-side-label">senal (targeted)</div>
+          <h4>Lo que entra</h4>
+          <ul>
+            <li>Preferencias personales del usuario (siempre)</li>
+            <li>El workspace activo</li>
+            <li>Lecciones semanticas que matchean el task</li>
+            <li>Top 5 entradas episodicas por salience</li>
+            <li>Skills disparados por triggers</li>
+            <li>Permisos aplicables</li>
+          </ul>
+        </div>
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">ruido (lo que NO entra)</div>
+          <h4>Lo que se queda afuera</h4>
+          <ul>
+            <li>Memoria vieja sin relevancia a este task</li>
+            <li>Skills que no disparo ningun trigger</li>
+            <li>Historial completo de la conversacion anterior</li>
+            <li>Archivos del proyecto que el modelo no va a tocar</li>
+            <li>Documentacion generica ya internalizada en el training</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Corolario incomodo</div>
+        <p>
+          Si cargas <em>todo</em> "por las dudas", el modelo performa peor
+          que si cargas lo justo. La tentacion de tirarle contexto al modelo
+          es exactamente lo que degrada la respuesta.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 3: Orden de prioridad
+         ============================================ -->
+    <section>
+      <h2>Orden de carga: el orden importa</h2>
+      <p>
+        Cuando <code>build_context</code> arma el paquete, sigue una
+        prioridad fija. Si se termina el budget, lo ultimo de la lista
+        simplemente no se carga —pero nunca se corta lo primero.
+      </p>
+
+      <div class="diagram">
+        <div class="diagram-title">BARRA DE TOKENS: 5 BLOQUES POR PRIORIDAD</div>
+        <pre class="diagram-ascii">
+  [========================================================] 128000 tokens
+  |                                                        |
+  |  1. PERSONAL + WORKSPACE     ~2k   always              |
+  |  +----+                                                |
+  |  |####|                                                |
+  |  +----+                                                |
+  |                                                        |
+  |  2. SEMANTIC LESSONS         ~8k   truncate si hay que |
+  |  +--------+                                            |
+  |  |########|                                            |
+  |  +--------+                                            |
+  |                                                        |
+  |  3. EPISODIC TOP-5 x SALIENCE ~6k  ordenado por score  |
+  |  +------+                                              |
+  |  |######|                                              |
+  |  +------+                                              |
+  |                                                        |
+  |  4. SKILLS MATCHED (progressive disclosure)            |
+  |     +----------------+                                 |
+  |     |################| ~20k  solo los triggereados     |
+  |     +----------------+                                 |
+  |                                                        |
+  |  5. PERMISSIONS              ~1k   always (safety)     |
+  |  +--+                                                  |
+  |  |##|                                                  |
+  |  +--+                                                  |
+  |                                                        |
+  |  reasoning reserve  ~40k                               |
+  |  +--------------------------------+                    |
+  |  |                                |                    |
+  |  +--------------------------------+                    |
+  |                                                        |
+  |  user input + response                                 |
+  |  +------------------+                                  |
+  |  |                  |                                  |
+  |  +------------------+                                  |
+        </pre>
+        <div class="diagram-caption">
+          Los bloques 1 y 5 son inamovibles. 2, 3 y 4 se truncan por orden
+          de prioridad.
+        </div>
+      </div>
+
+      <p>
+        Los dos extremos de la lista son no-negociables: <strong>preferencias
+        del usuario</strong> (primero) y <strong>permissions</strong>
+        (ultimo, por seguridad). En el medio entran las capas de memoria y
+        los skills. Si un skill no disparo, simplemente no entra —no hay
+        "por las dudas cargalo".
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">01 · always</div>
+          <div class="timeline-title">Personal preferences + active workspace</div>
+          <div class="timeline-desc">
+            Quien es el usuario, que esta editando, que convenciones tiene.
+            Corto, estable, siempre presente.
+          </div>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">02 · truncate si hace falta</div>
+          <div class="timeline-title">Semantic lessons</div>
+          <div class="timeline-desc">
+            Aprendizajes destilados de episodios pasados. Si el budget se
+            complica, se trunca de atras para adelante.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">03 · top-k fijo</div>
+          <div class="timeline-title">Top 5 episodic por salience</div>
+          <div class="timeline-desc">
+            Las 5 entradas mas recientes + dolorosas + importantes. Ni una
+            mas, ni una menos. El scoring se explica en M02-04.
+          </div>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">04 · progressive</div>
+          <div class="timeline-title">Matched skills</div>
+          <div class="timeline-desc">
+            Solo los skills cuyo trigger matcheo la request. Los demas
+            quedan sin cargar, aunque existan en <code>_index.md</code>.
+          </div>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-label">05 · always</div>
+          <div class="timeline-title">Permissions (safety-critical)</div>
+          <div class="timeline-desc">
+            Lista de que puede y que no puede hacer. Nunca se omite por
+            budget.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 4: Constantes y codigo
+         ============================================ -->
+    <section>
+      <h2>Constantes tipicas</h2>
+      <p>
+        No hay valores magicos universales, pero hay numeros que se repiten
+        en implementaciones serias. El ajuste fino depende del modelo y del
+        dominio.
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span>context_budget.py</span>
+          <span>constantes tipicas</span>
+        </div>
+<pre><code data-lang="python"># El tamano de la caja y la reserva para razonamiento
+MAX_CONTEXT_TOKENS = 128000
+RESERVED_FOR_REASONING = 40000
+
+# Limites duros por categoria
+PERSONAL_BUDGET = 2000
+SEMANTIC_BUDGET = 8000
+EPISODIC_BUDGET = 6000
+SKILLS_BUDGET = 20000
+PERMISSIONS_BUDGET = 1000
+
+# Top-k fijos
+EPISODIC_TOP_K = 5
+SEMANTIC_MAX_ITEMS = 10
+
+def available_for_input():
+    used = (PERSONAL_BUDGET + SEMANTIC_BUDGET + EPISODIC_BUDGET
+            + SKILLS_BUDGET + PERMISSIONS_BUDGET + RESERVED_FOR_REASONING)
+    return MAX_CONTEXT_TOKENS - used</code></pre>
+      </div>
+
+      <p>
+        Estos limites son <em>techos</em>, no <em>pisos</em>. Si el usuario
+        tiene pocas preferencias, no se infla para llegar a 2000. Si los
+        skills disparados son chicos, el budget sobrante no se "rellena"
+        con otras cosas —queda libre para el reasoning.
+      </p>
+    </section>
+
+    <!-- ============================================
+         SECCION 5: Cierre
+         ============================================ -->
+    <section>
+      <h2>Para llevarte</h2>
+      <div class="callout callout-success">
+        <div class="callout-title">Reglas mentales</div>
+        <ul>
+          <li>
+            El context window es <strong>caja</strong>, no stream. Lo que
+            no entra, no existe.
+          </li>
+          <li>
+            Cada pieza que cargas compite por atencion. <strong>Mas contexto
+            no es mejor</strong>.
+          </li>
+          <li>
+            Hay un orden fijo de carga con prioridades. Si falta budget,
+            se sacrifica lo ultimo de la lista.
+          </li>
+          <li>
+            Si un skill no trigereo, no se carga. Punto.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="01-harness-thin.html" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Harness thin: conductor &lt; 200 LOC</span>
+    </a>
+    <a data-nav-next href="03-progressive-disclosure.html" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Progressive disclosure de skills</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M02-02", "M02");
+    }
+  });
+</script>
+</body>
+</html>

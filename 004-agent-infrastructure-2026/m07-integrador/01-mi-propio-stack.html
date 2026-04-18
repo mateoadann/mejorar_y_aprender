@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Armá tu propio stack: checklist · Agent Infrastructure 2026</title>
+  <meta name="description" content="Las 14 cosas que moven la aguja al armar tu propia infraestructura de agente. Timeline realista week-by-week, orden de implementacion, y los 5 anti-patterns que vas a querer evitar." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M07 · Integrador</span>
+    <h1>Armá tu propio stack: checklist</h1>
+    <p class="page-intro">
+      Ya tenes el modelo mental. Ahora, ¿que haces el lunes a la manana si
+      queres empezar? Este es el orden de implementacion que te ahorra
+      semanas de frustracion — y los anti-patterns que te van a tentar y
+      deberias evitar.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Primero: arranca THIN</h2>
+      <p>
+        Tentacion enorme: armar todo el stack de una. Memoria en 4 capas +
+        skills + protocols + knowledge graph + dream cycles. No lo hagas.
+      </p>
+
+      <p>
+        El consejo que funciona:
+        <strong>empezar con la version minima (thin)</strong>. Heartbeat
+        simple + <code>permissions.md</code>. Unas semanas corriendo asi
+        te van a mostrar exactamente donde poner los siguientes guardrails.
+        Si arrancas con todo, no sabes cual componente es el que te ayuda
+        y cual te estorba.
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Thin stack = suficiente para empezar</div>
+        <p>
+          <code>AGENTS.md</code> (30 lineas) + <code>permissions.md</code>
+          (lista de comandos permitidos/prohibidos) + 2 skills basicos. Eso
+          alcanza para sentir la primera semana. El resto se construye sobre
+          evidencia de uso real.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Timeline realista: 10 semanas</h2>
+      <p>
+        Ojo con la expectativa. El primer mes se siente frustrante. El
+        segundo mes empieza a pagar. Solo al tercer mes ves el compounding
+        que el curso te prometio. Este es el timeline que el autor del
+        articulo documento, y coincide con lo que ves en la practica:
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">semana 1-2</span> · frustrante
+                      ─────────────
+  "me olvida todo lo que discutimos ayer"
+  archivos de memoria estan pero no se leen consistentemente
+  hooks no enganchan bien, sesgos en AGENTS.md
+  sentis que perdiste tiempo
+
+
+  <span class="ascii-accent">semana 2-4</span> · empieza a clickear
+                      ─────────────────────
+  agregas <span class="ascii-accent-alt">memory-manager</span> como skill
+  antes de decisiones, chequea LESSONS.md
+  la continuidad entre sesiones empieza a aparecer
+  las correcciones que diste ayer, hoy se aplican solas
+
+
+  <span class="ascii-accent">semana 4-5</span> · empieza a editarse solo
+                      ─────────────────────────
+  abris KNOWLEDGE.md y encontras lineas que VOS NO ESCRIBISTE
+  el dream cycle consolido un pattern que notaste de pasada
+  <span class="ascii-accent-alt">→ el sistema arranca a evolucionar</span>
+
+
+  <span class="ascii-accent">semana 6-8</span> · compone
+                      ────────────
+  tenes skills escritos por skillforge que ni te acordas
+  el agente usa lessons que surgieron de fallos que olvidaste
+  <span class="ascii-accent-alt">la suma empieza a ser mayor que las partes</span>
+
+
+  <span class="ascii-accent">semana 10</span> · hit the wall
+                      ────────────────
+  30 skills + LESSONS.md fat + tool schemas
+  = <span class="ascii-accent-alt">90K tokens cargados antes de pensar</span>
+  algo tiene que ceder
+  → progressive disclosure (M02-03) rescata
+  _index.md + lazy-loading de skills por trigger
+      </pre>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">El wall de la semana 10</div>
+        <p>
+          Este wall es <strong>esperable</strong>, no un error de diseno. Es
+          la senal de que el stack crecio bien: tenes tantos assets que ahora
+          cargar todo es caro. Progressive disclosure (cargar solo el header
+          y lazy-loadear el detalle) te saca del pozo. Si arrancaste con
+          progressive disclosure desde day 1 sin necesitarlo, estas
+          preoptimizando.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Checklist de implementacion (orden recomendado)</h2>
+      <p>
+        Estos son los 14 items que moven la aguja. Orden sugerido — no tenes
+        que hacerlos todos juntos, pero esta secuencia minimiza frustracion.
+      </p>
+
+      <div class="layer-stack" style="gap: 8px; margin-top: 16px;">
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">1 · Decidir harness</div>
+            <div class="layer-stack-desc">
+              Claude Code / Cursor si queres something off-the-shelf, o custom
+              harness <em>menos</em> de 200 lineas. Grande simple le gana a
+              framework gigante complicado.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">2 · Folder structure <code>.agent/</code></div>
+            <div class="layer-stack-desc">
+              Subdirs: <code>memory/</code>, <code>skills/</code>,
+              <code>protocols/</code>, <code>hooks/</code>. No flat folder,
+              siempre separado por concern.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">3 · <code>AGENTS.md</code> raíz</div>
+            <div class="layer-stack-desc">
+              Root config. Bajo 30 lineas. Lista donde esta cada cosa. Zero
+              logica, solo indice.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">4 · <code>memory/personal/PREFERENCES.md</code></div>
+            <div class="layer-stack-desc">
+              Tu stack (Angular, Python, Rioplatense Spanish, etc), tu style,
+              tus convenciones. Esto nunca cambia con el tiempo.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item" style="border-color: var(--accent-cyan-border);">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">5 · <code>protocols/permissions.md</code> <span class="tag tag-cyan">day 1</span></div>
+            <div class="layer-stack-desc">
+              <strong>No lo pospongas a la semana 6.</strong> Ese fue el error
+              del autor y le costo varios incidentes. Buckets: always allowed
+              / requires approval / never allowed / approved domains.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">6 · <code>memory/working/WORKSPACE.md</code> template</div>
+            <div class="layer-stack-desc">
+              Template de working memory. Se reescribe cada sesion. Es el
+              "que estabamos haciendo" que hace que la resumption funcione.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">7 · <code>memory/episodic/AGENT_LEARNINGS.jsonl</code> vacio</div>
+            <div class="layer-stack-desc">
+              Archivo vacio. Lo empieza a llenar el post_execution hook.
+              Append-only, jamas editas a mano.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">8 · 2-3 skills iniciales con self-rewrite hooks</div>
+            <div class="layer-stack-desc">
+              No 20. Dos o tres, de tareas que haces seguido. Cada uno con
+              self-rewrite hook al final. Mejor tres excelentes que veinte
+              mediocres.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item" style="border-color: var(--accent-cyan-border);">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">9 · memory-manager skill <span class="tag tag-cyan">day 1</span></div>
+            <div class="layer-stack-desc">
+              <strong>Esto lo hubiese ahorrado 3 semanas al autor.</strong>
+              Arrancar con memory-manager desde day 1 hace que el agente
+              empiece a leer la memoria desde la primera sesion, no desde
+              la cuarta.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">10 · skillforge skill</div>
+            <div class="layer-stack-desc">
+              El skill que <em>crea</em> skills cuando memory-manager detecta
+              pattern recurrente. Es meta, pero es lo que hace que el sistema
+              crezca solo.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">11 · Hooks: pre_tool_call, post_execution, on_failure</div>
+            <div class="layer-stack-desc">
+              Los 3 hooks minimos. pre_tool_call valida permisos. post_execution
+              logea a episodic. on_failure dispara con pain=8 y threshold 3
+              en 14d (si mismo fallo pasa 3 veces en 2 semanas, promote a
+              LESSONS.md).
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">12 · Tool schemas para tools criticas</div>
+            <div class="layer-stack-desc">
+              Empezá por las <strong>destructivas</strong>: git, deploy, DB
+              writes. Si no hay schema, el skill tiene que adivinar args — y
+              adivina mal con cosas que rompen.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">13 · <code>auto_dream.py</code> + cron 3am</div>
+            <div class="layer-stack-desc">
+              Script que corre el dream cycle todas las noches. Consolida
+              episodic → semantic, decae entries viejas, detecta patterns
+              para skillforge.
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">14 · Git init en <code>.agent/</code></div>
+            <div class="layer-stack-desc">
+              Version control de TODO el stack. Memoria, skills, protocols,
+              hooks — todo en git. Asi podes hacer <code>git revert</code> de
+              una lesson mal aprendida sin perder el resto.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <h2>5 anti-patterns a evitar</h2>
+      <p>
+        Estos los vas a encontrar. Todos parecen buenas ideas hasta que
+        explotan:
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Anti-pattern 1</div>
+          <h4>Context budget bloat</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55;">
+            90k tokens cargados <em>antes</em> de empezar a pensar. Todos los
+            skills + LESSONS.md + schemas se leen al inicio.
+            <br /><br />
+            <strong>Solucion:</strong> progressive disclosure (M02-03).
+            Truncar LESSONS.md a top-N por salience. Top-k de episodic por
+            similitud, no historico completo.
+          </p>
+        </div>
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Anti-pattern 2</div>
+          <h4>Stale skills</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55;">
+            La API cambio hace 3 meses, el skill sigue con las instrucciones
+            viejas. Se ejecuta y rompe cosas.
+            <br /><br />
+            <strong>Solucion:</strong> manifest con version+date por skill.
+            Flaggear automaticamente los que no se tocaron en 60+ dias.
+            Review manual periodico.
+          </p>
+        </div>
+      </div>
+
+      <div class="comparison-table" style="margin-top: 24px;">
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Anti-pattern 3</div>
+          <h4>Unsafe composition</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55;">
+            2 skills cada uno <em>seguro</em>, combinados hacen algo
+            destructivo. Skill A: "lista files para limpiar". Skill B: "borra
+            files de la lista". Juntos: borro prod.
+            <br /><br />
+            <strong>Solucion:</strong> constraints en pre_tool_call hook
+            del <em>protocol</em>, no adentro de los skills. Que sea
+            imposible combinarlos sin validacion central.
+          </p>
+        </div>
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Anti-pattern 4</div>
+          <h4>Literal execution</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55;">
+            El skill tiene 12 pasos procedurales, el agente los sigue aunque
+            no apliquen a la situacion actual. Ciega y ruidosa.
+            <br /><br />
+            <strong>Solucion:</strong> destinations and fences, no driving
+            directions (M04-00). Describi el <em>destino</em>, no la ruta
+            paso-a-paso.
+          </p>
+        </div>
+      </div>
+
+      <div class="comparison-table" style="margin-top: 24px;">
+        <div class="comparison-side bad" style="flex: 1;">
+          <div class="comparison-side-label">Anti-pattern 5</div>
+          <h4>Error amplification loops</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55;">
+            Una bad lesson entra a LESSONS.md. Sesga el proximo skill. El
+            skill genera mas entries consistentes. La leccion se refuerza.
+            El sistema se enquista en el error. Esto es lo que vimos como
+            amplificacion en la pagina anterior.
+            <br /><br />
+            <strong>Solucion (tres capas):</strong>
+            <br />— Dream cycle decay (automatico: mata entries sin refuerzo).
+            <br />— Self-rewrite conservative (skill no se reescribe con una sola entry).
+            <br />— <strong>Review manual de LESSONS.md cada few weeks</strong>
+            (no automatizar esta parte — si el sistema se auto-corrige puede
+            tambien auto-equivocarse).
+            <br />— Git revert si hace falta volver atras.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cierre: owneas tu memoria, owneas tus skills</h2>
+      <p>
+        Hay una idea que quiero que te lleves, porque es la que distingue un
+        setup que sobrevive a cambios de modelo de uno que no:
+      </p>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">El modelo es swap. La memoria y los skills no.</div>
+        <p>
+          Cuando salga un modelo mejor (y va a salir), lo swapeas. Cambias
+          una linea de config y lo nuevo entra. Los skills y la memoria no
+          los podes reemplazar asi. Ellos encodan <strong>tus</strong>
+          mistakes, <strong>tus</strong> decisions, <strong>tu</strong>
+          specific way of working.
+        </p>
+        <p style="margin-top: 12px;">
+          Own your memory. Own your skills. Keep them in plain text files
+          and in git. Que sean tuyos, no de la plataforma.
+        </p>
+      </div>
+
+      <p>
+        Y con eso cerramos el checklist. En la ultima pagina tenes el
+        cheatsheet denso para consultar — tablas, formulas, reglas rapidas,
+        los patterns mas usados del curso en una sola hoja.
+      </p>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Los 6 loops</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Cheatsheet</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M07-01", "M07");
+    }
+  });
+</script>
+</body>
+</html>

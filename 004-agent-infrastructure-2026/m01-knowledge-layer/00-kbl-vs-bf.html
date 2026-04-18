@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KBL vs Brand Foundation · Agent Infrastructure 2026</title>
+  <meta name="description" content="Las dos mitades del Knowledge Layer: KBL dinamico mantenido por el agente, y Brand Foundation estatico editado solo por humano. Por que separarlos cambia todo." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M01 · Knowledge Layer</span>
+    <h1>KBL vs Brand Foundation</h1>
+    <p class="page-intro">
+      El Knowledge Layer se divide en dos mitades que se comportan al reves:
+      una crece sola y la otra solo cambia cuando un humano lo dice. Entender
+      esa distincion es el primer paso para armar un knowledge layer que
+      escale sin romperse.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>La division fundamental</h2>
+      <p>
+        Todo lo que el agente <em>sabe</em> sobre tu mundo cae en uno de dos
+        baldes. Son dos tipos de conocimiento con dinamicas opuestas, y eso
+        justifica separarlos fisicamente en carpetas distintas.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side">
+          <div class="comparison-side-label">Dinamico</div>
+          <h4>KBL · Knowledge Base Layer</h4>
+          <p>
+            Conocimiento <strong>vivo</strong>. Crece todo el tiempo. Articulos
+            procesados, notas de investigacion, hilos de X archivados, PDFs de
+            papers, bookmarks. El agente mantiene este corpus, cross-referencia,
+            actualiza, sintetiza.
+          </p>
+          <p><strong>Editado por:</strong> agente (con validation gate humano).</p>
+          <p><strong>Ejemplos:</strong> "resumen de la keynote de Tan", "notas sobre RAG vs KBL", "insights de este paper".</p>
+        </div>
+        <div class="comparison-side">
+          <div class="comparison-side-label">Estatico</div>
+          <h4>BF · Brand Foundation</h4>
+          <p>
+            Conocimiento <strong>definitivo</strong>. Cambia rara vez y solo
+            por decision humana. Tu voz, tu posicionamiento, las palabras que
+            nunca usas, el estilo visual. La identidad.
+          </p>
+          <p><strong>Editado por:</strong> solo humano. El agente <em>lee</em>, nunca escribe.</p>
+          <p><strong>Ejemplos:</strong> "uso voseo rioplatense", "banned words: disrupt, revolutionary", "paleta: cyan + violeta".</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Arquitectura de las dos capas</h2>
+      <p>
+        Los agentes leen de ambas capas en cada tarea, pero las capas tienen
+        origen distinto. El KBL viene del pipeline de ingesta; el BF viene de
+        un archivo curado a mano.
+      </p>
+
+      <pre class="ascii-diagram">
+                        ┌──────────────────────┐
+                        │      <span class="ascii-accent">AGENTES</span>         │
+                        │  (leen de ambas)     │
+                        └──┬───────────────┬───┘
+                           │               │
+                     <span class="ascii-dim">lee dinamico</span>    <span class="ascii-dim">lee estatico</span>
+                           │               │
+                           ▼               ▼
+              ┌────────────────────┐  ┌────────────────────┐
+              │   <span class="ascii-accent">KBL · dinamico</span>   │  │   <span class="ascii-accent-alt">BF · estatico</span>    │
+              │ ────────────────── │  │ ────────────────── │
+              │  my-wiki/wiki/     │  │  brand-foundation/ │
+              │  ├── index.md      │  │  ├── voice.md      │
+              │  ├── concepts/     │  │  ├── positioning/  │
+              │  ├── entities/     │  │  ├── banned.md     │
+              │  ├── sources/      │  │  └── style.md      │
+              │  └── syntheses/    │  │                    │
+              │                    │  │  <span class="ascii-dim">edit: solo humano</span>  │
+              │  <span class="ascii-dim">edit: agente</span>      │  │                    │
+              └──────▲─────────────┘  └────────────────────┘
+                     │
+              <span class="ascii-dim">ingest pipeline</span>
+                     │
+              ┌────────────────────┐
+              │    <span class="ascii-accent">RAW INBOX</span>       │
+              │  my-wiki/raw/      │
+              │  ├── clippings/    │
+              │  ├── articles/     │
+              │  ├── papers/       │
+              │  └── x-archive/    │
+              └────────────────────┘
+      </pre>
+
+      <p>
+        El raw inbox es el "buzón" donde entra material sin procesar. El
+        pipeline de ingest lo transforma en paginas del KBL. El BF vive
+        completamente aparte, intocable por el agente.
+      </p>
+    </section>
+
+    <section>
+      <h2>Por que separar importa</h2>
+      <p>
+        Podrias pensar "meto todo junto en un wiki". No. La separacion responde
+        a tres problemas reales:
+      </p>
+
+      <ol>
+        <li>
+          <strong>Velocidades distintas de cambio.</strong> El KBL puede tener 50
+          paginas nuevas por semana. El BF tal vez 1 cambio por trimestre. Si
+          vivieran juntos, la noise del KBL taparia la señal del BF.
+        </li>
+        <li>
+          <strong>Riesgo distinto de error.</strong> Una mala pagina en KBL se
+          arregla o se borra y listo. Una mala Brand Foundation afecta <em>todo</em>
+          lo que el agente produce. Necesitas permisos separados y curation
+          separada.
+        </li>
+        <li>
+          <strong>Identidad vs conocimiento.</strong> La Brand Foundation es <em>quien
+          sos</em> como proyecto. El KBL es <em>lo que sabes</em> sobre el mundo. Dos
+          cosas distintas, que deben poder evolucionar en paralelo sin pisarse.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Tabla comparativa completa</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>KBL (dinamico)</th>
+              <th>BF (estatico)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Quien edita</strong></td>
+              <td>Agente (con gate de revision humana)</td>
+              <td>Solo humano</td>
+            </tr>
+            <tr>
+              <td><strong>Que contiene</strong></td>
+              <td>Articulos, sintesis, entidades, sources, outputs</td>
+              <td>Voice, positioning, banned words, style, values</td>
+            </tr>
+            <tr>
+              <td><strong>Frecuencia update</strong></td>
+              <td>Diaria a semanal</td>
+              <td>Mensual a trimestral</td>
+            </tr>
+            <tr>
+              <td><strong>Tamaño tipico</strong></td>
+              <td>100 a 10.000+ paginas</td>
+              <td>5 a 20 paginas</td>
+            </tr>
+            <tr>
+              <td><strong>Fuente</strong></td>
+              <td>Raw inbox (clippings, papers, links)</td>
+              <td>Decision humana, research propia</td>
+            </tr>
+            <tr>
+              <td><strong>Si cambia mal</strong></td>
+              <td>Impacto local, facil de revertir</td>
+              <td>Impacto global, dificil de revertir</td>
+            </tr>
+            <tr>
+              <td><strong>Validation gate</strong></td>
+              <td>explored: false hasta revision humana</td>
+              <td>N/A (es edit-first por humano)</td>
+            </tr>
+            <tr>
+              <td><strong>Analogia</strong></td>
+              <td>Biblioteca (crece con libros nuevos)</td>
+              <td>Constitucion (se enmienda formalmente)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Lo que los agentes leen</h2>
+      <p>
+        En cada tarea, el agente tipicamente hace dos consultas en paralelo:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Al KBL:</strong> "¿qué sabemos sobre este tema?" — recupera
+          paginas relevantes, cross-refs, sources citadas.
+        </li>
+        <li>
+          <strong>Al BF:</strong> "¿cómo debo escribir esto?" — aplica voice,
+          positioning, filtra banned words, respeta estilo visual.
+        </li>
+      </ul>
+
+      <p>
+        El output del agente es una composicion: <em>conocimiento del KBL</em>
+        expresado con la <em>identidad del BF</em>. Esa es la magia. Y funciona
+        justamente porque las capas estan separadas: podes actualizar el "que
+        decir" sin tocar el "como decirlo", y viceversa.
+      </p>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">El mindset</div>
+        <p>
+          KBL = lo que el agente <strong>aprende</strong>. Brand Foundation =
+          lo que el agente <strong>no negocia</strong>. Separalos siempre, desde
+          el dia 1. Aunque al principio parezca overkill.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Por que compone</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Estructura del wiki</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M01-00", "M01");
+    }
+  });
+</script>
+</body>
+</html>

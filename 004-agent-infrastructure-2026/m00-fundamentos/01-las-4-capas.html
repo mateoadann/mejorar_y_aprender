@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Las 4 capas de la infraestructura · Agent Infrastructure 2026</title>
+  <meta name="description" content="Knowledge Layer, Memoria, Skills y Protocolos. Como se conectan, quien edita cada una, cada cuanto se actualizan y por que separarlas es clave." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M00 · Fundamentos</span>
+    <h1>Las 4 capas de la infraestructura</h1>
+    <p class="page-intro">
+      Ya sabes que hay 4 piezas. Ahora vamos al detalle: que vive en cada una,
+      como se comunican, quien las edita y cada cuanto se actualizan. Este es
+      el esqueleto que vas a ver repetido en cada modulo.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Arquitectura general</h2>
+      <p>
+        La infraestructura se apila en 4 capas horizontales. De abajo hacia
+        arriba: conocimiento, memoria, skills, protocolos. El agente vive en
+        el medio, leyendo y escribiendo en todas.
+      </p>
+
+      <pre class="ascii-diagram">
+  ┌───────────────────────────────────────────────────────┐
+  │  <span class="ascii-accent">CAPA 4 · PROTOCOLOS</span>                                  │
+  │  MCP servers, tool schemas, permisos, hooks           │
+  │  <span class="ascii-dim">Lo que el agente PUEDE HACER</span>                          │
+  └────────────────────────▲──────────────────────────────┘
+                           │ invoca
+                           ▼
+  ┌───────────────────────────────────────────────────────┐
+  │  <span class="ascii-accent">CAPA 3 · SKILLS</span>                                      │
+  │  Procedimientos reusables, self-rewrite, progressive  │
+  │  disclosure                                           │
+  │  <span class="ascii-dim">Lo que el agente SABE HACER</span>                           │
+  └────────────────────────▲──────────────────────────────┘
+                           │ lee / escribe
+                           ▼
+  ┌───────────────────────────────────────────────────────┐
+  │  <span class="ascii-accent-alt">CAPA 2 · MEMORIA (4 sub-capas)</span>                       │
+  │  working · episodic · semantic · personal             │
+  │  <span class="ascii-dim">Lo que el agente RECUERDA</span>                             │
+  └────────────────────────▲──────────────────────────────┘
+                           │ consulta
+                           ▼
+  ┌───────────────────────────────────────────────────────┐
+  │  <span class="ascii-accent-alt">CAPA 1 · KNOWLEDGE LAYER</span>                             │
+  │  KBL (dinamico) + Brand Foundation (estatico)         │
+  │  <span class="ascii-dim">Lo que el agente SABE</span>                                 │
+  └───────────────────────────────────────────────────────┘
+      </pre>
+    </section>
+
+    <section>
+      <h2>Capa 1 · Knowledge Layer</h2>
+      <p>
+        La base. Todo lo que el agente <strong>sabe</strong> sobre el mundo y
+        sobre tu negocio. Dos mitades muy distintas:
+      </p>
+      <ul>
+        <li>
+          <strong>KBL (Knowledge Base Layer):</strong> dinamico, creciente,
+          mantenido por el agente. Wiki de paginas cross-linkeadas, con un
+          master index y TLDRs. Acumula insights de articulos, clippings, papers.
+        </li>
+        <li>
+          <strong>Brand Foundation:</strong> estatico, editado solo por humano.
+          Voice rules, positioning, banned words, visual style. Cambia poco, y
+          el agente nunca lo re-escribe por si mismo.
+        </li>
+      </ul>
+      <p>
+        La separacion es intencional: lo que crece rapido (KBL) vive separado
+        de lo que no puede cambiar sin aprobacion (BF). El M01 entero es esto.
+      </p>
+    </section>
+
+    <section>
+      <h2>Capa 2 · Memoria (4 sub-capas)</h2>
+      <p>
+        La memoria es la pieza con mas sub-estructura. No es un unico blob. Son
+        cuatro tipos, cada uno con su comportamiento:
+      </p>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Working</div>
+          <div class="concept-card-term">Borrador mental</div>
+          <p class="concept-card-desc">
+            Contexto de la sesion actual. Se pierde al cerrar. Como la RAM.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Episodic</div>
+          <div class="concept-card-term">Que paso cuando</div>
+          <p class="concept-card-desc">
+            Eventos temporales: "el 3 de marzo cerramos el deal con X".
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Semantic</div>
+          <div class="concept-card-term">Hechos estables</div>
+          <p class="concept-card-desc">
+            Conocimiento declarativo: "nuestro stack es Postgres + Django".
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Personal</div>
+          <div class="concept-card-term">Preferencias del humano</div>
+          <p class="concept-card-desc">
+            Estilo, tono, restricciones individuales: "Mateo usa voseo".
+          </p>
+        </div>
+      </div>
+      <p>
+        Separar estas capas permite reglas de olvido distintas, tiers de retrieval
+        distintos, y politicas de privacidad distintas. El M03 desarma esto.
+      </p>
+    </section>
+
+    <section>
+      <h2>Capa 3 · Skills</h2>
+      <p>
+        Una skill es un procedimiento reusable: un archivo con instrucciones
+        (usualmente markdown + scripts) que el agente carga on-demand cuando
+        detecta que la tarea lo amerita. Progressive disclosure: no cargas todas
+        las skills siempre, solo la que aplica.
+      </p>
+      <p>
+        Lo poderoso de las skills modernas es que tienen <strong>self-rewrite</strong>:
+        cuando una skill falla de forma consistente, el agente puede proponerle
+        al humano una correccion. Eso cierra el loop entre experiencia (memoria)
+        y procedimiento (skill). El M04 lo trata a fondo.
+      </p>
+    </section>
+
+    <section>
+      <h2>Capa 4 · Protocolos</h2>
+      <p>
+        Los protocolos son el contrato con el mundo exterior. MCP (Model Context
+        Protocol) se impuso como estandar en 2025-2026. Un protocolo define
+        <strong>que tools existen, que schemas tienen los argumentos y los
+        returns, y que permisos necesita cada uno</strong>.
+      </p>
+      <p>
+        Protocolos = limites. Sin ellos, el agente puede llamar cualquier cosa
+        en cualquier orden. Con ellos, el agente opera dentro de un sandbox
+        bien tipado, con hooks que validan cada llamada.
+      </p>
+    </section>
+
+    <section>
+      <h2>Resumen comparado</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Capa</th>
+              <th>Que contiene</th>
+              <th>Quien la edita</th>
+              <th>Frecuencia de update</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Knowledge (KBL)</strong></td>
+              <td>Articulos, notas, cross-refs</td>
+              <td>Agente (con validation gate)</td>
+              <td>Diaria / semanal</td>
+            </tr>
+            <tr>
+              <td><strong>Knowledge (BF)</strong></td>
+              <td>Voice, positioning, bans</td>
+              <td>Solo humano</td>
+              <td>Rara (mensual / trimestral)</td>
+            </tr>
+            <tr>
+              <td><strong>Memoria working</strong></td>
+              <td>Contexto de sesion</td>
+              <td>Agente (auto)</td>
+              <td>Continua</td>
+            </tr>
+            <tr>
+              <td><strong>Memoria episodic</strong></td>
+              <td>Eventos temporales</td>
+              <td>Agente + humano</td>
+              <td>Por evento</td>
+            </tr>
+            <tr>
+              <td><strong>Memoria semantic</strong></td>
+              <td>Hechos estables</td>
+              <td>Agente + humano</td>
+              <td>Cuando algo cambia</td>
+            </tr>
+            <tr>
+              <td><strong>Memoria personal</strong></td>
+              <td>Preferencias</td>
+              <td>Humano (curado)</td>
+              <td>Baja</td>
+            </tr>
+            <tr>
+              <td><strong>Skills</strong></td>
+              <td>Procedimientos + scripts</td>
+              <td>Humano (inicial) + agente (self-rewrite)</td>
+              <td>Por uso / por fallo</td>
+            </tr>
+            <tr>
+              <td><strong>Protocolos</strong></td>
+              <td>MCP servers, schemas</td>
+              <td>Humano + infra team</td>
+              <td>Por release</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Flujo tipico de interaccion</h2>
+      <p>
+        Un pedido del humano atraviesa las 4 capas en un orden predecible:
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">Paso 1</div>
+          <div class="timeline-title">Humano envia pedido</div>
+          <p class="timeline-desc">
+            "Escribime un email para el cliente X sobre el tema Y."
+          </p>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">Paso 2 · Memoria</div>
+          <div class="timeline-title">Cargar contexto relevante</div>
+          <p class="timeline-desc">
+            Busca en personal ("tono formal con clientes enterprise"), episodic
+            ("la ultima call con X fue..."), semantic ("X trabaja en fintech").
+          </p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">Paso 3 · Knowledge</div>
+          <div class="timeline-title">Consultar KBL + BF</div>
+          <p class="timeline-desc">
+            Lee las paginas KBL del tema Y, aplica Brand Foundation para tono
+            y palabras prohibidas.
+          </p>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">Paso 4 · Skill</div>
+          <div class="timeline-title">Cargar skill "email-enterprise"</div>
+          <p class="timeline-desc">
+            Progressive disclosure: el agente decide que esta skill aplica y
+            la carga con sus templates y checks.
+          </p>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-label">Paso 5 · Protocolo</div>
+          <div class="timeline-title">Ejecutar via MCP</div>
+          <p class="timeline-desc">
+            Draft guardado via MCP al sistema de correos. Hook valida que no
+            mande nada auto-enviado sin review humano.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Lo clave</div>
+        <p>
+          Cada capa hace una cosa y la hace bien. La separacion es lo que permite
+          que el sistema <em>evolucione</em> sin romperse. Podes actualizar la
+          Brand Foundation sin tocar skills. Podes agregar un MCP server nuevo
+          sin remanuchear el KBL. Eso es arquitectura bien pensada.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Que es infraestructura</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Por que compone</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M00-01", "M00");
+    }
+  });
+</script>
+</body>
+</html>

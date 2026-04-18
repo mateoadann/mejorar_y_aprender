@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semantic memory: abstracciones que sobreviven · Agent Infrastructure 2026</title>
+  <meta name="description" content="Patrones y heuristicas que se sostienen a traves de tareas. No atadas a un tiempo o lugar: son reglas del agente. Aca viven LESSONS.md, DECISIONS.md y DOMAIN_KNOWLEDGE.md." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M03 · Memoria 4 capas</span>
+    <h1>Semantic memory: abstracciones que sobreviven</h1>
+    <p class="page-intro">
+      Patrones y heuristicas que se sostienen a traves de tareas distintas. No
+      atadas a una fecha ni a un repo especifico: son reglas que el agente
+      aprendio y ahora usa siempre.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>De "esto paso" a "esto tiende a pasar"</h2>
+      <p>
+        La diferencia entre episodic y semantic <strong>no es de granularidad,
+        es de funcion</strong>. Episodic te dice: "el 13 de abril 2026, al
+        implementar PKCE en api-gateway, guardamos el code_verifier despues del
+        redirect y fallo". Semantic te dice: "siempre guarda el code_verifier
+        <em>antes</em> del redirect".
+      </p>
+      <p>
+        La primera es un hecho. La segunda es una <em>regla</em>. Y esa regla
+        ya no necesita contexto temporal: aplica hoy, manana y en el proximo
+        proyecto.
+      </p>
+
+      <pre class="ascii-diagram">
+<span class="ascii-accent">EPISODIC</span>                                          <span class="ascii-accent-alt">SEMANTIC</span>
+(muchas entradas crudas)                          (pocas lecciones destiladas)
+
+┌──────────────────┐
+│ PKCE fallo 13/4  │  ───┐
+├──────────────────┤     │
+│ PKCE fallo 27/4  │  ───┤     <span class="ascii-dim">filtrado +</span>           ┌────────────────────────┐
+├──────────────────┤     ├──► <span class="ascii-dim">consolidacion</span>  ────► │ "Guardar code_verifier │
+│ PKCE fallo 03/5  │  ───┤                          │  ANTES del redirect"   │
+├──────────────────┤     │                          └────────────────────────┘
+│ ...              │  ───┘
+└──────────────────┘
+      </pre>
+
+      <p>
+        La flecha del medio — filtrado + consolidacion — es el <strong>dream
+        cycle</strong>. Lo vemos en la proxima pagina. Por ahora basta saber
+        que semantic memory no se llena a mano: emerge de episodic.
+      </p>
+    </section>
+
+    <section>
+      <h2>Los tres archivos canonicos</h2>
+      <p>
+        Semantic memory no es un archivo, son tres. Cada uno captura un tipo
+        distinto de abstraccion:
+      </p>
+
+      <pre class="ascii-diagram">
+<span class="ascii-dim">memory/</span>
+<span class="ascii-dim">├── working/</span>
+<span class="ascii-dim">├── episodic/</span>
+<span class="ascii-dim">├── </span><span class="ascii-accent">semantic/</span>
+<span class="ascii-dim">│   ├── </span><span class="ascii-accent">LESSONS.md</span>           <span class="ascii-dim">← heuristicas tecnicas agrupadas por area</span>
+<span class="ascii-dim">│   ├── </span><span class="ascii-accent">DECISIONS.md</span>         <span class="ascii-dim">← decisiones arquitectonicas con rationale</span>
+<span class="ascii-dim">│   └── </span><span class="ascii-accent">DOMAIN_KNOWLEDGE.md</span>  <span class="ascii-dim">← hechos del dominio de negocio</span>
+<span class="ascii-dim">└── personal/</span>
+      </pre>
+
+      <div class="grid grid-3">
+        <div class="concept-card">
+          <div class="concept-card-label">LESSONS.md</div>
+          <div class="concept-card-term">Heuristicas</div>
+          <p class="concept-card-desc">
+            "Al hacer X, tene cuidado con Y." Agrupadas por area: API design,
+            Git workflow, Testing, Performance.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">DECISIONS.md</div>
+          <div class="concept-card-term">Rationale</div>
+          <p class="concept-card-desc">
+            "Elegimos Redis sobre in-memory porque [...]." Decision + alternativas
+            + status.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">DOMAIN_KNOWLEDGE.md</div>
+          <div class="concept-card-term">Hechos de negocio</div>
+          <p class="concept-card-desc">
+            Vocabulario, reglas del producto, limites conocidos. Lo que vale
+            para tu dominio especifico.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>LESSONS.md por adentro</h2>
+      <p>
+        Una leccion es una heuristica condensada. Se escribe en imperativo y
+        cabe en una o dos lineas. Se agrupan por area para poder cargar solo
+        la seccion relevante al context window.
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header">memory/semantic/LESSONS.md</div>
+        <pre><code data-lang="bash"># API design
+- Validar schemas en el borde, no adentro del handler
+- 4xx si el error es del cliente, 5xx si es tuyo. Nada de 200 con "error" en el body
+- Los IDs internos no se exponen: siempre un UUID publico separado
+
+# Git workflow
+- Nunca force-push a branch compartido
+- Commit messages en ingles, imperativo, &lt;72 chars en la primera linea
+- Rebase en features personales, merge en branches que vio otro
+
+# Testing
+- Test primero el happy path, despues los bordes. Nunca al reves
+- Mock solo lo que cruza el network. Logica propia se testea de verdad
+- Si un test es flaky 2 veces, se arregla o se borra. No se ignora
+
+# Performance
+- Medir antes de optimizar. Siempre.
+- N+1 queries son el bug mas comun y el mas facil de pasar por alto
+</code></pre>
+      </div>
+
+      <p>
+        Notar tres cosas: (1) cada leccion es una linea, no un parrafo, (2) el
+        tono es directo (imperativo), (3) las categorias son anchas — API
+        design, no "API design for POST /login". La especificidad la pone
+        episodic.
+      </p>
+    </section>
+
+    <section>
+      <h2>DECISIONS.md: el ADR lite del agente</h2>
+      <p>
+        Si trabajaste con ADRs (Architecture Decision Records), esto va a
+        sonarte. Si no, la idea es simple: cada decision arquitectonica no
+        trivial queda documentada con <em>por que</em> se tomo y <em>que
+        alternativas</em> se descartaron.
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header">memory/semantic/DECISIONS.md (ejemplo real)</div>
+        <pre><code data-lang="bash"># 2026-04-13 — Session store para auth tokens
+
+Decision: Redis con TTL de 24h.
+
+Rationale:
+  El store in-memory nos hacia perder sesiones al rotar pods, y
+  una race condition entre dos replicas nos dejaba tokens
+  duplicados por ~200ms. Redis resuelve las dos cosas.
+
+Alternativas consideradas:
+  - In-memory (status-quo): descartado por race conditions
+  - Postgres: descartado por latencia (p99 &gt; 40ms)
+  - DynamoDB: descartado por costo en este volumen
+
+Status: Active
+Revisit: cuando pasemos de 100 req/s sostenidos
+</code></pre>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Por que salva la vida</div>
+        <p>
+          Sin DECISIONS.md, en 3 meses alguien (un agente o un humano nuevo)
+          va a proponer volver a in-memory "porque es mas simple". Con
+          DECISIONS.md, el rationale esta a un grep de distancia. No se
+          re-debate lo que ya se debatio.
+        </p>
+      </div>
+
+      <p>
+        Los campos fijos son: <strong>decision</strong> (que se eligio),
+        <strong>rationale</strong> (por que), <strong>alternativas
+        consideradas</strong> (que se descarto y por que), <strong>status</strong>
+        (<code>Active</code> o <code>Revisit</code> con condicion),
+        <strong>revisit</strong> (el trigger que obliga a reconsiderar).
+      </p>
+    </section>
+
+    <section>
+      <h2>Semantic vs. personal: la ultima capa</h2>
+      <p>
+        Hay una cuarta capa — <strong>personal memory</strong> — que conviene
+        separar desde el principio. Es donde vive <code>PREFERENCES.md</code>:
+        preferencias estilisticas, convenciones del equipo, cosas que no son
+        verdades universales sino <em>como a nosotros nos gusta trabajar</em>.
+      </p>
+
+      <div class="grid grid-2">
+        <div class="concept-card">
+          <div class="concept-card-label">Semantic</div>
+          <div class="concept-card-term">Reglas universales</div>
+          <p class="concept-card-desc">
+            "Nunca force-push a branch compartido" — vale aca, vale afuera,
+            vale en cualquier equipo.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Personal</div>
+          <div class="concept-card-term">Preferencias</div>
+          <p class="concept-card-desc">
+            "Preferimos functional patterns sobre OOP" — contexto, no regla.
+            Vale en este proyecto/equipo, no necesariamente en otro.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">El error: mezclar los dos</div>
+        <p>
+          Si metes <em>"preferimos TypeScript estricto"</em> en LESSONS.md, tu
+          agente va a empezar a pelear con codigos JS perfectamente razonables
+          afuera de este repo. Es contexto, no heuristica. Va a
+          <code>PREFERENCES.md</code>.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Como llega algo a semantic: la promocion</h2>
+      <p>
+        La pregunta obvia: <em>quien escribe LESSONS.md?</em>
+      </p>
+      <p>
+        Respuesta corta: no vos. La mayoria de las entradas llegan por
+        <strong>promocion automatica</strong> desde episodic, ejecutada por
+        el dream cycle (M03-03). La idea:
+      </p>
+
+      <pre class="ascii-diagram">
+episodic                    dream cycle                 semantic
+(raw log)                   (cron 3am)                  (destilado)
+
+┌──────────────┐           ┌────────────────┐          ┌──────────────┐
+│ entrada #412 │           │ salience &gt;= 7  │          │ LESSONS.md   │
+│ salience 8.2 │  ───────► │  → promover    │  ──────► │  + nueva     │
+└──────────────┘           └────────────────┘          │    leccion   │
+                                                        └──────────────┘
+      </pre>
+
+      <p>
+        Podes <em>tambien</em> editar los archivos a mano cuando queres
+        sembrar conocimiento de entrada (por ejemplo convenciones del equipo
+        que no se van a aprender por dolor). Pero el motor principal de
+        crecimiento de semantic es la promocion automatica desde episodic.
+      </p>
+    </section>
+
+    <section>
+      <h2>Mini-resumen</h2>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Que es</div>
+          <div class="concept-card-term">Reglas destiladas</div>
+          <p class="concept-card-desc">
+            Heuristicas, decisiones y conocimiento de dominio que no caducan
+            con la tarea.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Archivos</div>
+          <div class="concept-card-term">LESSONS / DECISIONS / DOMAIN</div>
+          <p class="concept-card-desc">
+            Tres archivos, tres funciones: heuristicas, ADRs lite, hechos de
+            negocio.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Como se llena</div>
+          <div class="concept-card-term">Promocion desde episodic</div>
+          <p class="concept-card-desc">
+            El dream cycle filtra las entradas con salience alto y las
+            promueve sin que tengas que curar a mano.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Episodic memory</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Dream cycle</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M03-02", "M03");
+    }
+  });
+</script>
+</body>
+</html>

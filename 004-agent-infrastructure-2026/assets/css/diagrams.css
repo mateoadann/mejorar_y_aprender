@@ -1,0 +1,447 @@
+/* ============================================
+   Agent Infrastructure 2026 — diagrams.css
+   Estilos para diagramas ASCII, flowcharts,
+   diagramas conceptuales visuales
+   ============================================ */
+
+/* ============================================
+   Diagram container (wrapper base)
+   ============================================ */
+
+.diagram {
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent-cyan-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin: var(--space-8) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.diagram::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--grad-signature);
+  opacity: 0.5;
+}
+
+.diagram-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-5);
+  text-align: center;
+  font-weight: 700;
+}
+
+.diagram-caption {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: var(--space-4);
+  font-style: italic;
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--border);
+}
+
+/* ============================================
+   ASCII diagram (pre mono con bordes cyan)
+   ============================================ */
+
+.diagram pre,
+.diagram-ascii {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.diagram-ascii.accent {
+  border-color: var(--accent-cyan-border);
+  background: var(--accent-cyan-soft);
+}
+
+/* Highlight de partes dentro del ASCII */
+.diagram .hl-cyan { color: var(--accent-cyan); font-weight: 700; }
+.diagram .hl-violet { color: var(--accent-violet); font-weight: 700; }
+.diagram .hl-warn { color: var(--warning); font-weight: 700; }
+.diagram .hl-success { color: var(--success); font-weight: 700; }
+.diagram .hl-muted { color: var(--text-dim); }
+
+/* ============================================
+   Flowchart (boxes + arrows horizontal/vertical)
+   ============================================ */
+
+.flowchart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin: var(--space-6) 0;
+}
+
+.flowchart.vertical {
+  flex-direction: column;
+}
+
+.flowchart-box {
+  flex: 0 1 180px;
+  min-width: 140px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  text-align: center;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.flowchart-box:hover {
+  border-color: var(--accent-cyan);
+  background: var(--accent-cyan-soft);
+  transform: translateY(-2px);
+  box-shadow: var(--glow-cyan);
+}
+
+.flowchart-box-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.flowchart-box-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.flowchart-box-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.flowchart-box.accent {
+  border-color: var(--accent-cyan);
+  background: var(--accent-cyan-soft);
+}
+
+.flowchart-box.violet {
+  border-color: var(--accent-violet);
+  background: var(--accent-violet-soft);
+}
+
+.flowchart-box.warn {
+  border-color: var(--warning);
+  background: var(--warning-soft);
+}
+
+/* Arrows */
+.flowchart-arrow {
+  color: var(--accent-cyan);
+  font-size: 22px;
+  font-weight: 700;
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-1);
+}
+
+.flowchart-arrow.violet {
+  color: var(--accent-violet);
+}
+
+.flowchart.vertical .flowchart-arrow {
+  transform: rotate(90deg);
+}
+
+.flowchart-arrow-labeled {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--text-muted);
+}
+
+.flowchart-arrow-labeled .label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ============================================
+   Hub-and-spoke / constelacion
+   (nodo central + nodos orbitales)
+   ============================================ */
+
+.hub-diagram {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin: var(--space-6) 0;
+  padding: var(--space-6);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  position: relative;
+}
+
+.hub-center {
+  grid-column: 2;
+  background: var(--grad-signature);
+  color: var(--bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  text-align: center;
+  font-weight: 700;
+  box-shadow: var(--glow-cyan);
+  position: relative;
+  z-index: 2;
+}
+
+.hub-node {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.hub-node:hover {
+  border-color: var(--accent-cyan);
+  background: var(--accent-cyan-soft);
+  transform: translateY(-2px);
+}
+
+.hub-node-title {
+  font-weight: 700;
+  color: var(--text-strong);
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.hub-node-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ============================================
+   Analogy (2 sides)
+   ============================================ */
+
+.analogy {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: var(--space-4);
+  align-items: center;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin: var(--space-6) 0;
+}
+
+.analogy-side {
+  text-align: center;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--bg-subtle);
+}
+
+.analogy-side.accent {
+  background: var(--accent-cyan-soft);
+  border: 1px solid var(--accent-cyan-border);
+}
+
+.analogy-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-2);
+}
+
+.analogy-title {
+  font-weight: 700;
+  color: var(--text-strong);
+  margin-bottom: var(--space-1);
+}
+
+.analogy-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.analogy-arrow {
+  font-size: 28px;
+  color: var(--accent-cyan);
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+/* ============================================
+   Graph (knowledge graph visualization)
+   nodes + edges con SVG inline o HTML pseudo
+   ============================================ */
+
+.graph-viz {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin: var(--space-6) 0;
+  text-align: center;
+  position: relative;
+  min-height: 240px;
+}
+
+.graph-viz svg {
+  width: 100%;
+  height: auto;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.graph-node-rect {
+  fill: var(--bg-subtle);
+  stroke: var(--accent-cyan);
+  stroke-width: 1.5;
+}
+
+.graph-node-rect.violet {
+  stroke: var(--accent-violet);
+}
+
+.graph-node-label {
+  fill: var(--text-strong);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.graph-edge {
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.graph-edge-label {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+/* ============================================
+   Stats row (numero grande + label)
+   ============================================ */
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-6) 0;
+}
+
+.stat {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: var(--grad-signature);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .flowchart {
+    flex-direction: column;
+    padding: var(--space-4);
+  }
+
+  .flowchart-arrow {
+    transform: rotate(90deg);
+  }
+
+  .flowchart.vertical .flowchart-arrow {
+    transform: none;
+  }
+
+  .hub-diagram {
+    grid-template-columns: 1fr;
+  }
+
+  .hub-center {
+    grid-column: 1;
+  }
+
+  .analogy {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .analogy-arrow {
+    transform: rotate(90deg);
+  }
+
+  .diagram pre,
+  .diagram-ascii {
+    font-size: 11px;
+    padding: var(--space-3);
+  }
+}

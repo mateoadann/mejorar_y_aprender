@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Episodic memory: que paso en runs previos · Agent Infrastructure 2026</title>
+  <meta name="description" content="El log de decisiones, tool calls, fallos y reflexiones del agente. No es solo historial: los episodios recuperados funcionan como precedentes concretos que impiden repetir errores." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M03 · Memoria 4 capas</span>
+    <h1>Episodic memory: que paso en runs previos</h1>
+    <p class="page-intro">
+      La memoria episodica es el log de decisiones, tool calls, fallos y
+      reflexiones. Suena a historial pero no lo es: los episodios recuperados
+      funcionan como precedentes concretos, y ahi esta su valor real.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Mas que un log</h2>
+      <p>
+        Un log normal te dice <em>que paso</em>. La episodic memory hace algo
+        distinto: te deja <strong>recuperar episodios pasados cuando estas por
+        repetir una accion parecida</strong>. No es lectura lineal, es lookup
+        selectivo.
+      </p>
+      <p>
+        Imaginate a un agente que va a correr <code>git push --force</code>.
+        Antes de ejecutar, el retrieval le devuelve dos episodios parecidos: en
+        uno funciono, en otro arruino el branch compartido. Con ese precedente
+        a mano, el agente deja de actuar a ciegas.
+      </p>
+      <p>
+        Por eso la episodic memory no es un archivo de museo. Es la base de
+        datos que el agente <em>consulta</em> cada vez que esta por hacer algo
+        no trivial.
+      </p>
+    </section>
+
+    <section>
+      <h2>El archivo canonico: AGENT_LEARNINGS.jsonl</h2>
+
+      <pre class="ascii-diagram">
+<span class="ascii-dim">memory/</span>
+<span class="ascii-dim">├── working/</span>
+<span class="ascii-dim">├── </span><span class="ascii-accent">episodic/</span>
+<span class="ascii-dim">│   ├── </span><span class="ascii-accent">AGENT_LEARNINGS.jsonl</span>  <span class="ascii-dim">  ← append-only, un JSON por linea</span>
+<span class="ascii-dim">│   └── snapshots/</span>            <span class="ascii-dim">  ← archivado por dream cycle (M03-03)</span>
+<span class="ascii-dim">├── semantic/</span>
+<span class="ascii-dim">└── personal/</span>
+      </pre>
+
+      <p>
+        <code>.jsonl</code> significa <em>JSON Lines</em>: cada linea es un
+        objeto JSON completo. El formato es append-only — nunca se edita una
+        linea vieja, solo se agregan nuevas. Tres razones por las que esto
+        importa:
+      </p>
+
+      <div class="grid grid-3">
+        <div class="concept-card">
+          <div class="concept-card-label">Concurrencia</div>
+          <div class="concept-card-term">Dos agentes a la vez</div>
+          <p class="concept-card-desc">
+            Escribir al final del archivo es atomico. Sub-agentes paralelos no
+            se pisan entre si.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Auditoria</div>
+          <div class="concept-card-term">Historia inmutable</div>
+          <p class="concept-card-desc">
+            Nunca reescribis el pasado. El git log del archivo es la narrativa
+            completa de lo que aprendio el agente.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Parsing</div>
+          <div class="concept-card-term">Linea = registro</div>
+          <p class="concept-card-desc">
+            Podes leer las ultimas N entradas con un tail, o indexarlas en una
+            DB vectorial sin parser complejo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Campos clave de cada entrada</h2>
+      <p>
+        Una entrada bien formada tiene siempre los mismos campos. Esto permite
+        filtrar, scorear y buscar sin sorpresas.
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header">Shape de una entrada (ilustrativo)</div>
+        <pre><code data-lang="python">{
+  "timestamp":    "2026-04-13T10:42:11Z",
+  "skill":        "oauth_flow",
+  "action":       "implement_pkce",
+  "result":       "success",
+  "pain_score":   3,
+  "importance":   7,
+  "reflection":   "PKCE needs code_verifier saved BEFORE redirect, not after",
+  "context":      { "repo": "api-gateway", "branch": "feat/login" }
+}
+</code></pre>
+      </div>
+
+      <ul>
+        <li><strong>timestamp</strong>: ISO 8601, UTC. Base de cualquier ordenamiento temporal.</li>
+        <li><strong>skill</strong>: nombre del skill que estaba corriendo (conecta con M04).</li>
+        <li><strong>action</strong>: verbo especifico dentro del skill.</li>
+        <li><strong>result</strong>: <code>success</code>, <code>failure</code>, <code>blocked</code>.</li>
+        <li><strong>pain_score</strong> (1–10): cuanto dolio. Alto = errores caros o bloqueos largos.</li>
+        <li><strong>importance</strong> (1–10): cuanto cambia futuras decisiones.</li>
+        <li><strong>reflection</strong>: 1 linea. Lo que el agente aprendio. No es el log del stacktrace.</li>
+        <li><strong>context</strong>: objeto libre con metadata (repo, file, user, flags).</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Dos episodios reales, lado a lado</h2>
+      <p>
+        La forma mas facil de entender el valor de estos campos es mirar dos
+        episodios que se repiten en casi cualquier setup:
+      </p>
+
+      <div class="grid grid-2">
+        <div class="callout callout-success">
+          <div class="callout-title">Episodio A — PKCE success</div>
+          <pre style="margin:0;white-space:pre-wrap;font-family:var(--font-mono);font-size:12px;line-height:1.5;">{
+  "skill": "oauth_flow",
+  "action": "implement_pkce",
+  "result": "success",
+  "pain_score": 3,
+  "importance": 7,
+  "reflection":
+    "Guardar code_verifier
+    ANTES del redirect"
+}</pre>
+        </div>
+        <div class="callout callout-danger">
+          <div class="callout-title">Episodio B — force-push blocked</div>
+          <pre style="margin:0;white-space:pre-wrap;font-family:var(--font-mono);font-size:12px;line-height:1.5;">{
+  "skill": "git_ops",
+  "action": "force_push_main",
+  "result": "blocked",
+  "pain_score": 9,
+  "importance": 10,
+  "reflection":
+    "Nunca force-push a
+    branch compartido"
+}</pre>
+        </div>
+      </div>
+
+      <p>
+        El episodio B tiene <code>pain_score: 9</code> y
+        <code>importance: 10</code>. Eso no es decoracion — determina con que
+        frecuencia ese episodio va a <em>emerger</em> cuando el agente busque
+        precedentes en el futuro.
+      </p>
+    </section>
+
+    <section>
+      <h2>El rol del salience scoring</h2>
+      <p>
+        Si tenes 40.000 entradas en <code>AGENT_LEARNINGS.jsonl</code>, cargarlas
+        todas en el context window es imposible. Por eso al recuperar episodios
+        se aplica un <strong>salience score</strong> (ver M02: Context budget).
+      </p>
+
+      <pre class="ascii-diagram">
+salience(e) = <span class="ascii-accent">similarity</span>(query, e)      <span class="ascii-dim">← que tan relevante</span>
+            + <span class="ascii-accent-alt">w1 * pain_score(e)</span>      <span class="ascii-dim">← que tan doloroso fue</span>
+            + <span class="ascii-accent-alt">w2 * importance(e)</span>      <span class="ascii-dim">← que tanto cambia decisiones</span>
+            - <span class="ascii-dim">w3 * age_days(e)</span>         <span class="ascii-dim">← decay temporal suave</span>
+      </pre>
+
+      <p>
+        Traducido: un episodio con mucho dolor emerge <em>mas seguido</em> que
+        uno trivial, aunque ambos sean semanticamente parecidos a la query. Es
+        el equivalente a como tu cerebro recuerda con nitidez el dia que te
+        quemaste con la plancha y con niebla el dia que doblaste las remeras.
+      </p>
+    </section>
+
+    <section>
+      <h2>Quien escribe las entradas: los hooks</h2>
+      <p>
+        Esperar que el agente se acuerde de loguear cada accion es utopico. La
+        escritura se delega a <strong>hooks</strong> que el harness dispara
+        automaticamente en dos momentos clave (hablamos mas de hooks en M04).
+      </p>
+
+      <pre class="ascii-diagram">
+       <span class="ascii-accent">skill corre</span>                              <span class="ascii-accent">agente toma decision</span>
+            │                                          │
+            ▼                                          ▼
+    ┌───────────────┐                           ┌───────────────┐
+    │ exit code 0   │                           │ exit code ≠ 0 │
+    └───────┬───────┘                           └───────┬───────┘
+            │                                          │
+            ▼                                          ▼
+    <span class="ascii-accent">hook: post_execution</span>                      <span class="ascii-accent-alt">hook: on_failure</span>
+            │                                          │
+            ▼                                          ▼
+    append entry a AGENT_LEARNINGS.jsonl (con result, pain, importance)
+      </pre>
+
+      <ul>
+        <li>
+          <strong>post_execution</strong>: corre despues de <em>cualquier</em>
+          skill. Loguea <code>result</code>, tiempo tomado, context minimo.
+        </li>
+        <li>
+          <strong>on_failure</strong>: corre cuando un skill falla. Calcula
+          <code>pain_score</code> (cuanto recurso se gasto, cuanto contexto
+          se tiro) y pide al agente una <code>reflection</code> de una linea.
+        </li>
+      </ul>
+
+      <div class="callout callout-info">
+        <div class="callout-title">La reflection es el diamante</div>
+        <p>
+          Lo que realmente convierte a este archivo en algo util es la
+          <code>reflection</code>. Un stacktrace plano no sirve: no se puede
+          generalizar. Una linea corta que dice <em>"Nunca force-push a branch
+          compartido"</em> si. Esa linea es lo que despues se promueve a
+          semantic memory (proxima pagina).
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Episodic vs. semantic: la diferencia que todo el mundo mezcla</h2>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Resumen en dos frases</div>
+        <p>
+          <strong>Episodic</strong> dice: <em>esto paso este dia.</em> Un hecho
+          especifico atado a un timestamp, un repo, una task.
+          <br />
+          <strong>Semantic</strong> dice: <em>esto tiende a pasar.</em> Una
+          generalizacion que ya no depende del cuando ni del donde.
+        </p>
+      </div>
+
+      <p>
+        Fijate que no es una diferencia de <em>granularidad</em>. Es una
+        diferencia de <strong>funcion</strong>. La misma reflection puede vivir
+        primero en episodic (1 ocurrencia puntual) y luego, tras repetirse,
+        migrar a semantic. Eso es exactamente lo que hace el <em>dream cycle</em>
+        que vemos en la pagina 03 de este modulo.
+      </p>
+    </section>
+
+    <section>
+      <h2>Mini-resumen</h2>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Archivo</div>
+          <div class="concept-card-term">AGENT_LEARNINGS.jsonl</div>
+          <p class="concept-card-desc">
+            Append-only. Un objeto JSON por linea. Lo escriben los hooks, no
+            el agente a mano.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Campos</div>
+          <div class="concept-card-term">pain + importance</div>
+          <p class="concept-card-desc">
+            Esos dos numeros son los que hacen que el retrieval priorice lo
+            doloroso y lo decisivo por sobre lo trivial.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Funcion</div>
+          <div class="concept-card-term">Precedentes</div>
+          <p class="concept-card-desc">
+            Los episodios recuperados se usan como ejemplos concretos. No son
+            historial pasivo: son input activo a la proxima decision.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Working memory</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Semantic memory</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M03-01", "M03");
+    }
+  });
+</script>
+</body>
+</html>

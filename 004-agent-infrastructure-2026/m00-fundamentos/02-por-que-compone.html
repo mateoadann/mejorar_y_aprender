@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Por que compone con el tiempo · Agent Infrastructure 2026</title>
+  <meta name="description" content="Compounding en sistemas de agentes: 6 feedback loops entre memoria, skills y protocolos, la curva de valor semana a semana, y el riesgo de amplificacion de errores." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M00 · Fundamentos</span>
+    <h1>Por que compone con el tiempo</h1>
+    <p class="page-intro">
+      Un agente con infraestructura no es una herramienta mejor. Es una herramienta
+      que <em>mejora sola</em>. La razon son los feedback loops entre las capas.
+      Pero ojo: si los loops alimentan errores, tambien se amplifican.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Compounding en sistemas de agentes</h2>
+      <p>
+        El interes compuesto es la idea de que el valor generado en un periodo
+        se reinvierte, y el proximo periodo genera mas valor sobre una base mas
+        grande. En un agente con infraestructura pasa lo mismo, pero con
+        <strong>conocimiento, procedimientos y contexto</strong> en vez de plata.
+      </p>
+      <p>
+        Cada interaccion con el agente genera material que <em>alimenta</em> las
+        capas inferiores. Una conversacion util se destila en memoria, la memoria
+        acumulada permite crear una skill, la skill usada descubre un protocolo
+        que falta, el protocolo nuevo devuelve datos que alimentan la memoria.
+        Y vuelta a empezar.
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">La formula informal</div>
+        <p>
+          Valor(t+1) = Valor(t) + (uso_semanal × tasa_de_destilacion × calidad_de_loops)
+        </p>
+        <p>
+          Si la tasa de destilacion es alta (el agente <em>aprende</em> de lo
+          que hace) y los loops estan bien diseñados, la curva se despega.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Los 6 feedback loops</h2>
+      <p>
+        Entre las tres capas superiores (memoria, skills, protocolos) hay 6
+        loops posibles — 2 direcciones entre cada par. Todos suman si estan
+        sanos. El M07 los desmenuza uno por uno; aca va el mapa.
+      </p>
+
+      <pre class="ascii-diagram">
+                  ┌─────────────────────────┐
+                  │      <span class="ascii-accent">MEMORIA</span>            │
+                  │  working · episodic     │
+                  │  semantic · personal    │
+                  └──┬────────────────────▲─┘
+                     │                    │
+              <span class="ascii-accent">loop 1</span>                <span class="ascii-accent-alt">loop 2</span>
+            destila a skill         skill guarda trace
+                     │                    │
+                     ▼                    │
+                  ┌─────────────────────────┐
+                  │      <span class="ascii-accent">SKILLS</span>             │
+                  │  procedimientos         │
+                  │  self-rewrite           │
+                  └──┬────────────────────▲─┘
+                     │                    │
+              <span class="ascii-accent">loop 3</span>                <span class="ascii-accent-alt">loop 4</span>
+           pide nuevo protocolo    protocolo refina skill
+                     │                    │
+                     ▼                    │
+                  ┌─────────────────────────┐
+                  │    <span class="ascii-accent">PROTOCOLOS</span>           │
+                  │  MCP, hooks, schemas    │
+                  └──┬────────────────────▲─┘
+                     │                    │
+              <span class="ascii-accent">loop 5</span>                <span class="ascii-accent-alt">loop 6</span>
+           memoria rutea protocolo   protocolo devuelve data
+                     │                    │
+                     └──────► MEMORIA ◄────┘
+      </pre>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Loop 1</div>
+          <div class="concept-card-term">Memoria → Skills</div>
+          <p class="concept-card-desc">
+            Patrones repetidos en memoria se destilan en una skill nueva. "Esto
+            ya lo hice 5 veces, convirtamoslo en procedimiento".
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Loop 2</div>
+          <div class="concept-card-term">Skills → Memoria</div>
+          <p class="concept-card-desc">
+            Cada ejecucion de skill guarda traces en memoria episodic. Alimenta
+            el loop 1 con data fresca.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Loop 3</div>
+          <div class="concept-card-term">Skills → Protocolos</div>
+          <p class="concept-card-desc">
+            La skill descubre que necesita un tool que no existe. Propone el
+            schema para un nuevo MCP endpoint.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Loop 4</div>
+          <div class="concept-card-term">Protocolos → Skills</div>
+          <p class="concept-card-desc">
+            Un protocolo nuevo desbloquea formas mejores de resolver tareas, y
+            la skill se re-escribe para aprovecharlo (self-rewrite).
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Loop 5</div>
+          <div class="concept-card-term">Memoria → Protocolos (routing)</div>
+          <p class="concept-card-desc">
+            La memoria personal dice "para este cliente uso el protocolo
+            staging, no prod". Contexto ruteando permisos.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Loop 6</div>
+          <div class="concept-card-term">Protocolos → Memoria</div>
+          <p class="concept-card-desc">
+            Cada llamada a un protocolo devuelve datos del mundo: facts para
+            semantic memory, eventos para episodic.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>La curva de valor</h2>
+      <p>
+        Lo que se siente al construir infraestructura es un valle antes del
+        despegue. Las primeras 1-3 semanas parece que invertis mucho sin
+        retorno. Despues la curva se despega.
+      </p>
+
+      <pre class="ascii-diagram">
+  valor
+    │
+    │                                                ╱──── mes 3+
+    │                                            ╱──
+    │                                        ╱──
+    │                                    ╱──
+    │                                 ╱──        <span class="ascii-accent">compounding</span>
+    │                              ╱──
+    │                           ╱──
+    │                        ╱──
+    │                     ╱──                   <span class="ascii-accent-alt">semana 8 · empieza a componer</span>
+    │                  ╱──
+    │               ╱──
+    │           ╱───
+    │       ╱──                              <span class="ascii-accent-alt">semana 4 · empieza a funcionar</span>
+    │    ╱─
+    │ ╱─
+    │─                                        <span class="ascii-dim">semana 1 · frustrante, invierto sin ver retorno</span>
+    └────────────────────────────────────────────────────► tiempo
+      s1      s4          s8              mes 3      mes 6
+      </pre>
+
+      <ul>
+        <li>
+          <strong>Semana 1 — frustrante.</strong> Armas la infra, escribis las
+          primeras paginas del KBL, configurar MCP servers, te preguntas si vale
+          la pena. Zero retorno visible.
+        </li>
+        <li>
+          <strong>Semana 4 — empieza a funcionar.</strong> El agente ya tiene
+          suficiente contexto acumulado para responder bien la mayoria de los
+          pedidos. Se nota diferencia vs. sesiones fresh.
+        </li>
+        <li>
+          <strong>Semana 8 — empieza a componer.</strong> Las skills generadas
+          desde memoria empiezan a pagar. Aparecen mejoras que no programaste.
+        </li>
+        <li>
+          <strong>Mes 3+ — compounding.</strong> La infra es un activo. Cada
+          tarea es mas barata que la anterior. Migrar de modelo es 5 minutos.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>El riesgo: amplificacion de errores</h2>
+      <p>
+        Los loops amplifican lo que les metes adentro. Si el primer loop destila
+        un mal lesson ("para cerrar deals, ofrece descuentos agresivos"), esa
+        lesson se convierte en skill, la skill se ejecuta en mas casos, cada
+        ejecucion deja trace en memoria que <em>confirma</em> la lesson...
+      </p>
+
+      <pre class="ascii-diagram">
+     <span class="ascii-accent-alt">bad lesson</span>
+          │
+          ▼
+     <span class="ascii-accent-alt">flawed skill</span> ──► se ejecuta mas ──► <span class="ascii-accent-alt">more bad entries en memoria</span>
+          ▲                                         │
+          └─────────────────────────────────────────┘
+                         ciclo vicioso
+      </pre>
+
+      <div class="callout callout-danger">
+        <div class="callout-title">La paradoja del sistema que aprende</div>
+        <p>
+          Lo mismo que hace que tu agente componga positivamente, tambien puede
+          hacer que componga negativamente. No es un bug, es la naturaleza de
+          un sistema con feedback. Necesitas <strong>circuit breakers</strong>.
+        </p>
+      </div>
+
+      <h3>Los dos circuit breakers</h3>
+      <p>
+        La buena noticia: la arquitectura moderna incluye dos mecanismos para
+        romper ciclos viciosos antes de que se afiancen.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side good">
+          <div class="comparison-side-label">Breaker 1</div>
+          <h4>Dream cycle</h4>
+          <p>
+            Periodicamente (por ejemplo overnight o semanal), el agente re-procesa
+            su memoria reciente contra sus lessons existentes. Detecta contradicciones,
+            propone revisiones al humano. Inspirado en cognitive architectures
+            como Soar y en el proceso de consolidacion del sueño humano.
+          </p>
+        </div>
+        <div class="comparison-side good">
+          <div class="comparison-side-label">Breaker 2</div>
+          <h4>Self-rewrite con validation gate</h4>
+          <p>
+            Cuando una skill propone actualizarse a si misma, el cambio no se
+            aplica directo. Pasa por un gate: test cases, review humana, rollback
+            facil. La infra reconoce que el agente puede equivocarse y construye
+            redundancia.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">La regla de oro</div>
+        <p>
+          Mientras mas autonomo es tu agente, mas importantes son los breakers.
+          Un agente que solo sugiere puede darse el lujo de equivocarse. Un agente
+          que ejecuta necesita mecanismos explicitos de deteccion y reversion.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Mini-resumen</h2>
+      <ul>
+        <li>
+          <strong>Compone</strong> porque las 3 capas superiores tienen 6 loops
+          de feedback que se refuerzan entre si.
+        </li>
+        <li>
+          <strong>Valle de valor</strong>: semanas 1-3 dolorosas, despegue entre
+          semana 4 y mes 3.
+        </li>
+        <li>
+          <strong>Amplifica errores</strong> tanto como beneficios. Los breakers
+          (dream cycle + self-rewrite con gate) son obligatorios.
+        </li>
+      </ul>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Preview del M07</div>
+        <p>
+          El modulo integrador vuelve sobre estos 6 loops con el detalle completo
+          de cada uno, incluyendo ejemplos reales y el cheatsheet final de la infra.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Las 4 capas</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Knowledge Layer</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M00-02", "M00");
+    }
+  });
+</script>
+</body>
+</html>

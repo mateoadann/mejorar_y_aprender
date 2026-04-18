@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harness thin: conductor &lt; 200 LOC · Agent Infrastructure 2026</title>
+  <meta name="description" content="El harness no razona. Conductor bajo 200 lineas, tres hooks clave, y por que Claude Code o Cursor pueden funcionar de harness listo para usar." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M02 · Agent Stack</span>
+    <h1>Harness thin: conductor &lt; 200 LOC</h1>
+    <p class="page-intro">
+      El harness es el conductor del agente. Su trabajo no es pensar —es
+      orquestar. Si tu conductor se pasa de 200 lineas, probablemente metiste
+      inteligencia en el lugar equivocado.
+    </p>
+  </section>
+
+  <article>
+
+    <!-- ============================================
+         SECCION 1: La regla de las 200 lineas
+         ============================================ -->
+    <section>
+      <h2>La regla: 200 lineas, ni una mas</h2>
+      <p>
+        El harness hace pocas cosas, pero las hace bien: arma contexto, llama
+        al modelo, ejecuta tools, corre hooks, escribe logs. Si te estas
+        pasando de 200 lineas de codigo, fijate: <em>casi siempre</em> hay
+        logica de decision ahi adentro que pertenece a un skill file.
+      </p>
+      <p>
+        "Si la request menciona bases de datos, cargo el skill de SQL..." —
+        <strong>no</strong>. Esa regla vive en <code>_manifest.jsonl</code>
+        como un trigger. El harness solo lee el manifest, mira los triggers,
+        y carga lo que matchee. No interpreta nada.
+      </p>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">Senales de que metiste inteligencia en el harness</div>
+        <ul>
+          <li>Condicionales que inspeccionan el contenido del prompt</li>
+          <li>Heuristicas para decidir que skill cargar</li>
+          <li>Reglas de negocio o dominio en el codigo del conductor</li>
+          <li>Transformaciones "inteligentes" del contexto</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 2: Las 3 funciones del conductor
+         ============================================ -->
+    <section>
+      <h2>Las tres funciones del conductor</h2>
+      <p>
+        Un harness minimo se resume en tres funciones puras. Todo lo demas es
+        plomeria alrededor.
+      </p>
+
+      <div class="diagram">
+        <div class="diagram-title">LIFECYCLE DEL HARNESS</div>
+        <pre class="diagram-ascii">
+  user input
+      |
+      v
+  +-------------------+
+  | build_context()   |   lee AGENTS.md, _index.md, memoria
+  |                   |   respeta budget, arma prompt final
+  +-------------------+
+      |
+      v
+  +-------------------+
+  | call_model()      |   manda prompt + tools al LLM
+  |                   |   recibe respuesta con tool_calls
+  +-------------------+
+      |
+      v
+  +-------------------+
+  | execute_tools()   |   corre cada tool_call con permisos
+  |                   |   dispara pre_tool_call hook antes
+  +-------------------+
+      |
+      v
+  +-------------------+
+  | log_execution()   |   append a episodic.jsonl
+  |                   |   dispara post_execution hook
+  +-------------------+
+      |
+      v
+  user output
+        </pre>
+        <div class="diagram-caption">
+          Input entra, output sale. En el medio, cuatro pasos mecanicos.
+        </div>
+      </div>
+
+      <p>
+        En pseudo-codigo, el loop entero cabe en 30 lineas:
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span>harness/main.py</span>
+          <span>pseudo-codigo conceptual</span>
+        </div>
+<pre><code data-lang="python"># El conductor NO razona. Solo orquesta.
+def run(user_input):
+    ctx = build_context(user_input)        # lee estado
+    while not done:
+        response = call_model(ctx)         # el modelo piensa
+        if response.tool_calls:
+            for call in response.tool_calls:
+                run_hook("pre_tool_call", call)
+                result = execute_tool(call)
+                ctx.append(result)
+        else:
+            done = True
+    log_execution(ctx, response)           # escribe estado
+    return response.content</code></pre>
+      </div>
+
+      <p>
+        Todo lo que decide QUE hacer esta afuera: en skills, en triggers, en
+        la memoria que el modelo recibe como contexto. El harness solo
+        pregunta "que leo, a quien llamo, donde escribo".
+      </p>
+    </section>
+
+    <!-- ============================================
+         SECCION 3: Alternativa — usa Claude Code
+         ============================================ -->
+    <section>
+      <h2>Alternativa: no escribas el harness, usa uno</h2>
+      <p>
+        Hay una opcion todavia mas barata: <strong>no escribir harness propio
+        para nada</strong>. Claude Code, Cursor y harnesses similares ya traen
+        el loop, el tool calling, el file watching y el logging. Apuntan al
+        <code>.agent/</code> folder y listo.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side good">
+          <div class="comparison-side-label">Usar harness existente</div>
+          <h4>Claude Code / Cursor como harness</h4>
+          <ul>
+            <li>Loop ya resuelto, bien optimizado</li>
+            <li>Tool calling, hooks, permissions incluidos</li>
+            <li>File watching y diffs automaticos</li>
+            <li>Te enfocas en skills + memory, que es lo que agrega valor</li>
+            <li>Upgrades del harness vienen gratis</li>
+          </ul>
+        </div>
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Escribir harness propio</div>
+          <h4>Solo si lo necesitas</h4>
+          <ul>
+            <li>Mas flexibilidad, si tenes caso extremo</li>
+            <li>Te toca mantenerlo (bugs, upgrades, modelos nuevos)</li>
+            <li>Mas superficie para meter inteligencia en el lugar equivocado</li>
+            <li>Ganan dias/semanas de ingenieria que podias invertir en estado</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Regla practica</div>
+        <p>
+          Empeza con Claude Code o Cursor como harness. Solo escribe uno
+          propio cuando choques contra un limite real (ej: un agente
+          autonomo corriendo en servidor sin IDE). El 90% de los casos no
+          lo necesita.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 4: Los 3 hooks clave
+         ============================================ -->
+    <section>
+      <h2>Los tres hooks que todo harness necesita</h2>
+      <p>
+        Los hooks son puntos de extension del harness. No son "codigo que
+        decide" —son codigo que <em>se dispara</em> en momentos predecibles.
+        Tres son no-negociables.
+      </p>
+
+      <div class="layer-stack">
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">pre_tool_call</div>
+            <div class="layer-stack-desc">
+              Corre ANTES de ejecutar cualquier tool. Sirve para
+              enforcement: chequear permisos, validar paths, bloquear
+              operaciones destructivas, confirmar con el usuario.
+            </div>
+          </div>
+          <span class="badge badge-warn">enforcement</span>
+        </div>
+
+        <div class="layer-stack-item violet">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">post_execution</div>
+            <div class="layer-stack-desc">
+              Corre al final de cada turno del agente. Registra todo a
+              <code>episodic.jsonl</code> sin que el modelo se entere.
+              Logging automatico, sin trabajo del modelo.
+            </div>
+          </div>
+          <span class="badge badge-violet">logging auto</span>
+        </div>
+
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">on_failure</div>
+            <div class="layer-stack-desc">
+              Se dispara cuando un tool tira error o la ejecucion excede
+              algun limite. Escala al usuario, guarda el stack y (en modelos
+              modernos) inyecta una entrada de reflection en la memoria
+              semantica.
+            </div>
+          </div>
+          <span class="badge badge-danger">escalation</span>
+        </div>
+      </div>
+
+      <p>
+        La gracia de los hooks es que siguen siendo codigo operativo —no
+        toman decisiones de negocio, siguen reglas. <code>pre_tool_call</code>
+        no decide "si este archivo es importante"; dice "si el path matchea
+        la lista de bloqueados, paro". Las reglas vienen del estado
+        (<code>protocols/permissions.md</code>), no del harness.
+      </p>
+    </section>
+
+    <!-- ============================================
+         SECCION 5: Cierre
+         ============================================ -->
+    <section>
+      <h2>Para llevarte</h2>
+      <div class="callout callout-success">
+        <div class="callout-title">Resumen operativo</div>
+        <ul>
+          <li>
+            Un harness saludable <strong>cabe en 200 LOC</strong>. Si te
+            pasas, tenes logica de decision en el lugar equivocado.
+          </li>
+          <li>
+            Tres funciones puras: <code>build_context</code>,
+            <code>call_model</code>, <code>log_execution</code>.
+          </li>
+          <li>
+            Usa Claude Code o Cursor <strong>como</strong> harness antes
+            de escribir uno. Casi siempre alcanza.
+          </li>
+          <li>
+            Tres hooks no-negociables: <code>pre_tool_call</code> (enforcement),
+            <code>post_execution</code> (logging), <code>on_failure</code>
+            (escalation + reflection).
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="00-anatomia-stack.html" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Anatomia del stack</span>
+    </a>
+    <a data-nav-next href="02-context-budget.html" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Context budget: asignacion de tokens</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M02-01", "M02");
+    }
+  });
+</script>
+</body>
+</html>

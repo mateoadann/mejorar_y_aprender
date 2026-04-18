@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estructura de carpetas del wiki · Agent Infrastructure 2026</title>
+  <meta name="description" content="Anatomia completa de my-wiki: raw inbox, wiki curado, templates y CLAUDE.md. Cada carpeta con su proposito y los 5 tipos de paginas: concepts, entities, sources, outputs, syntheses." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M01 · Knowledge Layer</span>
+    <h1>Estructura de carpetas del wiki</h1>
+    <p class="page-intro">
+      El layout fisico del Knowledge Layer no es un detalle. Cada carpeta
+      codifica una decision de diseño: que es crudo, que es curado, que lo
+      edita el agente, que solo vos. Este es el esqueleto.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>El arbol completo</h2>
+      <p>
+        La propuesta canonica (del articulo de Shann Holmberg, inspirada en
+        Karpathy) separa tres grandes territorios: <code>raw/</code> donde entra
+        todo sin procesar, <code>wiki/</code> donde vive lo curado, y
+        <code>templates/</code> + <code>CLAUDE.md</code> para la configuracion
+        operativa.
+      </p>
+
+      <pre class="ascii-diagram">
+my-wiki/
+├── <span class="ascii-accent-alt">raw/</span>                       <span class="ascii-dim"># buzon de entrada, sin procesar</span>
+│   ├── clippings/             <span class="ascii-dim"># web clipper: articulos guardados</span>
+│   ├── ideas/                 <span class="ascii-dim"># notas rapidas, brainstorms</span>
+│   ├── bookmarks/             <span class="ascii-dim"># links pendientes de leer</span>
+│   ├── articles/              <span class="ascii-dim"># articulos largos en markdown</span>
+│   ├── papers/                <span class="ascii-dim"># PDFs academicos</span>
+│   ├── x-archive/             <span class="ascii-dim"># threads de X guardados</span>
+│   └── assets/
+│       └── images/            <span class="ascii-dim"># imagenes descargadas</span>
+│
+├── <span class="ascii-accent">wiki/</span>                      <span class="ascii-dim"># el KBL curado, mantenido por el agente</span>
+│   ├── index.md               <span class="ascii-dim"># master index con TLDRs</span>
+│   ├── log.md                 <span class="ascii-dim"># changelog de cambios</span>
+│   ├── concepts/              <span class="ascii-dim"># abstracciones ("que es X?")</span>
+│   ├── entities/              <span class="ascii-dim"># personas, companies, productos</span>
+│   ├── sources/               <span class="ascii-dim"># articulos, papers, threads procesados</span>
+│   ├── outputs/               <span class="ascii-dim"># generados por el agente (posts, emails)</span>
+│   ├── sops/                  <span class="ascii-dim"># standard operating procedures</span>
+│   └── syntheses/             <span class="ascii-dim"># cross-topic essays, meta-analisis</span>
+│
+├── <span class="ascii-dim">templates/</span>                 <span class="ascii-dim"># esqueletos para nuevas paginas</span>
+│   ├── concept.md
+│   ├── entity.md
+│   └── source.md
+│
+└── <span class="ascii-dim">CLAUDE.md</span>                  <span class="ascii-dim"># instrucciones + comandos para el agente</span>
+      </pre>
+    </section>
+
+    <section>
+      <h2>El territorio raw/</h2>
+      <p>
+        Es la zona <em>sin juicio</em>. Lo que entra, entra. Vos clippeas con
+        Obsidian Web Clipper un articulo interesante, se guarda en
+        <code>clippings/</code>. Escribis un pensamiento de 2 lineas, va a
+        <code>ideas/</code>. Un paper arxiv, a <code>papers/</code>. Un thread
+        de X, a <code>x-archive/</code>.
+      </p>
+      <p>
+        La clave: <strong>raw/ no se consulta en tiempo de query</strong>. Es
+        input del pipeline de ingest, no fuente directa. El agente lee de
+        <code>wiki/</code>, no de raw.
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Por que existe raw/</div>
+        <p>
+          Separar captura de curacion reduce la friccion de guardar. No tenes
+          que pensar "¿donde va esto?" cuando estas en el momento de capturar.
+          Lo tiras en raw/ y despues el agente lo procesa.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>El territorio wiki/</h2>
+      <p>
+        Aca es donde la inteligencia vive. Cada carpeta corresponde a un
+        <strong>tipo</strong> de pagina con estructura distinta:
+      </p>
+
+      <div class="layer-stack">
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">concepts/</div>
+            <div class="layer-stack-desc">
+              Abstracciones y definiciones. "¿Que es un agente?", "¿Que es RAG?",
+              "¿Que es MCP?". Una pagina por concepto, con definicion clara,
+              relaciones y counter-arguments.
+            </div>
+          </div>
+          <span class="badge badge-cyan">abstracto</span>
+        </div>
+        <div class="layer-stack-item violet">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">entities/</div>
+            <div class="layer-stack-desc">
+              Cosas concretas del mundo: personas (Karpathy, Tan), empresas
+              (Anthropic, OpenAI), productos (Claude Code, Cursor). Info factual
+              con fuentes.
+            </div>
+          </div>
+          <span class="badge badge-violet">concreto</span>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">sources/</div>
+            <div class="layer-stack-desc">
+              Un articulo/paper/thread <strong>procesado</strong>. Incluye TLDR,
+              ideas clave, citas, autores, fecha, link original. Es tu lectura
+              destilada, no copy-paste.
+            </div>
+          </div>
+          <span class="badge badge-cyan">procesado</span>
+        </div>
+        <div class="layer-stack-item violet">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">outputs/</div>
+            <div class="layer-stack-desc">
+              Cosas que el agente genero para vos: drafts de posts, emails,
+              scripts, resumenes. Quedan archivados por si los necesitas reusar.
+            </div>
+          </div>
+          <span class="badge badge-violet">producido</span>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">syntheses/</div>
+            <div class="layer-stack-desc">
+              Essays cross-topic. El agente agarra 5-10 sources y arma una
+              sintesis nueva que cruza las ideas. Aca es donde se ve la magia
+              del KBL sobre RAG.
+            </div>
+          </div>
+          <span class="badge badge-cyan">meta</span>
+        </div>
+      </div>
+
+      <p>
+        Ademas hay dos archivos especiales en la raiz de <code>wiki/</code>:
+      </p>
+      <ul>
+        <li>
+          <strong><code>index.md</code></strong> — el master index. Tiene un TLDR
+          de cada pagina y links cross-referenciados. Es lo primero que el agente
+          lee cuando tiene una query.
+        </li>
+        <li>
+          <strong><code>log.md</code></strong> — changelog. Cada ingest, cada
+          revision, cada pagina nueva queda registrada con fecha y resumen. Sirve
+          para auditar y para el dream cycle.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Los 5 tipos de pagina, comparados</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Responde</th>
+              <th>Campos clave</th>
+              <th>Ejemplo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>concept</strong></td>
+              <td>¿Qué es?</td>
+              <td>definicion, ejemplos, counter-args, ver-tambien</td>
+              <td><code>concepts/feedback-loop.md</code></td>
+            </tr>
+            <tr>
+              <td><strong>entity</strong></td>
+              <td>¿Quién / qué cosa?</td>
+              <td>quien-es, que-hace, relaciones, fuentes</td>
+              <td><code>entities/karpathy.md</code></td>
+            </tr>
+            <tr>
+              <td><strong>source</strong></td>
+              <td>¿Qué decia X?</td>
+              <td>TLDR, ideas-clave, citas, autor, fecha, link</td>
+              <td><code>sources/tan-yc-keynote-2026.md</code></td>
+            </tr>
+            <tr>
+              <td><strong>output</strong></td>
+              <td>¿Qué genere?</td>
+              <td>tipo, destino, fecha, fuentes-usadas</td>
+              <td><code>outputs/post-kbl-vs-rag-draft.md</code></td>
+            </tr>
+            <tr>
+              <td><strong>synthesis</strong></td>
+              <td>¿Como se conecta?</td>
+              <td>tesis, sources, argumentacion, conclusiones</td>
+              <td><code>syntheses/memoria-y-valor.md</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Flujo raw → wiki</h2>
+      <p>
+        El movimiento entre territorios no es automatico. Pasa por un pipeline
+        que vamos a desarmar en la proxima pagina. Pero el sentido general:
+      </p>
+
+      <pre class="ascii-diagram">
+  clip / nota        procesa, clasifica,              curado, linkeado,
+  (raw inbox)     descarga assets, cross-ref         listo para consultar
+       │                     │                              │
+       ▼                     ▼                              ▼
+   ┌───────┐    ingest   ┌───────┐    revision      ┌───────────┐
+   │ raw/  │  ─────────► │ draft │  ─────────────► │   wiki/    │
+   └───────┘             └───────┘                  └───────────┘
+                            ▲                             │
+                            │                             │
+                       <span class="ascii-dim">explored: false</span>           <span class="ascii-dim">explored: true</span>
+                       <span class="ascii-dim">hasta revision</span>
+      </pre>
+    </section>
+
+    <section>
+      <h2>Templates y CLAUDE.md</h2>
+      <p>
+        Dos archivos externos al wiki pero criticos para que funcione:
+      </p>
+      <ul>
+        <li>
+          <strong><code>templates/</code></strong>: esqueletos markdown con los
+          campos obligatorios de cada tipo. El agente copia el template al crear
+          una pagina nueva, asi todas las concepts tienen la misma forma.
+        </li>
+        <li>
+          <strong><code>CLAUDE.md</code></strong>: las instrucciones operativas
+          para el agente. Define los comandos (<code>/wiki-ingest</code>,
+          <code>/wiki-query</code>, etc), las convenciones de naming, las reglas
+          de cross-referencing, los quality checks obligatorios.
+        </li>
+      </ul>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Lectura clave</div>
+        <p>
+          La estructura no es estetica, es funcional. Cada carpeta existe
+          porque tiene un <em>comportamiento</em> distinto. Si fusionas carpetas,
+          se rompe el modelo mental del agente y empieza a escribir cosas donde
+          no corresponde.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">KBL vs Brand Foundation</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">El pipeline de ingest</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M01-01", "M01");
+    }
+  });
+</script>
+</body>
+</html>

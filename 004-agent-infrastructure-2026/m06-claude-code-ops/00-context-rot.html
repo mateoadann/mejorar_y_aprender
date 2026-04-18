@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Context rot y la ventana de 1M tokens · Agent Infrastructure 2026</title>
+  <meta name="description" content="El context window no es un cubo que se llena — es una atencion que se spread. Entendamos que es context rot, cuando empieza a morder en Claude Code y por que el modelo compacta en su punto menos inteligente." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M06 · Claude Code Ops</span>
+    <h1>Context rot y la ventana de 1M tokens</h1>
+    <p class="page-intro">
+      Tener 1 millon de tokens de ventana no significa que podes llenarla.
+      A medida que crece el context, el modelo empieza a <strong>rotarse</strong>:
+      la atencion se spread mas fina, el contenido viejo distrae de la task
+      actual, y la inteligencia se degrada justo antes del momento en que
+      tenes que compactar. Aca lo vemos con curvas.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Que es el context window, de verdad</h2>
+      <p>
+        Mucha gente piensa el context window como un cajon: le tiras cosas adentro
+        y mientras quepan, todo bien. Esa imagen es enganiosa. El context window
+        es <strong>todo lo que el modelo "ve"</strong> cuando esta generando la
+        proxima respuesta. No es almacenamiento pasivo, es input activo para cada
+        token que produce.
+      </p>
+
+      <p>
+        En cada turno de Claude Code, el contexto incluye:
+      </p>
+
+      <pre class="ascii-diagram">
+  ┌─────────────────────────────────────────────────────────┐
+  │  <span class="ascii-accent">context window (1M tokens en Claude Code)</span>            │
+  │                                                         │
+  │    system prompt          (reglas del harness)          │
+  │    +                                                    │
+  │    conversacion entera    (vos + el modelo, todo)       │
+  │    +                                                    │
+  │    tool calls             (cada vez que leyo un file)   │
+  │    +                                                    │
+  │    tool outputs           (contenido de esos files)     │
+  │    +                                                    │
+  │    archivos leidos        (quedan en el stream)         │
+  │    +                                                    │
+  │    tu mensaje actual                                    │
+  │                                                         │
+  │  → todo esto entra en cada generacion, no solo el       │
+  │    mensaje mas reciente                                 │
+  └─────────────────────────────────────────────────────────┘
+      </pre>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Conexion con M02</div>
+        <p>
+          En M02 vimos el <em>context budget</em> como problema de arquitectura
+          en un harness custom. Aca vemos el mismo problema, pero desde el
+          lado del usuario de Claude Code. Mismo fenomeno, distinta palanca
+          para controlarlo: alla era <code>build_context()</code>, aca es
+          session management.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>La curva del context rot</h2>
+      <p>
+        <strong>Context rot</strong> = la performance del modelo
+        <strong>degrada</strong> a medida que crece el context. No es un corte
+        binario ("hasta aca bien, despues mal"). Es una curva. La atencion se
+        reparte entre mas y mas tokens, y contenido viejo o irrelevante empieza
+        a competir con la task actual por ese "presupuesto de atencion".
+      </p>
+
+      <svg class="svg-diagram" viewBox="0 0 760 340" role="img" aria-label="Curva de performance vs tokens usados, mostrando sweet spot y zona de rot">
+        <defs>
+          <linearGradient id="rot-grad" x1="0" x2="1">
+            <stop offset="0%" stop-color="#10b981" stop-opacity="0.4" />
+            <stop offset="40%" stop-color="#fbbf24" stop-opacity="0.35" />
+            <stop offset="100%" stop-color="#ef4444" stop-opacity="0.4" />
+          </linearGradient>
+        </defs>
+
+        <!-- ejes -->
+        <line x1="80" y1="280" x2="720" y2="280" stroke="#374151" stroke-width="1.5" />
+        <line x1="80" y1="40" x2="80" y2="280" stroke="#374151" stroke-width="1.5" />
+
+        <!-- labels de ejes -->
+        <text x="400" y="315" text-anchor="middle" fill="#9ca3af" font-family="SF Mono, monospace" font-size="12">tokens usados →</text>
+        <text x="30" y="160" text-anchor="middle" fill="#9ca3af" font-family="SF Mono, monospace" font-size="12" transform="rotate(-90 30 160)">performance</text>
+
+        <!-- ticks -->
+        <text x="80" y="300" text-anchor="middle" fill="#6b7280" font-family="SF Mono, monospace" font-size="11">0</text>
+        <text x="240" y="300" text-anchor="middle" fill="#6b7280" font-family="SF Mono, monospace" font-size="11">300k</text>
+        <text x="400" y="300" text-anchor="middle" fill="#6b7280" font-family="SF Mono, monospace" font-size="11">500k</text>
+        <text x="720" y="300" text-anchor="middle" fill="#6b7280" font-family="SF Mono, monospace" font-size="11">1M</text>
+
+        <!-- zonas de color de fondo -->
+        <rect x="80" y="60" width="160" height="220" fill="#10b981" fill-opacity="0.06" />
+        <rect x="240" y="60" width="160" height="220" fill="#fbbf24" fill-opacity="0.06" />
+        <rect x="400" y="60" width="320" height="220" fill="#ef4444" fill-opacity="0.06" />
+
+        <!-- curva -->
+        <path d="M 80 75 Q 180 65 240 90 Q 320 130 400 180 Q 500 230 600 255 Q 680 268 720 272"
+              fill="none" stroke="url(#rot-grad)" stroke-width="3" />
+
+        <!-- puntos clave -->
+        <circle cx="160" cy="70" r="5" fill="#10b981" />
+        <text x="160" y="55" text-anchor="middle" fill="#10b981" font-family="SF Mono, monospace" font-size="11" font-weight="600">sweet spot</text>
+
+        <circle cx="300" cy="110" r="5" fill="#fbbf24" />
+        <text x="300" y="95" text-anchor="middle" fill="#fbbf24" font-family="SF Mono, monospace" font-size="11" font-weight="600">rot empieza</text>
+
+        <circle cx="600" cy="255" r="5" fill="#ef4444" />
+        <text x="600" y="240" text-anchor="middle" fill="#ef4444" font-family="SF Mono, monospace" font-size="11" font-weight="600">hard cutoff</text>
+
+        <!-- leyenda de zonas -->
+        <text x="160" y="75" text-anchor="middle" fill="#10b981" font-family="system-ui" font-size="10" opacity="0"></text>
+      </svg>
+
+      <p>
+        Para un modelo de 1M como Claude Code, el rot empieza a morder alrededor
+        de <strong>300-400k tokens</strong>. No es fast rule — depende mucho de
+        la task. Una busqueda simple sigue funcionando bien con 500k de context.
+        Un debugging que necesita razonar cruzando 8 archivos lejanos, ese se
+        empieza a confundir mucho antes.
+      </p>
+    </section>
+
+    <section>
+      <h2>Por que degrada (el mental model)</h2>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">1</div>
+          <div class="concept-card-term">Atencion spread</div>
+          <p class="concept-card-desc">
+            El modelo tiene que atender a mas tokens simultaneamente. La
+            atencion por token baja. Tokens importantes de hace 200k posiciones
+            compiten con ruido reciente.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">2</div>
+          <div class="concept-card-term">Contenido stale</div>
+          <p class="concept-card-desc">
+            Archivos que leyo hace 50 turnos y que ya no aplican siguen en el
+            contexto. El modelo no sabe que descartar, entonces los considera
+            todos igual de relevantes.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">3</div>
+          <div class="concept-card-term">Intentos fallidos</div>
+          <p class="concept-card-desc">
+            Si probo approach X y no funciono, el modelo ve todo el intento
+            fallido + la correccion. Esa memoria de "fallo" puede sesgar la
+            generacion siguiente hacia repetir patrones similares.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>El hard cutoff y el momento mas peligroso</h2>
+      <p>
+        Cuando el context se acerca al limite del window, Claude tiene que
+        <strong>compactar</strong>: resumir lo que vio y seguir el resto de la
+        conversacion trabajando sobre ese resumen. Suena razonable, pero hay
+        una trampa.
+      </p>
+
+      <pre class="ascii-diagram">
+  tokens usados   performance   decision point
+  ──────────────  ───────────   ──────────────────────────────────
+  50k             <span class="ascii-accent">maxima</span>        mandale con todo
+  300k            buena         ok, seguis normal
+  500k            baja          pensar en /compact proactivo
+  800k            mala          <span class="ascii-accent-alt">el modelo ya esta confundido</span>
+  950k            pesima        auto-compact dispara → summariza
+                                <span class="ascii-dim">(pero en su peor momento)</span>
+      </pre>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">La paradoja del compact</div>
+        <p>
+          Cuando el auto-compact se dispara cerca del limite, el modelo esta
+          en su <strong>punto menos inteligente</strong> de toda la sesion.
+          Y justo en ese punto le pedis que decida <em>que fue importante</em>
+          y <em>que se puede tirar</em>. Esa decision la toma un modelo
+          cognitivamente degradado. Por eso el summary sale mal: dropea cosas
+          que ibas a necesitar, y preserva ruido que ya no importa.
+        </p>
+      </div>
+
+      <p>
+        La leccion practica es simple: no esperes a que el auto-compact se
+        dispare por vos. Compactar proactivamente cuando todavia estas en la
+        zona verde te da un summary mucho mejor — porque el modelo todavia
+        piensa claro.
+      </p>
+    </section>
+
+    <section>
+      <h2>Dos mitos que conviene tirar</h2>
+
+      <div class="comparison-table">
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Mito</div>
+          <p style="margin: 0;"><strong>"Tengo 1M de ventana, puedo meter todo el codebase y trabajar en una sola sesion gigante."</strong></p>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">
+            Tecnicamente entra. Practicamente, a los 400k tokens el modelo
+            empieza a confundirse. No vas a darte cuenta hasta que te devuelva
+            una respuesta que ignora un file que leyo 30 turnos atras.
+          </p>
+        </div>
+        <div class="comparison-side good">
+          <div class="comparison-side-label">Realidad</div>
+          <p style="margin: 0;"><strong>"Mas context != mas inteligencia. Mas context =  mas material para distraerse."</strong></p>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">
+            El context window es un recurso escaso, no un regalo. Lo mejor que
+            podes hacer es mantenerlo <em>limpio</em>: solo lo relevante a la
+            task actual.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cierre: la ventana no es un buffer, es una lupa</h2>
+      <p>
+        Pensa la ventana de 1M tokens como una lupa: cuanto mas pequeno el
+        area que enfocas, mas nitido el detalle. Cuanto mas expandis, mas
+        cosas ves, pero cada una con menos resolucion. El trabajo del usuario
+        de Claude Code es decidir, turno a turno, <strong>cuanto meter bajo
+        la lupa</strong>.
+      </p>
+      <p>
+        En las proximas tres paginas vemos las palancas concretas: como pensar
+        cada turno como un <em>branching point</em>, cuando <code>/rewind</code>
+        le gana a corregir en el mismo hilo, y como usar subagents para delegar
+        chunks pesados sin contaminar tu context principal.
+      </p>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Idea para guardar</div>
+        <p>
+          <strong>Context rot empieza mucho antes del hard cutoff.</strong>
+          No mires el % de ventana usada — mira la calidad de las respuestas.
+          Si el modelo esta "olvidando" cosas que dijiste hace rato, ya
+          estas en la zona amarilla. Momento de compactar o resetear.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Pagina anterior</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Cada turno es un branching point</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M06-00", "M06");
+    }
+  });
+</script>
+</body>
+</html>

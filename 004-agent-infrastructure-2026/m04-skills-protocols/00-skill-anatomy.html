@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anatomia de un skill · Agent Infrastructure 2026</title>
+  <meta name="description" content="Como se estructura un SKILL.md: frontmatter, instrucciones y self-rewrite hook. El principio clave: destinations and fences, no driving directions." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M04 · Skills &amp; Protocols</span>
+    <h1>Anatomia de un skill</h1>
+    <p class="page-intro">
+      Un skill bien escrito no es una receta paso-a-paso. Es un jardin con
+      cerca: destinos claros, limites duros, y espacio para que el agente
+      decida el camino. Aca desarmamos la estructura de un SKILL.md y la
+      linea invisible entre estructura util y micromanagement.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Las 3 zonas de un SKILL.md</h2>
+      <p>
+        Todo skill serio tiene la misma anatomia: frontmatter arriba,
+        instrucciones en el medio, self-rewrite hook al final. Cada zona
+        tiene un proposito distinto y un publico distinto (el harness, el
+        modelo, el propio skill).
+      </p>
+
+      <pre class="ascii-diagram">
+  ┌─────────────────────────────────────────────────────────┐
+  │  <span class="ascii-accent">1. YAML FRONTMATTER</span>   (metadata para el harness)    │
+  │  ─────────────────────────────────────────────────────  │
+  │    name: api-endpoint-builder                           │
+  │    version: 0.3.1                                       │
+  │    triggers: [new endpoint, add route, build api]       │
+  │    tools: [editor, run_tests, git]                      │
+  │    preconditions: [repo_clean, tests_green]             │
+  │    constraints: [no_secrets_in_code, rate_limit_mw]     │
+  └────────────────────────▲────────────────────────────────┘
+                           │ lo lee el harness al load
+                           ▼
+  ┌─────────────────────────────────────────────────────────┐
+  │  <span class="ascii-accent-alt">2. CORE INSTRUCTIONS</span>  (lo que el modelo lee)         │
+  │  ─────────────────────────────────────────────────────  │
+  │    - Contexto: WHY, no solo WHAT                        │
+  │    - Destinations: "a good endpoint looks like..."      │
+  │    - Fences: "nunca toques auth/middleware.py"          │
+  │    - Ejemplos buenos + ejemplo fallido y porque fallo   │
+  └────────────────────────▲────────────────────────────────┘
+                           │ inspira, no manda
+                           ▼
+  ┌─────────────────────────────────────────────────────────┐
+  │  <span class="ascii-accent">3. SELF-REWRITE HOOK</span>   (al final, siempre)            │
+  │  ─────────────────────────────────────────────────────  │
+  │    After every 5 uses OR on any failure:                │
+  │      read episodic entries tagged con este skill        │
+  │      si hay patterns nuevos -> append a KNOWLEDGE.md    │
+  │      si se violo constraint -> promote a LESSONS.md     │
+  └─────────────────────────────────────────────────────────┘
+      </pre>
+    </section>
+
+    <section>
+      <h2>El principio: destinations, no driving directions</h2>
+      <blockquote>
+        No escribas driving directions. Escribi <strong>destinations and
+        fences</strong>. Mostrale al agente como se ve lo bueno, dejale claro
+        donde no puede pisar, y confia en que va a encontrar el camino.
+        <br /><em>— Daniel, sobre como escribir skills que no se desactualicen.</em>
+      </blockquote>
+      <p>
+        Los skills mal escritos son procedurales: 12 pasos numerados,
+        cada uno con un comando exacto. Al dia siguiente cambia una flag,
+        un path, un nombre de tool, y todo el skill queda roto. El agente
+        sigue los pasos aunque no tengan sentido.
+      </p>
+      <p>
+        Los skills bien escritos son <strong>declarativos sobre el destino</strong>:
+        describen como se ve un buen resultado, muestran ejemplos reales,
+        y marcan limites duros que no se cruzan. El agente elige el camino
+        segun el contexto.
+      </p>
+    </section>
+
+    <section>
+      <h2>Driving directions vs destinations (ejemplo real)</h2>
+      <p>
+        Mira la diferencia. Los dos skills intentan lograr lo mismo —
+        ayudar al agente a construir un endpoint de API nuevo — pero uno
+        envejece mal y el otro escala.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Driving directions (mal)</div>
+          <h4>skill-build-endpoint (v1)</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55;">
+            <strong>1.</strong> Abri <code>src/api/routes.py</code>. <br />
+            <strong>2.</strong> Buscar la funcion <code>register_routes</code>. <br />
+            <strong>3.</strong> Agregar <code>@router.post("/tu-endpoint")</code>. <br />
+            <strong>4.</strong> Definir request_model en <code>models/requests.py</code>. <br />
+            <strong>5.</strong> Agregar rate limit decorator. <br />
+            <strong>6.</strong> Correr <code>pytest tests/api/</code>. <br />
+            <strong>7.</strong> Grep "FAIL" en la salida. <br />
+            <strong>8.</strong> Si falla, abrir logs en <code>/tmp/api.log</code>. <br />
+            <strong>9.</strong> ... (12 pasos mas)
+          </p>
+          <p style="font-size: 12px; color: var(--text-dim); margin-top: 12px;">
+            Se rompe el dia que cambia un path. Asume contexto que puede no
+            aplicar. El agente no entiende <em>por que</em>.
+          </p>
+        </div>
+        <div class="comparison-side good">
+          <div class="comparison-side-label">Destinations + fences (bien)</div>
+          <h4>skill-build-endpoint (v2)</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55;">
+            Construimos APIs en FastAPI, convenciones REST, typed request
+            bodies, rate limiting en middleware.
+            <br /><br />
+            Aca tenes 3 endpoints bien hechos:
+            <code>/users/create</code>, <code>/orders/list</code>,
+            <code>/webhooks/stripe</code>.
+            <br /><br />
+            Aca uno que fallo y por que: <code>/admin/reset</code> —
+            olvido rate limit, expuso operacion destructiva sin auth.
+            <br /><br />
+            Construi algo que se parezca a los buenos. No inventes nuevos
+            patrones sin razon.
+          </p>
+          <p style="font-size: 12px; color: var(--text-dim); margin-top: 12px;">
+            Envejece bien. El agente entiende el <em>destino</em>, no memoriza
+            la ruta. Si cambia un path, sigue funcionando.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Los 3 componentes que balancean un skill</h2>
+      <p>
+        Un skill util combina tres tipos de instruccion. Demasiado de uno
+        y el skill se rompe: todo procedures se desactualiza, todo
+        heuristics se pierde, todo constraints se paraliza.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Procedures</div>
+          <div class="concept-card-term">Skeleton</div>
+          <p class="concept-card-desc">
+            Evita que el agente saltee una fase. No es un script paso-a-paso,
+            es el esqueleto: "primero explorar, despues disenar, despues
+            implementar, despues verificar".
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Heuristics</div>
+          <div class="concept-card-term">Defaults</div>
+          <p class="concept-card-desc">
+            En cada bifurcacion, dale una preferencia. "Si dudas entre copy
+            y rewrite, rewrite". Evita que el agente se freeze en decisiones
+            menores.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Constraints</div>
+          <div class="concept-card-term">Fence</div>
+          <p class="concept-card-desc">
+            La cerca alrededor del jardin. "Nunca modifiques el schema sin
+            migration". Hard limits. El agente puede moverse libre adentro,
+            no puede salir.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>La linea fina: structure vs micromanagement</h2>
+      <p>
+        Escribir un skill es un ejercicio de <strong>cuanto dejar sin
+        decir</strong>. Demasiada instruccion y el agente se vuelve frágil.
+        Muy poca y el agente improvisa en lugares criticos.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side good">
+          <div class="comparison-side-label">Structure (util)</div>
+          <p style="margin: 0;"><strong>"Verify tests pass before committing."</strong></p>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">
+            Define el <em>destino</em> (tests verdes antes del commit). El
+            agente elige el comando, el parser, el timeout.
+          </p>
+        </div>
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Micromanagement (fragil)</div>
+          <p style="margin: 0;"><strong>"Run <code>npm test -- --verbose</code>, grep for 'passed:', extract the number, then <code>git add -A</code> if &gt; 0."</strong></p>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">
+            Se rompe con un npm upgrade. Asume formato de output.
+            El agente no entiende <em>por que</em> verificar.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Audit por linea</div>
+        <p>
+          Mira cada linea de tu skill y preguntate:
+          <strong>¿esta linea dice COMO hacer algo, o dice QUE GOOD LOOKS LIKE?</strong>
+          Si dice COMO, probablemente no hace falta — borrala y confia en que
+          el agente lo resuelve solo.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Donde van las preferencias del humano</h2>
+      <p>
+        Tentacion comun: meter preferencias personales adentro del skill.
+        "Siempre usa comillas dobles", "no uses semicolons", "el cliente
+        prefiere tablas con bordes finos". <strong>Todo eso NO va aca.</strong>
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-dim">MAL (preferencia dentro del skill):</span>
+  skill: write-customer-email
+    - "Siempre firmar con 'Saludos cordiales'"
+    - "Nunca usar emojis"
+    - "Mateo prefiere tono informal con clientes locales"
+
+  <span class="ascii-accent">BIEN (preferencia en personal memory):</span>
+  personal/memory.md
+    - tone: informal con locales, formal con enterprise
+    - sign-off: "Saludos cordiales"
+    - no emojis
+
+  skill: write-customer-email
+    - A good email respects the customer's tone.
+    - Pull sign-off and tone from personal memory.
+      </pre>
+
+      <p>
+        Las preferencias son <strong>contexto</strong>, no instrucciones
+        procedurales. Viven en personal memory (M03). Si las metes en el
+        skill, se duplican, se desactualizan, y se hace imposible cambiar
+        el tono sin tocar 12 skills distintos.
+      </p>
+    </section>
+
+    <section>
+      <h2>Cierre: skill bien escrito = skill que envejece bien</h2>
+      <p>
+        La metrica real de un skill no es "funciona hoy". Es
+        <strong>"sigue funcionando en 6 meses con codebase que cambio"</strong>.
+        Los que envejecen bien tienen esto en comun:
+      </p>
+      <ul>
+        <li>Frontmatter corto pero con <code>triggers</code> y <code>constraints</code> explicitos.</li>
+        <li>Instrucciones que describen destinos, no rutas.</li>
+        <li>Ejemplos concretos (2-3 buenos, 1 fallido y <em>por que</em> fallo).</li>
+        <li>Self-rewrite hook al final, para que el skill mejore con el uso.</li>
+        <li>Cero preferencias personales — eso va en personal memory.</li>
+      </ul>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Regla mnemotecnica</div>
+        <p>
+          <strong>Destinations and fences.</strong> Cada vez que escribas una
+          linea de skill, pregúntate si estas describiendo un destino (bien) o
+          dictando una ruta (mal). Si es ruta, tirala.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">M04 Skills &amp; Protocols</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Skillforge</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M04-00", "M04");
+    }
+  });
+</script>
+</body>
+</html>

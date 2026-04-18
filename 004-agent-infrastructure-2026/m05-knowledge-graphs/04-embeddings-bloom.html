@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Embeddings, Bloom filters, caching y aprox · Agent Infrastructure 2026</title>
+  <meta name="description" content="Las tecnicas complementarias que cierran el modulo: embeddings tipo TransE para similaridad vectorial, Bloom filters para skip joins O(1), caching de subgrafos, materialized views, sampling approximado y distribucion. Todas se suman, ninguna es bala de plata." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M05 · Knowledge Graphs</span>
+    <h1>Embeddings, Bloom filters, caching y aprox</h1>
+    <p class="page-intro">
+      Las tres piezas anteriores (indexing, traversal, planning) te dan exactitud.
+      Esta pagina cierra el modulo con las capas que te dan <strong>velocidad
+      adicional</strong>: embeddings vectoriales para similaridad, Bloom filters
+      para descartar en O(1), caching y materialized views, sampling
+      approximado y distribucion. Ninguna es bala de plata. Juntas, marcan la
+      diferencia.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Knowledge graph embeddings</h2>
+      <p>
+        Idea: entrenar un modelo que asigne a cada entity y cada relation un
+        <strong>vector</strong> en espacio de dimension alta (100-500 dims).
+        El modelo aprende a representar "semantica" en geometria: entities
+        parecidas quedan cerca, relaciones consistentes apuntan en la misma
+        direccion.
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">TransE — el clasico</div>
+        <p>
+          Para un triple valido <code>(h, r, t)</code> (head, relation, tail),
+          se busca que <code>embed(h) + embed(r) ≈ embed(t)</code>. La relacion
+          es una <em>traslacion</em> en el espacio vectorial.
+        </p>
+      </div>
+
+      <pre class="ascii-diagram">
+  Espacio vectorial (2D simplificado):
+
+                 <span class="ascii-accent">t = Berlin</span>
+                        ▲
+             <span class="ascii-accent-alt">r = CAPITAL_OF</span>  (vector)
+                       /
+                      /
+                     /
+              <span class="ascii-accent">h = Germany</span>
+
+  Relacion:  embed(Germany) + embed(CAPITAL_OF) ≈ embed(Berlin)
+             <span class="ascii-dim">error ≈ 0 para triples reales, alto para triples falsos</span>
+
+  Score usado al entrenar:
+             f(h, r, t) = <span class="ascii-accent">-</span> ‖ embed(h) + embed(r) − embed(t) ‖
+      </pre>
+
+      <p>
+        Training: se muestran triples reales y triples <em>corrupted</em>
+        (cambiandole el tail por uno random). Loss tipo margin: el score
+        del real debe ser mayor al corrupted por al menos un margen <code>γ</code>.
+        Despues de muchas iteraciones, los vectores capturan la estructura.
+      </p>
+
+      <p>
+        Para queries aproximados: si pregunto "<code>Paris CAPITAL_OF ?</code>",
+        calculo <code>embed(Paris) + embed(CAPITAL_OF)</code> y busco los
+        k-nearest neighbors en el espacio. No es exacto, pero sobre millones
+        de entities devuelve la respuesta en <strong>milisegundos</strong>
+        usando libs como FAISS que estan optimizadas para ANN (approximate
+        nearest neighbors) a escala billion.
+      </p>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">Trade-off</div>
+        <p>
+          Los embeddings son geniales para <em>recall</em> y para queries
+          fuzzy ("dame entities parecidas a X"). <strong>No reemplazan</strong>
+          el query engine exacto. Se usan como <em>pre-filtro</em>:
+          embedding-ANN → top-100 candidatos → validacion exacta en el KG.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Bloom filters — skip joins temprano</h2>
+      <p>
+        Un Bloom filter es una estructura probabilista que responde una sola
+        pregunta: <em>¿este elemento puede estar en el set?</em>. Tres
+        propiedades:
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Velocidad</div>
+          <div class="concept-card-term">O(1)</div>
+          <p class="concept-card-desc">
+            Hash el elemento k veces, mira k bits. Siempre constante.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Espacio</div>
+          <div class="concept-card-term">~10 bits/elem</div>
+          <p class="concept-card-desc">
+            Para 1% FP rate. Independiente del tamaño del elemento.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Garantia</div>
+          <div class="concept-card-term">Cero falsos negativos</div>
+          <p class="concept-card-desc">
+            Si dice "no existe" → definitivamente no existe. Los falsos
+            positivos son configurables.
+          </p>
+        </div>
+      </div>
+
+      <pre class="ascii-diagram">
+  Bloom filter con 3 hash functions y array de 16 bits:
+
+  insert("Paris"):
+    h1("Paris") = 3   → bits[3]  = 1
+    h2("Paris") = 7   → bits[7]  = 1
+    h3("Paris") = 11  → bits[11] = 1
+
+  bits: [0 0 0 <span class="ascii-accent">1</span> 0 0 0 <span class="ascii-accent">1</span> 0 0 0 <span class="ascii-accent">1</span> 0 0 0 0]
+         0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+
+  check("Paris"):  bits[3]=1 AND bits[7]=1 AND bits[11]=1  → maybe
+  check("Mars"):   bits[2]=0  → <span class="ascii-accent-alt">NO</span> (garantizado)
+      </pre>
+
+      <p>
+        En un motor de KG: antes de hacer un lookup costoso en el index, se
+        chequea "¿el entity X tiene alguna relacion <code>LOCATED_IN</code>?"
+        consultando el Bloom filter del predicate. Si dice "no", se skipea el
+        index lookup entero. Para predicates <em>sparse</em> (pocos entities
+        los tienen) eso elimina el 90%+ de los lookups.
+      </p>
+
+      <div class="callout callout-success">
+        <div class="callout-title">Ideal para</div>
+        <p>
+          Optimizar join-con-predicate-raro. Si solo 1% de los entities tienen
+          <code>ISBN</code>, un Bloom filter tira el 99% de los lookups antes
+          de siquiera tocar el B-tree.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Caching y materialization</h2>
+      <p>
+        Guarda trabajo ya hecho. Dos estrategias, una dinamica, otra
+        deliberada.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side">
+          <div class="comparison-side-label">Subgraph caching</div>
+          <p>
+            Dinamico: cache de queries recientes. Sutileza: queries pueden
+            <em>overlap parcialmente</em>. Si guardaste el resultado de A
+            y llega B tal que <strong>B ⊂ A</strong> (lo que pide B es un
+            subset de lo que devolvio A), podés usar A como starting point
+            para B sin reejecutar nada.
+          </p>
+        </div>
+        <div class="comparison-side">
+          <div class="comparison-side-label">Materialized views</div>
+          <p>
+            Deliberado: precomputás resultados que sabés que se van a pedir
+            seguido y los mantenés actualizados cuando el KG cambia. Son
+            tablas derivadas permanentes.
+          </p>
+        </div>
+      </div>
+
+      <p>
+        Tres tipos clasicos de materialized view en KG:
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">View 1</div>
+          <div class="timeline-title">Transitive closure</div>
+          <p class="timeline-desc">
+            Para relaciones jerarquicas (<code>IS_A</code>, <code>PART_OF</code>,
+            <code>SUBCLASS_OF</code>) precomputás la <em>clausura</em>: todos
+            los pares (ancestor, descendant) aunque esten a N saltos. Despues
+            "¿es X descendiente de Y?" = lookup directo vs traversal
+            recursivo.
+          </p>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">View 2</div>
+          <div class="timeline-title">Neighborhood summaries</div>
+          <p class="timeline-desc">
+            Para cada nodo, precomputás: cuantos edges tiene de cada tipo,
+            que tipos de nodos son adyacentes, density local. Queries tipo
+            "nodos que tienen al menos 10 AUTHOR_OF" se contestan por
+            lookup en vez de contando on-the-fly.
+          </p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">View 3</div>
+          <div class="timeline-title">Inference results (forward chaining)</div>
+          <p class="timeline-desc">
+            Si tu ontology define "si A IS_A B y B IS_A C, entonces A IS_A C",
+            el motor puede <em>materializar</em> todos los inferred triples
+            al cargar el grafo. Es la diferencia entre <em>forward chaining</em>
+            (materializar) y <em>backward chaining</em> (inferir al momento
+            de la query).
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">El costo del materialized</div>
+        <p>
+          Todo view materializada requiere mantenimiento: si el KG cambia,
+          la view debe actualizarse. En KGs estaticos (knowledge bases tipo
+          Wikidata snapshot) es free lunch. En KGs dinamicos (empresa con
+          eventos en tiempo real) el trade-off storage + update vs query speed
+          se evalua caso por caso.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Approximate methods: sampling</h2>
+      <p>
+        Cuando la exactitud no vale 20 minutos, una respuesta aproximada en
+        100ms gana. Dos estrategias de sampling de grafos:
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">Random walk sampling</div>
+          <div class="concept-card-term">Preserva degree</div>
+          <p class="concept-card-desc">
+            Arrancás en un nodo random, das N pasos siguiendo edges random.
+            Preserva la <em>degree distribution</em> y la estructura local.
+            Usado cuando te importan propiedades topologicas.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">Forest fire sampling</div>
+          <div class="concept-card-term">Preserva communities</div>
+          <p class="concept-card-desc">
+            "Quema" hacia afuera: en cada paso quema cada vecino con
+            probabilidad p. Captura clusters/comunidades mejor que random walk.
+            Usado para analisis de estructura.
+          </p>
+        </div>
+      </div>
+
+      <p>
+        Caso de uso: "¿cuantos triangulos hay en el grafo?". Contarlos
+        exactos es O(N³). Samplear + extrapolar da una estimacion con 2%
+        error en milisegundos. A veces esa precision alcanza.
+      </p>
+    </section>
+
+    <section>
+      <h2>Distributed: cuando el KG no cabe en una maquina</h2>
+      <p>
+        Si tu KG tiene 100B triples, no entra en una sola maquina. Hay que
+        particionarlo entre N nodos. El gran problema: en un grafo, los datos
+        <strong>no son independientes</strong> — un query de traversal puede
+        empezar en node 3 y seguir en node 7.
+      </p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Estrategia</th>
+              <th>Como corta</th>
+              <th>Pro</th>
+              <th>Contra</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Hash partitioning</strong></td>
+              <td>Hash del node id → shard</td>
+              <td>Balanceado automaticamente</td>
+              <td>Traversal cruza shards todo el tiempo (network traffic alto)</td>
+            </tr>
+            <tr>
+              <td><strong>Community-based</strong></td>
+              <td>Algoritmos tipo Louvain o METIS detectan clusters</td>
+              <td>Queries intra-community no necesitan red</td>
+              <td>Desbalanceo si las comunidades son dispares</td>
+            </tr>
+            <tr>
+              <td><strong>Predicate-based</strong></td>
+              <td>Todos los <code>KNOWS</code> en una maquina, <code>WORKS_AT</code> en otra</td>
+              <td>Queries de un solo predicate son locales</td>
+              <td>Multi-hop mezcla predicates → red</td>
+            </tr>
+            <tr>
+              <td><strong>Federated SPARQL</strong></td>
+              <td>No particionas — queries compuestos contra multiples KGs remotos</td>
+              <td>Componés Wikidata + DBpedia + tu KG interno</td>
+              <td>Latencia alta, debes planificar que SERVICE corre donde</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        SPARQL 1.1 tiene la directiva <code>SERVICE</code> que permite a un
+        query federar sub-queries contra endpoints remotos. Es la forma
+        estandar de combinar KGs publicos con KGs privados.
+      </p>
+    </section>
+
+    <section>
+      <h2>Cerrando el modulo</h2>
+      <p>
+        Recorrimos las cinco capas:
+      </p>
+
+      <div class="layer-stack">
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">Indexing (6 permutaciones SPO)</div>
+            <div class="layer-stack-desc">Cualquier pattern → lookup O(log n + k)</div>
+          </div>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">Traversal (BFS/DFS/Dijkstra/A*/Bidirectional)</div>
+            <div class="layer-stack-desc">Caminar el grafo. Bidirectional = 50⁶ → 2·50³</div>
+          </div>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">Query planning (join ordering, Leapfrog)</div>
+            <div class="layer-stack-desc">Orden de evaluacion. Most selective first. Worst-case-optimal joins.</div>
+          </div>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">Caching + materialization</div>
+            <div class="layer-stack-desc">Subgraph cache, transitive closure, neighborhood summaries, forward chaining</div>
+          </div>
+        </div>
+        <div class="layer-stack-item">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">Approximate + distributed</div>
+            <div class="layer-stack-desc">Embeddings + Bloom + sampling + particionado. Cambio calidad por velocidad cuando vale.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Final thought</div>
+        <p>
+          Optimizar queries de knowledge graph <strong>no es mas hardware</strong>.
+          Es combinar indexes correctos + query planning inteligente +
+          algoritmo adecuado al problema. Las respuestas aproximadas, cuando
+          son aceptables, desbloquean ordenes de magnitud de velocidad sin
+          herir la utilidad. Este es el tipo de trabajo donde pensar antes
+          de tipear vale meses de espera.
+        </p>
+      </div>
+
+      <div class="callout callout-success">
+        <div class="callout-title">Conexion con el curso</div>
+        <p>
+          Todo esto no es teoria aislada. Cuando un agente usa Cognee, Neo4j
+          o cualquier KG como memoria semantica (capa 2), la calidad de las
+          respuestas depende de que el engine abajo tenga estos trucos
+          implementados. Si tu KG responde en 40ms, el agente fluye. Si
+          responde en 40 segundos, el agente se traba y timeout. El stack
+          de infraestructura es todo uno.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Query planning y join ordering</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">M06 Claude Code Ops</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M05-04", "M05");
+    }
+  });
+</script>
+</body>
+</html>

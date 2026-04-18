@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent Infrastructure 2026 · Curso visual</title>
+  <meta name="description" content="Curso integrador sobre infraestructura de agentes AI: knowledge layer, agent stack, memoria de 4 capas, skills, protocols, knowledge graphs y Claude Code session management." />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/diagrams.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="index.html" class="nav-link active">Inicio</a>
+      <a href="m07-integrador/00-los-6-loops.html" class="nav-link">Integrador</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="hero">
+    <span class="hero-eyebrow">Curso visual · 2026</span>
+    <h1 class="hero-title">
+      Infraestructura de <span class="accent">agentes</span> que compone con el tiempo
+    </h1>
+    <p class="hero-subtitle">
+      Un curso integrador que junta cuatro piezas clave para construir agentes
+      AI serios en 2026: una <strong>knowledge layer</strong> propia, el
+      <strong>stack tecnico</strong> moderno, el modelo de <strong>memoria
+      de 4 capas</strong>, y el operativo real con <strong>Claude Code</strong>.
+      Todo conceptual, con diagramas, pensado para que entiendas <em>por que</em>
+      antes de escribir una linea.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="m00-fundamentos/00-intro.html" class="btn btn-primary">
+        Empezar por Fundamentos
+      </a>
+      <a href="m06-claude-code-ops/00-context-rot.html" class="btn btn-secondary">
+        Saltar a Claude Code Ops
+      </a>
+    </div>
+
+    <div class="global-progress">
+      <span class="progress-stat">
+        <strong data-global-count>0/32</strong> paginas
+      </span>
+      <div class="progress-bar">
+        <div class="progress-bar-fill" data-global-bar></div>
+      </div>
+      <span class="progress-stat">
+        <strong data-global-pct>0%</strong> completado
+      </span>
+    </div>
+  </section>
+
+  <!-- ============================================
+       DE QUE VA EL CURSO
+       ============================================ -->
+  <section>
+    <h2>De que va este curso</h2>
+    <p>
+      Los agentes AI dejaron de ser un LLM con un prompt gigante. Hoy son
+      <strong>sistemas</strong> con memoria persistente, conocimiento estructurado,
+      skills especializadas, protocols (MCP y amigos) y una capa de operaciones
+      que decide cuando cargar que cosa. Este curso arma el mapa mental completo,
+      integrando cuatro articulos clave de 2026 en un recorrido progresivo.
+    </p>
+
+    <div class="callout callout-info">
+      <div class="callout-title">Para quien es</div>
+      <p>
+        Para vos que ya jugaste con agentes (Claude Code, Cursor, Copilot), pero
+        queres <em>construirlos en serio</em> para un negocio. Si estas haciendo
+        automatizaciones y queres que tus agentes <strong>acumulen conocimiento
+        y mejoren con el uso</strong>, aca vas a ver el armazon completo.
+      </p>
+    </div>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-card-label">01 · Knowledge</div>
+        <div class="concept-card-term">Tu ventaja competitiva</div>
+        <p class="concept-card-desc">
+          El modelo es commodity. Tu knowledge layer, no. Aprende a armar una
+          capa de conocimiento propia que te pertenezca.
+        </p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">02 · Stack</div>
+        <div class="concept-card-term">Las piezas modernas</div>
+        <p class="concept-card-desc">
+          Memoria, skills, protocols, observability. Que hace cada una, cuando
+          las necesitas y como se conectan.
+        </p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">03 · Grafos</div>
+        <div class="concept-card-term">Relaciones rapidas</div>
+        <p class="concept-card-desc">
+          Knowledge graphs con algoritmos eficientes. Cuando vector search no
+          alcanza y necesitas relaciones explicitas.
+        </p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">04 · Operacion</div>
+        <div class="concept-card-term">Sessions + 1M context</div>
+        <p class="concept-card-desc">
+          Como Claude Code gestiona contexto de 1M tokens, sesiones largas,
+          compactacion y recovery. El operativo real.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       LOS 8 MODULOS
+       ============================================ -->
+  <section>
+    <h2>Los 8 modulos</h2>
+    <p>
+      Ruta lineal, de menor a mayor complejidad. Cada modulo suma una pieza
+      sobre la anterior, y al final (M07) las conectamos todas en una
+      arquitectura integrada.
+    </p>
+
+    <div class="card-grid">
+
+      <a href="m00-fundamentos/00-intro.html" class="card-module" data-module-id="M00">
+        <div class="card-module-header">
+          <span class="module-num">Modulo 00</span>
+          <span class="module-pages-count">3 paginas</span>
+        </div>
+        <h3 class="module-title">Fundamentos</h3>
+        <p class="module-desc">
+          Que es "infraestructura de agentes". Por que un LLM solo no alcanza.
+          Mapa mental del curso: como se conectan las 4 piezas.
+        </p>
+        <div class="module-progress">
+          <div class="module-progress-bar">
+            <div class="module-progress-fill" data-module-fill></div>
+          </div>
+          <span class="module-progress-label" data-module-label>0/3</span>
+        </div>
+      </a>
+
+      <a href="m01-knowledge-layer/00-kbl-vs-bf.html" class="card-module" data-module-id="M01">
+        <div class="card-module-header">
+          <span class="module-num">Modulo 01</span>
+          <span class="module-pages-count">4 paginas</span>
+        </div>
+        <h3 class="module-title">Knowledge Layer</h3>
+        <p class="module-desc">
+          Por que tu knowledge es el moat y no el modelo. Como armar una capa
+          de conocimiento propia que compone con el tiempo. Fuentes, chunking,
+          embeddings, costos.
+        </p>
+        <div class="module-progress">
+          <div class="module-progress-bar">
+            <div class="module-progress-fill" data-module-fill></div>
+          </div>
+          <span class="module-progress-label" data-module-label>0/4</span>
+        </div>
+      </a>
+
+      <a href="m02-agent-stack/00-anatomia-stack.html" class="card-module" data-module-id="M02">
+        <div class="card-module-header">
+          <span class="module-num">Modulo 02</span>
+          <span class="module-pages-count">5 paginas</span>
+        </div>
+        <h3 class="module-title">Agent Stack 2026</h3>
+        <p class="module-desc">
+          Las capas del stack moderno: runtime, memoria, tools, protocols,
+          observability. Quien hace que, que librerias o servicios existen en
+          cada capa.
+        </p>
+        <div class="module-progress">
+          <div class="module-progress-bar">
+            <div class="module-progress-fill" data-module-fill></div>
+          </div>
+          <span class="module-progress-label" data-module-label>0/5</span>
+        </div>
+      </a>
+
+      <a href="m03-memoria/00-working.html" class="card-module" data-module-id="M03">
+        <div class="card-module-header">
+          <span class="module-num">Modulo 03</span>
+          <span class="module-pages-count">4 paginas</span>
+        </div>
+        <h3 class="module-title">Memoria de 4 capas</h3>
+        <p class="module-desc">
+          Working, short-term, long-term, episodic. Como combinarlas, cuando
+          usar cada una, patrones de escritura y recuperacion. Cognee y el
+          estado del arte.
+        </p>
+        <div class="module-progress">
+          <div class="module-progress-bar">
+            <div class="module-progress-fill" data-module-fill></div>
+          </div>
+          <span class="module-progress-label" data-module-label>0/4</span>
+        </div>
+      </a>
+
+      <a href="m04-skills-protocols/00-skill-anatomy.html" class="card-module" data-module-id="M04">
+        <div class="card-module-header">
+          <span class="module-num">Modulo 04</span>
+          <span class="module-pages-count">4 paginas</span>
+        </div>
+        <h3 class="module-title">Skills &amp; Protocols</h3>
+        <p class="module-desc">
+          Que es una skill, como se compone, cuando cargarla. MCP como
+          protocolo universal. Tool use vs. skills vs. agentes.
+        </p>
+        <div class="module-progress">
+          <div class="module-progress-bar">
+            <div class="module-progress-fill" data-module-fill></div>
+          </div>
+          <span class="module-progress-label" data-module-label>0/4</span>
+        </div>
+      </a>
+
+      <a href="m05-knowledge-graphs/00-subgraph-matching.html" class="card-module" data-module-id="M05">
+        <div class="card-module-header">
+          <span class="module-num">Modulo 05</span>
+          <span class="module-pages-count">5 paginas</span>
+        </div>
+        <h3 class="module-title">Knowledge Graphs</h3>
+        <p class="module-desc">
+          Grafos como modelo de conocimiento. Algoritmos rapidos (random walks,
+          PageRank, pathfinding). Cuando grafo gana a vectores y viceversa.
+        </p>
+        <div class="module-progress">
+          <div class="module-progress-bar">
+            <div class="module-progress-fill" data-module-fill></div>
+          </div>
+          <span class="module-progress-label" data-module-label>0/5</span>
+        </div>
+      </a>
+
+      <a href="m06-claude-code-ops/00-context-rot.html" class="card-module" data-module-id="M06">
+        <div class="card-module-header">
+          <span class="module-num">Modulo 06</span>
+          <span class="module-pages-count">4 paginas</span>
+        </div>
+        <h3 class="module-title">Claude Code Ops</h3>
+        <p class="module-desc">
+          Session management, context window de 1M tokens, compactacion,
+          recovery, sub-agentes y worktrees. Como Anthropic resuelve los limites
+          en la practica.
+        </p>
+        <div class="module-progress">
+          <div class="module-progress-bar">
+            <div class="module-progress-fill" data-module-fill></div>
+          </div>
+          <span class="module-progress-label" data-module-label>0/4</span>
+        </div>
+      </a>
+
+      <a href="m07-integrador/00-los-6-loops.html" class="card-module" data-module-id="M07">
+        <div class="card-module-header">
+          <span class="module-num">Modulo 07</span>
+          <span class="module-pages-count">3 paginas</span>
+        </div>
+        <h3 class="module-title">Integrador</h3>
+        <p class="module-desc">
+          La arquitectura completa: knowledge + stack + memoria + graphs + ops.
+          Casos aplicados a un negocio de automatizaciones. Checklist final.
+        </p>
+        <div class="module-progress">
+          <div class="module-progress-bar">
+            <div class="module-progress-fill" data-module-fill></div>
+          </div>
+          <span class="module-progress-label" data-module-label>0/3</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============================================
+       COMO USAR EL CURSO
+       ============================================ -->
+  <section>
+    <h2>Como usar este curso</h2>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-card-label">01 · Lineal</div>
+        <div class="concept-card-term">De 00 a 07</div>
+        <p class="concept-card-desc">
+          Los modulos suben en complejidad. Si salteas el 01 (knowledge layer),
+          el 03 (memoria) te va a quedar mas colgado.
+        </p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">02 · Visual</div>
+        <div class="concept-card-term">Mira los diagramas</div>
+        <p class="concept-card-desc">
+          Cada concepto tiene diagrama, layer-stack, flowchart o analogia.
+          Los muros de texto son la excepcion, no la regla.
+        </p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">03 · Integrador</div>
+        <div class="concept-card-term">Las piezas se conectan</div>
+        <p class="concept-card-desc">
+          No es una enciclopedia. En el M07 vas a ver como todas las piezas
+          funcionan juntas, con arquitecturas de ejemplo.
+        </p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">04 · Tu progreso</div>
+        <div class="concept-card-term">Todo local</div>
+        <p class="concept-card-desc">
+          Cada pagina se marca como vista al abrirla. Todo queda en tu
+          localStorage, sin cuentas ni login.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       COMO SE CONECTAN LAS PIEZAS
+       ============================================ -->
+  <section>
+    <h2>Como se conectan las 4 piezas</h2>
+    <p>
+      El curso integra cuatro articulos. No los leemos sueltos: los
+      <strong>componemos</strong>. Knowledge layer es el "que" sabe el agente,
+      Agent Stack es el "como" esta construido, Graphs es "como" relaciona
+      informacion, y Claude Code Ops es "como" lo operas en el dia a dia.
+    </p>
+
+    <div class="hub-diagram">
+      <div class="hub-node">
+        <div class="hub-node-title">Knowledge Layer</div>
+        <div class="hub-node-desc">Que sabe el agente</div>
+      </div>
+      <div class="hub-center">
+        <div>Agente<br />moderno</div>
+      </div>
+      <div class="hub-node">
+        <div class="hub-node-title">Stack moderno</div>
+        <div class="hub-node-desc">Como esta construido</div>
+      </div>
+      <div class="hub-node">
+        <div class="hub-node-title">Knowledge Graphs</div>
+        <div class="hub-node-desc">Como relaciona</div>
+      </div>
+      <div class="hub-node">
+        <div class="hub-node-title">Memoria 4 capas</div>
+        <div class="hub-node-desc">Que recuerda, cuando</div>
+      </div>
+      <div class="hub-node">
+        <div class="hub-node-title">Claude Code Ops</div>
+        <div class="hub-node-desc">Como lo operas</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       CREDITOS Y FUENTES
+       ============================================ -->
+  <section>
+    <h2>Creditos y fuentes</h2>
+    <p>
+      Este curso integra y visualiza cuatro articulos originales. No los
+      reemplaza: los complementa con diagramas, relaciones cruzadas y ejemplos
+      pensados para un negocio de automatizaciones.
+    </p>
+
+    <div class="source-grid">
+      <div class="source-card">
+        <div class="source-card-author">Shann Holmberg</div>
+        <h3 class="source-card-title">AI Knowledge Layer</h3>
+        <p class="source-card-desc">
+          Por que la capa de conocimiento es el verdadero moat en una era de
+          modelos commodity. Base del Modulo 01.
+        </p>
+      </div>
+
+      <div class="source-card">
+        <div class="source-card-author">codejunkie99</div>
+        <h3 class="source-card-title">AI Agent Stack 2026</h3>
+        <p class="source-card-desc">
+          Las capas del stack moderno: memoria de 4 niveles, skills, protocols,
+          observability. Base de los Modulos 02, 03 y 04.
+        </p>
+      </div>
+
+      <div class="source-card">
+        <div class="source-card-author">techwith_ram</div>
+        <h3 class="source-card-title">Knowledge Graphs Blazing Fast</h3>
+        <p class="source-card-desc">
+          Algoritmos eficientes sobre grafos para recuperar relaciones en
+          tiempo real. Base del Modulo 05.
+        </p>
+      </div>
+
+      <div class="source-card">
+        <div class="source-card-author">Anthropic</div>
+        <h3 class="source-card-title">Claude Code Session Management + 1M Context</h3>
+        <p class="source-card-desc">
+          Como Claude Code maneja sesiones largas, compactacion, recovery y
+          la ventana de 1M tokens. Base del Modulo 06.
+        </p>
+      </div>
+    </div>
+
+    <p style="margin-top: var(--space-8); font-size: 13px; color: var(--text-dim); text-align: center;">
+      <button class="btn btn-ghost" data-reset-progress>Reiniciar mi progreso</button>
+    </p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+    <span>·</span>
+    <span>2026</span>
+  </div>
+</footer>
+
+<script src="assets/js/progress.js"></script>
+<script src="assets/js/utils.js"></script>
+</body>
+</html>

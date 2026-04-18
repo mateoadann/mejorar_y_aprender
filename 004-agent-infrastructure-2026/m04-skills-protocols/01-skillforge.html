@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skillforge: el skill que crea skills · Agent Infrastructure 2026</title>
+  <meta name="description" content="El meta-skill que le ensena al agente como crear nuevas capabilities. Self-rewrite hook, memory-manager, y como la mejora compone sola." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M04 · Skills &amp; Protocols</span>
+    <h1>Skillforge: el skill que crea skills</h1>
+    <p class="page-intro">
+      Un meta-skill. Su unico trabajo es ensenarle al agente como crear
+      skills nuevas con el formato consistente. Las primeras las va a
+      hacer mal. El self-rewrite hook hace que cada intento mejore al
+      siguiente. Asi la mejora compone sola.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Por que un meta-skill</h2>
+      <p>
+        Sin un skillforge, cada vez que necesitas una capability nueva, la
+        escribis a mano — o peor, dejas al agente improvisar un skill con
+        formato distinto cada vez. Resultado: un zoo de skills sin anatomia
+        comun, imposibles de mantener.
+      </p>
+      <p>
+        Con un skillforge:
+      </p>
+      <ul>
+        <li>Trigger estandar: "create skill", "new capability", "build skill for X".</li>
+        <li>Formato consistente: frontmatter + instrucciones + self-rewrite hook.</li>
+        <li>Integracion con el index y el manifest desde el primer intento.</li>
+        <li>Log en DECISIONS.md — queda rastro de por que se creo.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Flujo cuando el agente detecta que falta una capability</h2>
+      <p>
+        El humano dice algo como "nunca hiciste esto, ¿podes armarte un
+        skill?". El skillforge se activa y corre este flujo:
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">Paso 1 · Index check</div>
+          <div class="timeline-title">¿Ya existe algo similar?</div>
+          <p class="timeline-desc">
+            Abre <code>skills/_index.md</code>. Si ya hay un skill parecido,
+            propone extender el existente en lugar de duplicar.
+          </p>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">Paso 2 · Lessons check</div>
+          <div class="timeline-title">¿Hay patterns relacionados?</div>
+          <p class="timeline-desc">
+            Lee <code>memory/semantic/LESSONS.md</code>. Si hay lessons
+            previos de skills que fallaron en dominio parecido, los incorpora
+            como constraints.
+          </p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">Paso 3 · Scaffold</div>
+          <div class="timeline-title">Crear folder + SKILL.md</div>
+          <p class="timeline-desc">
+            Genera <code>skills/&lt;nombre&gt;/SKILL.md</code> con el template:
+            frontmatter (name, version, triggers, tools, constraints),
+            instrucciones (destinations + fences), self-rewrite hook al final.
+          </p>
+        </div>
+        <div class="timeline-item violet">
+          <div class="timeline-label">Paso 4 · Register</div>
+          <div class="timeline-title">Update index + manifest</div>
+          <p class="timeline-desc">
+            Agrega entry en <code>_index.md</code> (tabla humana) y en
+            <code>_manifest.jsonl</code> (maquina-lectable para el harness).
+          </p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">Paso 5 · Scripts</div>
+          <div class="timeline-title">Agregar scripts/ o references/</div>
+          <p class="timeline-desc">
+            Si el skill necesita helpers, los crea bajo <code>scripts/</code>.
+            Si necesita ejemplos de "good looks like", los guarda en
+            <code>references/</code>.
+          </p>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-label">Paso 6 · Log &amp; commit</div>
+          <div class="timeline-title">DECISIONS.md + git</div>
+          <p class="timeline-desc">
+            Escribe una entry en <code>memory/semantic/DECISIONS.md</code>
+            explicando por que se creo el skill. Commit atomico.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Honestidad: los primeros skills son ROUGH DRAFTS</h2>
+      <div class="callout callout-warn">
+        <div class="callout-title">Expectativa realista</div>
+        <p>
+          Los primeros skills que genera skillforge NO van a ser perfectos.
+          Van a tener instrucciones demasiado procedurales, triggers
+          demasiado anchos, constraints faltantes. <strong>Esta bien.</strong>
+          Lo importante es que salgan con formato consistente y con
+          self-rewrite hook desde el dia 1. La mejora viene despues.
+        </p>
+      </div>
+      <p>
+        Esta es una idea contraintuitiva: estamos acostumbrados a pensar
+        que un skill hay que disenarlo bien antes de usarlo. Pero cuando
+        tenes self-rewrite incorporado, el skill <em>mejora solo</em> con
+        cada uso. La primera version no necesita ser buena — solo
+        necesita existir con el formato correcto.
+      </p>
+    </section>
+
+    <section>
+      <h2>El ciclo de mejora compuesta</h2>
+      <p>
+        La magia del skillforge es que <em>el mismo skillforge</em> tiene
+        self-rewrite hook. Cada vez que genera un skill que termina
+        fallando, aprende. Cada vez que genera uno que funciona bien,
+        tambien aprende. Su template interno mejora con cada intento.
+      </p>
+
+      <pre class="ascii-diagram">
+        <span class="ascii-accent">CICLO DE SKILLFORGE</span>
+
+        observacion (humano pide capability nueva)
+                │
+                ▼
+        ┌───────────────┐
+        │  DRAFT v1     │   ← skillforge genera skill rough
+        └───────┬───────┘
+                │ el agente usa el skill en tareas reales
+                ▼
+        ┌───────────────┐
+        │  USAGE        │   ← logs van a episodic memory
+        │               │   ← success/failure taggeados
+        └───────┬───────┘
+                │ after 5 uses OR on failure
+                ▼
+        ┌───────────────┐
+        │  SELF-REWRITE │   ← skill lee sus propios logs
+        │  del skill    │   ← update triggers, constraints
+        └───────┬───────┘
+                │ patterns recurrentes
+                ▼
+        ┌───────────────┐
+        │  SELF-REWRITE │   ← skillforge mismo aprende:
+        │  de skillforge│     que templates funcionan mejor
+        └───────┬───────┘
+                │
+                ▼
+        <span class="ascii-accent-alt">siguiente DRAFT es mejor que el anterior</span>
+      </pre>
+
+      <p>
+        Este es el argumento central: <strong>no estas optimizando un skill,
+        estas optimizando la fabrica de skills</strong>. Es un loop que
+        gana composicion con el tiempo.
+      </p>
+    </section>
+
+    <section>
+      <h2>Memory-manager: el segundo meta-skill critico</h2>
+      <p>
+        Skillforge tiene un hermano. Sin el, toda la memoria queda como
+        "filing cabinet que nadie abre". Memory-manager es el skill que
+        fuerza al agente a leer, reflexionar y promover memoria.
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Sin memory-manager</div>
+          <p style="font-size: 13px; color: var(--text-muted); margin: 0;">
+            Los archivos de memoria existen. El agente <em>podria</em>
+            leerlos. Pero no lo hace consistentemente. Cada sesion empieza
+            desde cero-ish. Los errores se repiten.
+          </p>
+          <p style="font-size: 12px; color: var(--text-dim); margin-top: 10px;">
+            "Filing cabinet que nadie abrio nunca."
+          </p>
+        </div>
+        <div class="comparison-side good">
+          <div class="comparison-side-label">Con memory-manager</div>
+          <p style="font-size: 13px; color: var(--text-muted); margin: 0;">
+            Triggers: "remember", "reflect", "distill", "what did I learn".
+            Cada vez que se dispara, el agente pulls top salience, detecta
+            recurrencia, promueve a semantic, archiva working resuelto.
+          </p>
+          <p style="font-size: 12px; color: var(--text-dim); margin-top: 10px;">
+            "El filing cabinet se convirtio en feedback loop."
+          </p>
+        </div>
+      </div>
+
+      <p>
+        Sin estos dos meta-skills (skillforge + memory-manager), el sistema
+        no compone. Los otros modulos (knowledge, memoria, protocolos)
+        existen como archivos pero nunca se usan de forma sistematica.
+      </p>
+    </section>
+
+    <section>
+      <h2>El self-rewrite hook (template generico)</h2>
+      <p>
+        Cada skill que sale de skillforge incluye este hook al final. Es
+        generico, pero aplica en cada uno porque cada skill tiene logs
+        propios en episodic memory.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-dim"># --- SELF-REWRITE HOOK (al final de cada SKILL.md) ---</span>
+
+  <span class="ascii-accent">TRIGGER:</span>
+    after every 5 uses  OR  on any failure
+
+  <span class="ascii-accent">PROCESO:</span>
+    1. read episodic entries tagged con este skill
+    2. read current KNOWLEDGE.md (lo que sabe el skill hoy)
+
+    3. si hay patterns nuevos:
+         append a KNOWLEDGE.md
+         update triggers en _manifest.jsonl
+         update constraints si hubo safety-relevant pattern
+
+    4. si se violo un constraint:
+         <span class="ascii-accent-alt">ESCALATE</span> a global semantic/LESSONS.md
+         (asi el aprendizaje de este skill
+          se vuelve system-wide — otros skills
+          tambien lo van a leer)
+
+  <span class="ascii-accent">CONSERVATIVE:</span>
+    no rewrite on every run
+    solo cuando la evidencia es clara (>=3 occurrences)
+      </pre>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Por que "conservative"</div>
+        <p>
+          El hook no reescribe el skill cada vez que corre. Espera evidencia
+          clara (3+ ocurrencias de un pattern). Si reescribe agresivo, el
+          skill se vuelve inestable y aprende ruido. Conservative = trust
+          the signal, not the noise.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cierre: dos skills que hacen que todo lo demas funcione</h2>
+      <p>
+        Si solo podes construir dos skills antes de tener tu sistema corriendo,
+        que sean estos dos:
+      </p>
+
+      <div class="layer-stack">
+        <div class="layer-stack-item highlight">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">skillforge</div>
+            <div class="layer-stack-desc">
+              Meta-skill para crear skills consistentes. Sin el, cada skill
+              tiene formato propio y nada compone.
+            </div>
+          </div>
+          <span class="badge badge-cyan">Meta</span>
+        </div>
+        <div class="layer-stack-item violet">
+          <div class="layer-stack-item-main">
+            <div class="layer-stack-name">memory-manager</div>
+            <div class="layer-stack-desc">
+              Fuerza al agente a leer, reflexionar, y promover memoria.
+              Sin el, los archivos existen pero nadie los abre.
+            </div>
+          </div>
+          <span class="badge badge-violet">Meta</span>
+        </div>
+      </div>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">La idea clave</div>
+        <p>
+          Los skills no se disenan perfectos. Se <strong>evolucionan</strong>.
+          Lo que necesitas al dia 1 no es un skill bueno — es un skill con
+          formato consistente y self-rewrite activado. El resto lo hace
+          el tiempo.
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Anatomia de un skill</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Protocols: tool schemas + permissions</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M04-01", "M04");
+    }
+  });
+</script>
+</body>
+</html>

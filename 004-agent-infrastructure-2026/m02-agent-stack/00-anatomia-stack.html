@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anatomia del stack · Agent Infrastructure 2026</title>
+  <meta name="description" content="La separacion clave del stack 2026: el harness no piensa. Skills, memoria y protocols en markdown son lo unico que acumula valor." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M02 · Agent Stack</span>
+    <h1>Anatomia del stack: donde vive el cerebro</h1>
+    <p class="page-intro">
+      El stack de agentes de 2026 se parte en dos mitades que no se mezclan:
+      un <strong>harness operativo</strong> que no piensa, y un <strong>estado
+      acumulativo</strong> que es todo lo que piensa. Entender donde vive cada
+      cosa es la decision arquitectonica mas importante del modulo.
+    </p>
+  </section>
+
+  <article>
+
+    <!-- ============================================
+         SECCION 1: La separacion clave
+         ============================================ -->
+    <section>
+      <h2>La separacion clave: harness vs estado</h2>
+      <p>
+        Durante anos pensamos el agente como un bloque unico: "el agente hace X".
+        En 2026 eso cambio. Lo que llamamos "agente" es en realidad dos piezas
+        con responsabilidades muy distintas, que se conectan por un contrato
+        simple: <em>archivos en disco</em>.
+      </p>
+      <p>
+        Del lado operativo esta el <strong>harness</strong> —el conductor. Lee
+        archivos, llama al modelo, invoca tools, corre hooks, escribe logs. No
+        toma decisiones sobre que hacer. Es ejecutor puro.
+      </p>
+      <p>
+        Del lado del conocimiento esta el <strong>estado</strong>: skills en
+        markdown, memoria en markdown/jsonl, protocols en JSON schemas +
+        markdown. Aca vive todo lo que el agente <em>sabe</em> y todo lo que
+        <em>aprendio</em>. Lo que acumula valor con el uso.
+      </p>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">Regla de oro</div>
+        <p>
+          Si algo <em>decide</em>, pertenece al estado (skills/memory/protocols).
+          Si algo <em>ejecuta</em>, pertenece al harness. Cuando empezas a
+          mezclar, el stack se rompe.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 2: Diagrama conceptual
+         ============================================ -->
+    <section>
+      <h2>Diagrama: las dos mitades del agente</h2>
+
+      <div class="diagram">
+        <div class="diagram-title">AGENTE = HARNESS + ESTADO</div>
+        <pre class="diagram-ascii accent">
+ +---------------------------------------------------------+
+ |                      AGENTE                              |
+ |                                                          |
+ |  +------------------+         +-----------------------+  |
+ |  |   HARNESS        |  lee    |   ESTADO              |  |
+ |  |   (operativo)    | ------> |   (acumulativo)       |  |
+ |  |                  |         |                       |  |
+ |  |  - load files    |         |  .agent/              |  |
+ |  |  - call model    |         |   ├─ skills/*.md      |  |
+ |  |  - run tools     |         |   ├─ memory/*.jsonl   |  |
+ |  |  - run hooks     |         |   ├─ protocols/*.json |  |
+ |  |  - write logs    |         |   └─ AGENTS.md        |  |
+ |  |                  |         |                       |  |
+ |  |  THIN, INMUTABLE |         |  CRECE CON EL USO     |  |
+ |  +------------------+         +-----------------------+  |
+ |                                                          |
+ +---------------------------------------------------------+
+        </pre>
+        <div class="diagram-caption">
+          El harness es comodity. El estado es tuyo. El valor vive del lado
+          derecho.
+        </div>
+      </div>
+
+      <p>
+        La asimetria es intencional. Un lado es <em>intercambiable</em>
+        (harness), el otro es <em>propio y acumulativo</em> (estado). Esta
+        asimetria es lo que habilita las tres implicaciones de abajo.
+      </p>
+    </section>
+
+    <!-- ============================================
+         SECCION 3: Las 3 implicaciones
+         ============================================ -->
+    <section>
+      <h2>Tres implicaciones que cambian como construis</h2>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">01 · Portabilidad</div>
+          <div class="concept-card-term">Swap de harness sin perder nada</div>
+          <p class="concept-card-desc">
+            Si tu estado vive en <code>.agent/</code> (archivos planos),
+            podes cambiar el harness —de un script propio a Claude Code, o al
+            reves— sin reentrenar ni migrar. El estado sigue igual.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-card-label">02 · Independencia del modelo</div>
+          <div class="concept-card-term">Swap de modelo sin perder nada</div>
+          <p class="concept-card-desc">
+            Los skills son markdown. Los prompts los construye el harness. Si
+            cambias de Claude a otro modelo, lo unico que ajustas es el cliente
+            API del harness. Skills y memoria siguen siendo validos.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-card-label">03 · Acumulacion</div>
+          <div class="concept-card-term">Solo el estado genera valor</div>
+          <p class="concept-card-desc">
+            Cada sesion deja marca en <code>memory/</code>. Cada patron nuevo
+            aparece como skill. En git, con diffs revisables. El agente es mas
+            util a los 6 meses que en el dia cero —porque el estado crece.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Consecuencia practica</div>
+        <p>
+          Lo unico que vale la pena versionar con cuidado en git es
+          <code>.agent/</code>. El harness podes reescribirlo o reemplazarlo.
+          La inversion de tiempo esta en skills + memoria + protocols.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECCION 4: El folder tree
+         ============================================ -->
+    <section>
+      <h2>El folder tree canonico</h2>
+      <p>
+        En la practica, el estado se materializa en un directorio
+        <code>.agent/</code> en la raiz del proyecto. Subcarpetas separadas
+        por tipo de conocimiento:
+      </p>
+
+      <div class="diagram">
+        <div class="diagram-title">ESTRUCTURA DE .agent/</div>
+        <pre class="diagram-ascii">
+ proyecto/
+ ├─ AGENTS.md                  ← tabla de contenidos del cerebro
+ ├─ .agent/
+ │   ├─ harness/               ← codigo del conductor (opcional)
+ │   │   ├─ main.py            ← < 200 LOC
+ │   │   ├─ build_context.py
+ │   │   └─ log_execution.py
+ │   │
+ │   ├─ skills/                ← conocimiento procedural
+ │   │   ├─ _index.md          ← siempre cargado (nombres + triggers)
+ │   │   ├─ _manifest.jsonl    ← machine-readable
+ │   │   ├─ git-proxy/
+ │   │   │   └─ SKILL.md
+ │   │   ├─ memory-manager/
+ │   │   │   └─ SKILL.md
+ │   │   └─ skillforge/
+ │   │       └─ SKILL.md
+ │   │
+ │   ├─ memory/                ← memoria persistente (4 capas)
+ │   │   ├─ working.md         ← contexto activo del task
+ │   │   ├─ episodic.jsonl     ← eventos con pain/salience
+ │   │   ├─ semantic.md        ← lecciones destiladas
+ │   │   └─ personal.md        ← preferencias del usuario
+ │   │
+ │   ├─ protocols/             ← contratos con herramientas
+ │   │   ├─ mcp-servers.json
+ │   │   ├─ tool-schemas.json
+ │   │   └─ permissions.md
+ │   │
+ │   └─ tools/                 ← scripts que el harness puede llamar
+ │       └─ custom-tool.py
+ │
+ └─ src/                       ← tu codigo real
+        </pre>
+        <div class="diagram-caption">
+          Cada carpeta responde a una pregunta distinta: que se, como actuo,
+          que aprendi, con quien hablo.
+        </div>
+      </div>
+
+      <p>
+        El archivo <code>AGENTS.md</code> en la raiz funciona como indice
+        maestro: apunta a las secciones relevantes, lista los skills activos y
+        define el orden de carga. Es lo primero que lee cualquier harness al
+        arrancar.
+      </p>
+    </section>
+
+    <!-- ============================================
+         SECCION 5: Harness vs estado en vivo
+         ============================================ -->
+    <section>
+      <h2>Ejemplo vivo: una ejecucion</h2>
+      <p>
+        Veamos que pasa cuando el usuario pide "fix el bug del login". El
+        harness NO decide nada sobre el fix —solo orquesta. El estado
+        <em>informa</em> cada decision.
+      </p>
+
+      <div class="flowchart vertical">
+        <div class="flowchart-box">
+          <div class="flowchart-box-label">01 · HARNESS</div>
+          <div class="flowchart-box-title">Recibe input</div>
+          <div class="flowchart-box-desc">"fix el bug del login"</div>
+        </div>
+        <div class="flowchart-arrow">↓</div>
+        <div class="flowchart-box violet">
+          <div class="flowchart-box-label">02 · HARNESS lee ESTADO</div>
+          <div class="flowchart-box-title">Carga AGENTS.md + _index.md</div>
+          <div class="flowchart-box-desc">
+            ve que hay skill "debug-flow" y memoria previa sobre auth
+          </div>
+        </div>
+        <div class="flowchart-arrow">↓</div>
+        <div class="flowchart-box">
+          <div class="flowchart-box-label">03 · HARNESS</div>
+          <div class="flowchart-box-title">Arma contexto + llama al modelo</div>
+          <div class="flowchart-box-desc">injecta skill debug-flow + top-5 episodic</div>
+        </div>
+        <div class="flowchart-arrow">↓</div>
+        <div class="flowchart-box accent">
+          <div class="flowchart-box-label">04 · MODELO piensa</div>
+          <div class="flowchart-box-title">Decide tools, escribe codigo</div>
+          <div class="flowchart-box-desc">toda la inteligencia ocurre aca</div>
+        </div>
+        <div class="flowchart-arrow">↓</div>
+        <div class="flowchart-box violet">
+          <div class="flowchart-box-label">05 · HARNESS escribe ESTADO</div>
+          <div class="flowchart-box-title">Append a episodic.jsonl</div>
+          <div class="flowchart-box-desc">registra resultado, pain score, tools usados</div>
+        </div>
+      </div>
+
+      <p>
+        Fijate: el harness toca el estado <strong>al principio</strong> (para
+        armar contexto) y <strong>al final</strong> (para registrar lo que
+        paso). En el medio, el modelo manda. El conductor nunca opina.
+      </p>
+    </section>
+
+    <!-- ============================================
+         SECCION 6: Cierre
+         ============================================ -->
+    <section>
+      <h2>Para llevarte</h2>
+      <div class="callout callout-success">
+        <div class="callout-title">Tres ideas fuerza</div>
+        <ul>
+          <li>
+            El <strong>harness no piensa</strong> —lee, ejecuta, escribe logs.
+          </li>
+          <li>
+            Toda la inteligencia vive en <strong>skills + memoria + protocols</strong>,
+            markdown plano en git.
+          </li>
+          <li>
+            Esta separacion te da portabilidad (harness), independencia
+            (modelo) y <strong>acumulacion de valor</strong> (estado) con el
+            tiempo.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="../m01-knowledge-layer/integracion.html" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Integracion y costos</span>
+    </a>
+    <a data-nav-next href="01-harness-thin.html" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">Harness thin: conductor &lt; 200 LOC</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M02-00", "M02");
+    }
+  });
+</script>
+</body>
+</html>

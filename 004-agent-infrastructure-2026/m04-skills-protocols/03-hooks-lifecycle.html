@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hooks: el enforcement layer · Agent Infrastructure 2026</title>
+  <meta name="description" content="pre_tool_call, post_execution, on_failure. Los hooks implementan lo que permissions y tool schemas definen. Hacen que el sistema compose automaticamente." />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-title">Agent Infrastructure 2026</span>
+        <span class="brand-subtitle">Curso visual integrador</span>
+      </span>
+    </a>
+    <nav class="nav-main">
+      <a href="../index.html" class="nav-link">Inicio</a>
+      <span class="progress-pill" data-progress-pill>Progreso 0/32</span>
+    </nav>
+  </div>
+</header>
+
+<div class="header-inner">
+  <div class="breadcrumb" data-breadcrumb></div>
+</div>
+
+<main>
+
+  <section class="page-header">
+    <span class="page-header-eyebrow">M04 · Skills &amp; Protocols</span>
+    <h1>Hooks: el enforcement layer</h1>
+    <p class="page-intro">
+      Los hooks corren antes y despues de cada accion del agente.
+      Implementan lo que permissions y tool schemas definen. Son la pieza
+      que hace que el sistema compose automaticamente — sin ellos, todo
+      el andamiaje anterior queda en papel.
+    </p>
+  </section>
+
+  <article>
+
+    <section>
+      <h2>Tres hooks, tres momentos</h2>
+      <p>
+        El lifecycle de una accion pasa por tres puntos donde el sistema
+        puede intervenir: antes de ejecutar, despues de ejecutar, y cuando
+        falla. Cada uno con un hook dedicado.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-label">pre_tool_call</div>
+          <div class="concept-card-term">Gate de entrada</div>
+          <p class="concept-card-desc">
+            Corre <em>antes</em> de invocar un tool. Carga el schema,
+            chequea permissions, valida preconditions. Puede bloquear.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">post_execution</div>
+          <div class="concept-card-term">Logger automatico</div>
+          <p class="concept-card-desc">
+            Corre <em>despues</em> de cada accion. Appendea a episodic
+            memory con score de dolor, importance, y reflexion.
+          </p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-label">on_failure</div>
+          <div class="concept-card-term">Specialized</div>
+          <p class="concept-card-desc">
+            Se dispara en errores. Pain score mas alto, tracking por skill,
+            triggering de rewrite cuando el threshold se supera.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>pre_tool_call: el gate de permissions</h2>
+      <p>
+        Este hook es el que hace que <code>permissions.md</code> y los tool
+        schemas sean <em>enforcement real</em> y no decoracion. Cuando el
+        modelo intenta llamar un tool, la llamada pasa por aca primero.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-dim"># hooks/pre_tool_call.py  (pseudocodigo)</span>
+
+  <span class="ascii-accent">def pre_tool_call(tool_name, args, target=None):</span>
+      schema = load_schema(tool_name)
+      perms  = load_permissions()
+
+      <span class="ascii-dim"># 1. blocked_targets -> hard block, sin approval posible</span>
+      if target in schema.blocked_targets:
+          return (False, "blocked_target: " + target)
+
+      <span class="ascii-dim"># 2. requires_approval -> pausar y pedir confirmacion</span>
+      if schema.requires_approval:
+          return ("approval_needed", schema.side_effects)
+
+      <span class="ascii-dim"># 3. fallback: matchear contra permissions.md</span>
+      <span class="ascii-dim">#    seccion "Never allowed", por keywords</span>
+      match_count = keyword_match(tool_name + args, perms.never_allowed)
+      if match_count &gt;= 2:
+          return (False, "matches never_allowed patterns")
+
+      <span class="ascii-dim"># 4. pass -> let it through</span>
+      return (True, "ok")
+      </pre>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Por que keywords y no exact match</div>
+        <p>
+          El modelo puede llamar un tool con formas sutilmente distintas
+          ("force push", "push --force", "hard push"). Un match exacto se
+          saltea. Keyword matching con threshold (>=2 hits) captura las
+          variantes. No es perfecto — por eso los blocked_targets y
+          requires_approval son las lineas duras.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>post_execution: el secreto del compound learning</h2>
+      <p>
+        Cada accion del agente — exitosa o fallida — queda registrada en
+        <code>memory/episodic/AGENT_LEARNINGS.jsonl</code> automaticamente.
+        Esto es lo que hace que el sistema <strong>aprenda sin que vos le
+        ensenes nada</strong>.
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-dim"># Cada entry en episodic/AGENT_LEARNINGS.jsonl</span>
+
+  {
+    <span class="ascii-accent">"timestamp"</span>:   "2026-04-17T14:22:01Z",
+    <span class="ascii-accent">"skill"</span>:       "api-endpoint-builder",
+    <span class="ascii-accent">"action"</span>:      "create_route",
+    <span class="ascii-accent">"result"</span>:      "success",
+    <span class="ascii-accent">"pain_score"</span>:  2,              <span class="ascii-dim">// 2 si ok, 7 si fallo</span>
+    <span class="ascii-accent">"importance"</span>:  "medium",
+    <span class="ascii-accent">"reflection"</span>:  "rate-limit middleware se aplico automatico
+                   gracias al constraint del skill; antes habia
+                   que recordarlo manual"
+  }
+      </pre>
+
+      <p>
+        El hook es <strong>fully automatic</strong>. No tenes que decirle al
+        agente "por favor logeá lo que hiciste". Los scores (pain,
+        importance) surge en el retrieval: entries con pain alto se levantan
+        primero, failures recurrentes disparan rewrite.
+      </p>
+
+      <div class="callout callout-success">
+        <div class="callout-title">El loop completo, sin intervencion</div>
+        <p>
+          1. El hook logea cada accion a episodic. <br />
+          2. Salience scoring levanta entries con pain &gt; threshold. <br />
+          3. El dream cycle nocturno promueve patterns recurrentes a semantic. <br />
+          4. La proxima sesion arranca con el learning ya consolidado.
+          <br /><br />
+          <strong>Vos no hacés nada manual.</strong> Solo escribir el hook
+          una vez y confiar en la composicion.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>on_failure: pain scoring especializado</h2>
+      <p>
+        Los failures merecen un hook aparte porque:
+      </p>
+      <ul>
+        <li>Su pain score default es alto (8, no 2) — tienen mas peso en retrieval.</li>
+        <li>Agregan <code>error_type</code> y <code>context</code> al log, para que la reflection sea accionable.</li>
+        <li>Cuentan <code>recent_failures</code> por skill, mirando el history jsonl.</li>
+        <li>Disparan rewrites cuando el threshold se supera.</li>
+      </ul>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-dim"># hooks/on_failure.py  (pseudocodigo)</span>
+
+  FAILURE_THRESHOLD = 3   <span class="ascii-dim"># en 14 dias</span>
+
+  <span class="ascii-accent">def on_failure(skill, action, error, context):</span>
+      entry = {
+          "skill":       skill,
+          "action":      action,
+          "error_type":  classify(error),
+          "context":     context,
+          "pain_score":  8,           <span class="ascii-dim"># default alto</span>
+          "timestamp":   now()
+      }
+      log_to_episodic(entry)
+
+      recent = count_failures(skill, days=14)
+      if recent &gt;= FAILURE_THRESHOLD:
+          <span class="ascii-accent-alt">flag_skill_for_rewrite(skill)</span>
+          entry["pain_score"] = 10    <span class="ascii-dim"># escala</span>
+          promote_pattern(skill, context)
+      </pre>
+
+      <p>
+        Cuando un skill falla 3+ veces en 14 dias, el flag dispara el
+        self-rewrite hook del propio skill (que vimos en la pagina de
+        Skillforge). El loop se cierra: failures → flag → rewrite →
+        skill mejor.
+      </p>
+    </section>
+
+    <section>
+      <h2>Lifecycle completo: de input a learning consolidado</h2>
+      <p>
+        Ahora podemos ver como se conecta todo. Una interaccion tipica
+        pasa por estos puntos:
+      </p>
+
+      <pre class="ascii-diagram">
+  <span class="ascii-accent">HUMANO ENVIA INPUT</span>
+         │
+         ▼
+  ┌──────────────────────┐
+  │  build_context       │  ← pull personal + semantic + episodic
+  └────────┬─────────────┘    relevantes (M03)
+           ▼
+  ┌──────────────────────┐
+  │  MODEL REASONING     │  ← LLM decide: ¿que skill?
+  │                      │    ¿que tool?
+  └────────┬─────────────┘
+           │ tool call
+           ▼
+  ┌──────────────────────┐
+  │  <span class="ascii-accent-alt">pre_tool_call</span>      │  ← chequea schema + permissions
+  │  hook                │    puede BLOCKEAR o pedir approval
+  └────────┬─────────────┘
+           │ allowed
+           ▼
+  ┌──────────────────────┐
+  │  EXECUTION           │  ← el tool corre
+  │  (tool runs)         │    retorna resultado o error
+  └────────┬─────────────┘
+           ▼
+  ┌──────────────────────┐
+  │  <span class="ascii-accent-alt">post_execution</span>     │  ← appendea entry a episodic
+  │  hook                │    con pain_score, importance
+  └────────┬─────────────┘
+           │ (si hubo error)
+           ▼
+  ┌──────────────────────┐
+  │  <span class="ascii-accent-alt">on_failure</span> hook   │  ← pain_score alto
+  │                      │    chequea threshold
+  └────────┬─────────────┘    flag skill si supera
+           │
+           ▼
+       RESPONSE
+           │
+           │ <span class="ascii-dim">[3am — dream cycle, async]</span>
+           ▼
+  ┌──────────────────────┐
+  │  DREAM CYCLE         │  ← recurrentes a semantic
+  │  (cronjob)           │    archiva resueltos
+  └──────────────────────┘
+      </pre>
+
+      <p>
+        Cada flecha es un punto donde el sistema <em>aprende</em> o
+        <em>enforza</em>. El diseno es deliberado: el modelo no tiene que
+        acordarse de logear, no tiene que acordarse de chequear permissions,
+        no tiene que saber que existe el dream cycle. Todo eso es
+        infraestructura.
+      </p>
+    </section>
+
+    <section>
+      <h2>Anti-patterns: lo que rompe el enforcement</h2>
+      <p>
+        Dos errores que ves repetido en agentes que "funcionan solos hasta
+        que no funcionan":
+      </p>
+
+      <div class="comparison-table">
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Anti-pattern 1</div>
+          <h4>Unsafe composition</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55;">
+            Dos skills <em>safe por separado</em> se combinan en algo
+            destructivo. Ejemplo clasico: <code>merge-pr</code> es safe,
+            <code>auto-push</code> es safe. Los dos juntos = deploy
+            accidental a produccion sin review.
+          </p>
+          <p style="font-size: 12px; color: var(--text-dim); margin-top: 10px;">
+            <strong>Solucion:</strong> los constraints van en
+            <code>pre_tool_call</code>, no dentro de los skills. Los skills
+            no saben que existen otros skills. El hook si — y es el que
+            ve la composicion.
+          </p>
+        </div>
+        <div class="comparison-side bad">
+          <div class="comparison-side-label">Anti-pattern 2</div>
+          <h4>Literal execution</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.55;">
+            Skill escrito procedural ("1. commit, 2. push"). El agente
+            sigue los pasos aunque los tests hayan fallado. Resultado:
+            push de codigo roto.
+          </p>
+          <p style="font-size: 12px; color: var(--text-dim); margin-top: 10px;">
+            <strong>Solucion:</strong> vuelve a la pagina 00 — escribi
+            <em>destinations and fences</em>, no driving directions. El
+            agente tiene que entender el destino, no memorizar la secuencia.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">Principio clave</div>
+        <p>
+          Los skills son <em>locales</em> — no ven el sistema. Los hooks
+          son <em>globales</em> — ven todo. Por eso cualquier constraint
+          cross-skill (no hacer X despues de Y, no combinar A con B) tiene
+          que vivir en los hooks, nunca dentro de un skill.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cierre: la infraestructura que se esconde</h2>
+      <p>
+        Los hooks son el componente menos visible del stack y el que mas
+        determina si tu sistema compone. Sin ellos:
+      </p>
+      <ul>
+        <li><code>permissions.md</code> queda como comentario que nadie lee.</li>
+        <li>Los tool schemas son aspiracionales.</li>
+        <li>Episodic memory nunca se puebla.</li>
+        <li>El dream cycle no tiene data que consolidar.</li>
+      </ul>
+      <p>
+        Con ellos:
+      </p>
+      <ul>
+        <li>Permissions se enforza antes de cada tool call.</li>
+        <li>Cada accion queda en episodic sin esfuerzo manual.</li>
+        <li>Los failures se detectan, escalan, y disparan rewrites.</li>
+        <li>El aprendizaje es automatico y compuesto.</li>
+      </ul>
+
+      <div class="callout callout-violet">
+        <div class="callout-title">M04 en una linea</div>
+        <p>
+          Un skill bien escrito (destinations + fences) + un permissions.md
+          con la regla del new hire + tres hooks (pre, post, failure) =
+          agente que aprende solo, respeta limites, y no hace nada
+          destructivo sin tu aprobación. <strong>Eso es el M04 entero.</strong>
+        </p>
+      </div>
+    </section>
+
+  </article>
+
+  <nav class="nav-prev-next" aria-label="Navegacion entre paginas">
+    <a data-nav-prev href="#" class="prev">
+      <span class="nav-label">Anterior</span>
+      <span class="nav-title">Protocols: tool schemas + permissions</span>
+    </a>
+    <a data-nav-next href="#" class="next">
+      <span class="nav-label">Siguiente</span>
+      <span class="nav-title">M05 Knowledge Graphs</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="site-footer">
+  <p>
+    Agent Infrastructure 2026 · Parte de
+    <a href="../../README.md">mejorar_y_aprender</a>
+  </p>
+  <div class="footer-meta">
+    <span>Curso visual sin frameworks</span>
+    <span>·</span>
+    <span>Progreso guardado en tu navegador</span>
+  </div>
+</footer>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.CourseUtils && typeof window.CourseUtils.initPage === "function") {
+      window.CourseUtils.initPage("M04-03", "M04");
+    }
+  });
+</script>
+</body>
+</html>
