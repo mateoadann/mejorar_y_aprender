@@ -86,7 +86,7 @@ mejorar_y_aprender/
   - Gotcha evitado: el catalogo MODULES en utils.js debe matchear los filenames reales (no slugs teoricos) para que prev/next funcione — sincronizado en consolidacion final
   - Fuentes principales: karpathy LLM wiki, Garry Tan 4-layer memory, Harrison Chase "Your Harness Your Memory", leapfrog triejoin (Veldhuizen 2014), TransE embeddings
 
-### 005-ciclismo-ultradistancia
+### 006-ciclismo-ultradistancia
 - **Que es**: Curso teorico-visual sobre ciclismo de ultradistancia (rutas +200km) para ciclistas con experiencia real (+10 rutas largas). Sintetiza ~32.000 palabras de research web verificable (papers PubMed, coaches San Millan/Seiler/Coggan/Friel, atletas Sehili/Wilcox/Kolbinger/Morton/Gemperle).
 - **Stack**: HTML/CSS/JS vanilla, dark mode, dualismo metabolico cyan/naranja
 - **Target especifico**: Mateo es ciclista practicante con +10 rutas de +200km, NO principiante. Curso da por sentado experiencia real y profundiza el "por que" de lo que ya intuye.
