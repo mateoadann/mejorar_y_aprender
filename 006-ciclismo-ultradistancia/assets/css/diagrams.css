@@ -1,0 +1,105 @@
+/* ============================================
+   diagrams.css — ASCII art, SVG, crossover viz
+   ============================================ */
+
+/* ASCII diagram block */
+.ascii-diagram {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  white-space: pre;
+  color: var(--text-soft);
+  overflow-x: auto;
+}
+.ascii-diagram .ascii-accent { color: var(--accent-primary); font-weight: 700; }
+.ascii-diagram .ascii-accent-alt { color: var(--accent-secondary); font-weight: 700; }
+.ascii-diagram .ascii-warn { color: var(--warning); font-weight: 700; }
+.ascii-diagram .ascii-success { color: var(--success); font-weight: 700; }
+.ascii-diagram .ascii-danger { color: var(--danger); font-weight: 700; }
+.ascii-diagram .ascii-dim { color: var(--text-dim); }
+
+.ascii-caption {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  text-align: center;
+  margin-top: var(--space-xs);
+  font-style: italic;
+}
+
+/* SVG diagram wrapper */
+.svg-diagram {
+  width: 100%;
+  max-width: 700px;
+  margin: var(--space-lg) auto;
+  display: block;
+}
+.svg-diagram-wrap {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+  text-align: center;
+}
+
+/* Crossover viz — dualismo cyan/naranja */
+.crossover-legend {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+  margin-top: var(--space-md);
+  font-size: 0.85rem;
+}
+.crossover-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--text-soft);
+}
+.crossover-legend-dot {
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+}
+.crossover-legend-dot.cho { background: var(--accent-primary); }
+.crossover-legend-dot.fat { background: var(--accent-secondary); }
+
+/* Pentagram / star (5 ejes) */
+.pentagram {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-sm);
+  margin: var(--space-lg) 0;
+}
+.pentagram-axis {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent-primary);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  text-align: center;
+}
+.pentagram-axis:nth-child(2) { border-top-color: var(--accent-secondary); }
+.pentagram-axis:nth-child(3) { border-top-color: var(--violet); }
+.pentagram-axis:nth-child(4) { border-top-color: var(--warning); }
+.pentagram-axis:nth-child(5) { border-top-color: var(--success); }
+.pentagram-axis-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
+}
+.pentagram-axis-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+@media (max-width: 720px) {
+  .pentagram { grid-template-columns: repeat(2, 1fr); }
+}
