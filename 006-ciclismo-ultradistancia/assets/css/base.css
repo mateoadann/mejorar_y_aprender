@@ -3,6 +3,11 @@
    base.css — variables, reset, typography
    ============================================ */
 
+/* @import DEBE ir antes de cualquier regla CSS (W3C spec) */
+@import url('main.css');
+@import url('components.css');
+@import url('diagrams.css');
+
 :root {
   /* Paleta core */
   --bg: #0a0e1a;
@@ -112,8 +117,3 @@ ul, ol { padding-left: 1.4em; margin: 0 0 var(--space-md); }
 li { margin-bottom: var(--space-xs); }
 
 ::selection { background: var(--accent-primary-soft); color: #fff; }
-
-/* Importar modulos */
-@import url('main.css');
-@import url('components.css');
-@import url('diagrams.css');
