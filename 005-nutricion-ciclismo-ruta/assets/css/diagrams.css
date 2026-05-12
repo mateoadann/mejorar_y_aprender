@@ -1,0 +1,168 @@
+/* ============================================================
+   Diagrams — ASCII art, SVG wrappers, flow diagrams
+   ============================================================ */
+
+/* ASCII diagrams with colored spans */
+.ascii-diagram {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.4rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--text-muted);
+}
+.ascii-diagram .ascii-accent { color: var(--accent); font-weight: 700; }
+.ascii-diagram .ascii-accent-alt { color: var(--accent-2); font-weight: 700; }
+.ascii-diagram .ascii-violet { color: var(--violet); font-weight: 700; }
+.ascii-diagram .ascii-pink { color: var(--pink); font-weight: 700; }
+.ascii-diagram .ascii-success { color: var(--success); font-weight: 700; }
+.ascii-diagram .ascii-warn { color: var(--warning); font-weight: 700; }
+.ascii-diagram .ascii-dim { color: var(--text-dim); }
+.ascii-diagram .ascii-label { color: var(--text); font-weight: 700; }
+
+.ascii-caption {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-align: center;
+  margin-top: -0.8rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* SVG wrapper */
+.svg-figure {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+.svg-figure svg { max-width: 100%; height: auto; }
+.svg-caption {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.8rem;
+}
+
+/* Bar chart (CSS-only) */
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+  padding: 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 80px;
+  gap: 0.8rem;
+  align-items: center;
+}
+.bar-label {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.bar-track {
+  height: 22px;
+  background: var(--bg-inset);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  border-radius: 4px;
+}
+.bar-value {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--accent);
+  text-align: right;
+}
+.bar-row.aqua .bar-fill { background: linear-gradient(90deg, #0e7a8a, var(--accent-2)); }
+.bar-row.aqua .bar-value { color: var(--accent-2); }
+.bar-row.violet .bar-fill { background: linear-gradient(90deg, #6d5ae0, var(--violet)); }
+.bar-row.violet .bar-value { color: var(--violet); }
+.bar-row.pink .bar-fill { background: linear-gradient(90deg, #be185d, var(--pink)); }
+.bar-row.pink .bar-value { color: var(--pink); }
+
+/* Flow (horizontal pipeline) */
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+.flow-node {
+  flex: 1 1 140px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem;
+  text-align: center;
+  font-size: 0.88rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.flow-node .flow-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+.flow-node .flow-title { font-weight: 700; }
+.flow-arrow {
+  align-self: center;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* Decision tree (vertical) */
+.decision-tree {
+  margin: 1.5rem 0;
+  padding: 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.decision-q {
+  font-weight: 700;
+  color: var(--accent-2);
+  margin: 0.8rem 0 0.5rem 0;
+  font-size: 0.98rem;
+}
+.decision-q::before { content: "? "; color: var(--accent); font-family: var(--font-mono); }
+.decision-branch {
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--border);
+  margin: 0.4rem 0 0.8rem 0;
+}
+.decision-answer {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--accent);
+  margin-bottom: 0.2rem;
+}
+.decision-action { color: var(--text); font-size: 0.94rem; }

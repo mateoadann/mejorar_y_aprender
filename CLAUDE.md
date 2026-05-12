@@ -86,6 +86,28 @@ mejorar_y_aprender/
   - Gotcha evitado: el catalogo MODULES en utils.js debe matchear los filenames reales (no slugs teoricos) para que prev/next funcione — sincronizado en consolidacion final
   - Fuentes principales: karpathy LLM wiki, Garry Tan 4-layer memory, Harrison Chase "Your Harness Your Memory", leapfrog triejoin (Veldhuizen 2014), TransE embeddings
 
+### 005-nutricion-ciclismo-ruta
+- **Que es**: Curso teorico-visual sobre nutricion de carrera en ciclismo de ruta profesional. Basado en el review cientifico Jeukendrup et al. (2026) "UCI Sports Nutrition Project: Race Nutrition for Road Cycling" (IJSNEM 36(3): 215-232). Cero codigo, todo conceptual con diagramas ASCII, tablas, callouts y stat-grids. **Primer proyecto fuera del eje IA del repo** — deporte de alto rendimiento.
+- **Stack**: HTML/CSS/JS vanilla, dark mode sport
+- **Estructura**: 8 modulos, 26 paginas HTML:
+  - M00 Fundamentos (3 pag) — nutricion como performance, UCI project, gasto energetico (RMR+TEF+PAEE)
+  - M01 Demandas del ciclismo pro (3 pag) — Grand Tours/Monuments/1-day, racing estocastico, power-to-mass
+  - M02 Metabolismo energetico (4 pag) — CHO vs grasa, proteina, balance energetico, anatomia del gasto en Grand Tour
+  - M03 La revolucion del carbohidrato (4 pag) — timeline 1989-2025, multiple transportable CHO, fuentes, training the gut
+  - M04 Estrategia de carrera (3 pag) — fuel for work required, 1-day vs stage race, plan antes/durante/despues
+  - M05 Hidratacion y sodio (3 pag) — sudor y umbral 2%, el mito del sodio, calor/altitud/pre-cooling
+  - M06 Body mass management (3 pag) — power-to-mass, making weight con low-fiber, RED-S
+  - M07 Integrador (3 pag) — tablas CHO (Table 2 y 3 del paper), decision tree, cheatsheet
+- **Paleta**: bg `#0b0d10`, bg-elev `#14171c`, bg-card `#1a1e24`, bg-inset `#0f1115`, border `#2a2f38`, text `#eef1f6`, text-muted `#a3abb8`, accent primary `#ffd60a` (jersey yellow — maillot jaune), accent secondary `#22d3ee` (hydration aqua), violet `#a78bfa`, pink `#ec4899`, success `#10b981`, warning `#f59e0b`, danger `#ef4444`
+- **API JS publica**: `window.CourseProgress` (localStorage key `curso_nutricion_ciclismo_progreso_v1`, total 26 paginas), `window.CourseUtils.initPage({moduleId, pageId})` — el catalogo `MODULES` vive en `assets/js/utils.js` y matchea filenames reales 1:1 (gotcha de 003/004 evitado desde el diseno inicial)
+- **Notas importantes**:
+  - CSS modular: `base.css` importa `main.css` + `components.css` + `diagrams.css`
+  - Clases clave: `.concept-grid`/`.concept-card`, `.layer-stack`/`.layer-stack-item`, `.stat-grid`/`.stat` (+ `.stat-aqua/-violet/-pink/-success`), `.callout` con 7 variantes (`-info/-warning/-success/-danger/-violet/-aqua/-yellow`), `.ascii-diagram` con spans `.ascii-accent/-accent-alt/-violet/-pink/-success/-warn/-dim/-label`, `.timeline`/`.timeline-item`, `.comparison`/`.comparison-side.good/.bad`, `.data-table` + `.table-wrap`, `.kv-list`, `.pill`, `.bar-chart`/`.bar-row` (+ modifiers), `.flow`/`.flow-node`, `.decision-tree`/`.decision-q`/`.decision-branch`
+  - `utils.js` usa `document.createElement` en lugar de `innerHTML` para inyeccion dinamica (fue flageado por hook de seguridad en build inicial — se adapto a DOM API safe desde el inicio)
+  - Datos cuantitativos clave del paper citados a lo largo del curso: CHO on-bike 23 g/h (1989) -> 120 g/h (2025+), gasto 5,000-9,000 kcal/dia en Grand Tours, velocidad promedio ganador ~40 km/h (2016) -> ~43 km/h (2024), peaks individuales de 22.2 g/kg BM de CHO en una sola jornada (Redegeld/Jeukendrup observations)
+  - Observacion pendiente: inconsistencia g/kg en Table 2 pro 5:30-hr Grand Tour stage (1,573-1,651 g / 67 kg = 23.5-24.6, pero paper reporta 24.2-25.4 g/kg) — es un dato del paper real, posiblemente por factor BMR individualizado. Transcripto fiel al paper.
+  - Tema fuera del eje IA del repo — primer proyecto de ciencias aplicadas (deporte). Precedente para futuros cursos no-tech
+
 ## Reglas para crear nuevos proyectos
 
 1. Crear carpeta con el siguiente numero disponible: `NNN-slug-del-proyecto/`

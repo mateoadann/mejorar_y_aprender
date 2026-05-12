@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision tree: ¿cuánto como hoy? — M07 Integrador — Nutrición Ciclismo Ruta</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body>
+<header data-site-header class="site-header"></header>
+<div data-progress-bar class="progress-bar"></div>
+
+<section class="page-header">
+  <div class="container">
+    <div class="page-header-eyebrow">M07 · Integrador · página 2 de 3</div>
+    <h1>Decision tree: ¿cuánto como hoy?</h1>
+    <p class="lead">Si tuvieras que explicarle a un amateur cómo planificar la comida de UN día de carrera, este árbol hace el trabajo.</p>
+  </div>
+</section>
+
+<main class="container">
+
+  <section>
+    <h2>La pregunta central</h2>
+    <div class="callout callout-info">
+      <strong>"¿Cuánto CHO necesito HOY?"</strong> depende de TRES factores: duración, intensidad esperada, y qué hiciste ayer / qué vas a hacer mañana. Ningún número tiene sentido fuera de ese contexto. La tabla del paper te da el blueprint; el árbol te da el filtro.
+    </div>
+    <p>El árbol abajo recorre 6 decisiones secuenciales. Cada una ajusta un parámetro del plan: target diario, target on-bike, fluidos, recovery, y dieta pre-race. Respondelas en orden y el plan sale solo.</p>
+  </section>
+
+  <section>
+    <h2>El árbol</h2>
+    <div class="decision-tree">
+
+      <div class="decision-q">Decisión 1 — ¿Es día de carrera?</div>
+      <div class="decision-branch">
+        <div class="decision-answer">SÍ →</div>
+        <div class="decision-action">Pasá a Decisión 2 (ajustar plan del día de carrera).</div>
+        <div class="decision-answer">NO →</div>
+        <div class="decision-action">Es training o rest day. Target <strong>5–8 g/kg BM/día</strong> de CHO. Low CHO (5) si es easy ride &lt;2 hr; mid CHO (6–8) si es endurance o workout de calidad.</div>
+      </div>
+
+      <div class="decision-q">Decisión 2 — ¿Cuánto dura la race/stage?</div>
+      <div class="decision-branch">
+        <div class="decision-answer">&lt; 1 hr →</div>
+        <div class="decision-action">Very-short (TT/crit). <strong>30 g/h on-bike</strong>, prep minimal. CHO mouth-rinse puede alcanzar.</div>
+        <div class="decision-answer">1–2 hr →</div>
+        <div class="decision-action"><strong>30–60 g/h on-bike</strong>. Glucosa sola tolera bien.</div>
+        <div class="decision-answer">2–3 hr →</div>
+        <div class="decision-action"><strong>60–90 g/h on-bike</strong>. Empieza a hacer falta glucosa + fructosa para pasar el techo SGLT-1.</div>
+        <div class="decision-answer">3–5 hr →</div>
+        <div class="decision-action"><strong>90 g/h on-bike</strong>. Múltiples transportables obligados.</div>
+        <div class="decision-answer">&gt; 5 hr →</div>
+        <div class="decision-action"><strong>90–120 g/h on-bike</strong>. Gut training previo es condición, no opcional.</div>
+      </div>
+
+      <div class="decision-q">Decisión 3 — ¿Cuál es la intensidad?</div>
+      <div class="decision-branch">
+        <div class="decision-answer">Easy pace (&lt;75% Wmax) →</div>
+        <div class="decision-action">Target bajo del rango de D2.</div>
+        <div class="decision-answer">Race pace (~85% Wmax avg) →</div>
+        <div class="decision-action">Target alto del rango de D2.</div>
+        <div class="decision-answer">Mountain stage (stochastic peaks) →</div>
+        <div class="decision-action">Target máximo del rango. La intensidad estocástica quema glucógeno más rápido que el steady state.</div>
+      </div>
+
+      <div class="decision-q">Decisión 4 — ¿Hay otra stage mañana?</div>
+      <div class="decision-branch">
+        <div class="decision-answer">SÍ →</div>
+        <div class="decision-action">Recovery eating <strong>agresivo</strong> post-stage: 0.7 g/kg BM CHO en primera hora, repetido cada hora por 4 hr. <strong>Pre-bed snack</strong>: 40 g caseína + CHO.</div>
+        <div class="decision-answer">NO →</div>
+        <div class="decision-action">Recovery normal: meal post-race con CHO + proteína + fluidos, sin necesidad de hyper-feeding ni caseína nocturna.</div>
+      </div>
+
+      <div class="decision-q">Decisión 5 — ¿Hace calor (&gt;25 °C)?</div>
+      <div class="decision-branch">
+        <div class="decision-answer">SÍ →</div>
+        <div class="decision-action">Plan específico de calor: <strong>800–1,500 mL/hr fluidos</strong>, pre-cooling con ice slurry, considerar cooling en feed zones, monitorear BM pre/post.</div>
+        <div class="decision-answer">NO →</div>
+        <div class="decision-action">Plan estándar: <strong>400–800 mL/hr fluidos</strong>, según sweat rate individual y humidity.</div>
+      </div>
+
+      <div class="decision-q">Decisión 6 — ¿Hay mountain stage en los próximos 2 días?</div>
+      <div class="decision-branch">
+        <div class="decision-answer">SÍ →</div>
+        <div class="decision-action">Considerar <strong>low-fiber diet 2–4 días antes</strong> para reducir BM de contenido intestinal sin comprometer glycogen. Supervisión obligatoria.</div>
+        <div class="decision-answer">NO →</div>
+        <div class="decision-action">Dieta estándar rica en fibra, vegetales, whole foods. No hace falta forzar el digestive tract a mínima carga.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Ejemplo aplicado: Pogačar en día D (mountain stage)</h2>
+    <p>Caso extremo para ver el árbol en acción. Las respuestas encadenadas producen el plan completo.</p>
+    <dl class="kv-list">
+      <dt>D1 · ¿Race day?</dt>
+      <dd>Sí.</dd>
+      <dt>D2 · Duración</dt>
+      <dd>~5:30 hr esperadas → target 90–120 g/h.</dd>
+      <dt>D3 · Intensidad</dt>
+      <dd>Stochastic high intensity → target máximo del rango.</dd>
+      <dt>D4 · ¿Stage mañana?</dt>
+      <dd>Sí → recovery agresivo + pre-bed caseína.</dd>
+      <dt>D5 · ¿Calor?</dt>
+      <dd>Sí, 27 °C → 1,200 mL/hr + pre-cooling.</dd>
+      <dt>D6 · ¿Mountain en 2 días?</dt>
+      <dd>Sí, en curso → low-fiber diet activa.</dd>
+    </dl>
+    <div class="callout callout-aqua">
+      <strong>Plan resultante</strong><br>
+      Desayuno <strong>2.7 g/kg BM</strong> (replica Froome mountain), on-bike <strong>120 g/h</strong>, <strong>1,200 mL/hr</strong> fluids, <strong>pre-cooling con ice slurry</strong>, post-stage recovery agresivo (0.7 g/kg BM cada hora por 4 hr), <strong>pre-bed caseína 40 g + CHO</strong>.
+    </div>
+  </section>
+
+  <section>
+    <h2>Ejemplo aplicado: amateur en gran fondo</h2>
+    <p>Mismo árbol, rider completamente distinto. El output sale en otro orden de magnitud.</p>
+    <dl class="kv-list">
+      <dt>D1 · ¿Race day?</dt>
+      <dd>Sí.</dd>
+      <dt>D2 · Duración</dt>
+      <dd>~4 hr esperadas → target 90 g/h.</dd>
+      <dt>D3 · Intensidad</dt>
+      <dd>Race pace → target alto del rango.</dd>
+      <dt>D4 · ¿Stage mañana?</dt>
+      <dd>No → recovery normal.</dd>
+      <dt>D5 · ¿Calor?</dt>
+      <dd>Variable según condiciones del día.</dd>
+      <dt>D6 · ¿Mountain en 2 días?</dt>
+      <dd>No → dieta estándar.</dd>
+    </dl>
+    <div class="callout callout-aqua">
+      <strong>Plan resultante</strong><br>
+      Desayuno <strong>1.5–2 g/kg BM</strong>, on-bike <strong>60–90 g/h</strong> (techo 90 si hay gut training previo), <strong>500–700 mL/hr</strong> fluids, recovery post-race normal sin hyper-feeding.
+    </div>
+  </section>
+
+  <section>
+    <h2>Qué hace bien este árbol</h2>
+    <div class="comparison">
+      <div class="comparison-side good">
+        <h3>Lo que SÍ resuelve</h3>
+        <ul>
+          <li>Te obliga a pensar el día de carrera antes de llegar al día de carrera.</li>
+          <li>Prioriza duración e intensidad por sobre preferencia personal.</li>
+          <li>Separa rest day de race day (errores típicos del amateur: comer igual todos los días).</li>
+          <li>Integra el contexto multi-día (¿qué viene mañana?).</li>
+          <li>Hace visible el trade-off calor vs fluidos.</li>
+        </ul>
+      </div>
+      <div class="comparison-side bad">
+        <h3>Lo que NO resuelve</h3>
+        <ul>
+          <li>Sweat rate individual — hay que medirlo offline.</li>
+          <li>Tolerancia GI personal — se entrena, no se declara.</li>
+          <li>Casos clínicos (diabetes, celiaquía, issues de hierro).</li>
+          <li>Estrategias tácticas de equipo (ataques, breaks, feeding zones UCI).</li>
+          <li>Variabilidad inter-día de sleep, stress, menstrual cycle.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="callout callout-violet">
+      <strong>Cierre</strong><br>
+      El árbol no reemplaza a un nutricionista. Pero te da el mapa. Y el mapa hace que no te pierdas en la ruta.
+    </div>
+  </section>
+
+  <nav data-page-nav></nav>
+</main>
+
+<footer data-site-footer class="site-footer"></footer>
+
+<script src="../assets/js/utils.js"></script>
+<script>window.CourseUtils.initPage({ moduleId: 'm07', pageId: '01-decision-tree' });</script>
+</body>
+</html>
