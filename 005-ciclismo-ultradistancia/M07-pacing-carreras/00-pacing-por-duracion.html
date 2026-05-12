@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pacing por duracion · M07 · Curso 005</title>
+<meta name="description" content="La curva %FTP vs duracion del ultra: 200, 400, 600, 1200, multi-day. Cardiac drift, RPE Borg, manejo calor y altitud, paradas eficientes." />
+<link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-dot"></span>
+      <span>005 · Ciclismo de Ultradistancia</span>
+    </a>
+    <div class="breadcrumb" data-breadcrumb></div>
+    <span class="progress-pill" data-progress-pill>— / 33</span>
+  </div>
+</header>
+
+<main>
+
+<section class="page-header">
+  <span class="page-header-eyebrow">M07 · Aplicacion</span>
+  <h1>Pacing por duracion</h1>
+  <p class="page-header-lede">
+    En ultra NO entrenas para subir <em>FTP</em>. Entrenas para bajar la pendiente de <em>decay</em> del power sostenible a 8h, 12h, 24h, 48h. Quien gana NO es quien tiene mas watts pico — es quien decae menos. Y el techo cae brutal: 65% <em>FTP</em> a 200km baja a 50% en <em>multi-day</em>.
+  </p>
+</section>
+
+<section>
+  <h2>La curva real: %FTP por duracion</h2>
+  <p>El primer error del que viene de ruta es importar la regla del "70-75% <em>FTP</em>" — esa que funciona bien para una <em>gran fondo</em> de 4 horas. En ultra la curva cambia. Lo que sigue es lo que se sostiene <strong>fresco, en ruta llana, sin viento</strong>. Cualquier cosa que sume estres — calor, altitud, hambre, sueno acumulado — empuja la columna hacia abajo.</p>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Duracion</th>
+          <th>% FTP sostenible</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>200km (6-8h)</td>
+          <td class="num">60-65% FTP (Z2 alta)</td>
+          <td>El 70-75% es mito para amateurs frescos en ruta llana sin viento.</td>
+        </tr>
+        <tr>
+          <td>400km (12-16h)</td>
+          <td class="num">55-63% FTP</td>
+          <td>Aparece fatiga muscular acumulada, baja el apetito.</td>
+        </tr>
+        <tr>
+          <td>600km (20-30h)</td>
+          <td class="num">55-60% FTP</td>
+          <td><em>Brevet randonneur</em>: noche obligatoria, primer cruce con el sueno.</td>
+        </tr>
+        <tr>
+          <td>1200km <em>PBP</em> (80-90h)</td>
+          <td class="num">50-55% FTP</td>
+          <td>Factor limitante es el sueno, no el power.</td>
+        </tr>
+        <tr>
+          <td><em>Multi-day</em> +2000km</td>
+          <td class="num">45-50% FTP</td>
+          <td><em>Tour Divide</em>, <em>TCR</em> — la pelea es gestion del gasto.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">
+      <span class="callout-title-tag">Concepto</span>
+      Training the endurance engine
+    </div>
+    <p>"Rather than focusing on FTP, ultra training aims to train your endurance engine to sustain a lesser power for a longer time." En ruta corta entrenas para subir el techo. En ultra entrenas para <strong>bajar la pendiente</strong> con la que ese techo decae a 12h, 24h, 48h. Es otro objetivo de entrenamiento.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Cardiac drift: la herramienta de pacing en ruta</h2>
+  <p>A power constante, la <em>heart rate</em> sube con el correr de las horas. Eso es <em>cardiac drift</em> (tambien <em>aerobic decoupling</em>). No es un bug — es una senal de uso. Bien leida, te dice cuanto te queda en el tanque.</p>
+
+  <div class="callout callout-success">
+    <div class="callout-title">
+      <span class="callout-title-tag">Regla</span>
+      Menos de 5% de decoupling = base aerobica solida
+    </div>
+    <p>Sobre 2-4 horas a <em>aerobic threshold</em>, un <em>decoupling</em> menor al 5% indica una <em>endurance</em> bien desarrollada. Atletas elite tienen <em>drift</em> menor — es sintoma de base aerobica robusta. En eventos +12h, esperate 10-20% de <em>drift</em> incluso en elite.</p>
+  </div>
+
+  <h3>Que lo causa</h3>
+  <div class="layer-stack">
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">1</div>
+      <div class="layer-stack-title">Core temp rising</div>
+      <div class="layer-stack-desc">El corazon manda mas sangre a la piel para disipar calor → mismo gasto cardiaco con mas HR.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">2</div>
+      <div class="layer-stack-title">Dehidratacion</div>
+      <div class="layer-stack-desc">Volumen plasmatico baja → menos <em>stroke volume</em> → HR compensa al alza.</div>
+    </div>
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">3</div>
+      <div class="layer-stack-title">Glucogeno depletion</div>
+      <div class="layer-stack-desc">Mas grasa como sustrato → mismo trabajo cuesta mas O2 → HR sube.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">4</div>
+      <div class="layer-stack-title">Cardiovascular fatigue</div>
+      <div class="layer-stack-desc">El corazon en si mismo se fatiga. Es un musculo y le pegaste 14 horas.</div>
+    </div>
+  </div>
+
+  <h3>Cuando preferir HR sobre power</h3>
+  <p>El <em>powermeter</em> es honesto pero ciego al contexto. La HR es ruidosa pero sensible. En 4 escenarios la HR te salva el dia:</p>
+
+  <div class="comparison-table">
+    <div class="comparison-side good">
+      <div class="comparison-side-header">HR como ceiling</div>
+      <div class="comparison-side-title">Calor extremo</div>
+      <p>HR refleja el <em>stress</em> termico que el power no captura. Si el HR sube fuera de zona a tu potencia objetivo, esta hablandote.</p>
+      <div class="comparison-side-title" style="margin-top: 1rem;">Altitud</div>
+      <p>Mismo power = HR mas alto por menor O2. Aceptarlo. No bajar HR forzado — bajar power para mantener HR razonable.</p>
+      <div class="comparison-side-title" style="margin-top: 1rem;">Dia 2+ multi-day</div>
+      <p>HR refleja el estado de <em>recovery</em>. Power te miente, HR te avisa que estas mas cocinado de lo que crees.</p>
+    </div>
+    <div class="comparison-side bad">
+      <div class="comparison-side-header">No usar HR como target</div>
+      <div class="comparison-side-title">El error</div>
+      <p>Forzar power para mantener HR "en zona" cuando la HR ya quedo alta por contexto. Termina en <em>overcooking</em>.</p>
+      <div class="comparison-side-title" style="margin-top: 1rem;">Lo correcto</div>
+      <p>HR como <strong>techo</strong>, no como <em>target</em>: "no paso de 145 bpm sostenido". El target es <em>RPE</em> + power conservador.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>RPE Borg: la metrica que sobrevive a la hora 24</h2>
+  <p>El <em>powermeter</em> puede fallar. El reloj con HR puede descalibrarse. El cerebro siempre te dice cuanto te cuesta. La <em>perceived exertion</em> es la metrica universal — pero hay que calibrarla. Borg propuso dos escalas: la clasica 6-20 (correlato con HR) y la CR-10 (escala 0-10).</p>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Borg 6-20</th>
+          <th>CR-10</th>
+          <th>Sensacion</th>
+          <th>Uso en ultra</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="num">11-12</td>
+          <td class="num-alt">3-4</td>
+          <td><em>"fairly light"</em></td>
+          <td>Pacing dia entero, base sostenible.</td>
+        </tr>
+        <tr>
+          <td class="num">13-14</td>
+          <td class="num-alt">5</td>
+          <td><em>"somewhat hard"</em></td>
+          <td>Ataque de subida, ultimo cuarto de la jornada.</td>
+        </tr>
+        <tr>
+          <td class="num">15-16</td>
+          <td class="num-alt">6-7</td>
+          <td><em>"hard"</em></td>
+          <td><em>Sprint</em> control, ultima hora del dia.</td>
+        </tr>
+        <tr>
+          <td class="num">17+</td>
+          <td class="num-alt">8+</td>
+          <td><em>"very hard"</em></td>
+          <td>Casi nunca en ultras <em>self-supported</em>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <blockquote class="quote">
+    <p class="quote-text">"Recognizing what an RPE of 7/10 feels like can be your guiding light during long events where technology may be unreliable."</p>
+    <p class="quote-attr"><strong>CTS</strong> — Carmichael Training Systems, guia de pacing ultra</p>
+  </blockquote>
+</section>
+
+<section>
+  <h2>Negative split: ¿funciona en ultra?</h2>
+  <p><em>Frontiers in Physiology</em> 2026 lo deja anotado: <em>"negative split pacing... hallmark of elite endurance performance"</em>. Cierto — pero con una letra chica gigante cuando hablamos de ultra.</p>
+
+  <div class="comparison-table">
+    <div class="comparison-side good">
+      <div class="comparison-side-header">200-600km — Si</div>
+      <p><em>Negative split</em> optimo, evidencia solida. Salir conservador y cerrar fuerte el ultimo tercio funciona mejor que un <em>positive split</em>. Tu cuerpo todavia tiene reservas para acelerar.</p>
+    </div>
+    <div class="comparison-side bad">
+      <div class="comparison-side-header">1200km+ multi-day — No del todo</div>
+      <p>El patron observado es <strong>even-effort sostenido con reservas para el <em>closing push</em></strong>, NO <em>negative split</em> puro. Kolbinger en <em>TCR</em> 2019: 19h <em>ride</em> + 5h <em>rest</em> <em>clockwork</em> toda la carrera. No acelero al final — sostuvo.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">
+      <span class="callout-title-tag">Objetivo realista 1200km+</span>
+      Evitar el positive split catastrofico
+    </div>
+    <p>En <em>multi-day</em> el target no es cerrar mas rapido — es <strong>no explotar</strong>. El <em>"blow up"</em> dia 3 cuesta el doble que cualquier ahorro de tiempo del dia 1. No atacar fuerte dia 1 no es cobardia: es matematica.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Manejo del calor: el techo se cae</h2>
+  <p>El calor no te roba un poco de power — te roba mucho, rapido, y silenciosamente. Cada grado de <em>core temp</em> arriba te baja el <em>VO2max</em> un 16%. Y el <em>cardiac output</em> se va a la piel, no a las piernas.</p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <span class="stat-value">-5 a -15%</span>
+      <span class="stat-label">power sostenible a +30°C ambiente</span>
+    </div>
+    <div class="stat is-alt">
+      <span class="stat-value">-16%</span>
+      <span class="stat-label">VO2max por cada +1°C core temp</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">3 L/h</span>
+      <span class="stat-label">sweat rate maximo en calor extremo</span>
+    </div>
+    <div class="stat is-alt">
+      <span class="stat-value">700-900ml/h</span>
+      <span class="stat-label">hidratacion target con 500-700mg sodio/h</span>
+    </div>
+  </div>
+
+  <h3>Time to exhaustion vs temperatura</h3>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Temperatura ambiente</th>
+          <th>Time to exhaustion (intensidad fija)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>3°C</td>
+          <td class="num">85 min</td>
+        </tr>
+        <tr>
+          <td>20°C</td>
+          <td class="num">60 min</td>
+        </tr>
+        <tr>
+          <td>40°C</td>
+          <td class="num">30 min</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Ese mismo dato escala al ultra. A 40°C, sostener el power que hacias a 20°C es matematicamente imposible — vas a caer. La estrategia es bajar power al techo termico nuevo desde la primera hora.</p>
+
+  <h3>Aclimatacion: la adaptacion mas rentable</h3>
+  <div class="layer-stack">
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">10-14 dias</div>
+      <div class="layer-stack-title">Exposicion consistente</div>
+      <div class="layer-stack-desc">Sesiones de calor activo (rodillo en habitacion caliente, salida en horas pico) repetidas durante 2 semanas.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">+6.5%</div>
+      <div class="layer-stack-title">Plasma volume</div>
+      <div class="layer-stack-desc">+200ml de plasma sanguineo en 10 dias. Mejor <em>stroke volume</em>, menor HR a misma intensidad.</div>
+    </div>
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">Sweat</div>
+      <div class="layer-stack-title">Sudoracion mas temprana y abundante</div>
+      <div class="layer-stack-desc">El cuerpo "aprende" a empezar a sudar antes y a producir mas. <em>Core temp</em> mas baja a misma intensidad.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">HR</div>
+      <div class="layer-stack-title">Verdadera adaptacion cardiaca</div>
+      <div class="layer-stack-desc">Baja la HR a igual intensidad. No es percepcion — es expansion del volumen plasmatico medible.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Altura: aceptar el drift</h2>
+  <p>Subiste a 3000m. Tu <em>powermeter</em> dice los mismos watts. Tu HR esta 15bpm arriba. ¿Que paso? Menos O2 disponible. La regla de oro: <strong>aceptar el drift de HR, bajar el power</strong>.</p>
+
+  <div class="callout callout-info">
+    <div class="callout-title">
+      <span class="callout-title-tag">Numero</span>
+      Power sostenido en altura
+    </div>
+    <p>Sobre 2500m: <strong>-5 a -10% sustained power</strong>. <em>Silk Road Mountain Race</em> tiene <em>passes</em> sobre 3500m en Kirguistan. Los ganadores aclimatan llegando 5-10 dias antes. No es opcional.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Mecanica de paradas eficientes</h2>
+  <p>Una carrera de una semana son 168 horas totales. Si paras 30 veces, cada minuto de mas en cada parada cuesta caro. Hagamos la matematica de <em>Tour Divide</em>:</p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <span class="stat-value">30 × 15min</span>
+      <span class="stat-label">= 7.5h paradas totales</span>
+    </div>
+    <div class="stat is-alt">
+      <span class="stat-value">30 × 10min</span>
+      <span class="stat-label">= 5h paradas totales</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">30 × 5min</span>
+      <span class="stat-label">= 2.5h paradas totales</span>
+    </div>
+  </div>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">
+      <span class="callout-title-tag">Brutal</span>
+      Diferencia 5min vs 15min × 30 paradas
+    </div>
+    <p><strong>5 HORAS finales</strong>. A 13 km/h promedio en sucio, son <strong>65km de avance que regalaste</strong>. Por estar 10 minutos extra "tomando un cafe tranquilo" en cada parada. Por eso los ganadores son obsesivos con la disciplina de parada.</p>
+  </div>
+
+  <h3>Los 4 tipos de parada</h3>
+  <div class="layer-stack">
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">Tipo 1</div>
+      <div class="layer-stack-title">Pee + refill (2-5 min)</div>
+      <div class="layer-stack-desc">Llenar bidones, comer una barra, seguir. Nunca sentarse.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">Tipo 2</div>
+      <div class="layer-stack-title">Resupply rapido (10-15 min)</div>
+      <div class="layer-stack-desc">Cargar comida para 6-8h, refill, salir. Sin sentarse. Comer en la bici al rato.</div>
+    </div>
+    <div class="layer-stack-item is-warn">
+      <div class="layer-stack-label">Tipo 3</div>
+      <div class="layer-stack-title">Real break / cafe (20-30 min)</div>
+      <div class="layer-stack-desc">Comer caliente, revisar ruta, estirar. Una o dos por dia, no mas.</div>
+    </div>
+    <div class="layer-stack-item is-danger">
+      <div class="layer-stack-label">Tipo 4</div>
+      <div class="layer-stack-title">Sleep stop (3-5h)</div>
+      <div class="layer-stack-desc">Hotel o <em>bivvy</em>, ducha si posible, <em>charge devices</em>, dormir solido. Una vez al dia.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Self-supported vs supported: dos deportes distintos</h2>
+  <p>El formato cambia todo. <em>TCR</em> y <em>Tour Divide</em> son una cosa. <em>RAAM</em> con <em>crew</em> es otra. No se comparan tiempos cruzados.</p>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Self-supported</th>
+          <th>Supported</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sueno total/dia</td>
+          <td class="num">3-5h</td>
+          <td class="num-alt">1.5-3h</td>
+        </tr>
+        <tr>
+          <td>Tiempo no pedaleando</td>
+          <td class="num">20-30%</td>
+          <td class="num-alt">5-10%</td>
+        </tr>
+        <tr>
+          <td>Velocidad media moving</td>
+          <td class="num">20-25 km/h</td>
+          <td class="num-alt">28-35 km/h</td>
+        </tr>
+        <tr>
+          <td>Power output</td>
+          <td>Conservar</td>
+          <td>Maximizar</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="callout callout-violet">
+    <div class="callout-title">
+      <span class="callout-title-tag">Sintesis</span>
+      Lo que te llevas al manillar
+    </div>
+    <ul>
+      <li><strong>%FTP por duracion</strong>: 60-65% a 200km, 55-63% a 400km, 50-55% en <em>PBP</em>, 45-50% en <em>multi-day</em>. El techo cae.</li>
+      <li><strong>Cardiac drift &lt;5%</strong> en 2-4h = base solida. En +12h esperate 10-20% incluso en elite.</li>
+      <li><strong>HR como ceiling</strong> en calor, altitud y dia 2+. No como target.</li>
+      <li><strong>RPE 11-14</strong> es tu zona dia-entero. Pasar de 15 sostenido es banderazo rojo.</li>
+      <li><strong>Negative split</strong> hasta 600km. En <em>multi-day</em>: <em>even effort</em> + reservas para <em>closing push</em>.</li>
+      <li><strong>Calor</strong>: -1 a -3% power por grado arriba de 25°C. 10-14 dias de aclimatacion mueven la aguja.</li>
+      <li><strong>Altitud</strong>: -5 a -10% sobre 2500m. Aceptar drift HR, bajar power.</li>
+      <li><strong>Paradas</strong>: 5 vs 15 min × 30 paradas = 5h finales = 65km regalados. La disciplina manda.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="page-nav" data-page-nav></div>
+
+</main>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  window.CourseUtils.initPage('M07-00-pacing-por-duracion', 'M07');
+</script>
+</body>
+</html>

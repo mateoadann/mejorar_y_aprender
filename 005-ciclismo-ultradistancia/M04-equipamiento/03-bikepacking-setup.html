@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Setup bikepacking · M04 · Curso 005 Ciclismo Ultradistancia</title>
+<meta name="description" content="Three-bag system, GPS para 24h+, lumens y beam pattern, dynamo vs battery, kit minimo self-supported. Referencia Kolbinger TCR 2019." />
+<link rel="stylesheet" href="../assets/css/base.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-dot"></span>
+      <span>005 · Ciclismo de Ultradistancia</span>
+    </a>
+    <div class="breadcrumb" data-breadcrumb></div>
+    <span class="progress-pill" data-progress-pill>— / 33</span>
+  </div>
+</header>
+
+<main>
+
+<section class="page-header">
+  <span class="page-header-eyebrow">M04 · Maquina</span>
+  <h1>Setup bikepacking, GPS, luces</h1>
+  <p class="page-header-lede">
+    20-40L de capacidad reparten cargas entre 3 bolsas. La regla critica <strong>NO es cuanto llevas</strong> — es <strong>DONDE lo pones</strong>. Frente pesado = manejo zombi en hora 18.
+  </p>
+</section>
+
+<!-- ========== CONTENIDO ========== -->
+
+<section>
+  <h2>Three-bag system · El estandar de oro</h2>
+  <p>El consenso moderno de <em>bikepacking</em> race-ready se construye sobre tres bolsas: <strong>saddle pack atras, frame bag al centro, handlebar roll adelante</strong>. Cada bolsa tiene una funcion clara segun el peso y el volumen de lo que carga. Romper esta logica = bici inestable.</p>
+
+  <pre class="ascii-diagram">
+  <span class="ascii-accent">THREE-BAG SYSTEM</span> · Distribucion de peso
+
+                          <span class="ascii-accent-alt">SADDLE PACK</span>
+                          (bulky liviano)
+                          sleeping bag, ropa
+                              <span class="ascii-dim">▓▓▓▓▓▓▓</span>
+                          <span class="ascii-dim">▓▓▓▓▓▓▓▓▓▓▓▓▓</span>
+                         ╱
+       <span class="ascii-accent">HANDLEBAR ROLL</span>           ⌒
+       (frente liviano)        ╱╲
+       accesorios + lluvia    │  │
+            <span class="ascii-dim">▓▓▓▓▓▓▓▓▓</span>          │  │
+        ────────────────────────────────
+                ⊙               ⊙
+              ╱   <span class="ascii-accent">FRAME BAG</span>     ╲
+                  (pesado al centro y bajo)
+                  tools, food, water,
+                  electronica
+  </pre>
+  <p class="ascii-caption">El peso pesado va al centro y bajo. Frente y arriba: liviano. Asi la bici sigue maniobrable en descensos con sueño.</p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Centro · BAJO</div>
+      <div class="concept-card-term">Frame bag</div>
+      <div class="concept-card-desc"><strong>Pesado va aca</strong>. Tools, food, water bladder, electronica, power bank. Centro de gravedad bajo = bici neutra.</div>
+    </div>
+    <div class="concept-card is-alt">
+      <div class="concept-card-label">Atras · ALTO</div>
+      <div class="concept-card-term">Saddle pack</div>
+      <div class="concept-card-desc"><strong>Bulky pero liviano</strong>. Sleeping bag, ropa de noche, bivvy. Volumen alto, peso bajo — el wag a 60 km/h es manejable.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Adelante · LIVIANO</div>
+      <div class="concept-card-term">Handlebar roll</div>
+      <div class="concept-card-desc"><strong>Solo accesorios y ropa de lluvia</strong>. <em>Frente pesado = manejo zombi en descensos.</em> Lo confunde toda la geometria de direccion.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Setup tipico 5-7 dias</h2>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr><th>Bolsa</th><th>Capacidad</th><th>Modelos referencia</th><th>Contenido</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Saddle pack</strong></td>
+          <td class="num">14 L</td>
+          <td>Apidura Expedition Saddle Pack 14L · Restrap 14L</td>
+          <td>Sleeping bag + bivvy + ropa noche + ropa de cambio.</td>
+        </tr>
+        <tr>
+          <td><strong>Frame bag</strong></td>
+          <td class="num">4–7 L</td>
+          <td><strong>Custom hecho a medida</strong> · Apidura Expedition Frame Pack</td>
+          <td>Tools, repuestos, water bladder, power bank, food.</td>
+        </tr>
+        <tr>
+          <td><strong>Handlebar roll</strong></td>
+          <td class="num">7–9 L</td>
+          <td>Apidura Expedition Handlebar Pack 9L</td>
+          <td>Capa lluvia + ropa termica + accesorios livianos.</td>
+        </tr>
+        <tr>
+          <td><strong>Top tube bag</strong></td>
+          <td class="num-alt">1–1.5 L</td>
+          <td>Apidura Racing Top Tube · Restrap</td>
+          <td>Snacks, telefono, power bank chico, geles.</td>
+        </tr>
+        <tr>
+          <td><strong>Feed bag(s)</strong></td>
+          <td class="num-alt">0.7–1 L c/u</td>
+          <td>Stem-mounted (Revelate Mountain Feedbag)</td>
+          <td>Comida de acceso rapido, bidon extra, fruta.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>El <em>frame bag</em> custom es el detalle que separa setups serios. Cada cuadro tiene un triangulo principal de geometria unica — un bag prefabricado siempre deja espacio muerto. Un custom hecho a medida (Rockgeist, Wanderlust Gear, Rogue Panda, Cedaero) llena el 100% del triangulo y maximiza capacidad sin agregar volumen externo.</p>
+</section>
+
+<section>
+  <h2>Marcas top de <em>bikepacking bags</em></h2>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">UK</div>
+      <div class="concept-card-term">Apidura</div>
+      <div class="concept-card-desc"><em>Racing series</em> ultra-light <em>dyneema-blend</em> + <em>Expedition</em> robusta. El default mundial actual. Buen sistema de cierre.</div>
+    </div>
+    <div class="concept-card is-alt">
+      <div class="concept-card-label">UK</div>
+      <div class="concept-card-term">Restrap</div>
+      <div class="concept-card-desc">Mas reforzada que Apidura. <strong>Cierre magnetico</strong> caracteristico. Pesa un poco mas, dura visiblemente mas.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Alaska</div>
+      <div class="concept-card-term">Revelate Designs</div>
+      <div class="concept-card-desc">Herencia <em>Iditarod</em>. Super durable, soluciona condiciones extremas. <strong>Lael Wilcox usa Revelate</strong> en sus Tour Divides.</div>
+    </div>
+    <div class="concept-card is-alt">
+      <div class="concept-card-label">Alemania</div>
+      <div class="concept-card-term">Ortlieb</div>
+      <div class="concept-card-desc"><strong>Waterproof REAL</strong>, no <em>water-resistant</em>. Mas pesado, invencible en lluvia continua. Eleccion clasica europea.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">USA · Custom</div>
+      <div class="concept-card-term">Rockgeist · Wanderlust · Rogue Panda · Cedaero</div>
+      <div class="concept-card-desc"><em>Frame bag</em> hecho a medida sobre fotos de tu cuadro. Espera 4-8 semanas, ~$200-300, llena el triangulo perfecto.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>El caso de estudio: Kolbinger TCR 2019</h2>
+
+  <div class="callout callout-info">
+    <div class="callout-title">
+      <span class="callout-title-tag">Referencia</span>
+      Fiona Kolbinger · Primera mujer ganadora overall del Transcontinental
+    </div>
+    <p>Setup: <strong>Apidura Racing Saddle Pack 7L</strong> + <strong>Apidura Racing Handlebar Pack 5L</strong>. <strong>SIN <em>frame bag</em></strong>. Mantuvo el <em>main triangle</em> limpio para bidones grandes y para hacer la bici visualmente mas pequeña en headwinds.</p>
+    <p>La decision contrarian fue acertada: priorizar acceso a <em>bottles</em> + aerodinamica del triangulo limpio por encima de la capacidad extra. Para una TCR (~4000km con resupply diario), no hace falta cargar 7 dias de comida — basta con lo del proximo control.</p>
+  </div>
+</section>
+
+<!-- ============ GPS ============ -->
+
+<section>
+  <h2>GPS / cycling computer · Autonomia es todo</h2>
+  <p>En una ultra &gt;24h el GPS no es opcional — necesitas navegacion <em>turn-by-turn</em> sin parar, registro de potencia, y carga continua. La variable critica es <strong>autonomia + capacidad de USB passthrough</strong> (cargar mientras esta encendido).</p>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr><th>Modelo</th><th>Autonomia</th><th>USB passthrough</th><th>Comentario</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Garmin Edge 1040 Solar</strong></td>
+          <td class="num">35 h estandar · 45+ h solar</td>
+          <td>Si</td>
+          <td>El standard ultra actual. 8h de luz solar/dia extienden la autonomia.</td>
+        </tr>
+        <tr>
+          <td>Wahoo Elemnt Roam V2</td>
+          <td class="num">17 h claimed</td>
+          <td>Si</td>
+          <td>UI mas simple que Garmin. Buena pantalla en sol directo.</td>
+        </tr>
+        <tr>
+          <td>Garmin Edge Explore 2</td>
+          <td class="num-alt">16 h</td>
+          <td>Si</td>
+          <td>Version reducida del 1040. Mas barato, menos features.</td>
+        </tr>
+        <tr>
+          <td>Hammerhead Karoo</td>
+          <td class="num-alt">12–15 h</td>
+          <td>Si (clave)</td>
+          <td>Sistema Android-based. Mapas vivos. Soporta passthrough.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">
+      <span class="callout-title-tag">Regla ultra &gt;24h</span>
+      USB passthrough <strong>NO NEGOCIABLE</strong>
+    </div>
+    <p>Sin <em>passthrough</em>, el GPS debe apagarse para cargarse. Apagar = perder navegacion 2-3 horas + reprogramar ruta + posiblemente perder el <em>track</em> de actividad. Con <em>passthrough</em>, conectas un <em>power bank</em> al cable USB y el dispositivo carga mientras te guia. <strong>Garmin 1040 Solar o cualquiera con passthrough es la unica opcion seria.</strong></p>
+  </div>
+</section>
+
+<section>
+  <h2><em>Power meter</em> · Para pacing IF 0.55-0.65</h2>
+  <p>En TCR / RAAM / Tour Divide, el <em>pacing</em> se mide en <strong>Intensity Factor</strong> (IF). Mantener IF entre 0.55 y 0.65 sobre todo el evento es la ventana ganadora. Para mantenerse en esa ventana hace falta medirla en tiempo real — y eso pide <em>power meter</em>.</p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Single sided</div>
+      <div class="concept-card-term">4iiii Precision 3.0</div>
+      <div class="concept-card-desc"><strong>±1% precision</strong>, $400-500. El mas usado en ultras por precio / fiabilidad. Bateria CR2032, dura ~800h.</div>
+    </div>
+    <div class="concept-card is-alt">
+      <div class="concept-card-label">Spider · Dual</div>
+      <div class="concept-card-term">Quarq DZero / DFour DUB</div>
+      <div class="concept-card-desc"><strong>±1.5% precision</strong>, mide ambas piernas. Mas resistente a impactos que pedales. Standard pro tour.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Spider</div>
+      <div class="concept-card-term">Stages</div>
+      <div class="concept-card-desc">Single side o dual. Mas simple de instalar. Tendencia a fallos en humedad extrema (Tour Divide reportes).</div>
+    </div>
+    <div class="concept-card is-alt">
+      <div class="concept-card-label">Pedales · Dual</div>
+      <div class="concept-card-term">Favero Assioma</div>
+      <div class="concept-card-desc"><strong>USB rechargeable</strong>, no bateria descartable. Dual side. Transferible entre bicis en 1 minuto. Muy popular ultra.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ILUMINACION ============ -->
+
+<section>
+  <h2>Iluminacion · Lumens por contexto</h2>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr><th>Contexto</th><th>Lumens necesarios</th><th>Comentario</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Backroads pavimento moderada</td>
+          <td class="num">400–600 lm</td>
+          <td>Ruta secundaria asfaltada. Sumar luz de cruce + standlight.</td>
+        </tr>
+        <tr>
+          <td>Gravel rapido / descensos</td>
+          <td class="num">800–1500 lm</td>
+          <td>Necesitas ver baches y rocas a 50+ km/h. Beam ancho.</td>
+        </tr>
+        <tr>
+          <td>MTB tecnico nocturno</td>
+          <td class="num-alt">2000+ lm</td>
+          <td>Singletrack tecnico. Helmet + handlebar combinado.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">
+      <span class="callout-title-tag">Truco</span>
+      <em>Beam pattern</em> &gt; <em>lumens</em>
+    </div>
+    <p>Una luz StVZO (norma alemana, con <em>cut-off</em>) de 600 lumens ilumina la ruta <strong>mejor que una MTB de 1200 lumens</strong> con <em>beam</em> circular tipo "blob". El <em>cut-off</em> distribuye uniforme y proyecta lejos sin deslumbrar al ciclista que viene de frente.</p>
+    <p>El "blob" MTB ilumina todo en 180° — incluyendo niebla, lluvia y partículas en suspension que te ciegan. <strong>Para ultra road / gravel, StVZO compliant es la eleccion correcta.</strong></p>
+  </div>
+</section>
+
+<section>
+  <h2><em>Hub dynamo</em> vs <em>battery</em></h2>
+
+  <div class="comparison-table">
+    <div class="comparison-side good">
+      <div class="comparison-side-header">Hub dynamo</div>
+      <div class="comparison-side-title">Para &gt;24h</div>
+      <ul>
+        <li><strong>Energia ilimitada pedaleando</strong>. Sin paradas de carga.</li>
+        <li><em>Drag</em> 3W — insignificante &gt;25 km/h.</li>
+        <li>Compatible con carga simultanea de GPS / power bank.</li>
+        <li><em>Standlight</em> dura ~1h post-detencion.</li>
+        <li>Carga inicial alta ($300+ rueda con hub).</li>
+      </ul>
+    </div>
+    <div class="comparison-side bad">
+      <div class="comparison-side-header">Battery puro</div>
+      <div class="comparison-side-title">Para &lt;48h o MTB tecnico</div>
+      <ul>
+        <li><strong>Lumens max</strong>: 1700-3000 sin restricciones.</li>
+        <li><em>Drag</em> cero. Mejor para race solo de 1 noche.</li>
+        <li>Autonomia limitada: 2-6h en modo alto.</li>
+        <li>Recargar = parar + 4-6h conectado.</li>
+        <li>Para multi-day, multiplica numero de baterias necesarias.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Modelos top de luces ultra</h2>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Battery / dynamo</div>
+      <div class="concept-card-term">Sinewave Beacon 2</div>
+      <div class="concept-card-desc">Max 750 lm, 115g + cable. Output progresivo: 200@8kph, 500@13kph, 650@16kph, 750@20kph. <strong>USB output para cargar GPS.</strong></div>
+    </div>
+    <div class="concept-card is-alt">
+      <div class="concept-card-label">Dynamo dedicada</div>
+      <div class="concept-card-term">Exposure Revo Dynamo</div>
+      <div class="concept-card-desc">Max 800 lm @ 27 kph. <em>Standlight</em> de <strong>1 hora</strong> post-detencion (400lm decreciente). Standard UK ultra.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Hub dynamo</div>
+      <div class="concept-card-term">Schmidt SON28</div>
+      <div class="concept-card-desc">480g, 6V 3W. <strong>Estandar de oro</strong> en touring/ultra. Casi indestructible. Bearings sellados, ratings 50000 km+.</div>
+    </div>
+    <div class="concept-card is-alt">
+      <div class="concept-card-label">Battery puro</div>
+      <div class="concept-card-term">Exposure Diablo MK13</div>
+      <div class="concept-card-desc"><strong>1700 lm max</strong>. Helmet o handlebar mount. Para descensos tecnicos donde necesitas haz extra.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Battery alta</div>
+      <div class="concept-card-term">Exposure Maxx-D · Lupine SL Nano</div>
+      <div class="concept-card-desc">Niveles 1500-2500 lm. Sistema con bateria externa. Para MTB nocturno serio donde dynamo no alcanza.</div>
+    </div>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">
+      <span class="callout-title-tag">Setup ultra ejemplo</span>
+      Combinacion redundante de iluminacion
+    </div>
+    <p><strong>SON28 hub</strong> (energia continua) + <strong>Sinewave Beacon 2</strong> (luz principal, carga cache battery) + <strong>Sinewave Reactor</strong> (gestion electrica) + <strong>Exposure Diablo</strong> de respaldo en helmet para descensos. Tres fuentes, dos sistemas independientes — si falla algo, no quedas a ciegas.</p>
+  </div>
+</section>
+
+<section>
+  <h2><em>Power management</em> multi-day</h2>
+
+  <div class="layer-stack">
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">Fuente 1</div>
+      <div class="layer-stack-title">Dynamo hub carga 2 dispositivos</div>
+      <div class="layer-stack-desc">Schmidt SON28 + <strong>Sinewave Reactor</strong> o <strong>Cycle2Charge V3</strong>. Convierte la AC del hub en DC estable 5V USB. Puede cargar GPS + power bank simultaneamente.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">Fuente 2</div>
+      <div class="layer-stack-title">Power bank 10000-20000 mAh</div>
+      <div class="layer-stack-desc">Carga durante el dia via dynamo. <strong>Carga GPS/luces overnight</strong> cuando dormis o paras. Anker / Nitecore son los mas confiables.</div>
+    </div>
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">Distribucion</div>
+      <div class="layer-stack-title">USB hub waterproof</div>
+      <div class="layer-stack-desc"><strong>Cycle2Charge</strong> o similar para distribuir output a multiples dispositivos sin perder estanqueidad. Conectores USB-C son el estandar 2026.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">Regla</div>
+      <div class="layer-stack-title">2 fuentes independientes para GPS</div>
+      <div class="layer-stack-desc">Dynamo (en marcha) + power bank (estatico) = redundancia critica. Si una falla, la otra mantiene navegacion. Sin esa redundancia, una falla = abandono.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MAINTENANCE KIT ============ -->
+
+<section>
+  <h2><em>Maintenance kit</em> minimo <em>self-supported</em></h2>
+  <p>En TCR / Tour Divide / RAAM <em>self-supported</em>, asistencia externa esta prohibida — todo lo que falle lo arreglas vos en la ruta. Este kit minimo cubre el 95% de fallos posibles sin agregar peso loco:</p>
+
+  <div class="layer-stack">
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">Mecanica</div>
+      <div class="layer-stack-title">Multi-tool con <em>quick link</em></div>
+      <div class="layer-stack-desc"><strong>Lezyne Super V</strong> o <strong>Trek Pro BITS</strong>. Hex 2-8mm + Torx + chain breaker + spoke wrench + tire lever. Quick link 11s integrado.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">Tubeless</div>
+      <div class="layer-stack-title">Tubeless plug kit · 2 camaras · tire boot</div>
+      <div class="layer-stack-desc"><strong>Dynaplug Racer/Pill</strong> para pinchazos &gt;3mm donde el sealant falla. 2 camaras de repuesto para fallo total de tubeless. Tire boot (Tyvek o Park Tool TB-2) para cortes en casing.</div>
+    </div>
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">Inflado</div>
+      <div class="layer-stack-title">CO2 + 2-3 cartridges + mini bomba</div>
+      <div class="layer-stack-desc">CO2 inflator para velocidad (2-3 cartridges 16g). Mini bomba como respaldo cuando se acaba el CO2. Topeak Race Rocket o Lezyne Pressure Drive son standard.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">Cadena</div>
+      <div class="layer-stack-title"><em>Quick link</em> 11s · 2 unidades · patch kit</div>
+      <div class="layer-stack-desc">Cadena se rompe en algun punto. 2 quick links por si fallas una. Patch kit para parches en camaras (si las usas).</div>
+    </div>
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">Drivetrain</div>
+      <div class="layer-stack-title">Spare derailleur hanger especifico</div>
+      <div class="layer-stack-desc"><strong>Codigo unico por cuadro</strong> — no hay universal. Comprar 2 antes del evento, llevar 1. Si rompes el hanger sin repuesto, el evento termina ahi.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">Electronica</div>
+      <div class="layer-stack-title">Spare Di2 / AXS battery</div>
+      <div class="layer-stack-desc">Si usas grupo electronico. SRAM AXS bateria pesa 25g — llevarla es trivial. Di2 carga via USB, asumi acceso a USB.</div>
+    </div>
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">Frenos</div>
+      <div class="layer-stack-title">Spare brake pads (ultras de montaña)</div>
+      <div class="layer-stack-desc">Pastillas se consumen rapido en descensos largos y lluvia. Tour Divide consume 1 set por dia en zonas tecnicas. Para road ultra menos critico.</div>
+    </div>
+    <div class="layer-stack-item is-alt">
+      <div class="layer-stack-label">Adhesivos</div>
+      <div class="layer-stack-title">Cable ties + electrical tape + duct tape</div>
+      <div class="layer-stack-desc">Lo que arregla todo lo que no entra en ninguna otra categoria. Zip ties para sujetar bolsas rotas, electrical tape para cubrir cortes en bar tape, duct tape como respaldo universal.</div>
+    </div>
+    <div class="layer-stack-item">
+      <div class="layer-stack-label">Multiproposito</div>
+      <div class="layer-stack-title">Leatherman multi-tool</div>
+      <div class="layer-stack-desc">Pinzas + cuchilla + sierra. Para sacar cables atascados, cortar precintos, abrir paquetes de comida. 80g extra que justifican su lugar.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Caso real · Lista Kolbinger TCR 2019</h2>
+
+  <div class="callout callout-info">
+    <div class="callout-title">
+      <span class="callout-title-tag">Referencia</span>
+      Lo que llevo Fiona Kolbinger en la TCR ganadora
+    </div>
+    <ul>
+      <li><strong>4 camaras</strong> de repuesto (no era full tubeless)</li>
+      <li><em>Tyre boot</em> + <em>patch set</em></li>
+      <li><em>Cable lock</em> liviano (para parar a comer)</li>
+      <li><em>Electrical tape</em> + <em>cable ties</em></li>
+      <li><strong>Continental GP5000 plegada en saddle pack</strong> (cubierta entera de repuesto)</li>
+      <li><strong>Topeak Hexus 16</strong> multi-tool</li>
+      <li><em>Chain lube</em> en bolsita</li>
+      <li><strong>4 tyre levers</strong></li>
+      <li>Pastillas de freno Ultegra de repuesto</li>
+      <li>Seccion de <em>tyre</em> (parche grande para cortes en casing)</li>
+      <li><em>Mech hanger</em> especifico</li>
+    </ul>
+    <p>Resaltable: <strong>cubierta entera plegada</strong>. Para una TCR de 4000km, una cubierta nueva en mitad del evento puede salvarte de un DNF si la tuya se corta en flanco.</p>
+  </div>
+</section>
+
+<!-- Mini-resumen de cierre -->
+<section>
+  <div class="callout callout-violet">
+    <div class="callout-title">
+      <span class="callout-title-tag">Sintesis</span>
+      Lo que te llevas
+    </div>
+    <ul>
+      <li><em>Three-bag system</em>: <strong>pesado al centro/bajo (frame), bulky liviano atras (saddle), liviano adelante (handlebar)</strong>. Frente pesado = zombi.</li>
+      <li>Kolbinger TCR 2019: SIN frame bag, solo <strong>saddle 7L + handlebar 5L Apidura Racing</strong>. Triangulo limpio aero.</li>
+      <li>GPS &gt;24h: <strong>USB passthrough NO NEGOCIABLE</strong>. Garmin Edge 1040 Solar 35-45h es el standard.</li>
+      <li>Power meter ultra: <strong>4iiii Precision ±1%</strong> el mas usado. Favero Assioma USB rechargeable creciendo.</li>
+      <li>Iluminacion: <strong>beam pattern (StVZO) &gt; lumens</strong>. Dynamo hub &gt;24h, battery &lt;48h o MTB tecnico.</li>
+      <li>Power management: <strong>dynamo + power bank = 2 fuentes para GPS</strong>. Sin redundancia = un fallo = abandono.</li>
+      <li>Kit minimo: multi-tool con chain breaker, tubeless plug, 2 camaras, tire boot, CO2 + bomba, <strong>spare derailleur hanger especifico</strong>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== NAV PREV / NEXT ========== -->
+<div class="page-nav" data-page-nav></div>
+
+</main>
+
+<script src="../assets/js/progress.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script>
+  window.CourseUtils.initPage('M04-03-bikepacking-setup', 'M04');
+</script>
+</body>
+</html>
